@@ -11,9 +11,8 @@ directives, factories, etc.
 
 When cloning this repository for the first time, run these two commands:
 
-cd memex-app
-
-npm install
+- cd memex-app
+- npm install
 
 The workflow is:
 grunt server # starts the server and opens up the home page in your browser
