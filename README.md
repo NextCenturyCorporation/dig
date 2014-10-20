@@ -9,8 +9,10 @@ https://github.com/yeoman/generator-angular which has useful generators to
 create angular.js elements such as models, views, controllers, routes, 
 directives, factories, etc.
 
-When cloning this repository for the first time, run these two commands
+When cloning this repository for the first time, run these two commands:
+
 cd memex-app
+
 npm install
 
 The workflow is:
