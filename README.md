@@ -22,3 +22,8 @@ grunt ... # see Gruntfile.js and documentation for grunt
 
 Once the server is started with grunt, when modify and add elements to the
 application, the browser will refresh and show those changes.
+
+Prerequisites:
+- node.js
+- mongodb
+- grunt installed globally
