@@ -26,4 +26,4 @@ application, the browser will refresh and show those changes.
 Prerequisites:
 - node.js
 - mongodb
-- grunt installed globally
+- grunt_cli installed globally
