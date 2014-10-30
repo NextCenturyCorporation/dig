@@ -16,6 +16,7 @@ When cloning this repository for the first time, run these two commands:
   `npm install`
 
 The workflow is:
+  
   `grunt serve # starts the server and opens up the home page in your browser`
 
   `grunt test # run all of the tests`
