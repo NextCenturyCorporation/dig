@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ISTR Ads</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="http://code.angularjs.org/1.2.16/angular.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/examples/demo/lib/elasticsearch.angular.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/examples/demo/lib/elastic.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/dist/elasticui.min.js"></script>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: block;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            border-right: 1px solid #eee;
+        }
+
+        .instructions {
+            display: block;
+            margin: 0 auto;
+            width: 450px;
+        }
+    </style>
+    <script>
+        angular
+            .module('tutorial', ['elasticui'])
+            .constant('euiHost', 'http://karma-dig-service.cloudapp.net:55310'); // ACTION: change to cluster address
+    </script>
+</head>
+<body ng-app="tutorial" eui-index="'istrads'"><!-- ACTION: change to index name -->
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xs-3 sidebar">
+                <h3>Search</h3>
+                <eui-searchbox field="'hasTitlePart.text'"></eui-searchbox> <!-- ACTION: change to field to search on -->
+                <h3>hasBodyPart.text</h3>
+                <eui-singleselect field="'hasBodyPart.text'" size="5"></eui-singleselect> <!-- ACTION: change to field to use as facet -->
+                <h3>Multi-select facet</h3>
+                <eui-checklist field="'hasFeatureCollection.hasFeatures.featureValue'" size="10"></eui-checklist> <!-- ACTION: change to field to use as facet -->
+            </div>
+            <div class="col-xs-9 col-xs-offset-3 main">
+
+
+                <h1>Results</h1>
+                <ul>
+                    <li ng-repeat="doc in indexVM.results.hits.hits">
+                        {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
+                    </li>
+                </ul>
+                <eui-simple-paging></eui-simple-paging>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
