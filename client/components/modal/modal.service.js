@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('memexAppApp')
+angular.module('digApp')
   .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal

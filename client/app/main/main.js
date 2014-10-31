@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('memexAppApp')
+angular.module('digApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {

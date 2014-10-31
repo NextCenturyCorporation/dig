@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/memexapp-dev'
+    uri: 'mongodb://localhost/dig-dev'
   },
 
   seedDB: true

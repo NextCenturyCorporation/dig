@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('memexAppApp')
+angular.module('digApp')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
     $scope.errors = {};
 

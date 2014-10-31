@@ -3,7 +3,7 @@
 /**
  * Removes server error when user updates input
  */
-angular.module('memexAppApp')
+angular.module('digApp')
   .directive('mongooseError', function () {
     return {
       restrict: 'A',

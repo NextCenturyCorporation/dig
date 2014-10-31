@@ -7,7 +7,7 @@
 
 module.exports = {
   DOMAIN:           'http://localhost:9000',
-  SESSION_SECRET:   'memexapp-secret',
+  SESSION_SECRET:   'dig-secret',
 
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''

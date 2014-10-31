@@ -1,7 +1,7 @@
-#memex-app
+#dig
 =========
 
-This is the software project for Memex search application.
+This is the software project for Dig search application.
 
 To use the yeoman angular-fullstack-generator to create new components for
 the application, see the documentation at 
@@ -11,7 +11,7 @@ directives, factories, etc.
 
 When cloning this repository for the first time, run these two commands:
 
-  `cd memex-app`
+  `cd dig`
   
   `npm install`
 

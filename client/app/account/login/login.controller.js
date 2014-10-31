@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('memexAppApp')
+angular.module('digApp')
   .controller('LoginCtrl', function ($scope, Auth, $location) {
     $scope.user = {};
     $scope.errors = {};

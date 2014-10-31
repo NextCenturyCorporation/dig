@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('memexAppApp')
+angular.module('digApp')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];
 
