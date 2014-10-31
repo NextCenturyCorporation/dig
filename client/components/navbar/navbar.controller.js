@@ -4,7 +4,8 @@ angular.module('digApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
-      'link': '/'
+      'link': '/',
+      'icon':'glyphicon glyphicon-home'
     }];
 
     $scope.isCollapsed = true;
