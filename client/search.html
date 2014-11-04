@@ -67,7 +67,7 @@
         </div>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">User678 <i class="fa fa-angle-down"></i></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User678 <i class="fa fa-angle-down"></i></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Action</a></li>
                 <li><a href="#">Another action</a></li>
@@ -84,14 +84,14 @@
     </nav>
 
 
-    <div class="container">
+    
 
     
       <div class="jumbotron">  
       <!-- Search form -->
+      <div class="container text-center">
       <div class="well well-lg">
          <form class="form-inline" role="form">
-  <div class="form-group"></div>
   <div class="form-group">
 
     <select name="select" class="form-control input-lg">
@@ -106,14 +106,18 @@
       <option>EMAIL:</option>
       <option>TRADE:</option>
     </select>
-    <input type="password" class="form-control input-lg" id="exampleInputPassword2" placeholder=" ">
+    <input type="keyword" class="form-control input-lg" id="InputKeyword2" placeholder=" ">
   </div>
-  <button type="submit" class="btn btn-default btn-lg">+ ADD</button>
-</form>
-<h3><span class="label label-default">GENDER: female | x</span></h3>
-        </div>
-        <p class="text-capitalize">
-          <a class="btn btn-lg btn-danger" href="../../components/#navbar" role="button">search</a>
+  <button type="submit" class="btn btn-warning btn-lg">+ ADD</button>
+</form> 
+<div class="search-tags">
+<p><span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span> <span class="search-label">GENDER: female | x</span></p>
+</div>
+        </div> <!--end well-->
+        
+               
+        <p>
+          <a class="btn btn-lg btn-search" href="../../components/#navbar" role="button">search</a>
         </p>
 <h3>Search</h3>
        
@@ -122,10 +126,10 @@
                 <eui-singleselect field="'hasBodyPart.text'" size="5"></eui-singleselect> <!-- ACTION: change to field to use as facet -->
                 <h3>Multi-select facet</h3>
                 <eui-checklist field="'hasFeatureCollection.hasFeatures.featureValue'" size="10"></eui-checklist> <!-- ACTION: change to field to use as facet -->
-        
+       </div> <!-- /search container -->
       </div>
-<hr>
-    </div> <!-- /search container -->
+
+    
     
    
 

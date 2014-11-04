@@ -16,6 +16,10 @@ body {
   margin-bottom: 0px;
 }
 
+.navbar-default .navbar-brand {
+	color:#004154;
+}
+
 .navbar-brand {
 	font-family: 'Varela Round', sans-serif;
 }
@@ -24,6 +28,44 @@ body {
 	background-color:#FFF;
 }
 
+.navbar-brand {
+    font-size: 20px;
+}
+
 .jumbotron {
-	background-color:#FFF;
+	background-color:#d4eef9;
+}
+
+.well {
+    background-color: #004154;
+    border: 0px;
+    border-radius: 0px;
+}
+
+.search-tags {
+	padding-top:20px;
+}
+
+.search-label {
+	color: #fff;
+	display: inline;
+	font-size: 80%;
+	font-family: 'Varela Round', sans-serif;
+	line-height: 2.5;
+	text-align: center;
+	vertical-align: baseline;
+	white-space: nowrap;
+	border: 1px solid #FFF;
+	padding-top: 0.4em;
+	padding-right: 0.7em;
+	padding-bottom: 0.4em;
+	padding-left: 0.7em;
+}
+
+.btn-search {
+	background-color: #d9534f;
+	border-color: #d43f3a;
+	color: #fff;
+	text-transform: uppercase;
+	font-family: 'Varela Round', sans-serif;
 }
