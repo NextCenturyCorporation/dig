@@ -10,6 +10,11 @@
 body {
   min-height: 2000px;
   font-family: 'Lato', sans-serif;
+  background-color:#FAF8ED;
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+    font-family: 'Varela Round', sans-serif;
 }
 
 /* navigation styling */
@@ -20,6 +25,11 @@ body {
 
 .navbar-default .navbar-brand {
 	color:#004154;
+	padding: 20px;
+}
+
+.navbar-nav > li > a {
+    padding-top: 20px;
 }
 
 .navbar-brand {
@@ -40,6 +50,8 @@ body {
 
 .jumbotron {
 	background-color:#d4eef9;
+    padding-bottom: 15px;
+    padding-top: 35px;
 }
 
 .well {
@@ -48,7 +60,7 @@ body {
     border-radius: 0px;
 }
 
-.input-lg {
+.form-control {
     border-radius: 0px;
 }
 
@@ -70,7 +82,7 @@ body {
 .search-label {
 	color: #fff;
 	display: inline;
-	font-size: 80%;
+	font-size: 70%;
 	font-family: 'Varela Round', sans-serif;
 	line-height: 2.5;
 	text-align: center;
@@ -92,13 +104,6 @@ body {
 
 .btn-xs{
     font-weight: 300;
-}
-
-.btn-xl, .btn-group-xl > .btn {
-    border-radius: 6px;
-    font-size: 28px;
-    line-height: 1.33;
-    padding: 10px 16px;
 }
    
 .btn-hot {
