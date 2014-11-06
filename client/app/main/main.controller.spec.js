@@ -4,6 +4,7 @@ describe('Controller: MainCtrl', function () {
 
   // load the controller's module
   beforeEach(module('digApp'));
+  beforeEach(module('socketMock'));
 
   var MainCtrl,
       scope,
