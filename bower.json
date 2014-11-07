@@ -15,7 +15,8 @@
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.10",
-    "elasticsearch": "~2.4.3"
+    "elasticsearch": "~2.4.3",
+    "elastic.js": "~1.2.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

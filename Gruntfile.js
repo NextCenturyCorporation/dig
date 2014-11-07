@@ -142,7 +142,9 @@ module.exports = function (grunt) {
       all: [
         '<%= yeoman.client %>/{app,components}/**/*.js',
         '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-        '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
+        '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
+        '!<%= yeoman.client %>/{app,components}/**/elastic.js',
+        '!<%= yeoman.client %>/{app,components}/**/elasticui*.js'
       ],
       test: {
         src: [
@@ -235,7 +237,8 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/public/{,*/}*.js',
             '<%= yeoman.dist %>/public/{,*/}*.css',
             '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/public/assets/fonts/*'
+            '<%= yeoman.dist %>/public/assets/fonts/*',
+            '!<%=yeoman.dist %>/public/bower_components/elastic.js'
           ]
         }
       }
@@ -255,7 +258,10 @@ module.exports = function (grunt) {
     usemin: {
       html: ['<%= yeoman.dist %>/public/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/public/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/public/{,*/}*.js'],
+      js: [
+        '<%= yeoman.dist %>/public/{,*/}*.js',
+        '!<%= yeoman.dist %>/public/bower_components/elastic.js'
+      ],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>/public',
