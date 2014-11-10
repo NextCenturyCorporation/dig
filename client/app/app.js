@@ -6,7 +6,8 @@ angular.module('digApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'elasticui'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -15,6 +16,9 @@ angular.module('digApp', [
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
   })
+
+  // TODO: find a nice way to collect constants for different environments
+  .constant('euiHost', 'http://localhost:9200')
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
