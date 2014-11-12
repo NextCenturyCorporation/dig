@@ -1,0 +1,30 @@
+Checklist for making updates to dig web application:
+ ☐ Before committing changes:
+   ☐ Provide Jasmine unit tests for all angular controllers, services, filters, directives
+     ☐ Create a spec file for each
+     ☐ Ensure that karma.conf.js is up to date
+   ☐ Provide mocha unit tests for server code
+   ☐ Run: grunt test (runs client and server tests)
+   ☐ Run: grunt test:e2e (runs protractor e2e tests)
+   ☐ Ensure that all tests pass
+   ☐ Ensure new/modified code is covered with good unit and e2e tests
+   ☐ when creating n
+
+Project file description:
+ ☐ karma.conf.js
+ ☐ protractor.conf.js
+ ☐ Gruntfile.js
+ ☐ 
+
+General Guidelines:
+ ☐ Use a layout view (index.html) with body content views and ui-router.
+ ☐ Do not create static content
+ ☐ When creating new views, add to e2e tests to test content sections
+ ☐ e2e tests should reveal a broken system, e.g.:
+   ☐ system no longer works with sample data set
+   ☐ views do not contain necessary content
+   ☐ dependencies are not present
+   ☐ data schema changed
+ ☐ e2e tests should check all content somewhere, at least once:
+   ☐ navbar tests
+   ☐ footer tests
