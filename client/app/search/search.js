@@ -5,7 +5,7 @@ angular.module('digApp')
     $stateProvider
       .state('search', {
         url: '/',
-        templateUrl: 'app/main/search.html',
+        templateUrl: 'app/search/search.html',
         controller: 'SearchCtrl'
       });
   });
