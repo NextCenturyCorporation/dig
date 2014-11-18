@@ -3,20 +3,31 @@
 <div class="container-fluid" eui-index="'mockads'">
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-1">
+    <div class="col-md-3 sidebar form-group">
+      <label for="text">Title</label>
       <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('title', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-    <span>results</span>
-    <ul>
-        <li ng-repeat="doc in indexVM.results.hits.hits">
-            {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
-        </li>
-    </ul>
-    <eui-simple-paging></eui-simple-paging>
+      <label>Phone</label>
+      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('phone', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
+
+      <label>Ethnicity</label>
+      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('ethnicity', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
+      
+      <label>Hair</label>
+      <eui-checklist field="'hair_color'" size="5"></eui-checklist>
+
+      <label>Eyes</label>
+      <eui-checklist field="'eye_color'" size="5"></eui-checklist>
+    </div>
+
+    <div class="col-md-8">
+      <span><h3>Results</h3></span>
+      <ul>
+          <li ng-repeat="doc in indexVM.results.hits.hits">
+              {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
+          </li>
+      </ul>
+      <eui-simple-paging></eui-simple-paging>
     </div>
   </div>
 

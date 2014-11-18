@@ -8,7 +8,6 @@ def main(
     infile='mobydick.txt',
     outfile='mb_lines.txt'
   ):
-
 	
 	with open(os.path.join(datadir, infile), 'rb') as infile:
 		for line in infile:
