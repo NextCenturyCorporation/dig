@@ -29,4 +29,5 @@ application, the browser will refresh and show those changes.
 Prerequisites:
 - node.js
 - mongodb
-- grunt_cli installed globally
+- grunt-cli installed globally (npm i -g grunt-cli)
+- bower installed globally (npm i -g bower)
