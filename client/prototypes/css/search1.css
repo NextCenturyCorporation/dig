@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f8f8;
+}
+
+.navbar {
+    margin-bottom: 8px;
+}
+/* sidebar settings */
+.sidebar {
+    position: fixed;
+    display: block;
+    top: 100px;
+    bottom: 0;
+    z-index: 1000;
+    min-height: 100%;
+    max-height: none;
+    overflow: auto;
+    background-color: white;
+}

@@ -8,6 +8,7 @@
 
   <!-- Bootstrap -->
   <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/search1.css">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,6 +18,7 @@
   <![endif]-->
 </head>
 <body>
+  <!-- TOP NAVBAR -->
   <div class="navbar navbar-default navbar-static-top">
     <div class="container">
       <div class="navbar-header">
@@ -29,7 +31,7 @@
       </div>
       <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav">
-          <li ng-repeat="item in menu" class="">
+          <li>
               <a ng-href="/">DIG<span class="glyphicon glyphicon-home"></span></a>
           </li>
         </ul>
@@ -44,6 +46,37 @@
       </div>
     </div>
   </div>
+  <!-- END TOP NAVBAR -->
+
+  <!-- PAGE CONTENT -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-btn">
+          <button class="btn btn-default" type="button">Go!</button>
+          </span>
+        </div><!-- /input-group -->
+      </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-9">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+      </div>
+    </div>
+  </div>
+  <!-- END PAGE CONTENT -->
+
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
