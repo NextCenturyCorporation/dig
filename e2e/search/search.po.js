@@ -11,6 +11,12 @@ var SearchPage = function($httpBackend) {
 
  this.nextElem = element.all(by.css('.pagination-sm li')).last();
  this.nextLink = element.all(by.css('.pagination-sm li a')).last();
+
+ this.pgOneElem = element.all(by.css('.pagination-sm li')).get(1);
+ this.pgOneLink = element.all(by.css('.pagination-sm li a')).get(1);
+
+ this.pgTwoElem = element.all(by.css('.pagination-sm li')).get(2);
+ this.pgTwoLink = element.all(by.css('.pagination-sm li a')).get(2);
  
  this.titleInput = element.all(by.css('.form-control')).first();
 };

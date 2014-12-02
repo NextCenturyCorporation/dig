@@ -24,6 +24,25 @@ describe('Search View', function() {
     });
   });
 
+  it('ensure direct page links in pagination work as expected', function() {
+    page.titleInput.sendKeys(filterKey).then(function() {
+      
+      expect(hasClass(page.pgOneElem, 'active')).toBe(true);
+      expect(hasClass(page.pgTwoElem, 'active')).toBe(false);
+
+      page.pgTwoLink.click().then(function() {
+        expect(hasClass(page.pgOneElem, 'active')).toBe(false);
+        expect(hasClass(page.pgTwoElem, 'active')).toBe(true);
+      });
+
+      page.pgOneLink.click().then(function() {
+        expect(hasClass(page.pgOneElem, 'active')).toBe(true);
+        expect(hasClass(page.pgTwoElem, 'active')).toBe(false);
+      });
+
+    });
+  });
+
   it('ensure next button in pagination is enabled and disabled accordingly', function() {
     page.titleInput.sendKeys(filterKey).then(function() {
       
