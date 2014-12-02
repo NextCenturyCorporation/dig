@@ -8,6 +8,7 @@
 
   <!-- Bootstrap -->
   <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/search1.css">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -51,26 +52,78 @@
   <!-- PAGE CONTENT -->
   <div class="container-fluid">
     <div class="row">
+      <div class="col-sm-12">       
       <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="input-group">
-          <input type="text" class="form-control">
-          <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Go!</button>
-          </span>
-        </div><!-- /input-group -->
-      </div>
+        <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" class="form-control">
+              <span class="input-group-btn">
+              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
+            </div><!-- /input-group -->
+          </div>
+          <div class="col-sm-6">
+            <ul class="list-inline">
+              <li><strong>256</strong> results</li>
+              <li>
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    sort by
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>         
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+          <ul class="list-inline">
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-info btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
+            <li><button type="button" class="btn btn-link btn-xs">clear all selections <i class="fa fa-lg fa-times-circle"></i></button></li>  
+          </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <ul class="nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><hr>
+            <label for="name"> <i class="fa fa-lg fa-chevron-down"></i> hair color </label>
+            <div>
+               <label class="checkbox check-margin10">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1 (43)
+               </label>
+               <label class="checkbox check-margin10">
+                  <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2 (9)
+               </label>
+               <label class="checkbox check-margin10">
+                  <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3 (108)
+               </label>
+            </div>
+          </li>
+          <li><hr>
+            <label for="name"> <i class="fa fa-lg fa-chevron-right"></i> eye color </label>
+          </li>
         </ul>
       </div>
-      <div class="col-md-9">
+      <div class="col-sm-9">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
       </div>
     </div>

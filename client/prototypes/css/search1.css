@@ -17,3 +17,22 @@ body {
     overflow: auto;
     background-color: white;
 }
+
+.list-inline {
+    margin-bottom: 0;
+}
+
+.btn-facet {
+    margin-top: 5px;
+}
+
+.check-margin10 { 
+    margin-left: 10px;
+}
+
+hr {
+margin-top: 20px;
+margin-bottom: 10px;
+border: 0;
+border-top: 1px solid #606060;
+}
