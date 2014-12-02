@@ -5,7 +5,7 @@
 
 'use strict';
 
-var SearchPage = function($httpBackend) {
+var SearchPage = function() {
  this.prevElem = element.all(by.css('.pagination-sm li')).first();
  this.prevLink = element.all(by.css('.pagination-sm li a')).first();
 
