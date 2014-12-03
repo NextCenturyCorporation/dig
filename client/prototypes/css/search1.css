@@ -1,0 +1,38 @@
+body {
+    background-color: #f8f8f8;
+}
+
+.navbar {
+    margin-bottom: 8px;
+}
+/* sidebar settings */
+.sidebar {
+    position: fixed;
+    display: block;
+    top: 100px;
+    bottom: 0;
+    z-index: 1000;
+    min-height: 100%;
+    max-height: none;
+    overflow: auto;
+    background-color: white;
+}
+
+.list-inline {
+    margin-bottom: 0;
+}
+
+.btn-facet {
+    margin-top: 5px;
+}
+
+.check-margin10 { 
+    margin-left: 10px;
+}
+
+hr {
+margin-top: 20px;
+margin-bottom: 10px;
+border: 0;
+border-top: 1px solid #606060;
+}
