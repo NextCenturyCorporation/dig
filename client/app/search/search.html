@@ -27,7 +27,11 @@
               {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
           </li>
       </ul>
-      <eui-simple-paging></eui-simple-paging>
+      <div class="text-center">
+        <pagination total-items="indexVM.results.hits.total" ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize" 
+        class="pagination-sm" num-pages="indexVM.pageCount"></pagination>
+        <p>Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
+      </div>
     </div>
   </div>
 
