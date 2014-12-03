@@ -23,7 +23,7 @@ body {
 }
 
 .btn-facet {
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .check-margin10 { 
@@ -35,4 +35,12 @@ margin-top: 20px;
 margin-bottom: 10px;
 border: 0;
 border-top: 1px solid #606060;
+}
+
+.panel-body-result-summary {
+    padding: 5px;
+}
+
+.panel-results {
+    margin-bottom: 10px;
 }
