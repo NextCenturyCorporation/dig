@@ -31,7 +31,7 @@ body {
 }
 
 hr {
-margin-top: 20px;
+margin-top: 10px;
 margin-bottom: 10px;
 border: 0;
 border-top: 1px solid #606060;
@@ -43,4 +43,8 @@ border-top: 1px solid #606060;
 
 .panel-results {
     margin-bottom: 10px;
+}
+
+.bottom-pad10 {
+    padding-bottom: 10px;
 }
