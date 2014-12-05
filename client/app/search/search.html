@@ -1,23 +1,53 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container-fluid" eui-index="'mockads'">
-
-  <div class="row">
+  <div class="row"><!-- search panel + breadbox -->
+    <div class="col-sm-12">       
+      <div class="panel panel-default">
+        <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-7 bottom-pad10">
+            <div class="input-group">
+              <input type="text" eui-query="ejs.MatchQuery('_all', querystring)" ng-model="querystring" eui-enabled="querystring.length" class="form-control">
+              <span class="input-group-btn">
+              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
+            </div><!-- /input-group -->
+          </div>
+          <div class="col-sm-5">
+            <ul class="list-inline">
+              <li><strong>256</strong> results</li>
+              <li>
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    sort by
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>         
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+          <hr>
+          <ul class="list-inline">
+          </ul>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- search panel + breadbox -->
+  <div class="row"><!-- sidebar and results -->
     <div class="col-md-3 sidebar form-group">
-      <label for="text">Title</label>
-      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('title', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
-
       <label>Phone</label>
       <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('phone', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
-
-      <label>Ethnicity</label>
-      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('ethnicity', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
-      
-      <label>Hair</label>
-      <eui-checklist field="'hair_color'" size="5"></eui-checklist>
-
-      <label>Eyes</label>
-      <eui-checklist field="'eye_color'" size="5"></eui-checklist>
     </div>
 
     <div class="col-md-8">
@@ -33,7 +63,7 @@
         <p>Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
       </div>
     </div>
-  </div>
+  </div><!-- sidebar and results -->
 
 </div>
 
