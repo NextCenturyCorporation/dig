@@ -12,7 +12,7 @@
       </accordion-heading> 
       <div class="row">
         <div ng-if="doc._source.hasImagePart" ng-show="imageChecked" ng-class="thumbClass">
-          <span class="thumbnail"><img ng-src="{{doc._source.hasImagePart[0].cacheUrl}}" class="image-thumb"></span>
+          <img ng-src="{{doc._source.hasImagePart[0].cacheUrl}}" class="image-thumb thumbnail">
         </div>
         <div ng-class="descriptionClass">
           <p ng-if="doc._source.url">URL: <a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></p>
