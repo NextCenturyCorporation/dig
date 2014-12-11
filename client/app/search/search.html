@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container-fluid" eui-index="'mockads'">
+<div class="container-fluid" eui-index="'dig'">
   <div class="row"><!-- search panel + breadbox -->
     <div class="col-sm-12">       
       <div class="panel panel-default">
@@ -47,7 +47,7 @@
   <div class="row"><!-- sidebar and results -->
     <div class="col-md-3 sidebar form-group">
       <label>Phone</label>
-      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('phone', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
+      <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('phonenumber', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
     </div>
 
     <div class="col-md-8">
