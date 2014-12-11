@@ -1,0 +1,187 @@
+body{
+	background-color: #f4efec;
+	font-family: 'Lato', sans-serif;
+}
+
+/* Typography */
+
+a,
+.btn-link{
+	color: #0678ad;
+}
+a:hover,
+.btn-link:hover{
+	color: #034154;
+}
+
+.text-danger{
+	color: #cf4e4d;
+}
+
+h1,
+h4{
+	color: #034154;
+}
+h5{
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+/* Headers */
+
+.controls{
+	border-bottom: 1px solid #ddd8d4;
+}
+.search-tags{
+	margin: 5px 0;
+}
+.search-tags > li{
+	padding: 0px 2px 4px 0;
+}
+.search-tags > li > .btn:hover{
+	color: #ffffff;
+	background-color: #cf4e4d;
+}
+
+.page-header {
+	padding-bottom: 9px;
+	margin: 80px 0 60px;
+	border: 0;
+	padding: 0;
+}
+.page-header h1{
+	font-size: 4em;
+}
+
+/* Content */
+
+.column-header{
+	padding: 15px 0;
+}
+.left-column{
+	border-right: 1px solid #ddd8d4;
+}
+.right-column h4,
+.left-column h4{
+	margin: 0;
+}
+.left-column h5{
+	margin-top: 0;
+}
+.left-column h5 > .fa{
+	margin-right: 5px;
+}
+.list-results{
+	margin: 0 -15px;
+}
+.list-results li{
+	padding: 0;
+}
+.list-results .panel-results{
+	border-width: 1px 0 0;
+	margin: 0;
+}
+.filter-toggle{
+	margin-right: 10px;
+}
+
+/* Buttons */
+
+.btn{
+	border: 0;
+	font-weight: bold;
+}
+.btn-xs,
+.btn-group-xs>.btn {
+	padding: 2px 6px;
+}
+.btn:hover{
+	background-color: #034154;
+	color: #fdc155;
+}
+a:hover,
+a:focus,
+.btn-link:hover,
+.btn-link:focus{
+	background: none;
+	text-decoration: none;
+}
+
+.btn-primary{
+	background-color: #fdc155;
+	color: #034154;
+}
+.btn-danger{
+	background-color: #cf4e4d;
+}
+
+.btn-group > a{
+	font-weight: bold;
+	margin-left: 5px;
+}
+.btn-group.open .dropdown-toggle{
+	box-shadow: none;
+}
+
+/* Panels */
+
+.panel{
+	border-radius: 0;
+	box-shadow: none;
+}
+.panel-default{
+	background: none;
+	border-color: #ddd8d4;
+}
+
+/* Dropdown */
+
+.dropdown-menu{
+	border-radius: 0;
+	border: 0;
+	box-shadow: 0 4px 12px rgba(0,0,0,.175);
+}
+
+/* Badges */
+
+.badge{
+	border-radius: 0;
+	background: none;
+	padding: 0;
+	color: #777;
+}
+
+/* Inputs */
+
+label{
+	text-transform: uppercase;
+}
+.checkbox label{
+	text-transform: none;
+}
+.btn,
+.form-control,
+.input-group-lg>.form-control,
+.input-group-lg>.input-group-addon,
+.input-group-lg>.input-group-btn>.btn{
+	border-radius: 0;
+}
+.input-group-lg>.input-group-btn>.btn{
+	padding: 10px 30px;
+}
+.btn-default{
+	background-color: #ffffff;
+}
+.input-group-lg > .input-group-btn{
+	height: 46px;
+}
+.input-group-lg > .form-control{
+	border-width: 0;
+	box-shadow: none;
+	padding-left: 0;
+}
+.input-group-addon:first-child{
+	border: 0;
+	background-color: #FFFFFF;
+	box-shadow: none;;
+}

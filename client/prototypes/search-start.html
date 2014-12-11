@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search1</title>
+  <title>Search</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 
   <!-- Bootstrap -->
   <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,7 +16,6 @@
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/search1.css">
   <link rel="stylesheet" href="css/style.css">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,58 +28,36 @@
 <body>
 <!-- PAGE CONTENT -->
 <div class="container-fluid">
-  <div class="row">
 
-    <div class="col-md-12">
-      <h1>New Search</h1>
-      <hr>
-    </div>
-
+  <div class="page-header">
+    <h1 class="text-center">DIG or something</h1>
   </div>
+
   <div class="row">
-
-    <div class="col-sm-12">
-    <h4>Find pages with ...</h4>
-    </div>
-
-  </div>
-  <div class="row">
-
     <div class="col-xs-12">
-    <form class="form-horizontal" role="form">
-      <div class="form-group">
-        <label for="input-any" class="col-sm-3 control-label"><h5>any of these words:</h5></label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control" id="input-any">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="input-all" class="col-sm-3 control-label"><h5>all of these words:</h5></label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control" id="input-all">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="input-exact" class="col-sm-3 control-label"><h5>this exact phrase:</h5></label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control" id="input-exact">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="input-none" class="col-sm-3 control-label"><h5>none of these words:</h5></label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control" id="input-none">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-          <button class="btn btn-primary" type="button">Search <i class="fa fa-search fa-lg"></i></button></span>
-        </div>
-      </div>
-    </form>
-    </div>
 
+      <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+          <label for="input-any" class="sr-only control-label"><h5>Find pages with any of these words:</h5></label>
+
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              <input type="email" class="form-control" id="input-any" placeholder="Some placeholder">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Search</button>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
   </div>
+
 </div>
 <!-- END PAGE CONTENT -->
 

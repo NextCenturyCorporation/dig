@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search1</title>
+  <title>Search Results</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 
   <!-- Bootstrap -->
   <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,7 +16,6 @@
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/search1.css">
   <link rel="stylesheet" href="css/style.css">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -25,176 +26,277 @@
   <![endif]-->
 </head>
 <body>
-  <!-- PAGE CONTENT -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12">       
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-7 bottom-pad10">
-            <div class="input-group">
-              <input type="text" class="form-control" value="diane garner 703-345-8528">
-              <span class="input-group-btn">
-              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
-            </div><!-- /input-group -->
-          </div>
-          <div class="col-sm-5">
-            <ul class="list-inline">
-              <li><strong>256</strong> results</li>
-              <li>
-                <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                    sort by
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">newest first</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">oldest first</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">best match</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li><button class="btn btn-danger">reset all <i class="fa fa-times-circle fa-lg"></i></button></li>
-            </ul>
-          </div>         
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-          <hr>
-          <ul class="list-inline">
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-link btn-xs btn-facet">clear all selections <i class="fa fa-lg fa-times-circle"></i></button></li>  
-          </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-3">
-        <ul class="nav">
-          <li>
-            <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone">
-            </div>
-          </li>
-          <li>
-            <div class="form-group">
-            <label for="ethnicity">Ethnicity</label>
-            <input type="text" class="form-control" id="ethnicity">
-            </div>
-          </li>
-          <li>
-            <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" class="form-control" id="location">
-            </div>
-          </li>
-          <li><hr>
-            <label for="name"> <i class="fa fa-lg fa-chevron-down"></i> Hair Color </label>
-            <div>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1 <span class="badge">42</span>
-               </label>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2 <span class="badge">9</span>
-               </label>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3 <span class="badge">108</span>
-               </label>
-            </div>
-          </li>
-          <li><hr>
-            <label for="name"> <i class="fa fa-lg fa-chevron-right"></i> Eye Color </label>
-          </li>
-        </ul>
-      </div>
-      <div class="col-sm-9">
-        <ul class="list-inline">
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
 
-        </ul>
+<!-- PAGE CONTENT -->
+<div class="controls controls-search">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input type="text" class="form-control" placeholder="Search" value="diane garner 703-345-8528 &quot;lorem ipsum&quot;">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button">Search</button>
+        </span>
       </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="left-column hidden-xs col-sm-3 col-lg-2">
+
+      <div class="column-header">
+        <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a>
+        <h4>Filter</h4>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down"></i> Keywords</h5>
+
+        <ul class="list-inline search-tags">
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">diane <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">garner <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">703-345-8528 <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">lorem ipsum <i class="fa fa-times"></i></button></li>
+        </ul>
+
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down"></i> Phone <a href="#" class="pull-right"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down"></i> Ethnicity <a href="#" class="pull-right"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down"></i> Location <a href="#" class="pull-right"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down"></i> Hair Color</h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-right"></i> Eye Color</h5>
+      </div>
+
     </div>
+
+    <div class="right-column col-sm-9 col-lg-10">
+
+      <div class="column-header">
+
+        <div class="btn-group pull-right">
+          <label>Sort by</label>
+          <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+            Newest first
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+          </ul>
+        </div>
+
+        <h4 class="text-muted">
+          <a href="#"><i class="filter-toggle fa fa-filter visible-xs-inline-block"></i></a>
+          <strong>256</strong> results
+        </h4>
+
+      </div>
+
+
+      <ul class="list-inline list-results">
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+        <li>
+          <div class="panel panel-default panel-results">
+          <div class="panel-body panel-body result-summary">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
+          </div>
+          </div>       
+        </li>
+
+      </ul>
+    </div>
+
   </div>
+</div>
+
+
   <!-- END PAGE CONTENT -->
 
 
