@@ -19,36 +19,6 @@
   <![endif]-->
 </head>
 <body>
-  <!-- TOP NAVBAR -->
-  <div class="navbar navbar-default navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button class="navbar-toggle" type="button">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-        <ul class="nav navbar-nav">
-          <li>
-              <a ng-href="/">DIG<span class="glyphicon glyphicon-home"></span></a>
-          </li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li class=""><a href="/signup">Sign up</a></li>
-          <li class="active"><a href="/login">Login</a></li>
-          <li><p class="navbar-text">Hello David</p> </li>
-          <li class=""><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
-          <li class=""><a href="">Logout</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <!-- END TOP NAVBAR -->
-
   <!-- PAGE CONTENT -->
   <div class="container-fluid">
     <!-- search panel + breadbox -->
@@ -57,30 +27,31 @@
       <div class="panel panel-default">
         <div class="panel-body">
         <div class="row">
-          <div class="col-sm-7 bottom-pad10">
+          <div class="col-sm-5 bottom-pad10">
             <div class="input-group">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="diane garner 703-345-8528">
               <span class="input-group-btn">
               <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
             </div><!-- /input-group -->
           </div>
-          <div class="col-sm-5">
+          <div class="col-sm-7">
             <ul class="list-inline">
-              <li><strong>256</strong> results</li>
+              
+              <li>sort by:</li>
               <li>
                 <div class="dropdown">
                   <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                    sort by
+                    best match
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">newest first</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">oldest first</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">best match</a></li>
                   </ul>
                 </div>
               </li>
+              <li><button class="btn btn-danger">reset all <i class="fa fa-times-circle fa-lg"></i></button></li>
             </ul>
           </div>         
         </div>
@@ -146,7 +117,8 @@
         </ul>
       </div>
       <div class="col-sm-9">
-        <ul class="list-inline">
+        <ul class="list-unstyled">
+          <li><strong>256</strong> matches</li>
           <li>
             <div class="panel panel-default panel-results">
             <div class="panel-body panel-body result-summary">
