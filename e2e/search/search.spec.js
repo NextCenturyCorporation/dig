@@ -35,19 +35,20 @@ describe('Search View', function() {
     });
   });
 
+  it('should include pagination defaulting to 12', function() {
+    expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
+  });
+
   it('should open accordion and make appropriate elements visible', function() {
-    page.firstAccordionLink.click();
+    page.firstAccordionLink.click().then(function() {
+      browser.wait(function() {
+        return page.firstDetailsBtn.isDisplayed();
+      }, 1000);
 
-    waitsFor(function() {
-      return page.firstDetailsBtn.isDisplayed();
-    }, 1000);
-
-    runs(function() {
       expect(page.firstDetailsBtn.isDisplayed()).toBe(true);
       expect(page.firstAccordionCollapseDiv.isDisplayed()).toBe(true);
       expect(hasClass(page.firstAccordionCollapseDiv, 'in')).toBe(true);
     });
-
   });
 
   it('should show thumbnails on checkbox click', function() {
@@ -60,25 +61,23 @@ describe('Search View', function() {
 
     expect(hasClass(page.firstAccordionThumbnail, 'ng-hide')).toBe(false);
   });
- 
+
   it('should open accordion and go to details view', function() {
     page.firstAccordionLink.click();
 
     browser.wait(function() {
       return page.firstDetailsBtn.isDisplayed();
     }, 1000);
-
+ 
     page.firstDetailsBtn.click();
 
-    waitsFor(function() {
+    browser.wait(function() {
       return element(by.buttonText('Back To List')).isDisplayed();
     }, 1000);
 
-    runs(function() {
-      expect(browser.getLocationAbsUrl()).toBe('/list/details');
-    });
+    expect(browser.getLocationAbsUrl()).toBe('/list/details');
   });
-
+ 
   it('should return to list view from details page', function() {
     page.firstAccordionLink.click();
 
@@ -94,24 +93,17 @@ describe('Search View', function() {
     
     element(by.buttonText('Back To List')).click();
 
-    waitsFor(function() {
+    browser.wait(function() {
       return page.titleInput.isDisplayed();
     }, 1000);
 
-    runs(function() {
-      expect(browser.getLocationAbsUrl()).toBe('/list');
-    });
-
-  });
-
-  it('should include pagination defaulting to 12', function() {
-    expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
+    expect(browser.getLocationAbsUrl()).toBe('/list');
   });
 
   it('should include pagination with filtered data', function() {
     page.titleInput.sendKeys(filterKey).then(function() {
 
-      waitsFor(function() {
+      browser.wait(function() {
         return element.all(by.css('.pagination-sm li')).count().then(function(value) {
           return value < 12;
         });
@@ -119,9 +111,7 @@ describe('Search View', function() {
 
       // With the selected filter, two pages are expected, so there will be 
       // four pagination elements total -- [Previous, 1, 2, Next]
-      runs(function() {
-        expect(element.all(by.css('.pagination-sm li')).count()).toBe(4);
-      });
+      expect(element.all(by.css('.pagination-sm li')).count()).toBe(4);
     });
   });
 
