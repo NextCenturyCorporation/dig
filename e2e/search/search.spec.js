@@ -3,12 +3,14 @@
 
 describe('Search View', function() {
 
-  var page, filterKey;
+  var page, filterKey, singleResult;
 
   beforeEach(function() {
     browser.get('/');
     page = require('./search.po');
     filterKey = 'ocean'; // should filter results down to two pages
+    singleResult = 'collge'; //should give single result
+
   });
 
   it('elasticsearch should be up and running', function() {
@@ -155,6 +157,12 @@ describe('Search View', function() {
         expect(hasClass(page.prevElem, 'disabled')).toBe(false);
       });
 
+    });
+  });
+
+  it('should hide pagination for single result', function() {
+    page.titleInput.sendKeys(singleResult).then(function() {
+      expect(hasClass(element(by.css('.pagination')), 'ng-hide')).toBe(true);
     });
   });
 
