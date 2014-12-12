@@ -1,3 +1,4 @@
+
 'use strict';
 
 describe('Search View', function() {
@@ -16,11 +17,111 @@ describe('Search View', function() {
     });
   });
 
+  it('should default to list view', function() {
+    browser.getLocationAbsUrl().then(function(result) {
+      expect(result).toBe('/list');
+    });
+  });
+
+  it('should not have first accordion visible initially', function() {
+    expect(page.firstAccordionCollapseDiv.isDisplayed()).toBe(false);
+    expect(page.firstDetailsBtn.isDisplayed()).toBe(false);
+  });
+
+
+  it('should hide thumbnails on default', function() {
+    page.firstAccordionLink.click().then(function() {
+      expect(hasClass(page.firstAccordionThumbnail, 'ng-hide')).toBe(true);
+    });
+  });
+
+  it('should open accordion and make appropriate elements visible', function() {
+    page.firstAccordionLink.click();
+
+    waitsFor(function() {
+      return page.firstDetailsBtn.isDisplayed();
+    }, 1000);
+
+    runs(function() {
+      expect(page.firstDetailsBtn.isDisplayed()).toBe(true);
+      expect(page.firstAccordionCollapseDiv.isDisplayed()).toBe(true);
+      expect(hasClass(page.firstAccordionCollapseDiv, 'in')).toBe(true);
+    });
+
+  });
+
+  it('should show thumbnails on checkbox click', function() {
+    page.imageCheckbox.click();
+    page.firstAccordionLink.click();
+
+    browser.wait(function() {
+      return page.firstDetailsBtn.isDisplayed();
+    }, 1000);
+
+    expect(hasClass(page.firstAccordionThumbnail, 'ng-hide')).toBe(false);
+  });
+ 
+  it('should open accordion and go to details view', function() {
+    page.firstAccordionLink.click();
+
+    browser.wait(function() {
+      return page.firstDetailsBtn.isDisplayed();
+    }, 1000);
+
+    page.firstDetailsBtn.click();
+
+    waitsFor(function() {
+      return element(by.buttonText('Back To List')).isDisplayed();
+    }, 1000);
+
+    runs(function() {
+      expect(browser.getLocationAbsUrl()).toBe('/list/details');
+    });
+  });
+
+  it('should return to list view from details page', function() {
+    page.firstAccordionLink.click();
+
+    browser.wait(function() {
+      return page.firstDetailsBtn.isDisplayed();
+    }, 1000);
+
+    page.firstDetailsBtn.click();
+    
+    browser.wait(function() {
+      return element(by.buttonText('Back To List')).isDisplayed();
+    }, 1000);
+    
+    element(by.buttonText('Back To List')).click();
+
+    waitsFor(function() {
+      return page.titleInput.isDisplayed();
+    }, 1000);
+
+    runs(function() {
+      expect(browser.getLocationAbsUrl()).toBe('/list');
+    });
+
+  });
+
+  it('should include pagination defaulting to 12', function() {
+    expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
+  });
+
   it('should include pagination with filtered data', function() {
     page.titleInput.sendKeys(filterKey).then(function() {
+
+      waitsFor(function() {
+        return element.all(by.css('.pagination-sm li')).count().then(function(value) {
+          return value < 12;
+        });
+      }, 1000);
+
       // With the selected filter, two pages are expected, so there will be 
       // four pagination elements total -- [Previous, 1, 2, Next]
-      expect(element.all(by.css('.pagination-sm li')).count()).toBe(4);
+      runs(function() {
+        expect(element.all(by.css('.pagination-sm li')).count()).toBe(4);
+      });
     });
   });
 
