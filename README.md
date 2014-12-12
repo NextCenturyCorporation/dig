@@ -31,3 +31,6 @@ Prerequisites:
 - mongodb
 - grunt-cli installed globally (npm i -g grunt-cli)
 - bower installed globally (npm i -g bower)
+
+Configuration:
+- The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify **euiHost** variable in `client/app/app.js`.
