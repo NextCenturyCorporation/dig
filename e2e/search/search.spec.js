@@ -37,10 +37,6 @@ describe('Search View', function() {
     });
   });
 
-  it('should include pagination defaulting to 12', function() {
-    expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
-  });
-
   it('should open accordion and make appropriate elements visible', function() {
     page.firstAccordionLink.click().then(function() {
       browser.wait(function() {
@@ -74,7 +70,7 @@ describe('Search View', function() {
     page.firstDetailsBtn.click();
 
     browser.wait(function() {
-      return element(by.buttonText('Back To List')).isDisplayed();
+      return element(by.buttonText('Back To List')).isPresent();
     }, 1000);
 
     expect(browser.getLocationAbsUrl()).toBe('/list/details');
@@ -90,7 +86,7 @@ describe('Search View', function() {
     page.firstDetailsBtn.click();
     
     browser.wait(function() {
-      return element(by.buttonText('Back To List')).isDisplayed();
+      return element(by.buttonText('Back To List')).isPresent();
     }, 1000);
     
     element(by.buttonText('Back To List')).click();
