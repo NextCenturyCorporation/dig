@@ -8,7 +8,7 @@
         <div class="row">
           <div class="col-sm-5 bottom-pad10">
             <div class="input-group">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('_all', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
               <span class="input-group-btn">
               <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
             </div><!-- /input-group -->
