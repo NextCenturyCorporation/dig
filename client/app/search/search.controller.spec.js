@@ -20,24 +20,12 @@ describe('Controller: SearchCtrl', function () {
     });
   }));
 
-  it('should have imageChecked default to false', function () {
-    expect(scope.imageChecked).toBe(false);
-  });
-
   it('should have currentOpened default to 0', function () {
     expect(scope.currentOpened).toBe(0);
   });
 
   it('should have selectedImage default to 0', function () {
     expect(scope.selectedImage).toBe(0);
-  });
-
-  it('should have thumbClass default to \'col-md-0\'', function () {
-    expect(scope.thumbClass).toBe('col-md-0');
-  });
-
-  it('should have descriptionClass default to \'col-md-12\'', function () {
-    expect(scope.descriptionClass).toBe('col-md-12');
   });
 
   it('should not have scope.doc', function () {
@@ -56,14 +44,6 @@ describe('Controller: SearchCtrl', function () {
 
     expect(scope.currentOpened).toBe(1);
     expect(array[oldValue].isOpen).toBe(false);
-  });
-
-  it('should update imageChecked and css classes', function () {
-    scope.imageCheckedClick();
-
-    expect(scope.imageChecked).toBe(true);
-    expect(scope.thumbClass).toBe('col-md-2');
-    expect(scope.descriptionClass).toBe('col-md-10');
   });
 
   it('should update state to details view and add passed in doc to scope', function () {

@@ -4,29 +4,14 @@ var app = angular.module('digApp');
 
 app.controller('SearchCtrl', ['$scope', '$state', function ($scope,  $state) {
 
-  $scope.imageChecked = false;
   $scope.currentOpened = 0;
   $scope.selectedImage = 0;
-  $scope.thumbClass = 'col-md-0';
-  $scope.descriptionClass = 'col-md-12';
 
   $scope.closeOthers = function(index, array) {
     if($scope.currentOpened < array.length) {
       array[$scope.currentOpened].isOpen = false;
     }
     $scope.currentOpened = index;
-  }
-
-  $scope.imageCheckedClick = function() {
-    $scope.imageChecked = !$scope.imageChecked;
-    
-    if($scope.imageChecked) {
-      $scope.thumbClass = 'col-md-2';
-      $scope.descriptionClass = 'col-md-10';
-    } else {
-      $scope.thumbClass = 'col-md-0';
-      $scope.descriptionClass = 'col-md-12';
-    }
   }
   
 	$scope.viewDetails = function(doc) {

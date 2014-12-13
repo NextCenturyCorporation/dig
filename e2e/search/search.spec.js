@@ -31,12 +31,6 @@ describe('Search View', function() {
   });
 
 
-  it('should hide thumbnails on default', function() {
-    page.firstAccordionLink.click().then(function() {
-      expect(hasClass(page.firstAccordionThumbnail, 'ng-hide')).toBe(true);
-    });
-  });
-
   it('should open accordion and make appropriate elements visible', function() {
     page.firstAccordionLink.click().then(function() {
       browser.wait(function() {
@@ -47,17 +41,6 @@ describe('Search View', function() {
       expect(page.firstAccordionCollapseDiv.isDisplayed()).toBe(true);
       expect(hasClass(page.firstAccordionCollapseDiv, 'in')).toBe(true);
     });
-  });
-
-  it('should show thumbnails on checkbox click', function() {
-    page.imageCheckbox.click();
-    page.firstAccordionLink.click();
-
-    browser.wait(function() {
-      return page.firstDetailsBtn.isDisplayed();
-    }, 1000);
-
-    expect(hasClass(page.firstAccordionThumbnail, 'ng-hide')).toBe(false);
   });
 
   it('should open accordion and go to details view', function() {

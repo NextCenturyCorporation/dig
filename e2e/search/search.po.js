@@ -23,9 +23,7 @@ var SearchPage = function() {
   this.firstAccordion = element.all(by.tagName('accordion')).first();
   this.firstAccordionLink = this.firstAccordion.element(by.css('.panel-title a'));
   this.firstAccordionCollapseDiv = this.firstAccordion.element(by.css('.panel-collapse'));
-  this.firstAccordionThumbnail = this.firstAccordion.element(by.css('[ng-if="doc._source.hasImagePart"]'));
   this.firstDetailsBtn = this.firstAccordion.element(by.buttonText('View Details'));
-  this.imageCheckbox = element(by.model('imageChecked'));
 };
 
 module.exports = new SearchPage();
