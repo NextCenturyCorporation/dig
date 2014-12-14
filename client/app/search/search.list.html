@@ -11,7 +11,7 @@
       </accordion-heading> 
       <div class="row">
         <div ng-if="doc._source.hasImagePart" class="col-md-2">
-          <img ng-src="{{doc._source.hasImagePart[0].cacheUrl}}" class="image-thumb thumbnail">
+          <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb thumbnail">
         </div>
         <div class="col-md-10">
           <p ng-if="doc._source.url">URL: <a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></p>
