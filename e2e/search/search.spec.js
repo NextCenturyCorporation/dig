@@ -11,7 +11,7 @@ describe('Search View', function() {
   });
 
   it('elasticsearch should be up and running', function() {
-    httpGet('http://localhost:9200').then(function(result) {
+    httpGet('http://vinisvr:9200').then(function(result) {
       expect(result.statusCode).toBe(200);
     });
   });
@@ -20,7 +20,7 @@ describe('Search View', function() {
     page.titleInput.sendKeys(filterKey).then(function() {
       // With the selected filter, two pages are expected, so there will be 
       // four pagination elements total -- [Previous, 1, 2, Next]
-      expect(element.all(by.css('.pagination-sm li')).count()).toBe(4);
+      expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
     });
   });
 
@@ -43,10 +43,8 @@ describe('Search View', function() {
     });
   });
 
-  it('ensure next button in pagination is enabled and disabled accordingly', function() {
-    page.titleInput.sendKeys(filterKey).then(function() {
-      
-      expect(hasClass(page.nextElem, 'disabled')).toBe(false);
+  it('next button in pagination should be disabled', function() {
+    page.titleInput.sendKeys('1395').then(function() {
 
       page.nextLink.click().then(function() {
         expect(hasClass(page.nextElem, 'disabled')).toBe(true);
@@ -55,15 +53,23 @@ describe('Search View', function() {
     });
   });
 
-  it('ensure previous button in pagination is disabled and enabled accordingly', function() {
+  it('next button in pagination should be enabled', function() {
+    page.titleInput.sendKeys(filterKey).then(function() {
+      expect(hasClass(page.nextElem, 'disabled')).toBe(false);
+    });
+  });
+
+  it('previous button in pagination should be disabled', function() {
     page.titleInput.sendKeys(filterKey).then(function() {
       
       expect(hasClass(page.prevElem, 'disabled')).toBe(true);
+    });
+  });
 
-      page.nextLink.click().then(function() {
-        expect(hasClass(page.prevElem, 'disabled')).toBe(false);
-      });
+  it('previous button in pagination should be enabled', function() {
 
+    page.prevLink.click().then(function() {
+        expect(hasClass(page.nextElem, 'disabled')).toBe(false);
     });
   });
 
@@ -99,6 +105,6 @@ describe('Search View', function() {
     });
 
     return defer.promise;
-  }
+  };
 
 });
