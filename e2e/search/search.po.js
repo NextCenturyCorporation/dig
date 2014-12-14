@@ -19,6 +19,8 @@ var SearchPage = function() {
  this.pgTwoLink = element.all(by.css('.pagination-sm li a')).get(2);
  
  this.titleInput = element.all(by.css('.form-control')).first();
+
+ this.submitButton = element.all(by.css('.btn')).first();
 };
 
 module.exports = new SearchPage();

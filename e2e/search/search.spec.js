@@ -17,15 +17,16 @@ describe('Search View', function() {
   });
 
   it('should include pagination with filtered data', function() {
-    page.titleInput.sendKeys(filterKey).then(function() {
-      // With the selected filter, two pages are expected, so there will be 
-      // four pagination elements total -- [Previous, 1, 2, Next]
+      page.titleInput.sendKeys(filterKey); 
+      page.submitButton.click().then(function() {
+
       expect(element.all(by.css('.pagination-sm li')).count()).toBe(12);
     });
   });
 
   it('ensure direct page links in pagination work as expected', function() {
-    page.titleInput.sendKeys(filterKey).then(function() {
+    page.titleInput.sendKeys(filterKey);
+    page.submitButton.click().then(function() {
       
       expect(hasClass(page.pgOneElem, 'active')).toBe(true);
       expect(hasClass(page.pgTwoElem, 'active')).toBe(false);
@@ -44,7 +45,8 @@ describe('Search View', function() {
   });
 
   it('next button in pagination should be disabled', function() {
-    page.titleInput.sendKeys('1395').then(function() {
+      page.titleInput.sendKeys('1395');
+      page.submitButton.click().then(function() {
 
       page.nextLink.click().then(function() {
         expect(hasClass(page.nextElem, 'disabled')).toBe(true);
@@ -54,20 +56,23 @@ describe('Search View', function() {
   });
 
   it('next button in pagination should be enabled', function() {
-    page.titleInput.sendKeys(filterKey).then(function() {
+    page.titleInput.sendKeys(filterKey);
+    page.submitButton.click().then(function() {
       expect(hasClass(page.nextElem, 'disabled')).toBe(false);
     });
   });
 
   it('previous button in pagination should be disabled', function() {
-    page.titleInput.sendKeys(filterKey).then(function() {
+    page.titleInput.sendKeys(filterKey);
+    page.submitButton.click().then(function() {
       
       expect(hasClass(page.prevElem, 'disabled')).toBe(true);
     });
   });
 
   it('previous button in pagination should be enabled', function() {
-
+    page.titleInput.sendKeys(filterKey);
+    page.submitButton.click();
     page.prevLink.click().then(function() {
         expect(hasClass(page.nextElem, 'disabled')).toBe(false);
     });

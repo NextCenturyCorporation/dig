@@ -7,30 +7,26 @@
         <div class="panel-body">
         <div class="row">
           <div class="col-sm-5 bottom-pad10">
+            <form ng-submit="submit()">
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" eui-query="ejs.MatchQuery('_all', querystring)" ng-model="querystring" eui-enabled="querystring.length" />
               <span class="input-group-btn">
-              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
-            </div><!-- /input-group -->
+              <button class="btn btn-primary" type="submit"><i class="fa fa-search fa-lg"></i></button></span>
+            </div>
+            </form>
           </div>  
         </div>
-<!--         <div class="row">
-          <div class="col-sm-12">
-          <hr>
-          <ul class="list-inline">
-          </ul>
-          </div>
-        </div> -->
+        <!-- placeholder for breadbox (within panel?)-->
         </div>
       </div>
     </div>
   </div><!-- search panel + breadbox -->
-  <div class="row"><!-- sidebar and results -->
+  <div class="row" ng-show="showresults"><!-- sidebar and results -->
     <div class="col-md-3 sidebar form-group">
     </div>
 
     <div class="col-md-8">
-      <span><h3>Results</h3></span>
+      <span><h3>Results: {{indexVM.results.hits.total}}</h3></span>
       <ul>
           <li ng-repeat="doc in indexVM.results.hits.hits">
               {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
