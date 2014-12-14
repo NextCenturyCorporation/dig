@@ -22,7 +22,29 @@
     </div>
   </div><!-- search panel + breadbox -->
   <div class="row" ng-show="showresults"><!-- sidebar and results -->
-    <div class="col-md-3 sidebar form-group">
+    <div class="col-md-3 sidebar">
+      <form role="form">
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" eui-filter="ejs.TermsFilter('phonenumber', phone)" ng-model="phone" eui-enabled="phone.length">        
+      </div>
+
+      <div class="form-group">
+        <label>City/Region</label>
+        <input type="text" eui-filter="ejs.TermsFilter('place_postalAddress', city)" ng-model="city" eui-enabled="city.length">        
+      </div>
+
+      <div class="form-group">
+        <label>Hair Color</label>
+        <ul eui-or-filter class="nav nav-list" eui-aggregation="ejs.TermsAggregation('hc_agg').field('person_haircolor').size(40)" eui-filter-self="false">
+          <li ng-repeat="bucket in aggResult.buckets">
+              <label class="checkbox" eui-filter="ejs.TermsFilter('person_haircolor', bucket.key)">
+              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}} ({{bucket.doc_count}})
+              </label>
+          </li>
+        </ul>        
+      </div> 
+      </form>
     </div>
 
     <div class="col-md-8">
