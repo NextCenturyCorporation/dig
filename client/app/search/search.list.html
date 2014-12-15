@@ -1,0 +1,51 @@
+<div ui-view>
+  <span><h3>Results</h3></span>
+  <accordion ng-repeat="doc in indexVM.results.hits.hits track by $index">
+    <accordion-group is-open="doc.isOpen">
+      <accordion-heading>
+        <span ng-click="closeOthers($index, indexVM.results.hits.hits)">
+          <span ng-if="doc._source.dateCreated">{{doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'}} | </span>  
+          <span ng-if="doc._source.hasTitlePart.text">{{cleanString(doc._source.hasTitlePart.text) | limitTo: 70}}...</span>
+          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': doc.isOpen, 'glyphicon-chevron-right': !doc.isOpen}"></i>         
+        </span>
+      </accordion-heading> 
+      <div class="row">
+        <div ng-if="doc._source.hasImagePart" class="col-md-2">
+          <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb thumbnail">
+        </div>
+        <div class="col-md-10">
+          <p ng-if="doc._source.url">URL: <a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></p>
+          <p ng-if="doc._source.hasTitlePart.text">Ad Title: {{doc._source.hasTitlePart.text}}</p>
+          <p ng-if="doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress">
+            Location: {{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}
+          </p>
+          <p ng-if="doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode">
+            Zip Code: {{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}
+          </p>
+          <p ng-if="doc._source.hasFeatureCollection.person_age_feature.person_age">
+            Age: {{doc._source.hasFeatureCollection.person_age_feature.person_age}}
+          </p> 
+          <p ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
+            Phone Number: {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
+          </p>
+          <p ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
+            Ethnicity: {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
+          </p>
+          <p ng-if="doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor">
+            Hair Color: {{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}
+          </p>  
+          <p ng-if="doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor">
+            Eye Color: {{doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor}}
+          </p>  
+          <button type="button" class="btn btn-primary" ng-click="viewDetails(doc)" target="_self">View Details</button>
+        </div>
+      </div>
+    </accordion-group>
+  </accordion> 
+  <div class="text-center">
+    <pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
+    ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize" 
+    class="pagination-sm" num-pages="indexVM.pageCount"></pagination>
+    <p>Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
+  </div>
+</div>
