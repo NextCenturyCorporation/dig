@@ -1,5 +1,5 @@
 <div ui-view>
-  <span><h3>Results</h3></span>
+  <span><h3>Results: {{indexVM.results.hits.total}}</h3></span>
   <accordion ng-repeat="doc in indexVM.results.hits.hits track by $index">
     <accordion-group is-open="doc.isOpen">
       <accordion-heading>
