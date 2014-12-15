@@ -14,7 +14,7 @@ describe('Search View', function() {
   });
 
   it('elasticsearch should be up and running', function() {
-    httpGet('http://localhost:9200').then(function(result) {
+    httpGet('http://vinisvr:9200').then(function(result) {
       expect(result.statusCode).toBe(200);
     });
   });
