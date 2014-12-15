@@ -50,7 +50,8 @@ curl -XPUT localhost:9200/mockads -d '
           "index" : "not_analyzed"
         },
         "phone" : {
-          "type" : "string"
+          "type" : "string",
+          "index" : "not_analyzed"
         },
         "smokes" : {
           "type" : "boolean"

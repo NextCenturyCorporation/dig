@@ -25,6 +25,10 @@ General Guidelines:
  ☐ e2e tests should check all content somewhere, at least once:
    ☐ navbar tests
    ☐ footer tests
+ ☐ Modules:
+   ☐ A module for each feature
+   ☐ A module for each reusable component (especially directives and filters)
+   ☐ And an application level module which depends on the above modules and contains any initialization code.
 
 Project file description:
  ☐ karma.conf.js
@@ -32,4 +36,8 @@ Project file description:
  ☐ Gruntfile.js
  ☐ package.json
  ☐ bower.json
+
+Code formatting:
+ ☐ program source (like javascript) should use four-space indentation
+ ☐ html and css should use two-space indentation
 
