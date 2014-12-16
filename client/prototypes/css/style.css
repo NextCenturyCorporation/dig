@@ -339,19 +339,27 @@ label{
 }
 
 .displayed-image {
-    height: 400px;
+    display: block;
+    width: auto;
+    height: auto;
     max-height: 400px;
     max-width: 100%;
 }
 
 .image-thumb {
-    height: 80px;
-    width: 80px;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 80px;
+    max-width: 80px;
 }
 
 .image-expanded {
-    height: 300px;
-    width: 300px;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 300px;
+    max-width: 300px;
 }
 
 .thumbnail-gallery {
