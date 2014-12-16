@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link type="image/png" rel="shortcut icon" href="images/favicon.png">
+  <title>Details</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+
+  <!-- Bootstrap -->
+  <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+
+  <!-- Temporary CDN -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+<!-- PAGE CONTENT -->
+<div class="controls controls-search">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input type="text" class="form-control" placeholder="Search" value="diane garner 703-345-8528 &quot;lorem ipsum&quot;">
+        <span class="input-group-btn">
+          <a href="#" class="btn btn-cancel-input" role="button">&times;</a>
+          <button class="btn btn-primary" type="button">Search</button>
+        </span>
+      </div>
+</div>
+
+<div class="container-fluid">
+
+  <div class="column-header">
+
+    <h4>
+      <a class="header-icon" href="#"><i class="fa fa-chevron-left"></i></a>
+      Details
+    </h4>
+
+  </div>
+
+  <div class="row">
+
+    <!-- ngIf: doc._source.hasImagePart -->
+    <div ng-if="doc._source.hasImagePart" class="col-md-5 ng-scope">
+      <div class="row">
+        <div class="col-md-12">
+          <img class="thumbnail center-block displayed-image" src="">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="thumbnail-gallery">
+            <ul class="inline list-inline text-center">
+              <!-- ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                <a ng-href="" ng-mouseenter="selectImage($index)">
+                  <img class="thumbnail image-thumb" src="">
+                </a>
+              </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                <a ng-href="" ng-mouseenter="selectImage($index)">
+                  <img class="thumbnail image-thumb" src="">
+                </a>
+              </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                <a ng-href="" ng-mouseenter="selectImage($index)">
+                  <img class="thumbnail image-thumb" src="">
+                </a>
+              </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div><!-- end ngIf: doc._source.hasImagePart -->
+
+    <div class="col-md-7">    
+
+      <h4 ng-if="doc._source.hasTitlePart.text" class="ng-binding ng-scope">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+
+      <dl class="listing-details">
+
+        <!-- ngIf: doc._source.url -->
+        <dt>URL</dt>
+        <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+        <dt>Address</dt>
+        <!-- ngIf: doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress -->
+        <dd>Place, PA</dd>
+        <!-- ngIf: doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode -->
+        <dd>22222</dd>
+
+        <!-- ngIf: doc._source.hasFeatureCollection.phonenumber_feature.phonenumber -->
+        <dt>Phone Number</dt>
+        <dd>111-222-3333</dd>
+
+        <!-- ngIf: doc._source.hasFeatureCollection.emailaddress_feature.emailaddress -->
+        <dt>Email</dt>
+        <dd>email@email.com</dd>
+
+        <!-- ngIf: doc._source.hasFeatureCollection.website_feature.website -->
+        <!-- ngIf: doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted -->
+
+      </dl>
+
+      <hr>
+
+      <!-- ngIf: doc._source.hasFeatureCollection.person_name_feature.person_name -->
+      <h4>
+        <span class="header-icon fa fa-user text-muted"></span>
+        First Last
+      </h4>
+
+      <dl class="person-details">
+
+        <!-- ngIf: doc._source.hasFeatureCollection.person_age_feature.person_age --> 
+        <dt>Age</dt>
+        <dd>999</dd>
+
+        <!-- ngIf: doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias'] -->
+        <!-- ngIf: doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight'] -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_height_feature.person_height -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor -->  
+        <!-- ngIf: doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor -->  
+        <!-- ngIf: doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype -->      
+        <!-- ngIf: doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength -->     
+        <!-- ngIf: doc._source.hasFeatureCollection.person_gender_feature.person_gender -->  
+        <!-- ngIf: doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_piercings_feature.person_piercings -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount -->
+        <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && !doc._source.hasFeatureCollection.rate_feature.length --> 
+        <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && doc._source.hasFeatureCollection.rate_feature.length > 1 -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus -->
+        <!-- ngIf: doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize'] -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_grooming_feature.person_grooming -->      
+        <!-- ngIf: doc._source.hasFeatureCollection.person_build_feature.person_build -->
+        <!-- ngIf: doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent'] -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall -->
+        <!-- ngIf: doc._source.hasFeatureCollection.person_username_feature.person_username -->
+        <!-- ngIf: doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel'] -->
+
+      </dl>
+
+      <hr>
+
+      <!-- ngIf: doc._source.hasBodyPart.text -->
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut scelerisque, leo vel mollis vestibulum, lectus erat porta felis, nec finibus justo urna a velit. Curabitur egestas, erat eget sollicitudin condimentum, elit leo lobortis mi, a elementum justo neque vestibulum tortor. Suspendisse vel magna mi. Nulla elementum egestas tristique. Nunc lobortis fringilla elementum. Etiam porta sit amet odio id dapibus. Quisque ac porttitor felis. Cras id nisi vitae est facilisis vestibulum non quis nisi. Donec vel magna nec est euismod vulputate nec vitae urna. Etiam rutrum felis tincidunt mauris tincidunt, ac elementum sapien aliquet. Praesent a risus nisi. Nunc quis bibendum neque.
+
+      Nulla fringilla quis turpis consequat bibendum. Donec vel augue fermentum, cursus purus eget, ornare ligula. Vestibulum porttitor convallis libero, aliquet tincidunt dolor ornare sit amet. Vivamus ut tincidunt tortor, ut eleifend dui. Phasellus vitae sem in metus sagittis porttitor. Nullam et blandit erat, ut rhoncus sapien. Ut scelerisque sit amet turpis eu fringilla. Ut nec est ut dui eleifend faucibus. Suspendisse vestibulum dolor urna, ut pretium ipsum euismod sed. Aliquam interdum varius facilisis.</p>
+    </div>
+
+    <button type="button" class="btn btn-link" ng-click="viewList()" target="_self">
+      <i class="fa fa-chevron-left header-icon"></i>
+      Back To Results
+    </button>
+
+  </div>
+</div>
+
+
+  <!-- END PAGE CONTENT -->
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
+
+  <!-- Temporary CDN -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

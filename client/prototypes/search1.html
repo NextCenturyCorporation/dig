@@ -4,12 +4,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search1</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link type="image/png" rel="shortcut icon" href="images/favicon.png">
+  <title>Results</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 
   <!-- Bootstrap -->
-  <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/search1.css">
+  <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+
+  <!-- Temporary CDN -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,187 +28,862 @@
   <![endif]-->
 </head>
 <body>
-  <!-- PAGE CONTENT -->
-  <div class="container-fluid">
-    <!-- search panel + breadbox -->
-    <div class="row"> 
-      <div class="col-sm-12">       
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-5 bottom-pad10">
-            <div class="input-group">
-              <input type="text" class="form-control" value="diane garner 703-345-8528">
-              <span class="input-group-btn">
-              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-lg"></i></button></span>
-            </div><!-- /input-group -->
-          </div>
-          <div class="col-sm-7">
-            <ul class="list-inline">
-              
-              <li>sort by:</li>
-              <li>
-                <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                    best match
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">newest first</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">oldest first</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">best match</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li><button class="btn btn-danger">reset all <i class="fa fa-times-circle fa-lg"></i></button></li>
-            </ul>
-          </div>         
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-          <hr>
-          <ul class="list-inline">
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-default btn-xs btn-facet">item 1 <i class="fa fa-lg fa-times-circle"></i></button></li>
-            <li><button type="button" class="btn btn-link btn-xs btn-facet">clear all selections <i class="fa fa-lg fa-times-circle"></i></button></li>  
-          </ul>
-          </div>
-        </div>
-        </div>
-      </div>
-      </div>
-    </div><!-- search panel + breadbox -->
-    <div class="row">
-      <div class="col-sm-3">
-        <ul class="nav">
-          <li>
-            <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone">
-            </div>
-          </li>
-          <li>
-            <div class="form-group">
-            <label for="ethnicity">Ethnicity</label>
-            <input type="text" class="form-control" id="ethnicity">
-            </div>
-          </li>
-          <li>
-            <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" class="form-control" id="location">
-            </div>
-          </li>
-          <li><hr>
-            <label for="name"> <i class="fa fa-lg fa-chevron-down"></i> Hair Color </label>
-            <div>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1 <span class="badge">42</span>
-               </label>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2 <span class="badge">9</span>
-               </label>
-               <label class="checkbox check-margin10">
-                  <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3 <span class="badge">108</span>
-               </label>
-            </div>
-          </li>
-          <li><hr>
-            <label for="name"> <i class="fa fa-lg fa-chevron-right"></i> Eye Color </label>
-          </li>
-        </ul>
-      </div>
-      <div class="col-sm-9">
-        <ul class="list-unstyled">
-          <li><strong>256</strong> matches</li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
-          <li>
-            <div class="panel panel-default panel-results">
-            <div class="panel-body panel-body result-summary">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.
-            </div>
-            </div>       
-          </li>
 
-        </ul>
+<!-- PAGE CONTENT -->
+<div class="controls controls-search">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input type="text" class="form-control" placeholder="Search" value="diane garner 703-345-8528 &quot;lorem ipsum&quot;">
+        <span class="input-group-btn">
+          <a href="#" class="btn btn-cancel-input" role="button" title="Clear search">&times;</a>
+          <button class="btn btn-primary" type="button">Search</button>
+        </span>
       </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="left-column hidden-xs col-sm-3 col-lg-2">
+
+      <div class="column-header">
+        <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a>
+        <h4>Filter</h4>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> Keywords</h5>
+
+        <ul class="list-inline search-tags">
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">diane <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">garner <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">703-345-8528 <i class="fa fa-times"></i></button></li>
+          <li><button type="button" class="btn btn-default btn-xs btn-facet">lorem ipsum <i class="fa fa-times"></i></button></li>
+        </ul>
+
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> Phone <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> Ethnicity <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> Location <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">23</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option4"> Option 4
+          </label>
+          <span class="badge pull-right">17</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="option5"> Option 5
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+        <a href="#">More</a>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> Hair Color</h5>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1
+          </label>
+          <span class="badge pull-right">108</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2
+          </label>
+          <span class="badge pull-right">42</span>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3
+          </label>
+          <span class="badge pull-right">9</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-right fa-fw"></i> Eye Color</h5>
+      </div>
+
     </div>
+
+    <div class="right-column col-sm-9 col-lg-10">
+
+      <div class="column-header">
+
+        <div class="btn-group pull-right">
+          <label>Sort by</label>
+          <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+            Newest first
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+          </ul>
+        </div>
+
+        <h4>
+          <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a>
+          <strong>256</strong> results
+        </h4>
+
+      </div>
+
+
+      <ul id="results" class="list-group">
+
+        <li class="list-group-item">
+          <a href="#collapse1" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse1" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse2" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse2" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse3" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse3" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse4" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse4" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse5" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse5" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse6" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse6" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse7" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse7" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse8" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse8" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse9" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse9" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse10" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+            <div class="list-group-item-meta">
+              <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
+              <span class="domain">website.com</span>
+              <span class="location">Place, PA</span>
+              <span class="phone">111-222-3333</span>
+              <span class="name">Name(s)</span>
+            </div>
+          </a>
+          <div id="collapse10" class="list-group-item-text collapse">
+            <div class="row">
+              <!-- ngIf: doc._source.hasImagePart -->
+              <div class="col-md-3">
+                <img class="image-thumb thumbnail" src="">
+              </div>
+
+              <div class="col-md-9">
+
+                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+                
+                <div class="row">
+                  <div class="col-sm-6">
+                    <dl class="listing-details">
+
+                      <dt>URL</dt>
+                      <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+                      <dt>Address</dt>
+                      <dd>Place, PA</dd>
+                      <dd>22222</dd>
+
+                      <dt>Phone Number</dt>
+                      <dd>111-222-3333</dd>
+
+                    </dl>
+                  </div>
+                  <div class="col-sm-6">
+                    <dl class="person-details">
+
+                      <dt>Name(s)</dt>
+                      <dd>Name</dd>
+
+                      <dt>Age</dt>
+                      <dd>999</dd>
+
+                      <dt>Ethnicity</dt>
+                      <dd>White</dd>
+
+                      <dt>Hair color</dt>
+                      <dd>Color</dd>
+
+                    </dl>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary"  target="_self">View Details</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        
+
+      </ul>
+
+      <nav>
+        <ul class="pagination pull-right">
+          <li class="disabled"><a href="#"><span aria-hidden="true" class="fa fa-chevron-left"></span><span class="sr-only">Previous</span></a></li>
+          <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#"><span aria-hidden="true" class="fa fa-chevron-right"></span><span class="sr-only">Next</span></a></li>
+        </ul>
+      </nav>
+
+    </div>
+
   </div>
+</div>
+
+
   <!-- END PAGE CONTENT -->
 
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
+
+  <!-- Temporary CDN -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
