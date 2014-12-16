@@ -111,7 +111,7 @@
       <ul id="results" class="list-group">
 
         <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
-          <a href="#collapse1" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+          <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
           {{doc._source.hasTitlePart.text}}
             <div class="list-group-item-meta">
               <span class="date" title="09/08/2013 02:28:00">3 days ago</span>
@@ -121,7 +121,7 @@
               <span class="name">Name(s)</span>
             </div>
           </a>
-          <div id="collapse1" class="list-group-item-text collapse">
+          <div id="collapse{{$index}}" class="list-group-item-text collapse">
             <div class="row">
               <!-- ngIf: doc._source.hasImagePart -->
               <div class="col-md-3">
