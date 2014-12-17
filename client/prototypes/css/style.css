@@ -350,8 +350,8 @@ label{
     display: block;
     width: auto;
     height: auto;
-    max-height: 80px;
-    max-width: 80px;
+    max-height: 60px;
+    max-width: 60px;
 }
 
 .image-expanded {
@@ -367,7 +367,7 @@ label{
     display: block;
     padding-top: 10px;
     white-space: nowrap; 
-    height: 115px;
+    height: 95px;
     max-width: 400px;
     overflow-x: auto;
     overflow-y: hidden;
