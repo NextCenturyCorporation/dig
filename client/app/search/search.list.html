@@ -49,7 +49,7 @@
           <!-- ngIf: doc._source.hasImagePart -->
           <div class="col-md-5 col-lg-4">
             <span ng-if="doc._source.hasImagePart">
-              <img class="image-expanded center-block thumbnail" src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
+              <img class="image-expanded center-block thumbnail" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
             </span>
           </div>
 
