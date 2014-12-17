@@ -26,23 +26,34 @@
 
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
       <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
-      {{doc._source.hasTitlePart.text}}
-        <div class="list-group-item-meta">
-          date: <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
-          <span class="domain">website.com</span>
-          location: <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress || "n/a"}}</span>
-          phone: <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</span>
-          name(s): <span class="name">Name(s)</span>
+        <div class="row">
+          <div class="col-xs-3 col-sm-2 col-lg-1">
+            <span ng-if="doc._source.hasImagePart">
+            <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb center-block">
+            </span>
+          </div>
+          <div class="col-xs-9 col-sm-10 col-lg-11">            
+            {{doc._source.hasTitlePart.text}}
+            <div class="list-group-item-meta">
+              <strong>date:</strong> <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
+              <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress || "n/a"}}</span>
+              <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</span>
+              <strong>name:</strong> <span class="name">{{doc._source.hasFeatureCollection.person_name_feature.person_name || "N/A"}}</span>
+              <strong>age:</strong> <span class="age">{{doc._source.hasFeatureCollection.person_age_feature.person_age || "N/A"}}</span>
+            </div>
+          </div>
         </div>
       </a>
       <div id="collapse{{$index}}" class="list-group-item-text collapse">
         <div class="row">
           <!-- ngIf: doc._source.hasImagePart -->
-          <div class="col-md-3">
-            <img class="image-thumb thumbnail" src="">
+          <div class="col-md-5 col-lg-4">
+            <span ng-if="doc._source.hasImagePart">
+              <img class="image-expanded center-block thumbnail" src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
+            </span>
           </div>
 
-          <div class="col-md-9">
+          <div class="col-md-7 col-lg-8">
 
             <h4>HELLO WORLD Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
             
