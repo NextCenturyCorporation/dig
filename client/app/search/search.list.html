@@ -25,7 +25,7 @@
   <ul id="results" class="list-group">
 
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
-      <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+      <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
@@ -55,39 +55,49 @@
 
           <div class="col-md-7 col-lg-8">
 
-            <h4>HELLO WORLD Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+            <h4>URL</h4>
+            <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
             
             <div class="row">
               <div class="col-sm-6">
                 <dl class="listing-details">
-
-                  <dt>URL</dt>
-                  <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+                  <dt>Name(s)</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
 
                   <dt>Address</dt>
-                  <dd>Place, PA</dd>
-                  <dd>22222</dd>
+                  <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}</dd>
+                  <dd>{{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}</dd>
 
                   <dt>Phone Number</dt>
-                  <dd>111-222-3333</dd>
+                  <dd>{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</dd>
 
+                  <dt>Email</dt>
+                  <dd>{{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}</dd>
+
+                  <dt>Web Site</dt>
+                  <dd>{{doc._source.hasFeatureCollection.website_feature.website}}</dd>
                 </dl>
               </div>
               <div class="col-sm-6">
                 <dl class="person-details">
 
                   <dt>Name(s)</dt>
-                  <dd>Name</dd>
+                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
 
                   <dt>Age</dt>
-                  <dd>999</dd>
+                  <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
 
                   <dt>Ethnicity</dt>
-                  <dd>White</dd>
+                  <dd>{{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}</dd>
 
                   <dt>Hair color</dt>
-                  <dd>Color</dd>
+                  <dd>{{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}</dd>
 
+                  <dt>Height</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_height_feature.person_height}}</dd>
+
+                  <dt>Weight</dt>
+                  <dd>{{doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']}}</dd>
                 </dl>
               </div>
             </div>
