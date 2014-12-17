@@ -350,8 +350,8 @@ label{
     display: block;
     width: auto;
     height: auto;
-    max-height: 80px;
-    max-width: 80px;
+    max-height: 60px;
+    max-width: 60px;
 }
 
 .image-expanded {
