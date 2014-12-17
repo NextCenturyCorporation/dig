@@ -1,135 +1,132 @@
+  <!-- PAGE CONTENT -->
 <div ui-view>
-	<span><h3>Details</h3></span>
-	<div class="row">
-		<div ng-if="doc._source.hasImagePart" class="col-md-5">
-		  <div class="row">
-		    <div class="col-md-12">
-		      <img ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="thumbnail center-block displayed-image">
-		    </div>
-			</div>
-			<div ng-if="doc._source.hasImagePart.length" class="row">
-	    	<div class="col-md-12">
-		     	<div class="thumbnail-gallery">
-			      <ul class="inline list-inline text-center">
-			        <li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block">
-			          <a ng-href="" ng-mouseenter="selectImage($index)">
-			            <img ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb">
-			          </a>
-			        </li>
-			      </ul>
-		      </div>
-	    	</div>
-			</div>
-		</div>
-		<div class="col-md-7">		
-			<p ng-if="doc._source.url">URL: <a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></p>
-			<p ng-if="doc._source.hasTitlePart.text">Ad Title: {{doc._source.hasTitlePart.text}}</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_name_feature.person_name">
-			  Name: {{doc._source.hasFeatureCollection.person_name_feature.person_name}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress">
-			  Location: {{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode">
-			  Zip Code: {{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_age_feature.person_age">
-			  Age: {{doc._source.hasFeatureCollection.person_age_feature.person_age}}
-			</p> 
-			<p ng-if="doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']">
-			  Alias: {{doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']}}
-			</p>
-			<p ng-if="doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']">
-			  Weight: {{doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_height_feature.person_height">
-			  Height: {{doc._source.hasFeatureCollection.person_height_feature.person_height}}
-			</p>
-			<p ng-if="doc._source.hasBodyPart.text">
-			  <span>Ad Content:</span><br/>
-			  <span ng-bind-html="doc._source.hasBodyPart.text"></span>
-			</p>  
-			<p ng-if="doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor">
-			  Eye Color: {{doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor}}
-			</p>  
-			<p ng-if="doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor">
-			  Hair Color: {{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}
-			</p>  
-			<p ng-if="doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype">
-			  Hair Type: {{doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype}}
-			</p>      
-			<p ng-if="doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength">
-			  Hair Length: {{doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength}}
-			</p>     
-			<p ng-if="doc._source.hasFeatureCollection.person_gender_feature.person_gender">
-			  Gender: {{doc._source.hasFeatureCollection.person_gender_feature.person_gender}}
-			</p>  
-			<p ng-if="doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode">
-			  Zip Code: {{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
-			  Ethnicity: {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.emailaddress_feature.emailaddress">
-			  Email: {{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
-			  Phone Number: {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_piercings_feature.person_piercings">
-			  Piercings: {{doc._source.hasFeatureCollection.person_piercings_feature.person_piercings}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount">
-			  Tattoos: {{doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.rate_feature && !doc._source.hasFeatureCollection.rate_feature.length">
-			  Rate: {{doc._source.hasFeatureCollection.rate_feature.rate}}
-			</p> 
-			<section ng-if="doc._source.hasFeatureCollection.rate_feature && doc._source.hasFeatureCollection.rate_feature.length > 1">
-			  Rates:
-			<ul>
-			  <li ng-repeat="rate in doc._source.hasFeatureCollection.rate_feature">
-			    {{rate.rate}}
-			  </li>
-			</ul>
-			</section>
-			<p ng-if="doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted">
-			  Credit Cards: {{doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype">
-			  Hips Type: {{doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus">
-			  Cup Size: {{doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus}}
-			</p>
-			<p ng-if="doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']">
-			  Waist Size: {{doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize">
-			  Bust Band Size: {{doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_grooming_feature.person_grooming">
-			  Grooming: {{doc._source.hasFeatureCollection.person_grooming_feature.person_grooming}}
-			</p>      
-			<p ng-if="doc._source.hasFeatureCollection.person_build_feature.person_build">
-			  Build: {{doc._source.hasFeatureCollection.person_build_feature.person_build}}
-			</p>
-			<p ng-if="doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']">
-			  Implants: {{doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall">
-			  In Call/Out Call: {{doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.person_username_feature.person_username">
-			  Username: {{doc._source.hasFeatureCollection.person_username_feature.person_username}}
-			</p>
-			<p ng-if="doc._source.hasFeatureCollection.website_feature.website">
-			  Website: {{doc._source.hasFeatureCollection.website_feature.website}}
-			</p>
-			<p ng-if="doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']">
-			  Travel: {{doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']}}
-			</p>
-			<button type="button" class="btn btn-primary" ng-click="viewList()" target="_self">Back To List</button>
-		</div>
-	</div>
+  <div class="container-fluid">
+
+    <div class="column-header">
+
+      <h4>
+        <a class="header-icon" href="#"><i class="fa fa-chevron-left"></i></a>
+        Details
+      </h4>
+
+    </div>
+
+    <div class="row">
+
+      <!-- ngIf: doc._source.hasImagePart -->
+      <div ng-if="doc._source.hasImagePart" class="col-md-5 ng-scope">
+        <div class="row">
+          <div class="col-md-12">
+            <img class="thumbnail center-block displayed-image" src="holder.js/500x500"> 
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="thumbnail-gallery">
+              <ul class="inline list-inline text-center">
+                <!-- ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                  <a ng-href="" ng-mouseenter="selectImage($index)">
+                    <img class="thumbnail image-thumb" src="holder.js/80x80">
+                  </a>
+                </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                  <a ng-href="" ng-mouseenter="selectImage($index)">
+                    <img class="thumbnail image-thumb" src="holder.js/80x80">
+                  </a>
+                </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index --><li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block ng-scope">
+                  <a ng-href="" ng-mouseenter="selectImage($index)">
+                    <img class="thumbnail image-thumb" src="holder.js/80x80">
+                  </a>
+                </li><!-- end ngRepeat: image in doc._source.hasImagePart track by $index -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div><!-- end ngIf: doc._source.hasImagePart -->
+
+      <div class="col-md-7">    
+
+        <h4 ng-if="doc._source.hasTitlePart.text" class="ng-binding ng-scope">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore in distinctio vel voluptates, nulla similique iusto.</h4>
+
+        <dl class="listing-details">
+
+          <!-- ngIf: doc._source.url -->
+          <dt>URL</dt>
+          <dd><a href="#" target="_blank">http://www.website.com/full-url</a></dd>
+
+          <dt>Address</dt>
+          <!-- ngIf: doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress -->
+          <dd>Place, PA</dd>
+          <!-- ngIf: doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode -->
+          <dd>22222</dd>
+
+          <!-- ngIf: doc._source.hasFeatureCollection.phonenumber_feature.phonenumber -->
+          <dt>Phone Number</dt>
+          <dd>111-222-3333</dd>
+
+          <!-- ngIf: doc._source.hasFeatureCollection.emailaddress_feature.emailaddress -->
+          <dt>Email</dt>
+          <dd>email@email.com</dd>
+
+          <!-- ngIf: doc._source.hasFeatureCollection.website_feature.website -->
+          <!-- ngIf: doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted -->
+
+        </dl>
+
+        <hr>
+
+        <!-- ngIf: doc._source.hasFeatureCollection.person_name_feature.person_name -->
+        <h4>
+          <span class="header-icon fa fa-user text-muted"></span>
+          First Last
+        </h4>
+
+        <dl class="person-details">
+
+          <!-- ngIf: doc._source.hasFeatureCollection.person_age_feature.person_age --> 
+          <dt>Age</dt>
+          <dd>999</dd>
+
+          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias'] -->
+          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight'] -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_height_feature.person_height -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor -->  
+          <!-- ngIf: doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor -->  
+          <!-- ngIf: doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype -->      
+          <!-- ngIf: doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength -->     
+          <!-- ngIf: doc._source.hasFeatureCollection.person_gender_feature.person_gender -->  
+          <!-- ngIf: doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_piercings_feature.person_piercings -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount -->
+          <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && !doc._source.hasFeatureCollection.rate_feature.length --> 
+          <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && doc._source.hasFeatureCollection.rate_feature.length > 1 -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus -->
+          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize'] -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_grooming_feature.person_grooming -->      
+          <!-- ngIf: doc._source.hasFeatureCollection.person_build_feature.person_build -->
+          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent'] -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall -->
+          <!-- ngIf: doc._source.hasFeatureCollection.person_username_feature.person_username -->
+          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel'] -->
+
+        </dl>
+
+        <hr>
+
+        <!-- ngIf: doc._source.hasBodyPart.text -->
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut scelerisque, leo vel mollis vestibulum, lectus erat porta felis, nec finibus justo urna a velit. Curabitur egestas, erat eget sollicitudin condimentum, elit leo lobortis mi, a elementum justo neque vestibulum tortor. Suspendisse vel magna mi. Nulla elementum egestas tristique. Nunc lobortis fringilla elementum. Etiam porta sit amet odio id dapibus. Quisque ac porttitor felis. Cras id nisi vitae est facilisis vestibulum non quis nisi. Donec vel magna nec est euismod vulputate nec vitae urna. Etiam rutrum felis tincidunt mauris tincidunt, ac elementum sapien aliquet. Praesent a risus nisi. Nunc quis bibendum neque.
+
+        Nulla fringilla quis turpis consequat bibendum. Donec vel augue fermentum, cursus purus eget, ornare ligula. Vestibulum porttitor convallis libero, aliquet tincidunt dolor ornare sit amet. Vivamus ut tincidunt tortor, ut eleifend dui. Phasellus vitae sem in metus sagittis porttitor. Nullam et blandit erat, ut rhoncus sapien. Ut scelerisque sit amet turpis eu fringilla. Ut nec est ut dui eleifend faucibus. Suspendisse vestibulum dolor urna, ut pretium ipsum euismod sed. Aliquam interdum varius facilisis.</p>
+      </div>
+
+      <button type="button" class="btn btn-link" ng-click="viewList()" target="_self">
+        <i class="fa fa-chevron-left header-icon"></i>
+        Back To Results
+      </button>
+
+    </div>
+  </div>
+
 </div>
+    <!-- END PAGE CONTENT -->
