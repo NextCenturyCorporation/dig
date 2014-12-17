@@ -80,6 +80,18 @@
         <a href="#">More</a>
       </div>
 
+      <div class="form-group">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> AGE <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('age_agg').field('person_age').size(20)" eui-filter-self="false">
+          <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
+            <label eui-filter="ejs.TermsFilter('person_age', bucket.key)">
+              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
+            </label>
+            <span class="badge pull-right">{{bucket.doc_count}}</span>
+          </div>
+        </div>
+        <a href="#">More</a>
+      </div>
     </div>
 
     <div class="right-column col-sm-9">
