@@ -1,47 +1,6 @@
-@import 'bootstrap/less/bootstrap.less';
-@import 'font-awesome/less/font-awesome.less';
-
-@icon-font-path: '/bower_components/bootstrap/fonts/';
-@fa-font-path: '/bower_components/font-awesome/fonts';
-
-/**
- * App-wide Styles
- */
-
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
 body{
 	background-color: #f4efec;
 	font-family: 'Lato', sans-serif;
-}
-
-
-/**
- * navbar styling
- */
-.navbar {
-	margin-bottom: 0px;
-	min-height: 0px;
-}
-
-.navbar-inner {
-    min-height: 0px;
-}
-
-.nav, .navbar-brand,
-.navbar-nav, .navbar-default, .navbar-static-top li a {
-    line-height: 30px;
-    height: 30px;
-    padding-top: 0;
-}
-
-.navbar-brand {
-	margin-top: -15px;
 }
 
 /* Typography */
@@ -95,8 +54,7 @@ hr{
 /* Headers */
 
 .controls{
-/*	border-bottom: 1px solid #ddd8d4;*/
-	padding: 10px;
+	border-bottom: 1px solid #ddd8d4;
 }
 .search-tags{
 	margin: 5px 0;
@@ -380,11 +338,38 @@ label{
 	box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 }
 
+.displayed-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 400px;
+    max-width: 100%;
+}
 
+.image-thumb {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 60px;
+    max-width: 60px;
+}
 
-// injector
-@import 'account/login/login.less';
-@import 'admin/admin.less';
-@import 'search/search.less';
-@import 'modal/modal.less';
-// endinjector
+.image-expanded {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 300px;
+    max-width: 300px;
+}
+
+.thumbnail-gallery {
+    margin: auto;
+    display: block;
+    padding-top: 10px;
+    white-space: nowrap; 
+    height: 95px;
+    max-width: 400px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+

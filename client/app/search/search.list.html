@@ -1,47 +1,115 @@
 <div ui-view>
-  <span><h3>Results: {{indexVM.results.hits.total}}</h3></span>
-  <accordion ng-repeat="doc in indexVM.results.hits.hits track by $index">
-    <accordion-group is-open="doc.isOpen">
-      <accordion-heading>
-        <span ng-click="closeOthers($index, indexVM.results.hits.hits)">
-          <span ng-if="doc._source.dateCreated">{{doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'}} | </span>  
-          <span ng-if="doc._source.hasTitlePart.text">{{cleanString(doc._source.hasTitlePart.text) | limitTo: 70}}...</span>
-          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': doc.isOpen, 'glyphicon-chevron-right': !doc.isOpen}"></i>         
-        </span>
-      </accordion-heading> 
-      <div class="row">
-        <div ng-if="doc._source.hasImagePart" class="col-md-2">
-          <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb thumbnail">
+  <div class="column-header">
+
+    <div class="btn-group pull-right">
+      <label>Sort by</label>
+      <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+        Newest first
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+      </ul>
+    </div>
+
+    <h4>
+      <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
+      <strong>{{indexVM.results.hits.total}}</strong> results
+    </h4>
+
+  </div>
+
+
+  <ul id="results" class="list-group">
+
+    <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
+      <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results" target="_self">
+        <div class="row">
+          <div class="col-xs-3 col-sm-2 col-lg-1">
+            <span ng-if="doc._source.hasImagePart">
+            <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb center-block">
+            </span>
+          </div>
+          <div class="col-xs-9 col-sm-10 col-lg-11">            
+            {{doc._source.hasTitlePart.text}}
+            <div class="list-group-item-meta">
+              <strong>date:</strong> <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
+              <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress || "n/a"}}</span>
+              <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</span>
+              <strong>name:</strong> <span class="name">{{doc._source.hasFeatureCollection.person_name_feature.person_name || "N/A"}}</span>
+              <strong>age:</strong> <span class="age">{{doc._source.hasFeatureCollection.person_age_feature.person_age || "N/A"}}</span>
+            </div>
+          </div>
         </div>
-        <div class="col-md-10">
-          <p ng-if="doc._source.url">URL: <a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></p>
-          <p ng-if="doc._source.hasTitlePart.text">Ad Title: {{doc._source.hasTitlePart.text}}</p>
-          <p ng-if="doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress">
-            Location: {{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}
-          </p>
-          <p ng-if="doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode">
-            Zip Code: {{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}
-          </p>
-          <p ng-if="doc._source.hasFeatureCollection.person_age_feature.person_age">
-            Age: {{doc._source.hasFeatureCollection.person_age_feature.person_age}}
-          </p> 
-          <p ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
-            Phone Number: {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
-          </p>
-          <p ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
-            Ethnicity: {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
-          </p>
-          <p ng-if="doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor">
-            Hair Color: {{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}
-          </p>  
-          <p ng-if="doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor">
-            Eye Color: {{doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor}}
-          </p>  
-          <button type="button" class="btn btn-primary" ng-click="viewDetails(doc)" target="_self">View Details</button>
+      </a>
+      <div id="collapse{{$index}}" class="list-group-item-text collapse">
+        <div class="row">
+          <!-- ngIf: doc._source.hasImagePart -->
+          <div class="col-md-5 col-lg-4">
+            <span ng-if="doc._source.hasImagePart">
+              <img class="image-expanded center-block thumbnail" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
+            </span>
+          </div>
+
+          <div class="col-md-7 col-lg-8">
+
+            <h4>URL</h4>
+            <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
+            
+            <div class="row">
+              <div class="col-sm-6">
+                <dl class="listing-details">
+                  <dt>Name(s)</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
+
+                  <dt>Address</dt>
+                  <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}</dd>
+                  <dd>{{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}</dd>
+
+                  <dt>Phone Number</dt>
+                  <dd>{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</dd>
+
+                  <dt>Email</dt>
+                  <dd>{{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}</dd>
+
+                  <dt>Web Site</dt>
+                  <dd>{{doc._source.hasFeatureCollection.website_feature.website}}</dd>
+                </dl>
+              </div>
+              <div class="col-sm-6">
+                <dl class="person-details">
+
+                  <dt>Name(s)</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
+
+                  <dt>Age</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
+
+                  <dt>Ethnicity</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}</dd>
+
+                  <dt>Hair color</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}</dd>
+
+                  <dt>Height</dt>
+                  <dd>{{doc._source.hasFeatureCollection.person_height_feature.person_height}}</dd>
+
+                  <dt>Weight</dt>
+                  <dd>{{doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']}}</dd>
+                </dl>
+              </div>
+            </div>
+
+  <!--           <button type="button" class="btn btn-primary"  target="_self">View Details</button> -->
+            <button type="button" class="btn btn-primary" ng-click="viewDetails(doc)" target="_self">View Details</button>
+          </div>
         </div>
       </div>
-    </accordion-group>
-  </accordion> 
+    </li>
+  </ul>
+
   <div class="text-center">
     <pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
     ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize" 

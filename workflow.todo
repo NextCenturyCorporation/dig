@@ -41,6 +41,6 @@ Project file description:
  ☐ bower.json
 
 Code formatting:
- ☐ program source (like javascript) should use four-space indentation
- ☐ html and css should use two-space indentation
+ ☐ program source (like javascript) and css should use four-space indentation
+ ☐ html should use two-space indentation
 
