@@ -11,7 +11,7 @@ Prerequisites:
 
 To use the yeoman angular-fullstack-generator to create new components for
 the application, see the documentation at 
-https://github.com/yeoman/generator-angular which has useful generators to
+https://github.com/DaftMonk/generator-angular-fullstack which has useful generators to
 create angular.js elements such as models, views, controllers, routes, 
 directives, factories, etc.
 
