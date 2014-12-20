@@ -35,4 +35,5 @@ application, the browser will refresh and show those changes.
 
 
 Configuration:
-- The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify **euiHost** variable in `client/app/app.js`.
+- The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify *euiHost* variable in `client/app/app.js`.
+- Depending on version (1.4.x), it may be necessary to add add *http.cors.enabled : true* to elasticsearch.yml in the config directory of ElasticSearch
