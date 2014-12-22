@@ -5,7 +5,6 @@ This is the software project for Dig search application.
 
 Prerequisites:
 - node.js
-- mongodb
 - grunt-cli installed globally (npm i -g grunt-cli)
 - bower installed globally (npm i -g bower)
 
