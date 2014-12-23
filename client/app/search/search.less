@@ -10,12 +10,23 @@
 
 /* Images */
 
+.displayed-image-container {
+    height: 400px;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+
 .displayed-image {
     display: block;
+    position: relative;
+    transform: translateY(-50%);
+    top: 50%;
     width: auto;
     height: auto;
-    max-height: 400px;
-    max-width: 100%;
+    max-height: 100%;
+    max-width: 100%; 
 }
 
 .image-thumb {
