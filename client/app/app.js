@@ -17,4 +17,4 @@ angular.module('digApp', [
   })
 
   // TODO: find a nice way to collect constants for different environments
-  .constant('euiHost', 'http://vinisvr:9200');
+  .constant('euiHost', 'http://localhost:9200');
