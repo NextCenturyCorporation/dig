@@ -4,19 +4,15 @@ angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', function ($scope, $state) {
 
 	$scope.showresults = false;
-
 	$scope.currentOpened = 0;
 	$scope.selectedImage = 0;
+	$scope.queryString = {live: '', submitted: ''};
 
 	$scope.submit = function () {
-		// if indexVM.query object is not null, then value for the query input
-		// is not empty, so display results if any, otherwise do not
-		// display results.
-		if ($scope.indexVM.query) {
+		$scope.queryString.submitted = $scope.queryString.live;
+
+		if ($scope.queryString.submitted) {
 			$scope.showresults = true;
-		}
-		else {
-			$scope.showresults = false;
 		}
 	};
 	
