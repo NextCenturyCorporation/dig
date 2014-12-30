@@ -25,8 +25,7 @@ describe('Controller: SearchCtrl', function () {
 	});
 
 	it('should set showresults to true', function () {
-		scope.indexVM = {};
-		scope.indexVM.query = {};
+		scope.queryString.live = 'test';
 		scope.submit();
 		expect(scope.showresults).toBe(true);
 	});	
