@@ -16,7 +16,7 @@
       <!-- ngIf: doc._source.hasImagePart -->
       <div ng-if="doc._source.hasImagePart" class="col-md-5 ng-scope">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 displayed-image-container">
             <img ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="thumbnail center-block displayed-image">
           </div>
         </div>
