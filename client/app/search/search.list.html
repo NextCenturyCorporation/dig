@@ -47,9 +47,15 @@
       <div id="collapse{{$index}}" class="list-group-item-text collapse">
         <div class="row">
           <!-- ngIf: doc._source.hasImagePart -->
-          <div class="col-md-5 col-lg-4">
+          <div class="col-md-5 col-lg-4 text-center">
             <span ng-if="doc._source.hasImagePart">
-              <img class="image-expanded center-block thumbnail" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
+              <div class="image-with-caption">
+                <img class="image-expanded center-block" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
+                <div class="caption">
+                  <div class="caption-background"></div>
+                  <div class="caption-text">Search for this</div>
+                </div>
+              </div>
             </span>
           </div>
 

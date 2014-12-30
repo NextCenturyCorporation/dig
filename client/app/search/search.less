@@ -12,20 +12,14 @@
 
 .displayed-image-container {
     height: 400px;
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    transform-style: preserve-3d;
 }
-
 
 .displayed-image {
     display: block;
     position: relative;
-    transform: translateY(-50%);
-    top: 50%;
     width: auto;
     height: auto;
-    max-height: 100%;
+    max-height: 400px;
     max-width: 100%; 
 }
 
@@ -54,4 +48,52 @@
     max-width: 400px;
     overflow-x: auto;
     overflow-y: hidden;
+}
+
+/* Caption */
+.image-with-caption {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    z-index: 4;
+}
+
+.image-with-caption:hover .caption{
+    opacity: 1;
+    transform: translateY(-50px);
+    -webkit-transform:translateY(-50px);
+    -moz-transform:translateY(-50px);
+    -ms-transform:translateY(-50px);
+    -o-transform:translateY(-50px); 
+}
+    
+.caption{
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 50px;
+    -webkit-transition:all 0.15s ease-in-out;
+    -moz-transition:all 0.15s ease-in-out;
+    -o-transition:all 0.15s ease-in-out;
+    -ms-transition:all 0.15s ease-in-out;
+    transition:all 0.15s ease-in-out;
+}
+
+.caption-background {
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 50px;
+    z-index: 5;
+    position: relative;
+}
+
+.caption-text {
+    z-index: 10;
+    color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    top:15px;
 }
