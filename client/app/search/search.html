@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container-fluid" eui-index="'dig'">
-
+<div class="container-fluid" eui-index="'dig'"> 
+  <div class="loading" ng-show="loading"></div>
   <!-- query -->
   <div class="row">
     <div class="col-sm-12 list-group-item">
@@ -14,10 +14,10 @@
           <form ng-submit="submit()">
           <div class="input-group input-group-lg">
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.MatchQuery('_all', queryString.submitted)" ng-model="queryString.live" eui-enabled="queryString.submitted.length"/>
+            <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.MatchQuery('_all', queryString.submitted)" ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
             <span class="input-group-btn">
               <a href="#" class="btn btn-cancel-input" role="button" title="Clear search">&times;</a>
-              <button class="btn btn-primary" type="button" ng-click="submit()">Search</button>
+              <button class="btn btn-primary" type="submit">Search</button>
             </span>
           </div>
           </form>
@@ -63,7 +63,7 @@
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
           </div>
-        </div>
+        </div> 
         <a href="#">More</a>
       </div>
 
@@ -92,12 +92,11 @@
         </div>
         <a href="#">More</a>
       </div>
+        
     </div>
-
+  
     <div class="right-column col-sm-9">
       <div ui-view></div> 
     </div>
-
   </div>
-
 </div>
