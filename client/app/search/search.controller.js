@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', function ($scope, $state, $http) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 
+    function ($scope, $state, $http, imageSearchService) {
 
     $scope.showresults = true;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
+    $scope.filterByImage = false;
     $scope.imageSearchResults = {};
 
     $scope.submit = function () {
@@ -19,6 +21,14 @@ angular.module('digApp')
         }
 
         $scope.loading = false;
+    };
+
+    $scope.getActiveImageSearch = function() {
+        return imageSearchService.getActiveImageSearch();
+    };
+
+    $scope.clearActiveImageSearch = function() {
+        return imageSearchService.clearActiveImageSearch();
     };
 
     $scope.closeOthers = function(index, array) {
@@ -50,26 +60,31 @@ angular.module('digApp')
     };
 
     $scope.imageSearch = function(imgUrl) {
-        $scope.loading = true;
-
-        $scope.imageSearchResults[imgUrl] = {
-            url: imgUrl,
-            status: 'searching'
-        };
-
-        $http.get('http://vinisvr:3001/imagesim?uri=' + encodeURIComponent(imgUrl)).
-        success(function(data, status, headers, config) {
-            $scope.loading = false;
-            $scope.imageSearchResults[imgUrl].status = 'success';
-            $scope.activeImageSearch = $scope.imageSearchResults[imgUrl];
-        }).
-        error(function(data, status, headers, config) {
-            $scope.loading = false;
-            //save results -- url/failure
-            $scope.imageSearchResults[imgUrl].status = 'error';
-            $scope.imageSearchResults[imgUrl].error = data;
-        });
+        imageSearchService.imageSearch(imgUrl);
     };
+
+    $scope.$watch(function() {
+            return imageSearchService.getActiveImageSearch();
+        }, function(newVal) {
+            if (newVal) {
+                console.log(newVal.status);
+                if (newVal.status === "searching") {
+                    $scope.loading = true;
+                } else if (newVal.status === "success" ) {
+                    // If our latest img search was successful, re-issue our query and
+                    // enable our image filter.
+                    $scope.loading = false;
+                    $scope.filterByImage = true;
+                } else {
+                    $scope.loading = false;
+                    $scope.filterByImage = false;
+                }
+            } else {
+                $scope.loading = false;
+                $scope.filterByImage = false;
+            }
+        }, 
+        true);
 
     if($state.current.name === 'search') {
         $scope.viewList();
