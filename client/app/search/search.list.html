@@ -36,7 +36,7 @@
             {{doc._source.hasTitlePart.text}}
             <div class="list-group-item-meta">
               <strong>date:</strong> <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
-              <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress || "n/a"}}</span>
+              <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality || "n/a"}}</span>
               <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</span>
               <strong>name:</strong> <span class="name">{{doc._source.hasFeatureCollection.person_name_feature.person_name || "N/A"}}</span>
               <strong>age:</strong> <span class="age">{{doc._source.hasFeatureCollection.person_age_feature.person_age || "N/A"}}</span>
@@ -70,9 +70,8 @@
                   <dt>Name(s)</dt>
                   <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
 
-                  <dt>Address</dt>
-                  <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}</dd>
-                  <dd>{{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}</dd>
+                  <dt>City</dt>
+                  <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality}}</dd>
 
                   <dt>Phone Number</dt>
                   <dd>{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</dd>

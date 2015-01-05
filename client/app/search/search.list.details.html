@@ -51,11 +51,8 @@
           <dt>URL</dt>
           <dd><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></dd>
 
-          <dt>Address</dt>
-          <!-- ngIf: doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress -->
-          <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.place_postalAddress}}</dd>
-          <!-- ngIf: doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode -->
-          <dd>{{doc._source.hasFeatureCollection.place_zipcode_feature.place_zipcode}}</dd>
+          <dt>City</dt>
+          <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality}}</dd>
 
           <!-- ngIf: doc._source.hasFeatureCollection.phonenumber_feature.phonenumber -->
           <dt>Phone Number</dt>

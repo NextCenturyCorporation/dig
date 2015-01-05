@@ -43,9 +43,9 @@
 
       <div class="form-group">
         <h5><i class="fa fa-chevron-down fa-fw"></i> City/Region <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
-        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('city_agg').field('place_postalAddress').size(30)" eui-filter-self="false">
+        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('city_agg').field('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality').size(30)" eui-filter-self="false">
           <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
-            <label eui-filter="ejs.TermsFilter('place_postalAddress', bucket.key)">
+            <label eui-filter="ejs.TermsFilter('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality', bucket.key)">
               <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
