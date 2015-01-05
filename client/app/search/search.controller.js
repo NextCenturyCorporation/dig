@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$timeout', function ($scope, $state, $timeout) {
+.controller('SearchCtrl', ['$scope', '$state', function ($scope, $state) {
 
 	$scope.showresults = false;
 	$scope.currentOpened = 0;
@@ -10,16 +10,14 @@ angular.module('digApp')
 	$scope.loading = false;
 
 	$scope.submit = function () {
-		$scope.loading = true;
+		$scope.loading = true;	
 		$scope.queryString.submitted = $scope.queryString.live;
 
 		if ($scope.queryString.submitted) {
 			$scope.showresults = true;
 		}
 
-		$timeout(function() {
-			$scope.loading = false;
-		}, 5000);
+		$scope.loading = false;
 	};
 	
 	$scope.closeOthers = function(index, array) {
