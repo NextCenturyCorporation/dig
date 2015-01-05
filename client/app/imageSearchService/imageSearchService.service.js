@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-  .service('imageSearchService', ['$http', 'isiHost', function ($http, simHost) {
+  .service('imageSearchService', ['$http', 'simHost', function ($http, simHost) {
     var service = {};
     var imageSearchResults = [];
     var activeImageSearch = null;
