@@ -19,9 +19,9 @@
           <div class="col-md-12 displayed-image-container text-center">
             <div class="image-with-caption">
               <img ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
-              <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl))">
+              <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
                 <div class="caption-background"></div>
-                <div class="caption-text"><i class="fa fa-file-image-o"></i> Search for this</div>
+                <div class="caption-text"><i class="fa fa-search"></i> Search for this</div>
               </div>
             </div>
           </div>

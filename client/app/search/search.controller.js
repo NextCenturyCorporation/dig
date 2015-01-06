@@ -2,21 +2,21 @@
 
 angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService',
-    function ($scope, $state, $http, imageSearchService) {
-
+    function($scope, $state, $http, imageSearchService) {
     $scope.showresults = true;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
-    $scope.filterByImage = false;
+    $scope.filterByImage = {};
+    $scope.filterByImage.enabled = false;
     $scope.imageSearchResults = {};
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         $scope.loading = true;
         $scope.queryString.submitted = $scope.queryString.live;
 
-        if ($scope.queryString.submitted) {
+        if($scope.queryString.submitted) {
             $scope.showresults = true;
         }
 
@@ -28,7 +28,8 @@ angular.module('digApp')
     };
 
     $scope.clearActiveImageSearch = function() {
-        return imageSearchService.clearActiveImageSearch();
+        $scope.filterByImage.enabled = false;
+        imageSearchService.clearActiveImageSearch();
     };
 
     $scope.closeOthers = function(index, array) {
@@ -74,14 +75,14 @@ angular.module('digApp')
                     // If our latest img search was successful, re-issue our query and
                     // enable our image filter.
                     $scope.loading = false;
-                    $scope.filterByImage = true;
+                    $scope.filterByImage.enabled = true;
                 } else {
                     $scope.loading = false;
-                    $scope.filterByImage = false;
+                    $scope.filterByImage.enabled = false;
                 }
             } else {
                 $scope.loading = false;
-                $scope.filterByImage = false;
+                $scope.filterByImage.enabled = false;
             }
         },
         true);

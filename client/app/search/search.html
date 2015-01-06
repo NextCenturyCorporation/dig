@@ -43,18 +43,13 @@
 
       <div class="form-group" ng-show="getActiveImageSearch()">
         <h5><i class="fa fa-chevron-down fa-fw"></i> Image <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
-          <!--GOOD <label eui-query="ejs.FilteredQuery(ejs.MatchQuery('_all', queryString.live), ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', 'https://vinisvr/images/test.jpg'))" eui-enabled="filter.enabled">
-            <input type="checkbox" ng-model="filter.enabled">https://vinisvr/images/test.jpg
-          </label> -->
-
-          <!--GOOD  <label eui-query="ejs.FilteredQuery(ejs.MatchAllQuery(), ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', 'https://vinisvr/images/test.jpg'))" eui-enabled="filter.enabled">
-            <input type="checkbox" ng-model="filter.enabled">https://vinisvr/images/test.jpg
-          </label> -->
         <div>
           <!--TODO: Replace test.jpg with getActiveImageSearchURL when mock handles XSS-->
           <div class="checkbox image-search-filter">
-            <label eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', 'https://localhost/images/test.jpg')" eui-enabled="filterByImage && getActiveImageSearch()">
-              <input type="checkbox" ng-model="filterByImage">
+            <label>
+              <input type="checkbox" ng-model="filterByImage.enabled"
+                eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', 'https://localhost/images/test.jpg')"
+                eui-enabled="filterByImage.enabled">
             </label>
             <img ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
             <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
