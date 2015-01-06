@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService',
     function ($scope, $state, $http, imageSearchService) {
 
     $scope.showresults = true;
@@ -66,11 +66,11 @@ angular.module('digApp')
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
-            if (newVal) {
+            if(newVal) {
                 console.log(newVal.status);
-                if (newVal.status === "searching") {
+                if(newVal.status === 'searching') {
                     $scope.loading = true;
-                } else if (newVal.status === "success" ) {
+                } else if(newVal.status === 'success') {
                     // If our latest img search was successful, re-issue our query and
                     // enable our image filter.
                     $scope.loading = false;
@@ -83,7 +83,7 @@ angular.module('digApp')
                 $scope.loading = false;
                 $scope.filterByImage = false;
             }
-        }, 
+        },
         true);
 
     if($state.current.name === 'search') {

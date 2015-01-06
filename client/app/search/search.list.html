@@ -51,7 +51,7 @@
             <span ng-if="doc._source.hasImagePart">
               <div class="image-with-caption">
                 <img class="image-expanded center-block" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
-                <div class="caption" ng-click="imageSearch((doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl))">
+                <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl))">
                   <div class="caption-background"></div>
                   <div class="caption-text"><i class="fa fa-file-image-o"></i> Search for this</div>
                 </div>
