@@ -9,7 +9,8 @@ angular.module('digApp')
     $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
-    $scope.filterByImage = false;
+    $scope.filterByImage = {};
+    $scope.filterByImage.enabled = false;
     $scope.imageSearchResults = {};
 
     $scope.submit = function () {
@@ -28,7 +29,8 @@ angular.module('digApp')
     };
 
     $scope.clearActiveImageSearch = function() {
-        return imageSearchService.clearActiveImageSearch();
+        $scope.filterByImage.enabled = false;
+        imageSearchService.clearActiveImageSearch();
     };
 
     $scope.closeOthers = function(index, array) {
@@ -67,21 +69,20 @@ angular.module('digApp')
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
             if (newVal) {
-                console.log(newVal.status);
                 if (newVal.status === "searching") {
                     $scope.loading = true;
                 } else if (newVal.status === "success" ) {
                     // If our latest img search was successful, re-issue our query and
                     // enable our image filter.
                     $scope.loading = false;
-                    $scope.filterByImage = true;
+                    $scope.filterByImage.enabled = true;
                 } else {
                     $scope.loading = false;
-                    $scope.filterByImage = false;
+                    $scope.filterByImage.enabled = false;
                 }
             } else {
                 $scope.loading = false;
-                $scope.filterByImage = false;
+                $scope.filterByImage.enabled = false;
             }
         }, 
         true);

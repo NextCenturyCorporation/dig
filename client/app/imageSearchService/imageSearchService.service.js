@@ -16,7 +16,6 @@ angular.module('digApp')
 
         $http.get(simHost + '/imagesim?uri=' + encodeURIComponent(imgUrl)).
         success(function(data, status, headers, config) {
-            console.log("it completed with " + status);
             imageSearchResults[imgUrl].status = 'success';
         }).
         error(function(data, status, headers, config) {
