@@ -43,11 +43,6 @@ angular.module('digApp')
 		$scope.selectedImage = index;
 	};
 
-	// Temporary until ad body text is cleaned up
-	$scope.cleanString = function(str) {
-		return str.replace(/[^a-z0-9\-\!\@\#\$\%\^\&\*\(\)\s\.\,\'\"']/gi, '');
-	};
-
 	if($state.current.name === 'search') {
 		$scope.viewList();
 	}

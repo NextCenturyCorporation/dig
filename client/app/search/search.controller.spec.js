@@ -80,10 +80,5 @@ describe('Controller: SearchCtrl', function () {
 		expect(scope.selectedImage).toBe(2);
 	});  
 
-	it('should replace special character', function () {
-		var newString = scope.cleanString('€200');
-
-		expect(newString).toBe('200');
-	});
 
 });
