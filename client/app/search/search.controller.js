@@ -7,19 +7,25 @@ angular.module('digApp')
 	$scope.currentOpened = 0;
 	$scope.selectedImage = 0;
 	$scope.queryString = {live: '', submitted: ''};
-	$scope.loading = false;
+	$scope.loading = true;
 
 	$scope.submit = function () {
-		$scope.loading = true;	
 		$scope.queryString.submitted = $scope.queryString.live;
-
-		if ($scope.queryString.submitted) {
-			$scope.showresults = true;
-		}
-
-		$scope.loading = false;
 	};
-	
+
+	$scope.$watch(
+		function() { return $scope.indexVM.loading; },
+		function(newValue, oldValue) {
+			if(newValue !== oldValue) {
+				$scope.loading = newValue;
+
+				if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+					$scope.showresults = true;
+				}		
+			} 
+		}
+	);
+
 	$scope.closeOthers = function(index, array) {
 		if($scope.currentOpened < array.length) {
 			array[$scope.currentOpened].isOpen = false;
@@ -46,5 +52,6 @@ angular.module('digApp')
 	if($state.current.name === 'search') {
 		$scope.viewList();
 	}
+
 
 }]);

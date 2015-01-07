@@ -93,7 +93,12 @@
                   <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
 
                   <dt>Ethnicity</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}</dd>
+                  <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
+                    {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
+                  </dd>
+                  <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.length" ng-repeat="ethnicity in doc._source.hasFeatureCollection.person_ethnicity_feature">
+                    {{ethnicity.person_ethnicity}}
+                  </dd>
 
                   <dt>Hair color</dt>
                   <dd>{{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}</dd>

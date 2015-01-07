@@ -39,7 +39,7 @@
 
         <div class="form-group">
           <label>Phone</label>
-          <input type="text" eui-filter="ejs.TermsFilter('phonenumber', phone.submitted)" ng-model="phone.live" eui-enabled="phone.submitted.length">
+          <input type="text" eui-filter="ejs.TermsFilter('phonenumber', phone.submitted)" ng-model="phone.live" eui-enabled="phone.submitted.length" ng-disabled="loading">
         </div>
 
       <div class="form-group">
@@ -64,7 +64,7 @@
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
           </div>
-        </div>
+        </div> 
         <a href="#">More</a>
       </div>
 
@@ -90,16 +90,14 @@
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
           </div>
-          <a href="#">More</a>
         </div>
+        <a href="#">More</a>
       </div>
       </form> 
     </div>
-
+  
     <div class="right-column col-sm-9">
       <div ui-view></div> 
     </div>
-
   </div>
-
 </div>
