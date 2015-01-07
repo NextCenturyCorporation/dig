@@ -3,7 +3,6 @@
 angular.module('digApp')
 
   .config(function ($stateProvider) {
-
     $stateProvider
       .state('search', {
         url: '/',
@@ -20,4 +19,3 @@ angular.module('digApp')
         templateUrl: 'app/search/search.list.details.html'
       });
   });
-
