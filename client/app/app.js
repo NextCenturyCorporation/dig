@@ -11,7 +11,7 @@ angular.module('digApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/list');
 
     $locationProvider.html5Mode(true);
   })

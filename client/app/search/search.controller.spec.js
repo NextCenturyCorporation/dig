@@ -18,17 +18,42 @@ describe('Controller: SearchCtrl', function () {
 			$scope: scope,
 			$state: state
 		});
+
+		scope.indexVM = {loading: true};
+		scope.$digest();
 	}));
 
 	it('should initialize showresults to false', function () {
 		expect(scope.showresults).toBe(false);
 	});
 
-	it('should set showresults to true', function () {
+	it('should initialize loading to true', function () {
+		expect(scope.loading).toBe(true);
+	});
+
+	it('should initialize queryString values to empty strings', function () {
+		expect(scope.queryString.live).toBe('');
+		expect(scope.queryString.submitted).toBe('');
+	});
+
+	it('should set queryString.submitted to user input', function () {
 		scope.queryString.live = 'test';
 		scope.submit();
+		expect(scope.queryString.submitted).toBe('test');
+     }); 
+
+	it('should set showresults to true', function () {
+		scope.queryString.submitted = 'test';
+		scope.indexVM.loading = false;
+		scope.$digest();
 		expect(scope.showresults).toBe(true);
 	});	
+
+	it('should set loading to false', function () {
+		scope.indexVM.loading = false;
+		scope.$digest();
+		expect(scope.loading).toBe(false);
+	});
 	
 	it('should have currentOpened default to 0', function () {
 		expect(scope.currentOpened).toBe(0);
