@@ -34,6 +34,7 @@ angular.element(document).ready(function() {
     })
     .error(function() {
         digApp.constant('euiHost', 'http://localhost:9200');
+        digApp.constant('euiSearchIndex', 'dig');
         digApp.constant('simHost', 'http://localhost:3001');
     });
 });

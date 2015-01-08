@@ -10,7 +10,8 @@ describe('Controller: SearchCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(function() {
         module(function($provide) {
-            $provide.constant('simHost', 'http://localhost');
+            $provide.constant('simHost', 'http://localhost')
+            $provide.constant('euiSearchIndex', 'dig');
         });
 
         inject(function ($controller, $rootScope, $state) {
@@ -29,8 +30,8 @@ describe('Controller: SearchCtrl', function () {
         });
     });
 
-    it('should initialize showresults to true', function () {
-        expect(scope.showresults).toBe(true);
+    it('should initialize showresults to false', function () {
+        expect(scope.showresults).toBe(false);
     });
 
     it('should initialize loading to true', function () {
