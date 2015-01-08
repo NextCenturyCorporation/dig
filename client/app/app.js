@@ -24,6 +24,9 @@ angular.element(document).ready(function() {
         var euiHost = (config.euiHost || 'localhost') + ':' + (config.euiPort || 9200);
         digApp.constant('euiHost', euiHost);
 
+        var euiSearchIndex = (config.euiSearchIndex || 'dig');
+        digApp.constant('euiSearchIndex', euiSearchIndex);
+
         var simHost = (config.simHost || 'localhost') + ':' + (config.simPort || 3001);
         digApp.constant('simHost', simHost);
 

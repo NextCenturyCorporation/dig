@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container-fluid" eui-index="'dig'"> 
+<div class="container-fluid" eui-index="searchConfig.euiSearchIndex"> 
   <div class="loading" ng-show="loading || imagesimLoading"></div>
   <!-- query -->
   <div class="row">
@@ -48,9 +48,9 @@
           <!--TODO: Replace test.jpg with getActiveImageSearchURL when mock handles XSS-->
           <div class="checkbox image-search-filter">
             <label>
-              <input type="checkbox" ng-model="filterByImage.enabled"
+              <input type="checkbox" ng-model="searchConfig.filterByImage"
                 eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', 'https://vinisvr/images/test.jpg')"
-                eui-enabled="filterByImage.enabled">
+                eui-enabled="searchConfig.filterByImage">
             </label>
             <img ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
             <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">

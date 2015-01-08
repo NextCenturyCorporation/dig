@@ -20,6 +20,7 @@ module.exports = function(app) {
         var configResponse = {
             euiHost: config.euiServerUrl,
             euiPort: config.euiServerPort,
+            euiSearchIndex: config.euiSearchIndex,
             simHost: config.imageSimUrl,
             simPort: config.imageSimPort
         };
