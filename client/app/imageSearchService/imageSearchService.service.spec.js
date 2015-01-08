@@ -2,17 +2,24 @@
 
 describe('Service: imageSearchService', function () {
 
-  // load the service's module
-  beforeEach(module('digApp'));
+    // load the service's module
+    beforeEach(module('digApp'));
 
-  // instantiate service
-  var imageSearchService;
-  beforeEach(inject(function (_imageSearchService_) {
-    imageSearchService = _imageSearchService_;
-  }));
+    // instantiate service
+    var imageSearchService;
+    beforeEach(function() {
+        module(function($provide) {
+            $provide.constant('simHost', 'http://localhost');
+        });
 
-  it('should do something', function () {
-    expect(!!imageSearchService).toBe(true);
-  });
+        inject(function(_imageSearchService_) {
+            imageSearchService = _imageSearchService_;
+        });
+    });
+
+    it('should do something', function () {
+        expect(imageSearchService).toBeDefined();
+        expect(imageSearchService).toBeTruthy();
+    });
 
 });

@@ -1,12 +1,12 @@
 'use strict';
 
 // TODO: clean this controller.  loading was being used
-// by two $watch handlers.  
+// by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService',
     function($scope, $state, $http, imageSearchService) {
-    $scope.showresults = false;
+    $scope.showresults = true;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
@@ -29,8 +29,8 @@ angular.module('digApp')
 
 				if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
 					$scope.showresults = true;
-				}		
-			} 
+				}
+			}
 		}
 	);
 
@@ -48,7 +48,7 @@ angular.module('digApp')
 
 	$scope.viewList = function() {
 		if($scope.doc) {
-			$scope.doc = null; 
+			$scope.doc = null;
 		}
 		$state.go('search.list');
 	};
