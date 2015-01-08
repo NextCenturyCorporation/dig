@@ -89,6 +89,47 @@ describe('Service: imageSearchService', function () {
         expect(activeSearch).toBeNull();
     });
 
-    //clear active image search call
-    //clear searches call
+    it('should return the status for available searches', function() {
+        var imgUrl = 'http://foo';
+
+        imageSearchRequest.respond(200, {some: 'json'});
+
+        imageSearchService.imageSearch(imgUrl);
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('searching');
+
+        $httpBackend.flush();
+
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('success');
+    });
+
+    it('should clear only the active image search for clearActiveImageSearch', function() {
+        var imgUrl = 'http://foo';
+
+        imageSearchRequest.respond(200, {some: 'json'});
+
+        imageSearchService.imageSearch(imgUrl);
+        $httpBackend.flush();
+
+        imageSearchService.clearActiveImageSearch();
+
+        var activeSearch = imageSearchService.getActiveImageSearch();
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('success');
+
+        expect(activeSearch).toBeNull();
+    });
+
+    it('should clear all search requests for clearImageSearches', function() {
+        var imgUrl = 'http://foo';
+
+        imageSearchRequest.respond(200, {some: 'json'});
+
+        imageSearchService.imageSearch('http://foo');
+        $httpBackend.flush();
+
+        imageSearchService.clearImageSearches();
+
+        var activeSearch = imageSearchService.getActiveImageSearch();
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('no search available');
+        expect(activeSearch).toBeNull();
+    })
 });
