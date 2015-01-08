@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO: clean this controller.  loading was being used
-// by two $watch handlers.  
+// by two $watch handlers.
 
 angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex',
@@ -75,7 +75,6 @@ angular.module('digApp')
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
             if(newVal) {
-                console.log(newVal.status);
                 if(newVal.status === 'searching') {
                     $scope.imagesimLoading = true;
                 } else if(newVal.status === 'success') {
