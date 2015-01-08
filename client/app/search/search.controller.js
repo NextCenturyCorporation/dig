@@ -75,7 +75,6 @@ angular.module('digApp')
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
             if(newVal) {
-                console.log(newVal.status);
                 if(newVal.status === 'searching') {
                     $scope.imagesimLoading = true;
                 } else if(newVal.status === 'success') {
