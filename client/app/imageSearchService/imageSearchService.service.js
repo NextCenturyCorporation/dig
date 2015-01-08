@@ -11,14 +11,15 @@ angular.module('digApp')
             url: imgUrl,
             status: 'searching'
         };
+
         // TODO: remove this if we switch to async image searches.
         activeImageSearch = imageSearchResults[imgUrl];
 
-        $http.get(simHost + '/imagesim?uri=' + encodeURIComponent(imgUrl)).
-        success(function(data, status) {
+        $http.get(simHost + '/imagesim?uri=' + encodeURIComponent(imgUrl))
+        .success(function() {
             imageSearchResults[imgUrl].status = 'success';
-        }).
-        error(function(data) {
+        })
+        .error(function(data) {
             imageSearchResults[imgUrl].status = 'error';
             imageSearchResults[imgUrl].error = data;
             activeImageSearch = null;
