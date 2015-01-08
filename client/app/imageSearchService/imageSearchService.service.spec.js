@@ -20,7 +20,6 @@ describe('Service: imageSearchService', function () {
             imageSearchService = _imageSearchService_;
             $httpBackend = _$httpBackend_;
 
-
             imageSearchRequest = $httpBackend.when('GET', new RegExp(simHost + '/imagesim\\?uri=*'))
                 .respond(200, {some: 'json'});
         });
@@ -92,8 +91,6 @@ describe('Service: imageSearchService', function () {
     it('should return the status for available searches', function() {
         var imgUrl = 'http://foo';
 
-        imageSearchRequest.respond(200, {some: 'json'});
-
         imageSearchService.imageSearch(imgUrl);
         expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('searching');
 
@@ -104,8 +101,6 @@ describe('Service: imageSearchService', function () {
 
     it('should clear only the active image search for clearActiveImageSearch', function() {
         var imgUrl = 'http://foo';
-
-        imageSearchRequest.respond(200, {some: 'json'});
 
         imageSearchService.imageSearch(imgUrl);
         $httpBackend.flush();
@@ -121,8 +116,6 @@ describe('Service: imageSearchService', function () {
     it('should clear all search requests for clearImageSearches', function() {
         var imgUrl = 'http://foo';
 
-        imageSearchRequest.respond(200, {some: 'json'});
-
         imageSearchService.imageSearch('http://foo');
         $httpBackend.flush();
 
@@ -131,5 +124,5 @@ describe('Service: imageSearchService', function () {
         var activeSearch = imageSearchService.getActiveImageSearch();
         expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('no search available');
         expect(activeSearch).toBeNull();
-    })
+    });
 });

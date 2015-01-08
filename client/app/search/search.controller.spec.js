@@ -10,7 +10,7 @@ describe('Controller: SearchCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(function() {
         module(function($provide) {
-            $provide.constant('simHost', 'http://localhost')
+            $provide.constant('simHost', 'http://localhost');
             $provide.constant('euiSearchIndex', 'dig');
         });
 
