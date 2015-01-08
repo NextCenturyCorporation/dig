@@ -22,4 +22,13 @@ describe('Service: imageSearchService', function () {
         expect(imageSearchService).toBeTruthy();
     });
 
+    it('should initialize with getActiveImageSearch() as null', function() {
+        var activeSearch = imageSearchService.getActiveImageSearch();
+        expect(activeSearch).toBeNull();
+    });
+
+    it('should return message for getImageSearchStatus call of invalid url', function() {
+        var status = imageSearchService.getImageSearchStatus('http://fake');
+        expect(status).toBe('no search available');
+    });
 });
