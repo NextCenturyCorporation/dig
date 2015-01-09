@@ -1,18 +1,21 @@
 <div ui-view>
   <div class="column-header">
 
-    <div class="btn-group pull-right">
-      <label>Sort by</label>
-      <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
-        Newest first
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
-      </ul>
-    </div>
+    <!-- TODO: Implement Sort By feature - commenting out for now -->
+<!--
+  <div class="btn-group pull-right">
+    <label>Sort by</label>
+    <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+      Newest first
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+    </ul>
+  </div>
+-->
 
     <h4>
       <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
@@ -29,7 +32,7 @@
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
-            <img blurred-image ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb center-block">
+            <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
             </span>
           </div>
           <div class="col-xs-9 col-sm-10 col-lg-11">
@@ -67,6 +70,7 @@
             <div class="row">
               <div class="col-sm-6">
                 <dl class="listing-details">
+
                   <dt>Name(s)</dt>
                   <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
 
@@ -85,9 +89,6 @@
               </div>
               <div class="col-sm-6">
                 <dl class="person-details">
-
-                  <dt>Name(s)</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
 
                   <dt>Age</dt>
                   <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
@@ -121,9 +122,11 @@
   </ul>
 
   <div class="text-center">
-    <pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
+    <ul class="list-unstyled">
+    <li><pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
     ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize"
-    class="pagination-sm" num-pages="indexVM.pageCount"></pagination>
-    <p>Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
+    class="pagination-sm" num-pages="indexVM.pageCount"></pagination></li>
+    <li ng-show="indexVM.results.hits.total > 0">Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</li>
+    </ul>
   </div>
 </div>
