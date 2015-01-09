@@ -59,21 +59,19 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> City/Region <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <checkbox-filters title="City/Region" closed="false">
         <div eui-or-filter eui-aggregation="ejs.TermsAggregation('city_agg').field('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality').size(30)" eui-filter-self="false">
           <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
             <label eui-filter="ejs.TermsFilter('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality', bucket.key)">
               <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
-          </div>
-        </div>
+          </div> 
+        </div>  
         <a href="#">More</a>
-      </div>
+      </checkbox-filters>
 
-      <div class="form-group">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> ETHNICITY <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <checkbox-filters title="Ethnicity" closed="false">
         <div eui-or-filter eui-aggregation="ejs.TermsAggregation('etn_agg').field('person_ethnicity').size(10)" eui-filter-self="false">
           <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
             <label eui-filter="ejs.TermsFilter('person_ethnicity', bucket.key)">
@@ -81,12 +79,11 @@
             </label>
             <span class="badge pull-right">{{bucket.doc_count}}</span>
           </div>
-        </div>
+        </div>  
         <a href="#">More</a>
-      </div>
+      </checkbox-filters>
 
-      <div class="form-group">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> HAIR COLOR <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <checkbox-filters title="Hair Color" closed="false">
         <div eui-or-filter eui-aggregation="ejs.TermsAggregation('hc_agg').field('person_haircolor').size(10)" eui-filter-self="false">
           <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
             <label eui-filter="ejs.TermsFilter('person_haircolor', bucket.key)">
@@ -96,10 +93,9 @@
           </div>
         </div>
         <a href="#">More</a>
-      </div>
+      </checkbox-filters>
 
-      <div class="form-group">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> AGE <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <checkbox-filters title="Age" closed="false">
         <div eui-or-filter eui-aggregation="ejs.TermsAggregation('age_agg').field('person_age').size(20)" eui-filter-self="false">
           <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
             <label eui-filter="ejs.TermsFilter('person_age', bucket.key)">
@@ -109,7 +105,8 @@
           </div>
         </div>
         <a href="#">More</a>
-      </div>
+      </checkbox-filters>
+      
       </form> 
     </div>
   

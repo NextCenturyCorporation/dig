@@ -124,6 +124,6 @@
     <pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
     ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize"
     class="pagination-sm" num-pages="indexVM.pageCount"></pagination>
-    <p>Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
+    <p ng-show="indexVM.results.hits.total > 0">Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</p>
   </div>
 </div>
