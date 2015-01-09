@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container-fluid" eui-index="searchConfig.euiSearchIndex"> 
+<div class="container-fluid" eui-index="searchConfig.euiSearchIndex">
   <div class="loading" ng-show="loading || imagesimLoading"></div>
   <!-- query -->
   <div class="row">
@@ -51,7 +51,7 @@
                 eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', getActiveImageSearch().url)"
                 eui-enabled="searchConfig.filterByImage">
             </label>
-            <img ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
+            <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
             <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
               <i class="fa fa-times-circle pull-right"></i>
             </a>
@@ -110,11 +110,11 @@
         </div>
         <a href="#">More</a>
       </div>
-      </form> 
+      </form>
     </div>
-  
+
     <div class="right-column col-sm-9">
-      <div ui-view></div> 
+      <div ui-view></div>
     </div>
   </div>
 </div>

@@ -22,7 +22,8 @@ module.exports = function(app) {
             euiPort: config.euiServerPort,
             euiSearchIndex: config.euiSearchIndex,
             simHost: config.imageSimUrl,
-            simPort: config.imageSimPort
+            simPort: config.imageSimPort,
+            blurImagesEnabled: config.blurImages
         };
 
         res.status(200).send(configResponse);

@@ -7,7 +7,9 @@ var digApp = angular.module('digApp', [
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
-    'elasticui'
+    'elasticui',
+
+    'digApp.directives'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
@@ -15,6 +17,8 @@ var digApp = angular.module('digApp', [
 
     $locationProvider.html5Mode(true);
 });
+
+angular.module('digApp.directives', []);
 
 angular.element(document).ready(function() {
     var $http = angular.injector(['ng']).get('$http');
@@ -30,11 +34,15 @@ angular.element(document).ready(function() {
         var simHost = (config.simHost || 'localhost') + ':' + (config.simPort || 3001);
         digApp.constant('simHost', simHost);
 
+        var blurImagesEnabled = (config.blurImagesEnabled !== undefined ? config.blurImagesEnabled : true);
+        digApp.constant('blurImagesEnabled', blurImagesEnabled);
+
         angular.bootstrap(document, ['digApp']);
     })
     .error(function() {
         digApp.constant('euiHost', 'http://localhost:9200');
         digApp.constant('euiSearchIndex', 'dig');
         digApp.constant('simHost', 'http://localhost:3001');
+        digApp.constant('blurImagesEnabled', true);
     });
 });

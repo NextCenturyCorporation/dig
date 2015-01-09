@@ -46,7 +46,9 @@ var all = {
     euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig',
 
     imageSimUrl: process.env.IMAGE_SIM_URL || 'http://localhost',
-    imageSimPort: process.env.IMAGE_SIM_PORT || 3001
+    imageSimPort: process.env.IMAGE_SIM_PORT || 3001,
+
+    blurImages: (!!process.env.BLUR_IMAGES ? false : true)
 };
 
 // Export the config object based on the NODE_ENV
