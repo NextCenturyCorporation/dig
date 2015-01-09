@@ -187,6 +187,11 @@ describe('Controller: SearchCtrl', function () {
                 "similar_images_feature": [
                     {
                         "featureName": "similarimageurl",
+                        "similarimageurl": "https://some.server/placeholder.jpg",
+                        "featureValue": "https://some.server/placeholder.jpg"
+                    },
+                    {
+                        "featureName": "similarimageurl",
                         "similarimageurl": "https://some.server/test.jpg",
                         "featureValue": "https://some.server/test.jpg"
                     },

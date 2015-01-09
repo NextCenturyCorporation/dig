@@ -84,9 +84,11 @@ angular.module('digApp')
         // If we have an active image search, check for a matching image.
         if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                function(item) { return item.featureName === 'similarimageurl'; });
+                function(item) { return item.featureValue === currentSearch.url; });
 
-            if (currentSearch.url === imgFeature.featureValue) {
+            // Verify that the current search url is in the similar images feature.  If so, select the matching
+            // image.
+            if (imgFeature) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                     function(item) { return (typeof item.featureObject !== 'undefined'); });
                 var imgMatch = _.find(doc._source.hasImagePart, 
