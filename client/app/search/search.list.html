@@ -29,7 +29,7 @@
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
-            <img ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="image-thumb center-block">
+            <img ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
             </span>
           </div>
           <div class="col-xs-9 col-sm-10 col-lg-11">
