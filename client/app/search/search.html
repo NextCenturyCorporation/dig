@@ -16,7 +16,8 @@
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
             <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.MatchQuery('_all', queryString.submitted)" ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
             <span class="input-group-btn">
-              <a href="#" class="btn btn-cancel-input" role="button" title="Clear search">&times;</a>
+              <!-- TODO: Implement Clear search feature - commenting out for now -->
+              <!-- <a href="#" class="btn btn-cancel-input" role="button" title="Clear search">&times;</a> -->
               <button class="btn btn-primary" type="submit">Search</button>
             </span>
           </div>
@@ -33,7 +34,8 @@
 
     <form ng-controller="FilterCtrl" ng-submit="changeFilters()">
       <div class="column-header">
-        <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a>
+        <!-- TODO: Implement Clear All button - commenting out for now -->
+        <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
         <h4>Filter</h4>
       </div>
 
