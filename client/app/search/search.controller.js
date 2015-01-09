@@ -71,28 +71,32 @@ angular.module('digApp')
     };
 
     $scope.getDisplayImageSrc = function(doc) {
-        var src = (doc._source.hasImagePart) ? 
-            (doc._source.hasImagePart.cacheUrl || doc._source.hasImagePart[0].cacheUrl) : "";
-
-        //var src = doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl;
+        var src = '';
         var currentSearch = imageSearchService.getActiveImageSearch();
+
+        // Default behavior.  Grab the only cached versions of the images from our docs.
+        if (doc._source.hasImagePart && doc._source.hasImagePart.cacheUrl) {
+            src = doc._source.hasImagePart.cacheUrl;
+        } else if (doc._source.hasImagePart[0] && doc._source.hasImagePart[0].cacheUrl) {
+            src = doc._source.hasImagePart[0].cacheUrl;
+        }
 
         // If we have an active image search, check for a matching image.
         if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                function(item) { return item.featureName === "similarimageurl"; });
+                function(item) { return item.featureName === 'similarimageurl'; });
 
             if (currentSearch.url === imgFeature.featureValue) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                    function(item) { return (typeof item.featureObject !== "undefined"); });
+                    function(item) { return (typeof item.featureObject !== 'undefined'); });
                 var imgMatch = _.find(doc._source.hasImagePart, 
                     function(part) { return (part.uri === imgObj.featureObject.imageObjectUris[0]); });
-                src = imgMatch.cacheUrl;
+                src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
 
         return src;
-    }
+    };
 
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
