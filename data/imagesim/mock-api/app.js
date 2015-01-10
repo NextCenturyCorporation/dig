@@ -35,7 +35,7 @@ app.use(cors(corsOptions));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/imagesim', imagesim);
+app.use('/ds/similar/images', imagesim);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
