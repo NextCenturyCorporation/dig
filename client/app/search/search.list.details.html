@@ -56,7 +56,12 @@
 
           <!-- ngIf: doc._source.hasFeatureCollection.phonenumber_feature.phonenumber -->
           <dt>Phone Number</dt>
-          <dd>{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}</dd>
+          <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
+            {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
+          </dd>
+          <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.length" ng-repeat="phonenumber in doc._source.hasFeatureCollection.phonenumber_feature">
+            {{phonenumber.phonenumber}}
+          </dd>
 
           <!-- ngIf: doc._source.hasFeatureCollection.emailaddress_feature.emailaddress -->
           <dt>Email</dt>

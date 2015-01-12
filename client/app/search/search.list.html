@@ -40,7 +40,7 @@
             <div class="list-group-item-meta">
               <strong>date:</strong> <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
               <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality || "n/a"}}</span>
-              <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</span>
+              <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || ( doc._source.hasFeatureCollection.phonenumber_feature[0].phonenumber || "N/A")}}</span>
               <strong>name:</strong> <span class="name">{{doc._source.hasFeatureCollection.person_name_feature.person_name || "N/A"}}</span>
               <strong>age:</strong> <span class="age">{{doc._source.hasFeatureCollection.person_age_feature.person_age || "N/A"}}</span>
             </div>
@@ -53,8 +53,8 @@
           <div class="col-md-5 col-lg-4 text-center">
             <span ng-if="doc._source.hasImagePart">
               <div class="image-with-caption">
-                <img blurred-image class="image-expanded center-block" ng-src="{{doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl}}">
-                <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[0].cacheUrl || doc._source.hasImagePart.cacheUrl))">
+                <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
+                <div class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
                   <div class="caption-background"></div>
                   <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
                 </div>
@@ -78,7 +78,12 @@
                   <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality}}</dd>
 
                   <dt>Phone Number</dt>
-                  <dd>{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || "N/A"}}</dd>
+                  <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
+                    {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
+                  </dd>
+                  <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.length" ng-repeat="phonenumber in doc._source.hasFeatureCollection.phonenumber_feature">
+                    {{phonenumber.phonenumber}}
+                  </dd>
 
                   <dt>Email</dt>
                   <dd>{{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}</dd>
