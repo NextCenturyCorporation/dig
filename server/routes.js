@@ -23,7 +23,8 @@ module.exports = function(app) {
             euiSearchIndex: config.euiSearchIndex,
             simHost: config.imageSimUrl,
             simPort: config.imageSimPort,
-            blurImagesEnabled: config.blurImages
+            blurImagesEnabled: config.blurImages,
+            blurImagesPercentage: config.blurPercentage
         };
 
         res.status(200).send(configResponse);

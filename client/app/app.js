@@ -37,6 +37,9 @@ angular.element(document).ready(function() {
         var blurImagesEnabled = (config.blurImagesEnabled !== undefined ? config.blurImagesEnabled : true);
         digApp.constant('blurImagesEnabled', blurImagesEnabled);
 
+        var blurImagesPercentage = (config.blurImagesPercentage !== undefined ? config.blurImagesPercentage : true);
+        digApp.constant('blurImagesPercentage', blurImagesPercentage);
+
         angular.bootstrap(document, ['digApp']);
     })
     .error(function() {
@@ -44,5 +47,6 @@ angular.element(document).ready(function() {
         digApp.constant('euiSearchIndex', 'dig');
         digApp.constant('simHost', 'http://localhost:3001');
         digApp.constant('blurImagesEnabled', true);
+        digApp.constant('blurImagesPercentage', 5);
     });
 });
