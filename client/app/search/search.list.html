@@ -28,7 +28,7 @@
   <ul id="results" class="list-group">
 
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
-      <a href="#collapse{{$index}}" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results" target="_self">
+      <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </a>
-      <div id="collapse{{$index}}" class="list-group-item-text collapse">
+      <div collapse="!getListItemOpened(doc._id)" class="list-group-item-text collapse">
         <div class="row">
           <!-- ngIf: doc._source.hasImagePart -->
           <div class="col-md-5 col-lg-4 text-center">
@@ -130,7 +130,7 @@
     <ul class="list-unstyled">
     <li><pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
     ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize"
-    class="pagination-sm" num-pages="indexVM.pageCount"></pagination></li>
+    class="pagination-sm" num-pages="indexVM.pageCount" ng-change="onPageChange()"></pagination></li>
     <li ng-show="indexVM.results.hits.total > 0">Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</li>
     </ul>
   </div>

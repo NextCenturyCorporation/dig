@@ -16,23 +16,11 @@ angular.module('digApp')
     $scope.searchConfig.filterByImage = false;
     $scope.searchConfig.euiSearchIndex = euiSearchIndex;
     $scope.imageSearchResults = {};
+    $scope.opened = [];
 
     $scope.submit = function () {
         $scope.queryString.submitted = $scope.queryString.live;
     };
-
-    $scope.$watch(
-        function() { return $scope.indexVM.loading; },
-        function(newValue, oldValue) {
-            if(newValue !== oldValue) {
-                $scope.loading = newValue;
-
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
-                    $scope.showresults = true;
-                }       
-            } 
-        }
-    );
 
     $scope.closeOthers = function(index, array) {
         if($scope.currentOpened < array.length) {
@@ -100,6 +88,18 @@ angular.module('digApp')
         return src;
     };
 
+    $scope.toggleListItemOpened = function(index) {
+        $scope.opened[index] = !($scope.opened[index]);
+    };
+
+    $scope.getListItemOpened = function(index) {
+        return $scope.opened[index];
+    };
+
+    $scope.onPageChange = function() {
+        //$scope.opened = [];
+    };
+
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
@@ -121,6 +121,29 @@ angular.module('digApp')
             }
         },
         true);
+
+    $scope.$watch('indexVM.loading',
+        function(newValue, oldValue) {
+            if(newValue !== oldValue) {
+                $scope.loading = newValue;
+
+                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+                    $scope.showresults = true;
+                    // Reset our page collapse states
+                    $scope.opened = [];
+                }
+            }
+        }
+    );
+
+    $scope.$watch('indexVM.query', function(){
+        // Reset our opened document state on a new query.
+        $scope.opened = [];
+    });
+
+    $scope.$watch('indexVM.filters', function(){
+       // $scope.opened = [];
+    }, true);
 
     if($state.current.name === 'search') {
         $scope.viewList();
