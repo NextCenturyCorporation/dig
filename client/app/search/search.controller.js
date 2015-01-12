@@ -137,8 +137,9 @@ angular.module('digApp')
     );
 
     $scope.$watch('indexVM.query', function(){
-        // Reset our opened document state on a new query.
+        // Reset our opened document state and page on a new query.
         $scope.opened = [];
+        $scope.indexVM.page = 1;
     });
 
     $scope.$watch('indexVM.filters', function(){
