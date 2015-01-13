@@ -43,7 +43,7 @@ var all = {
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
-    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig',
+    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig-mrs-dev02',
 
     imageSimUrl: process.env.IMAGE_SIM_URL || 'http://localhost',
     imageSimPort: process.env.IMAGE_SIM_PORT || 3001,
@@ -162,6 +162,55 @@ var all = {
                         },{
                             title: 'Weight',
                             field: "doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']",
+                        }]
+                    }
+                }
+            },
+
+            detailFields: [{
+
+            }]
+        },
+        'dig-mrs-dev02': {
+            facets: {
+                euiFilters :[],
+                simFilters: [],
+                aggFilters: [{
+                    title: 'Author',
+                    type: 'eui-aggregation',
+                    field: 'author_agg',
+                    terms: 'hasFeatureCollection.author_feature.featureObject.person_name',
+                    count: 30
+                }]
+            },
+
+            listFields: {
+                "title": [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.hasTitlePart.text',
+                    section: 'title'
+                }],
+                "short": [{
+                    title: 'Date',
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'",
+                    classes: 'date'
+                },{
+                    title: 'Author',
+                    field: 'doc._source.hasFeatureCollection.author_feature.author || doc._source.hasFeatureCollection.author_feature[0].author',
+                    classes: 'location'
+                }],
+                "full": {
+                    "listing-details": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Authors(s)',
+                            field: 'doc._source.hasFeatureCollection.author_feature.author',
+                            featureArray: 'doc._source.hasFeatureCollection.author_feature',
+                            featureValue: 'author'
+                        },{
+                            title: 'Abstract',
+                            field: "doc['_source']['memex:hasAbstractPart']['text']"
                         }]
                     }
                 }
