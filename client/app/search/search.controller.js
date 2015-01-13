@@ -17,9 +17,14 @@ angular.module('digApp')
     $scope.searchConfig.euiSearchIndex = euiSearchIndex;
     $scope.imageSearchResults = {};
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
         $scope.viewList();
+    };
+
+    $scope.clearSearch = function() {
+        $scope.queryString.live = '';
+        $scope.submit();
     };
 
     $scope.$watch(
