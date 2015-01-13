@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.showresults = false;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
@@ -16,6 +16,7 @@ angular.module('digApp')
     $scope.searchConfig.filterByImage = false;
     $scope.searchConfig.euiSearchIndex = euiSearchIndex;
     $scope.imageSearchResults = {};
+    $scope.euiConfigs = euiConfigs;
 
     $scope.submit = function () {
         $scope.queryString.submitted = $scope.queryString.live;

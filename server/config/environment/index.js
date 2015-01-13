@@ -89,27 +89,79 @@ var all = {
                 count: 10
             }],
 
-            listFields: [{
-                title: 'Title',
-                type: 'title',
-                field: 'hasTitlePart.text',
-                section: 'title'
-            },{
-                title: 'date',
-                type: 'short',
-                field: 'dateCreated',
-                section: 'listing-details'
-            },{
-                title: 'Email',
-                type: 'full',
-                field: 'hasFeatureCollection.emailaddress_feature.emailaddress',
-                section: 'listing-details'
-            },{
-                title: 'Age',
-                type: 'short',
-                field: 'hasFeatureCollection.emailaddress_feature.emailaddress',
-                section: 'person-details'
-            }],
+            listFields: {
+                "title": [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.hasTitlePart.text',
+                    section: 'title'
+                }],
+                "short": [{
+                    title: 'Date',
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'",
+                    classes: 'date'
+                },{
+                    title: 'Location',
+                    field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    classes: 'location'
+                },{
+                    title: 'Phone',
+                    field: 'doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || doc._source.hasFeatureCollection.phonenumber_feature[0].phonenumber',
+                    classes: 'phone'
+                },{
+                    title: 'Name',
+                    field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
+                    classes: 'age'
+                },{
+                    title: 'Age',
+                    field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                    classes: 'age'
+                }],
+                "full": {
+                    "listing-details": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Name(s)',
+                            field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
+                        },{
+                            title: 'City',
+                            field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                        },{
+                            title: 'Phone Number',
+                            field: 'doc._source.hasFeatureCollection.phonenumber_feature.phonenumber',
+                            featureArray: 'doc._source.hasFeatureCollection.phonenumber_feature',
+                            featureValue: 'phonenumber'
+                        },{
+                            title: 'Email',
+                            field: 'doc._source.hasFeatureCollection.emailaddress_feature.emailaddress',
+                        },{
+                            title: 'Web Site',
+                            field: 'doc._source.hasFeatureCollection.website_feature.website',
+                        }]
+                    },
+                    "person-details": {
+                        classes: 'person-details',
+                        fields: [{
+                            title: 'Age',
+                            field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                        },{
+                            title: 'Ethnicity',
+                            field: 'doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity',
+                            featureArray: 'doc._source.hasFeatureCollection.person_ethnicity_feature',
+                            featureValue: 'person_ethnicity'
+                        },{
+                            title: 'Hair Color',
+                            field: 'doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor',
+                        },{
+                            title: 'Height',
+                            field: 'doc._source.hasFeatureCollection.person_height_feature.person_height',
+                        },{
+                            title: 'Weight',
+                            field: "doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']",
+                        }]
+                    }
+                }
+            },
 
             detailFields: [{
 
