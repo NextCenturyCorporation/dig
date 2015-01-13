@@ -92,8 +92,8 @@ angular.module('digApp')
         $scope.opened[index] = !($scope.opened[index]);
     };
 
-    $scope.getListItemOpened = function(index) {
-        return $scope.opened[index];
+    $scope.isListItemOpened = function(index) {
+        return ($scope.opened[index]) ? true : false;
     };
 
     $scope.onPageChange = function() {
