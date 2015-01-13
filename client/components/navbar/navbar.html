@@ -11,7 +11,12 @@
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
         <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}} <span class="{{item.icon}}"></span></a>
+            <a ng-href="{{item.link}}" ng-if="!item.reload">
+                {{item.title}} <span class="{{item.icon}}"></span>
+            </a>
+            <a ng-href="{{item.link}}" target="_self" ng-if="item.reload">
+                {{item.title}} <span class="{{item.icon}}"></span>
+            </a>
         </li>
       </ul>
     </div>
