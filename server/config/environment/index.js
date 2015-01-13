@@ -54,40 +54,44 @@ var all = {
 
     euiConfigs: {
         'dig': {
-                facets: [{
-                title: 'Phone',
-                type: 'eui-filter',
-                field: 'phonenumber',
-                terms: 'phone',
-            },{
-                title: 'Image',
-                type: 'simFilter',
-                field: 'hasFeatureCollection.similar_images_feature.featurevalue'
-            },{
-                title: 'City/Region',
-                type: 'eui-aggregation',
-                field: 'city_agg',
-                terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
-                count: 30
-            },{
-                title: 'Ethnicity',
-                type: 'eui-aggregation',
-                field: 'etn_agg',
-                terms: 'person_ethnicity',
-                count: 20
-            },{
-                title: 'Hair Color',
-                type: 'eui-aggregation',
-                field: 'hc_agg',
-                terms: 'person_haircolor',
-                count: 10
-            },{
-                title: 'Age',
-                type: 'eui-aggregation',
-                field: 'age_agg',
-                terms: 'person_age',
-                count: 10
-            }],
+            facets: {
+                euiFilters :[{
+                    title: 'Phone',
+                    type: 'eui-filter',
+                    field: 'phonenumber',
+                    terms: 'phone',
+                }],
+                simFilters: [{
+                    title: 'Image',
+                    type: 'simFilter',
+                    field: 'hasFeatureCollection.similar_images_feature.featurevalue'
+                }],
+                aggFilters: [{
+                    title: 'City/Region',
+                    type: 'eui-aggregation',
+                    field: 'city_agg',
+                    terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    count: 30
+                },{
+                    title: 'Ethnicity',
+                    type: 'eui-aggregation',
+                    field: 'etn_agg',
+                    terms: 'person_ethnicity',
+                    count: 20
+                },{
+                    title: 'Hair Color',
+                    type: 'eui-aggregation',
+                    field: 'hc_agg',
+                    terms: 'person_haircolor',
+                    count: 10
+                },{
+                    title: 'Age',
+                    type: 'eui-aggregation',
+                    field: 'age_agg',
+                    terms: 'person_age',
+                    count: 10
+                }]
+            },
 
             listFields: [{
                 title: 'Title',
@@ -116,7 +120,7 @@ var all = {
             }]
         }
     }
-    
+
 };
 
 // Export the config object based on the NODE_ENV

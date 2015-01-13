@@ -59,25 +59,8 @@
           </div>
         </div>
 
-        <collapse-filter title="City/Region" closed="false">
-          <checkbox-filter aggregation-name="city_agg" aggregation-key="hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality"
-          aggregation-count="30" aggregation-count="10" indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult"></checkbox-filter>
-        </collapse-filter>
-
-        <collapse-filter title="Ethnicity" closed="false">
-          <checkbox-filter aggregation-name="etn_agg" aggregation-key="person_ethnicity" aggregation-count="10"
-            indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
-          </checkbox-filter>
-        </collapse-filter>
-
-        <collapse-filter title="Hair Color" closed="false">
-          <checkbox-filter aggregation-name="hc_agg" aggregation-key="person_haircolor" aggregation-count="10"
-            indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
-          </checkbox-filter>
-        </collapse-filter>
-
-        <collapse-filter title="Age" closed="false">
-          <checkbox-filter aggregation-name="age_agg" aggregation-key="person_age" aggregation-count="10"
+        <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
+          <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="{{filter.count}}"
             indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
           </checkbox-filter>
         </collapse-filter>
