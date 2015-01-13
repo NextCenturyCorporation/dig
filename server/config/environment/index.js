@@ -59,7 +59,6 @@ var all = {
                 type: 'eui-filter',
                 field: 'phonenumber',
                 terms: 'phone',
-                enabled: true
             },{
                 title: 'Image',
                 type: 'simFilter',
@@ -68,22 +67,26 @@ var all = {
                 title: 'City/Region',
                 type: 'eui-aggregation',
                 field: 'city_agg',
-                terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality'
+                terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                count: 30
             },{
                 title: 'Ethnicity',
                 type: 'eui-aggregation',
                 field: 'etn_agg',
-                terms: 'person_ethnicity'
+                terms: 'person_ethnicity',
+                count: 20
             },{
                 title: 'Hair Color',
                 type: 'eui-aggregation',
                 field: 'hc_agg',
-                terms: 'person_haircolor'
+                terms: 'person_haircolor',
+                count: 10
             },{
                 title: 'Age',
                 type: 'eui-aggregation',
                 field: 'age_agg',
-                terms: 'person_age'
+                terms: 'person_age',
+                count: 10
             }],
 
             listFields: [{
