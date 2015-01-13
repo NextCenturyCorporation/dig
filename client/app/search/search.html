@@ -29,85 +29,58 @@
   </div>
 
   <div class="row" ng-show="showresults">
-
     <div class="left-column hidden-xs col-sm-3 col-lg-2">
+      <form ng-controller="FilterCtrl" ng-submit="changeFilters()">
+        <div class="column-header">
+          <!-- TODO: Implement Clear All button - commenting out for now -->
+          <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
+          <h4>Filter</h4>
+        </div>
 
-    <form ng-controller="FilterCtrl" ng-submit="changeFilters()">
-      <div class="column-header">
-        <!-- TODO: Implement Clear All button - commenting out for now -->
-        <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
-        <h4>Filter</h4>
-      </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" eui-filter="ejs.TermsFilter('phonenumber', phone.submitted)" ng-model="phone.live" eui-enabled="phone.submitted.length" ng-disabled="loading">
+        </div>
 
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="text" eui-filter="ejs.TermsFilter('phonenumber', phone.submitted)" ng-model="phone.live" eui-enabled="phone.submitted.length" ng-disabled="loading">
-      </div>
-
-      <div class="form-group" ng-show="getActiveImageSearch()">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> Image <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
-        <div>
-          <div class="checkbox image-search-filter">
-            <label>
-              <input type="checkbox" ng-model="searchConfig.filterByImage"
-                eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', getActiveImageSearch().url)"
-                eui-enabled="searchConfig.filterByImage">
-            </label>
-            <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
-            <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
-              <i class="fa fa-times-circle pull-right"></i>
-            </a>
+        <div class="form-group" ng-show="getActiveImageSearch()">
+          <h5><i class="fa fa-chevron-down fa-fw"></i> Image <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+          <div>
+            <div class="checkbox image-search-filter">
+              <label>
+                <input type="checkbox" ng-model="searchConfig.filterByImage"
+                  eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', getActiveImageSearch().url)"
+                  eui-enabled="searchConfig.filterByImage">
+              </label>
+              <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
+              <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
+                <i class="fa fa-times-circle pull-right"></i>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <checkbox-filters title="City/Region" closed="false">
-        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('city_agg').field('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality').size(30)" eui-filter-self="false">
-          <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
-            <label eui-filter="ejs.TermsFilter('hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality', bucket.key)">
-              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
-            </label>
-            <span class="badge pull-right">{{bucket.doc_count}}</span>
-          </div>
-        </div>
-        <a href="#">More</a>
-      </checkbox-filters>
+        <collapse-filter title="City/Region" closed="false">
+          <checkbox-filter aggregation-name="city_agg" aggregation-key="hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality"
+          aggregation-count="30" aggregation-count="10" indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult"></checkbox-filter>
+        </collapse-filter>
 
-      <checkbox-filters title="Ethnicity" closed="false">
-        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('etn_agg').field('person_ethnicity').size(10)" eui-filter-self="false">
-          <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
-            <label eui-filter="ejs.TermsFilter('person_ethnicity', bucket.key)">
-              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
-            </label>
-            <span class="badge pull-right">{{bucket.doc_count}}</span>
-          </div>
-        </div>
-        <a href="#">More</a>
-      </checkbox-filters>
+        <collapse-filter title="Ethnicity" closed="false">
+          <checkbox-filter aggregation-name="etn_agg" aggregation-key="person_ethnicity" aggregation-count="10"
+            indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
+          </checkbox-filter>
+        </collapse-filter>
 
-      <checkbox-filters title="Hair Color" closed="false">
-        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('hc_agg').field('person_haircolor').size(10)" eui-filter-self="false">
-          <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
-            <label eui-filter="ejs.TermsFilter('person_haircolor', bucket.key)">
-              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
-            </label>
-            <span class="badge pull-right">{{bucket.doc_count}}</span>
-          </div>
-        </div>
-        <a href="#">More</a>
-      </checkbox-filters>
+        <collapse-filter title="Hair Color" closed="false">
+          <checkbox-filter aggregation-name="hc_agg" aggregation-key="person_haircolor" aggregation-count="10"
+            indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
+          </checkbox-filter>
+        </collapse-filter>
 
-      <checkbox-filters title="Age" closed="false">
-        <div eui-or-filter eui-aggregation="ejs.TermsAggregation('age_agg').field('person_age').size(20)" eui-filter-self="false">
-          <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
-            <label eui-filter="ejs.TermsFilter('person_age', bucket.key)">
-              <input type="checkbox" ng-model="filter.enabled">{{bucket.key}}
-            </label>
-            <span class="badge pull-right">{{bucket.doc_count}}</span>
-          </div>
-        </div>
-        <a href="#">More</a>
-      </checkbox-filters>
+        <collapse-filter title="Age" closed="false">
+          <checkbox-filter aggregation-name="age_agg" aggregation-key="person_age" aggregation-count="10"
+            indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult">
+          </checkbox-filter>
+        </collapse-filter>
       </form>
     </div>
 

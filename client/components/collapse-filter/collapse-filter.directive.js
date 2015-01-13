@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('digApp')
-.directive('checkboxFilters', function() {
+angular.module('digApp.directives')
+.directive('collapseFilter', function() {
     return {
         restrict: 'EA',
         scope: {
@@ -9,6 +9,6 @@ angular.module('digApp')
             closed: '='
         },
         transclude: true,
-        templateUrl: 'components/checkbox-filters/checkbox-filters.html'
+        templateUrl: 'components/collapse-filter/collapse-filter.html'
     };
 });
