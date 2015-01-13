@@ -19,6 +19,7 @@ angular.module('digApp')
 
     $scope.submit = function () {
         $scope.queryString.submitted = $scope.queryString.live;
+        $scope.viewList();
     };
 
     $scope.$watch(
@@ -29,8 +30,8 @@ angular.module('digApp')
 
                 if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
                     $scope.showresults = true;
-                }       
-            } 
+                }
+            }
         }
     );
 
@@ -48,7 +49,7 @@ angular.module('digApp')
 
     $scope.viewList = function() {
         if($scope.doc) {
-            $scope.doc = null; 
+            $scope.doc = null;
         }
         $state.go('search.list');
     };
@@ -91,7 +92,7 @@ angular.module('digApp')
             if (imgFeature) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                     function(item) { return (typeof item.featureObject !== 'undefined'); });
-                var imgMatch = _.find(doc._source.hasImagePart, 
+                var imgMatch = _.find(doc._source.hasImagePart,
                     function(part) { return (part.uri === imgObj.featureObject.imageObjectUris[0]); });
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
