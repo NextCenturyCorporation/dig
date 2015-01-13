@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Directive: checkboxFilters', function () {
+describe('Directive: collapseFilter', function () {
 
 	// load the necessary modules
 	beforeEach(module('digApp'));
-	beforeEach(module('components/checkbox-filters/checkbox-filters.html'));
+	beforeEach(module('components/collapse-filter/collapse-filter.html'));
 
 	var scope, element;
 
 	// Initialize the mock scope
 	beforeEach(inject(function ($compile, $rootScope) {
 		scope = $rootScope;
-		element = angular.element('<checkbox-filters title=\"Test\" closed=\"false\">content</checkbox-filters>');
+		element = angular.element('<collapse-filter title=\"Test\" closed=\"false\">content</collapse-filters-filter>');
 		$compile(element)(scope);
 		element.scope().$digest();
 	}));
