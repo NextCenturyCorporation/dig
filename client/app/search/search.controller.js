@@ -16,6 +16,7 @@ angular.module('digApp')
     $scope.searchConfig.filterByImage = false;
     $scope.searchConfig.euiSearchIndex = euiSearchIndex;
     $scope.imageSearchResults = {};
+    $scope.opened = [];
 
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
@@ -26,19 +27,6 @@ angular.module('digApp')
         $scope.queryString.live = '';
         $scope.submit();
     };
-
-    $scope.$watch(
-        function() { return $scope.indexVM.loading; },
-        function(newValue, oldValue) {
-            if(newValue !== oldValue) {
-                $scope.loading = newValue;
-
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
-                    $scope.showresults = true;
-                }
-            }
-        }
-    );
 
     $scope.closeOthers = function(index, array) {
         if($scope.currentOpened < array.length) {
@@ -54,7 +42,7 @@ angular.module('digApp')
 
     $scope.viewList = function() {
         if($scope.doc) {
-            $scope.doc = null;
+            $scope.doc = null; 
         }
         $state.go('search.list');
     };
@@ -97,13 +85,25 @@ angular.module('digApp')
             if (imgFeature) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                     function(item) { return (typeof item.featureObject !== 'undefined'); });
-                var imgMatch = _.find(doc._source.hasImagePart,
+                var imgMatch = _.find(doc._source.hasImagePart, 
                     function(part) { return (part.uri === imgObj.featureObject.imageObjectUris[0]); });
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
 
         return src;
+    };
+
+    $scope.toggleListItemOpened = function(index) {
+        $scope.opened[index] = !($scope.opened[index]);
+    };
+
+    $scope.isListItemOpened = function(index) {
+        return ($scope.opened[index]) ? true : false;
+    };
+
+    $scope.onPageChange = function() {
+        //$scope.opened = [];
     };
 
     $scope.$watch(function() {
@@ -127,6 +127,30 @@ angular.module('digApp')
             }
         },
         true);
+
+    $scope.$watch('indexVM.loading',
+        function(newValue, oldValue) {
+            if(newValue !== oldValue) {
+                $scope.loading = newValue;
+
+                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+                    $scope.showresults = true;
+                    // Reset our page collapse states
+                    $scope.opened = [];
+                }
+            }
+        }
+    );
+
+    $scope.$watch('indexVM.query', function(){
+        // Reset our opened document state and page on a new query.
+        $scope.opened = [];
+        $scope.indexVM.page = 1;
+    });
+
+    $scope.$watch('indexVM.filters', function(){
+       // $scope.opened = [];
+    }, true);
 
     if($state.current.name === 'search') {
         $scope.viewList();

@@ -20,7 +20,7 @@ describe('Service: imageSearchService', function () {
             imageSearchService = _imageSearchService_;
             $httpBackend = _$httpBackend_;
 
-            imageSearchRequest = $httpBackend.when('GET', new RegExp(simHost + '/imagesim\\?uri=*'))
+            imageSearchRequest = $httpBackend.when('GET', new RegExp(simHost + '/ds/similar/images\\?uri=*'))
                 .respond(200, {some: 'json'});
         });
     });
