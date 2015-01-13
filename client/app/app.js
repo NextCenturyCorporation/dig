@@ -31,6 +31,13 @@ angular.element(document).ready(function() {
         var euiSearchIndex = (config.euiSearchIndex || 'dig');
         digApp.constant('euiSearchIndex', euiSearchIndex);
 
+        var euiConfigs = (config.euiConfigs || {
+            facets: [],
+            listFields: [],
+            detailFields: []
+        });
+        digApp.constant('euiConfigs', euiConfigs);
+
         var simHost = (config.simHost || 'localhost') + ':' + (config.simPort || 3001);
         digApp.constant('simHost', simHost);
 
@@ -45,6 +52,11 @@ angular.element(document).ready(function() {
     .error(function() {
         digApp.constant('euiHost', 'http://localhost:9200');
         digApp.constant('euiSearchIndex', 'dig');
+        digApp.constant('euiConfigs', {
+            facets: [],
+            listFields: [],
+            detailFields: []
+        });
         digApp.constant('simHost', 'http://localhost:3001');
         digApp.constant('blurImagesEnabled', true);
         digApp.constant('blurImagesPercentage', 5);

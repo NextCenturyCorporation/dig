@@ -50,7 +50,70 @@ var all = {
 
     blurImages: ((!!process.env.BLUR_IMAGES && process.env.BLUR_IMAGES === 'false') ? false : true),
 
-    blurPercentage: process.env.BLUR_PERCENT || 5
+    blurPercentage: process.env.BLUR_PERCENT || 5,
+
+    euiConfigs: {
+        'dig': {
+                facets: [{
+                title: 'Phone',
+                type: 'eui-filter',
+                field: 'phonenumber',
+                terms: 'phone',
+                enabled: true
+            },{
+                title: 'Image',
+                type: 'simFilter',
+                field: 'hasFeatureCollection.similar_images_feature.featurevalue'
+            },{
+                title: 'City/Region',
+                type: 'eui-aggregation',
+                field: 'city_agg',
+                terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality'
+            },{
+                title: 'Ethnicity',
+                type: 'eui-aggregation',
+                field: 'etn_agg',
+                terms: 'person_ethnicity'
+            },{
+                title: 'Hair Color',
+                type: 'eui-aggregation',
+                field: 'hc_agg',
+                terms: 'person_haircolor'
+            },{
+                title: 'Age',
+                type: 'eui-aggregation',
+                field: 'age_agg',
+                terms: 'person_age'
+            }],
+
+            listFields: [{
+                title: 'Title',
+                type: 'title',
+                field: 'hasTitlePart.text',
+                section: 'title'
+            },{
+                title: 'date',
+                type: 'short',
+                field: 'dateCreated',
+                section: 'listing-details'
+            },{
+                title: 'Email',
+                type: 'full',
+                field: 'hasFeatureCollection.emailaddress_feature.emailaddress',
+                section: 'listing-details'
+            },{
+                title: 'Age',
+                type: 'short',
+                field: 'hasFeatureCollection.emailaddress_feature.emailaddress',
+                section: 'person-details'
+            }],
+
+            detailFields: [{
+
+            }]
+        }
+    }
+    
 };
 
 // Export the config object based on the NODE_ENV
