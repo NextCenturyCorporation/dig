@@ -7,7 +7,7 @@
     <div class="col-sm-12 list-group-item">
       <div class="row">
         <div class="col-sm-2">
-          <img src="/assets/images/HExIS-logo-50pxh.png" alt="" style="margin-top:8px;margin-left:10px">
+          <img src="/assets/images/dig-logo-original.png" alt="" style="margin-top:8px;margin-left:10px"> 
         </div>
         <div class="col-sm-8">
         <div class="controls controls-search">
@@ -16,8 +16,9 @@
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
             <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.MatchQuery('_all', queryString.submitted)" ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
             <span class="input-group-btn">
-              <!-- TODO: Implement Clear search feature - commenting out for now -->
-              <!-- <a href="#" class="btn btn-cancel-input" role="button" title="Clear search">&times;</a> -->
+              <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search" ng-click="clearSearch()">
+                <i class="glyphicon glyphicon-remove clear-search-icon"></i>
+              </button>
               <button class="btn btn-primary" type="submit">Search</button>
             </span>
           </div>

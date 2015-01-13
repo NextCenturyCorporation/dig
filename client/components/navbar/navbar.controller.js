@@ -6,7 +6,8 @@ angular.module('digApp')
     {
       'title': 'Home',
       'link': '/',
-      'icon':'glyphicon glyphicon-home'
+      'icon':'glyphicon glyphicon-home',
+      'reload': true
     }];
 
     $scope.isCollapsed = true;

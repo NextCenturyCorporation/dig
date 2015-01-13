@@ -327,17 +327,33 @@ describe('Controller: SearchCtrl', function () {
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
+        var simHost = 'http://localhost';
+        var $httpBackend;
+        var searchQuery;
+
         module(function($provide) {
-            $provide.constant('simHost', 'http://localhost');
+            $provide.constant('simHost', simHost);
             $provide.constant('euiSearchIndex', 'dig');
+            $provide.constant('euiConfigs', {
+                facets: [],
+                listFields: [],
+                detailsFields: []
+            })
         });
 
-        inject(function ($controller, $rootScope, $state, _imageSearchService_) {
+        inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
             state.current.name = 'search';
             spyOn(state, 'go');
 
+            $httpBackend = _$httpBackend_;
+            $httpBackend.when('GET', new RegExp('app/search/search.html'))
+                .respond(200, 'some text');
+            $httpBackend.when('GET', new RegExp('app/search/search.list.html'))
+                .respond(200, 'some text');
+            $httpBackend.when('GET', new RegExp('app/search/search.list.details.html'))
+                .respond(200, 'some text');
             imageSearchService = _imageSearchService_;
 
             SearchCtrl = $controller('SearchCtrl', {
@@ -345,7 +361,14 @@ describe('Controller: SearchCtrl', function () {
                 $state: state
             });
 
-            scope.indexVM = {loading: true};
+            scope.indexVM = {
+                filters: {
+                    ejsFilters: []
+                },
+                loading: true,
+                page: 1,
+                query: 'someValue'
+            };
             scope.$digest();
         });
     });
@@ -446,7 +469,27 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.getDisplayImageSrc(sampleImageSearchWithSingleImagePartDoc)).toBe("https://some.server/cached-2.jpg")
     });
 
-    it('should generat an empty display image src if no cacheUrl is present', function() {
+    it('should generate an empty display image src if no cacheUrl is present', function() {
         expect(scope.getDisplayImageSrc(sampleDocMissingCacheUrl)).toBe("");
+    });
+
+    it('should return whether or not a list item is opened by id', function() {
+        expect(scope.isListItemOpened("foo")).toBe(false);
+
+        scope.toggleListItemOpened("foo");
+        expect(scope.isListItemOpened("foo")).toBe(true);
+
+        scope.toggleListItemOpened("foo");
+        expect(scope.isListItemOpened("foo")).toBe(false);
+    });
+
+    it('should clear the opened items list on a query change', function() {
+        expect(scope.opened.length).toBe(0);
+
+        scope.toggleListItemOpened("foo");
+        scope.indexVM.query = "some new query";
+        scope.$apply();
+        expect(scope.opened.length).toBe(0);
+        expect(scope.isListItemOpened("foo")).toBe(false);
     });
 });

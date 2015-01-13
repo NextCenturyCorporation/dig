@@ -18,23 +18,17 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
+    $scope.opened = [];
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
+        $scope.viewList();
     };
 
-    $scope.$watch(
-        function() { return $scope.indexVM.loading; },
-        function(newValue, oldValue) {
-            if(newValue !== oldValue) {
-                $scope.loading = newValue;
-
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
-                    $scope.showresults = true;
-                }
-            }
-        }
-    );
+    $scope.clearSearch = function() {
+        $scope.queryString.live = '';
+        $scope.submit();
+    };
 
     $scope.closeOthers = function(index, array) {
         if($scope.currentOpened < array.length) {
@@ -102,6 +96,18 @@ angular.module('digApp')
         return src;
     };
 
+    $scope.toggleListItemOpened = function(index) {
+        $scope.opened[index] = !($scope.opened[index]);
+    };
+
+    $scope.isListItemOpened = function(index) {
+        return ($scope.opened[index]) ? true : false;
+    };
+
+    $scope.onPageChange = function() {
+        //$scope.opened = [];
+    };
+
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
@@ -123,6 +129,30 @@ angular.module('digApp')
             }
         },
         true);
+
+    $scope.$watch('indexVM.loading',
+        function(newValue, oldValue) {
+            if(newValue !== oldValue) {
+                $scope.loading = newValue;
+
+                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+                    $scope.showresults = true;
+                    // Reset our page collapse states
+                    $scope.opened = [];
+                }
+            }
+        }
+    );
+
+    $scope.$watch('indexVM.query', function(){
+        // Reset our opened document state and page on a new query.
+        $scope.opened = [];
+        $scope.indexVM.page = 1;
+    });
+
+    $scope.$watch('indexVM.filters', function(){
+       // $scope.opened = [];
+    }, true);
 
     if($state.current.name === 'search') {
         $scope.viewList();
