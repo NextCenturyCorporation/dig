@@ -43,7 +43,7 @@ var all = {
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
-    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig-mrs-dev02',
+    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig',
 
     imageSimUrl: process.env.IMAGE_SIM_URL || 'http://localhost',
     imageSimPort: process.env.IMAGE_SIM_PORT || 3001,
@@ -59,7 +59,7 @@ var all = {
                     title: 'Phone',
                     type: 'eui-filter',
                     field: 'phonenumber',
-                    terms: 'phone',
+                    terms: 'phone'
                 }],
                 simFilters: [{
                     title: 'Image',
@@ -122,7 +122,7 @@ var all = {
                     classes: 'age'
                 }],
                 "full": {
-                    "listing-details": {
+                    "1": {
                         classes: 'listing-details',
                         fields: [{
                             title: 'Name(s)',
@@ -143,7 +143,7 @@ var all = {
                             field: 'doc._source.hasFeatureCollection.website_feature.website',
                         }]
                     },
-                    "person-details": {
+                    "2": {
                         classes: 'person-details',
                         fields: [{
                             title: 'Age',
@@ -167,9 +167,142 @@ var all = {
                 }
             },
 
-            detailFields: [{
-
-            }]
+            detailFields: {
+                "1": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'City',
+                        field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    },{
+                        title: 'Phone Number',
+                        field: 'doc._source.hasFeatureCollection.phonenumber_feature.phonenumber',
+                        featureArray: 'doc._source.hasFeatureCollection.phonenumber_feature',
+                        featureValue: 'phonenumber'
+                    },{
+                        title: 'Email',
+                        field: 'doc._source.hasFeatureCollection.emailaddress_feature.emailaddress',
+                    },{
+                        title: 'Web Site',
+                        field: 'doc._source.hasFeatureCollection.website_feature.website',
+                    },{
+                        title: 'Credit Cards',
+                        field: 'doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted',
+                    }]
+                },
+                "2": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Name',
+                        field: 'doc._source.hasFeatureCollection.person_name_feature.person_name'
+                    },{
+                        title: 'Alias',
+                        field: "doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']",
+                        featureArray: "doc['_source']['hasFeatureCollection']['person_alias_feature ']",
+                        featureValue: 'person_alias',
+                        hideIfMissing: true
+                    },{
+                        title: 'Age',
+                        field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                    },{
+                        title: 'Ethnicity',
+                        field: 'doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity',
+                        featureArray: 'doc._source.hasFeatureCollection.person_ethnicity_feature',
+                        featureValue: 'person_ethnicity'
+                    },{
+                        title: 'Hair Color',
+                        field: 'doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor',
+                    },{
+                        title: 'Height',
+                        field: 'doc._source.hasFeatureCollection.person_height_feature.person_height',
+                    },{
+                        title: 'Weight',
+                        field: "doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']",
+                    },{
+                        title: 'Eye Color',
+                        field: 'doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor',
+                        hideIfMissing: true
+                    },{
+                        title: 'Hair Type',
+                        field: 'doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype',
+                        hideIfMissing: true
+                    },{
+                        title: 'Hair Length',
+                        field: 'doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength',
+                        hideIfMissing: true
+                    },{
+                        title: 'Gender',
+                        field: 'doc._source.hasFeatureCollection.person_gender_feature.person_gender',
+                        hideIfMissing: true
+                    },{
+                        title: 'Piercings',
+                        field: 'doc._source.hasFeatureCollection.person_piercings_feature.person_piercings',
+                        hideIfMissing: true
+                    },{
+                        title: 'Tattoos',
+                        field: 'doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount',
+                        hideIfMissing: true
+                    },{
+                        title: 'Rate(s)',
+                        field: 'doc._source.hasFeatureCollection.rate_feature.rate',
+                        featureArray: 'doc._source.hasFeatureCollection.rate_feature',
+                        featureValue: 'rate_feature',
+                        hideIfMissing: true
+                    },{
+                        title: 'Hips Type',
+                        field: 'doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype',
+                        hideIfMissing: true
+                    },{
+                        title: 'Cup Size',
+                        field: 'doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus',
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'Waist Size',
+                        field: "doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']",
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'Bust Band Size',
+                        field: 'doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize',
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'Grooming',
+                        field: 'doc._source.hasFeatureCollection.person_grooming_feature.person_grooming',
+                        hideIfMissing: true
+                    },{
+                        title: 'Build',
+                        field: 'doc._source.hasFeatureCollection.person_build_feature.person_build',
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'Implants',
+                        field: "doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']",
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'In Call/Out all',
+                        field: 'doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall',
+                        hideIfMissing: true
+                    },{
+                        title: 'Username',
+                        field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                        hideIfMissing: true
+                    }
+                    ,{
+                        title: 'Travel',
+                        field: "doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']",
+                        hideIfMissing: true
+                    }]
+                },
+                "3": {
+                    classes: "",
+                    fields: [{
+                        field: 'doc._source.hasBodyPart.text',
+                        hideIfMissing: true
+                    }]
+                } 
+            }
         },
         'dig-mrs-dev02': {
             facets: {
@@ -201,7 +334,7 @@ var all = {
                     classes: 'location'
                 }],
                 "full": {
-                    "listing-details": {
+                    "1": {
                         classes: 'listing-details',
                         fields: [{
                             title: 'Authors(s)',
@@ -216,9 +349,24 @@ var all = {
                 }
             },
 
-            detailFields: [{
-
-            }]
+            detailFields: {
+                "1": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Date',
+                        field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'",
+                        classes: 'date'
+                    },{
+                        title: 'Authors(s)',
+                        field: 'doc._source.hasFeatureCollection.author_feature.author',
+                        featureArray: 'doc._source.hasFeatureCollection.author_feature',
+                        featureValue: 'author'
+                    },{
+                        title: 'Abstract',
+                        field: "doc['_source']['memex:hasAbstractPart']['text']"
+                    }]
+                }
+            }
         }
     }
 
