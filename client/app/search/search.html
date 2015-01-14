@@ -41,13 +41,13 @@
         filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" agg-result="aggResult" loading="loading">
       </text-filter>
 
-      <div class="form-group" ng-show="getActiveImageSearch()">
-        <h5><i class="fa fa-chevron-down fa-fw"></i> Image <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <div ng-if="facets.simFilter" class="form-group" ng-show="getActiveImageSearch()">
+        <h5><i class="fa fa-chevron-down fa-fw"></i> {{facets.simFilter.title}} <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
         <div>
           <div class="checkbox image-search-filter">
             <label>
               <input type="checkbox" ng-model="searchConfig.filterByImage"
-                eui-filter="ejs.TermFilter('hasFeatureCollection.similar_images_feature.featureValue', getActiveImageSearch().url)"
+                eui-filter="ejs.TermFilter(facets.simFilter.field, getActiveImageSearch().url)"
                 eui-enabled="searchConfig.filterByImage">
             </label>
             <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">

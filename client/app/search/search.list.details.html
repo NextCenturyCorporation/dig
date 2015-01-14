@@ -19,7 +19,8 @@
           <div class="col-md-12 displayed-image-container text-center">
             <div class="image-with-caption">
               <img blurred-image ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
-              <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
+              <div ng-if="facets.simFilter" class="caption image-search-caption"
+                ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
                 <div class="caption-background"></div>
                 <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
               </div>

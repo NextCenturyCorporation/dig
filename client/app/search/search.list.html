@@ -53,7 +53,7 @@
             <span ng-if="doc._source.hasImagePart">
               <div class="image-with-caption">
                 <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
-                <div class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
+                <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
                   <div class="caption-background"></div>
                   <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
                 </div>
@@ -71,7 +71,7 @@
                 <dl class="{{section.classes}}">
                    <dt ng-repeat-start="field in section.fields">{{field.title}}</dt>
                    <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
-                   <dd ng-if="$eval(field.featureArray + '.length')" 
+                   <dd ng-if="$eval(field.featureArray + '.length')"
                      ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
                    <span ng-repeat-end></span>
                 </dl>

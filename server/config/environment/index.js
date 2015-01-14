@@ -61,11 +61,11 @@ var all = {
                     field: 'phonenumber',
                     terms: 'phone',
                 }],
-                simFilters: [{
+                simFilter: {
                     title: 'Image',
                     type: 'simFilter',
                     field: 'hasFeatureCollection.similar_images_feature.featurevalue'
-                }],
+                },
                 aggFilters: [{
                     title: 'City/Region',
                     type: 'eui-aggregation',
@@ -174,7 +174,7 @@ var all = {
         'dig-mrs-dev02': {
             facets: {
                 euiFilters :[],
-                simFilters: [],
+                //simFilter: {},
                 aggFilters: [{
                     title: 'Author',
                     type: 'eui-aggregation',
