@@ -10,18 +10,18 @@ angular.module('digApp.directives')
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',
-            aggResult: '=',
-            loading: '&'
+            loading: '&',
+            filterStates: '='
         },
         templateUrl: '/components/text-filter/text-filter.partial.html',
         link: function($scope) {
-            $scope.textInput = {
+            $scope.filterStates[$scope.filterField] = {
                 live: '',
                 submitted: ''
             };
 
             $scope.submit = function() {
-                $scope.textInput.submitted = $scope.textInput.live;
+                $scope.filterStates[$scope.filterField].submitted = $scope.filterStates[$scope.filterField].live;
             };
         }
     };

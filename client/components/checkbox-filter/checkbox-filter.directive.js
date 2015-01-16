@@ -11,10 +11,11 @@ angular.module('digApp.directives')
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',
-            aggResult: '='
+            filterStates: '='
         },
         templateUrl: '/components/checkbox-filter/checkbox-filter.partial.html',
         link: function($scope) {
+            $scope.filterStates[$scope.aggregationName] = {};
             $scope.aggregationCount = $scope.aggregationCount || 30;
         }
     };

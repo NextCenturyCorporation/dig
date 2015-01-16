@@ -19,6 +19,10 @@ angular.module('digApp')
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
     $scope.opened = [];
+    $scope.filterStates = {
+        aggFilters: {},
+        textFilters: {}
+    };
 
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
