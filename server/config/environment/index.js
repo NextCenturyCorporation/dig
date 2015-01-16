@@ -115,7 +115,7 @@ var all = {
                 },{
                     title: 'Name',
                     field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
-                    classes: 'age'
+                    classes: 'name'
                 },{
                     title: 'Age',
                     field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
@@ -281,7 +281,7 @@ var all = {
                         hideIfMissing: true
                     }
                     ,{
-                        title: 'In Call/Out all',
+                        title: 'In Call/Out Call',
                         field: 'doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall',
                         hideIfMissing: true
                     },{
