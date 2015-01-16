@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('digApp').directive('dateHistogramAggregation', function () {
+angular.module('digApp').directive('dateHistogramAggregation', ['$timeout', function ($timeout) {
     return {
         templateUrl: 'components/date-histogram-aggregation/date-histogram-aggregation.html',
         restrict: 'E',
@@ -79,7 +79,18 @@ angular.module('digApp').directive('dateHistogramAggregation', function () {
                 var data = $scope.$eval('indexVM.results.aggregations.' + $scope.aggregationName +
                     ' || indexVM.results.aggregations.filtered_' + $scope.aggregationName + '.' + $scope.aggregationName);
                 $scope.render(data);
+                $timeout(function() {
+                    // TODO: Consider replacing with something more element.  
+                    // Defer a resize on initial render to later in the update cycle to force the chart size to
+                    // update after the page has rendered.  This avoids sizing issues on initial render since
+                    // most of the page elements have not been built and the area available to fill is of
+                    // size 0 on the initial render or in flux. 
+                    if ($scope.chart) {
+                        $scope.chart.resize({height:100});
+                    }
+                });
             }, true);
+
         }
     };
-});
+}]);
