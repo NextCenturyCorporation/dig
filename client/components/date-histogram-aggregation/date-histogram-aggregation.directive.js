@@ -55,10 +55,12 @@ angular.module('digApp').directive('dateHistogramAggregation', function () {
                                 }
                             },
                             y: {
+                                inner: 'true',
                                 tick: {
                                     count: 3,
                                     format: function(y) {
-                                        return y.toFixed(0);
+                                        var intY = y.toFixed(0);
+                                        return (intY !== '0' ? intY : '');
                                     }
                                 }
                             }
