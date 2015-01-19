@@ -114,11 +114,11 @@ var all = {
                     classes: 'phone'
                 },{
                     title: 'Name',
-                    field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
+                    field: 'doc._source.hasFeatureCollection.person_name_feature.person_name || doc._source.hasFeatureCollection.person_name_feature[0].person_name',
                     classes: 'name'
                 },{
                     title: 'Age',
-                    field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                    field: 'doc._source.hasFeatureCollection.person_age_feature.person_age || doc._source.hasFeatureCollection.person_age_feature[0].person_age',
                     classes: 'age'
                 }],
                 "full": {
@@ -127,9 +127,13 @@ var all = {
                         fields: [{
                             title: 'Name(s)',
                             field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
+                            featureArray: 'doc._source.hasFeatureCollection.person_name_feature',
+                            featureValue: 'person_name'
                         },{
                             title: 'City',
                             field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                            featureArray: 'doc._source.hasFeatureCollection.place_postalAddress_feature',
+                            featureValue: 'place_postalAddress'
                         },{
                             title: 'Phone Number',
                             field: 'doc._source.hasFeatureCollection.phonenumber_feature.phonenumber',
@@ -138,9 +142,14 @@ var all = {
                         },{
                             title: 'Email',
                             field: 'doc._source.hasFeatureCollection.emailaddress_feature.emailaddress',
+                            featureArray: 'doc._source.hasFeatureCollection.emailaddress_feature',
+                            featureValue: 'emailaddress'
+
                         },{
                             title: 'Web Site',
                             field: 'doc._source.hasFeatureCollection.website_feature.website',
+                            featureArray: 'doc._source.hasFeatureCollection.website_feature',
+                            featureValue: 'website'
                         }]
                     },
                     "2": {
@@ -148,6 +157,8 @@ var all = {
                         fields: [{
                             title: 'Age',
                             field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                            featureArray: 'doc._source.hasFeatureCollection.person_age_feature',
+                            featureValue: 'person_age'
                         },{
                             title: 'Ethnicity',
                             field: 'doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity',
@@ -156,12 +167,18 @@ var all = {
                         },{
                             title: 'Hair Color',
                             field: 'doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor',
+                            featureArray: 'doc._source.hasFeatureCollection.person_haircolor_feature',
+                            featureValue: 'person_haircolor'
                         },{
                             title: 'Height',
                             field: 'doc._source.hasFeatureCollection.person_height_feature.person_height',
+                            featureArray: 'doc._source.hasFeatureCollection.person_height_feature',
+                            featureValue: 'person_height'
                         },{
                             title: 'Weight',
                             field: "doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']",
+                            featureArray: "doc['_source']['hasFeatureCollection']['person_weight_feature ']",
+                            featureValue: 'person_weight'
                         }]
                     }
                 }
@@ -173,6 +190,8 @@ var all = {
                     fields: [{
                         title: 'City',
                         field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                        featureArray: 'doc._source.hasFeatureCollection.place_postalAddress_feature',
+                        featureValue: 'place_postalAddress'
                     },{
                         title: 'Phone Number',
                         field: 'doc._source.hasFeatureCollection.phonenumber_feature.phonenumber',
@@ -181,12 +200,18 @@ var all = {
                     },{
                         title: 'Email',
                         field: 'doc._source.hasFeatureCollection.emailaddress_feature.emailaddress',
+                        featureArray: 'doc._source.hasFeatureCollection.emailaddress_feature',
+                        featureValue: 'emailaddress'
                     },{
                         title: 'Web Site',
                         field: 'doc._source.hasFeatureCollection.website_feature.website',
+                        featureArray: 'doc._source.hasFeatureCollection.website_feature',
+                        featureValue: 'website'
                     },{
                         title: 'Credit Cards',
                         field: 'doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted',
+                        featureArray: 'doc._source.hasFeatureCollection.creditcardaccepted_feature',
+                        featureValue: 'creditcardaccepted'
                     }]
                 },
                 "2": {
@@ -203,6 +228,8 @@ var all = {
                     },{
                         title: 'Age',
                         field: 'doc._source.hasFeatureCollection.person_age_feature.person_age',
+                        featureArray: 'doc._source.hasFeatureCollection.person_age_feature',
+                        featureValue: 'person_age'
                     },{
                         title: 'Ethnicity',
                         field: 'doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity',
@@ -211,12 +238,18 @@ var all = {
                     },{
                         title: 'Hair Color',
                         field: 'doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor',
+                        featureArray: 'doc._source.hasFeatureCollection.person_haircolor_feature',
+                        featureValue: 'person_haircolor'
                     },{
                         title: 'Height',
                         field: 'doc._source.hasFeatureCollection.person_height_feature.person_height',
+                        featureArray: 'doc._source.hasFeatureCollection.person_height_feature',
+                        featureValue: 'person_height'
                     },{
                         title: 'Weight',
                         field: "doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']",
+                        featureArray: "doc['_source']['hasFeatureCollection']['person_weight_feature ']",
+                        featureValue: 'person_weight'
                     },{
                         title: 'Eye Color',
                         field: 'doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor',
@@ -224,22 +257,32 @@ var all = {
                     },{
                         title: 'Hair Type',
                         field: 'doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype',
+                        featureArray: 'doc._source.hasFeatureCollection.person_hairtype_feature',
+                        featureValue: 'person_hairtype',
                         hideIfMissing: true
                     },{
                         title: 'Hair Length',
                         field: 'doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength',
+                        featureArray: 'doc._source.hasFeatureCollection.person_hairlength_feature',
+                        featureValue: 'person_hairlength',
                         hideIfMissing: true
                     },{
                         title: 'Gender',
                         field: 'doc._source.hasFeatureCollection.person_gender_feature.person_gender',
+                        featureArray: 'doc._source.hasFeatureCollection.person_gender_feature',
+                        featureValue: 'person_gender',
                         hideIfMissing: true
                     },{
                         title: 'Piercings',
                         field: 'doc._source.hasFeatureCollection.person_piercings_feature.person_piercings',
+                        featureArray: 'doc._source.hasFeatureCollection.person_piercings_feature',
+                        featureValue: 'person_piercings',
                         hideIfMissing: true
                     },{
                         title: 'Tattoos',
                         field: 'doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount',
+                        featureArray: 'doc._source.hasFeatureCollection.person_tattoocount_feature',
+                        featureValue: 'person_tattoocount',
                         hideIfMissing: true
                     },{
                         title: 'Rate(s)',
@@ -250,48 +293,68 @@ var all = {
                     },{
                         title: 'Hips Type',
                         field: 'doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype',
+                        featureArray: 'doc._source.hasFeatureCollection.person_hipstype_feature',
+                        featureValue: 'person_hipstype',
                         hideIfMissing: true
                     },{
                         title: 'Cup Size',
                         field: 'doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus',
+                        featureArray: 'doc._source.hasFeatureCollection.person_cupsizeus_feature',
+                        featureValue: 'person_cupsizeus',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'Waist Size',
                         field: "doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']",
+                        featureArray: "doc['_source']['hasFeatureCollection']['person_waistsize_feature ']",
+                        featureValue: 'person_waistsize',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'Bust Band Size',
                         field: 'doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize',
+                        featureArray: 'doc._source.hasFeatureCollection.person_bustbandsize_feature',
+                        featureValue: 'person_bustbandsize',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'Grooming',
                         field: 'doc._source.hasFeatureCollection.person_grooming_feature.person_grooming',
+                        featureArray: 'doc._source.hasFeatureCollection.person_grooming_feature',
+                        featureValue: 'person_grooming',
                         hideIfMissing: true
                     },{
                         title: 'Build',
                         field: 'doc._source.hasFeatureCollection.person_build_feature.person_build',
+                        featureArray: 'doc._source.hasFeatureCollection.person_build_feature',
+                        featureValue: 'person_build',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'Implants',
                         field: "doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']",
+                        featureArray: "doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']",
+                        featureValue: 'person_implantspresent',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'In Call/Out Call',
                         field: 'doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall',
+                        featureArray: 'doc._source.hasFeatureCollection.person_incalloutcall_feature',
+                        featureValue: 'person_incalloutcall',
                         hideIfMissing: true
                     },{
                         title: 'Username',
                         field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                        featureArray: 'doc._source.hasFeatureCollection.person_username_feature',
+                        featureValue: 'person_username',
                         hideIfMissing: true
                     }
                     ,{
                         title: 'Travel',
                         field: "doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']",
+                        featureArray: "doc['_source']['hasFeatureCollection']['person_travel_feature ']",
+                        featureValue: 'person_travel',
                         hideIfMissing: true
                     }]
                 },
