@@ -10,11 +10,13 @@ angular.module('digApp')
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
-    $scope.loading = true;
+    $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
     $scope.searchConfig.filterByImage = false;
-    $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+
+    $scope.searchConfig.euiSearchIndex = '';
+
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
@@ -26,6 +28,10 @@ angular.module('digApp')
 
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
+        if(!$scope.searchConfig.euiSearchIndex) {
+            console.log("Foo");
+            $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+        }
         $scope.viewList();
     };
 
