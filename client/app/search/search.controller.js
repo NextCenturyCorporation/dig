@@ -26,13 +26,11 @@ angular.module('digApp')
 
     $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
-        // TODO: Add logic for rebuilding filters.ejsObjects
     };
 
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
-        // TODO: Add logic for rebuilding filters.ejsObjects
     };
 
     $scope.submit = function() {
