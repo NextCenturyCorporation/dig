@@ -368,7 +368,7 @@ var all = {
                 }
             }
         },
-        'dig-mrs-dev02': {
+        'dig-mrs-dev05': {
             facets: {
                 euiFilters :[],
                 //simFilter: {},
@@ -376,8 +376,15 @@ var all = {
                     title: 'Author',
                     type: 'eui-aggregation',
                     field: 'author_agg',
-                    terms: 'hasFeatureCollection.author_feature.featureObject.person_name',
-                    count: 30
+                    terms: 'hasFeatureCollection.author_feature.author',
+                    count: 20
+                },
+                {
+                    title: 'Year',
+                    type: 'eui-aggregation',
+                    field: 'year_agg',
+                    terms: 'hasFeatureCollection.publication_year_feature.publication_year',
+                    count: 20
                 }]
             },
 
@@ -407,7 +414,7 @@ var all = {
                             featureValue: 'author'
                         },{
                             title: 'Abstract',
-                            field: "doc['_source']['memex:hasAbstractPart']['text']"
+                            field: "doc['_source']['hasAbstractPart']['text']"
                         }]
                     }
                 }
@@ -427,7 +434,7 @@ var all = {
                         featureValue: 'author'
                     },{
                         title: 'Abstract',
-                        field: "doc['_source']['memex:hasAbstractPart']['text']"
+                        field: "doc['_source']['hasAbstractPart']['text']"
                     }]
                 }
             }
