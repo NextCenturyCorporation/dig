@@ -48,9 +48,10 @@ var all = {
     imageSimUrl: process.env.IMAGE_SIM_URL || 'http://localhost',
     imageSimPort: process.env.IMAGE_SIM_PORT || 3001,
 
-    blurImages: ((!!process.env.BLUR_IMAGES && process.env.BLUR_IMAGES === 'false') ? false : true),
+    blurImages: ((!!process.env.BLUR_IMAGES && process.env.BLUR_IMAGES === 'false') ? false : (process.env.BLUR_IMAGES ? process.env.BLUR_IMAGES : 'blur')),
 
-    blurPercentage: process.env.BLUR_PERCENT || 5,
+    blurPercentage: process.env.BLUR_PERCENT || 2.5,
+    pixelatePercentage: process.env.PIXELATE_PERCENT || 5,
 
     euiConfigs: {
         'dig': {
@@ -364,7 +365,7 @@ var all = {
                         field: 'doc._source.hasBodyPart.text',
                         hideIfMissing: true
                     }]
-                } 
+                }
             }
         },
         'dig-mrs-dev02': {
@@ -432,7 +433,6 @@ var all = {
             }
         }
     }
-
 };
 
 // Export the config object based on the NODE_ENV

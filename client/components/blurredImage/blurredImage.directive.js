@@ -2,49 +2,127 @@
 
 
 angular.module('digApp.directives')
-.directive('blurredImage', function(blurImagesEnabled, blurImagesPercentage) {
+.directive('blurredImage', function(blurImagesEnabled, pixelateImagesPercentage, blurImagesPercentage, $timeout) {
     return {
         restrict: 'A',
         link: function($scope, el, attrs) {
             var processing = false;
+            var fallback = false;
+
+            $scope.getMaxSize = function() {
+                return Math.max(el.height(), el.width());
+            };
+
+            var cssBlur = function() {
+                if($scope.getMaxSize() !== 0) {
+                    var blurSize = ($scope.getMaxSize() * (blurImagesPercentage / 100));
+
+                    el.css({
+                        '-webkit-filter': 'blur(' + blurSize + 'px)',
+                        '-moz-filter': 'blur(' + blurSize + 'px)',
+                        '-o-filter': 'blur(' + blurSize + 'px)',
+                        '-ms-filter': 'blur(' + blurSize + 'px)',
+                        'filter': 'blur(' + blurSize + 'px)'
+                    });
+                }
+            };
+
+            var bindErrorHandler = function(img) {
+                if(img.addEventListener) {
+                    img.addEventListener('error', function (e) {
+
+                        $scope.$apply(function() {
+                            $scope.$watch($scope.getMaxSize, function() {
+                                cssBlur();
+                            });
+                            fallback = true;
+                            processing = null;
+                            el.removeClass('hide-preblur-image');
+                            $timeout(cssBlur);
+                            e.preventDefault(); // Prevent error from getting thrown
+                        });
+                    });
+                } else {
+                    // Old IE uses .attachEvent instead
+                    img.attachEvent('onerror', function (e) {
+                        $scope.$watch($scope.getMaxSize, function() {
+                            cssBlur();
+                        });
+                        fallback = true;
+                        el.removeClass('hide-preblur-image');
+                        processing=null;
+                        $scope.$watch('getMaxSize', cssBlur);
+                        $timeout(cssBlur);
+                        return false; // Prevent propagation
+                    });
+                }
+            };
+
+            var pixelate = function(imageSource) {
+                el.addClass('hide-preblur-image');
+
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+
+                processing = img;
+
+                img.onload = function() {
+                    canvas.height = img.height;
+                    canvas.width = img.width;
+                    ctx.drawImage(img,0,0);
+
+                    var pixelateSize = (Math.max(img.height, img.width) * (pixelateImagesPercentage / 100));
+
+                    if(blurImagesEnabled === 'pixelate' && !fallback) {
+                        var imgStr = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+
+                        JSManipulate.pixelate.filter(imgStr, {
+                            size: pixelateSize
+                        });
+
+                        ctx.putImageData(imgStr,0,0);
+
+                        var imgStr2 = canvas.toDataURL('image/png');
+
+                        el.attr('src', imgStr2);
+                        el.removeClass('hide-preblur-image');
+                    } else {
+                        cssBlur();
+                    }
+
+                    processing = null;
+                };
+
+                bindErrorHandler(img);
+
+                img.src = imageSource;
+            };
+
+            var blurImage = function(imageSource) {
+                if(!fallback && blurImagesEnabled === 'pixelate') {
+                    pixelate(imageSource);
+                } else if(!fallback && blurImagesEnabled === 'blur') {
+                    fallback = true;
+
+                    $scope.$watch($scope.getMaxSize, function(newVal, oldVal) {
+                        cssBlur();
+                    });
+
+                    $timeout(cssBlur);
+                } else if(fallback || blurImagesEnabled === 'blur') {
+                    $timeout(cssBlur);
+                }
+            };
 
             attrs.$observe('src', function(imageSource) {
-                if(blurImagesEnabled && !processing) {
-                    processing = true;
-                    el.addClass('hide-preblur-image');
-
-                    var canvas = document.createElement('canvas');
-                    var ctx = canvas.getContext('2d');
-                    var img = new Image();
-                    img.crossOrigin = 'Anonymous';
-
-                    img.onload = function() {
-                        canvas.height = img.height;
-                        canvas.width = img.width;
-                        ctx.drawImage(img,0,0);
-
-                        var size = (Math.max(img.height, img.width) * (.01 * blurImagesPercentage));
-
-                        try{
-                            var imgStr = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                            JSManipulate.pixelate.filter(imgStr, {
-                                size: size
-                            });
-
-                            ctx.putImageData(imgStr,0,0);
-
-                            var imgStr2 = canvas.toDataURL('image/png');
-
-                            el.attr('src', imgStr2);
-                            el.removeClass('hide-preblur-image');
-                        } catch(e) {
-                            //error most likely due to bad cors response
-                        }
-
-                        processing = false;
-                    };
-                    img.src = imageSource;
+                if(!processing) {
+                    blurImage(imageSource);
+                } else {
+                    processing.onload = null; //cancel the onload
+                    blurImage(imageSource);
                 }
             });
         }
