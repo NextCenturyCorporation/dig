@@ -26,14 +26,14 @@ angular.module('digApp')
         textFilters: {}
     };
 
-    $scope.removeAggFilter = function(key1, key2) {
+/*    $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
     };
 
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
-    };
+    };*/
 
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
