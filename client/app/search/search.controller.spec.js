@@ -334,6 +334,11 @@ describe('Controller: SearchCtrl', function () {
         module(function($provide) {
             $provide.constant('simHost', simHost);
             $provide.constant('euiSearchIndex', 'dig');
+            $provide.constant('euiConfigs', {
+                facets: [],
+                listFields: [],
+                detailsFields: []
+            })
         });
 
         inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {

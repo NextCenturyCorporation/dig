@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
       <!-- endinjector -->
+    <link rel="stylesheet" href="bower_components/c3js-chart/c3.css">
     <!-- endbuild -->
   </head>
   <body>
@@ -57,6 +58,8 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/elasticsearch/elasticsearch.angular.js"></script>
       <script src="bower_components/elastic.js/dist/elastic.js"></script>
+      <script src="bower_components/d3/d3.js"></script>
+      <script src="bower_components/c3js-chart/c3.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -68,14 +71,16 @@
           <script src="app/imageSearchService/imageSearchService.service.js"></script>
           <script src="app/lib/elasticui.min.js"></script>
           <script src="app/lib/jsmanipulate.min.js"></script>
-          <script src="app/search/filter.controller.js"></script>
           <script src="app/search/search.controller.js"></script>
           <script src="app/search/search.js"></script>
           <script src="components/blurredImage/blurredImage.directive.js"></script>
-          <script src="components/checkbox-filters/checkbox-filters.directive.js"></script>
+          <script src="components/checkbox-filter/checkbox-filter.directive.js"></script>
+          <script src="components/collapse-filter/collapse-filter.directive.js"></script>
+          <script src="components/date-histogram-aggregation/date-histogram-aggregation.directive.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
           <script src="components/socket/socket.service.js"></script>
+          <script src="components/text-filter/text-filter.directive.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
 </body>

@@ -1,0 +1,10 @@
+<div eui-or-filter
+  eui-aggregation="ejs.TermsAggregation(aggregationName).field(aggregationKey).size(aggregationCount)" eui-filter-self="false">
+  <div class="checkbox" ng-repeat="bucket in aggResult.buckets">
+    <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
+      <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
+    </label>
+    <span class="badge pull-right">{{bucket.doc_count}}</span>
+  </div>
+</div>
+<a href="#">More</a>

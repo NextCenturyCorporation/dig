@@ -19,7 +19,8 @@
           <div class="col-md-12 displayed-image-container text-center">
             <div class="image-with-caption">
               <img blurred-image ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
-              <div class="caption image-search-caption" ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
+              <div ng-if="facets.simFilter" class="caption image-search-caption"
+                ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
                 <div class="caption-background"></div>
                 <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
               </div>
@@ -44,227 +45,22 @@
       <div class="col-md-7">
 
         <h4 ng-if="doc._source.hasTitlePart.text" class="ng-binding ng-scope">{{doc._source.hasTitlePart.text}}</h4>
-
-        <dl class="listing-details">
-
-          <!-- ngIf: doc._source.url -->
-          <dt>URL</dt>
-          <dd><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></dd>
-
-          <dt>City</dt>
-          <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality}}</dd>
-
-          <!-- ngIf: doc._source.hasFeatureCollection.phonenumber_feature.phonenumber -->
-          <dt>Phone Number</dt>
-          <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
-            {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
-          </dd>
-          <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.length" ng-repeat="phonenumber in doc._source.hasFeatureCollection.phonenumber_feature">
-            {{phonenumber.phonenumber}}
-          </dd>
-
-          <!-- ngIf: doc._source.hasFeatureCollection.emailaddress_feature.emailaddress -->
-          <dt>Email</dt>
-          <dd>{{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}</dd>
-
-          <!-- ngIf: doc._source.hasFeatureCollection.website_feature.website -->
-          <!-- ngIf: doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted -->
-          <dt>Website</dt>
-          <dd>{{doc._source.hasFeatureCollection.website_feature.website}}</dd>
-
-          <dt>Credit Cards</dt>
-          <dd>{{doc._source.hasFeatureCollection.creditcardaccepted_feature.creditcardaccepted}}</dd>
-
-        </dl>
-
+        <div ng-if="doc._source.url">
+          <span class="to-uppercase text-muted">URL</span>
+          <span><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></span>
+        </div>
         <hr>
 
-        <!-- ngIf: doc._source.hasFeatureCollection.person_name_feature.person_name -->
-        <h4 ng-if="doc._source.hasFeatureCollection.person_name_feature.person_name">
-          {{doc._source.hasFeatureCollection.person_name_feature.person_name}}
-        </h4>
-
-        <dl class="person-details">
-
-          <!-- ngIf: doc._source.hasFeatureCollection.person_age_feature.person_age -->
-          <dt>Age</dt>
-          <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
-
-          <dt>Ethnicity</dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
-            {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
-          </dd>
-          <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.length" ng-repeat="ethnicity in doc._source.hasFeatureCollection.person_ethnicity_feature">
-            {{ethnicity.person_ethnicity}}
-          </dd>
-
-          <dt>Hair color</dt>
-          <dd>{{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}</dd>
-
-          <dt>Height</dt>
-          <dd>{{doc._source.hasFeatureCollection.person_height_feature.person_height}}</dd>
-
-          <dt>Weight</dt>
-          <dd>{{doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']}}</dd>
-
-          <dt ng-if="doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']">
-            Alias
-          </dt>
-          <dd ng-if="doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']">
-            {{doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias']}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor">
-            Eye Color
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor">
-            {{doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype">
-            Hair Type
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype">
-            {{doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength">
-            Hair Length
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength">
-            {{doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_gender_feature.person_gender">
-            Gender
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_gender_feature.person_gender">
-            {{doc._source.hasFeatureCollection.person_gender_feature.person_gender}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_piercings_feature.person_piercings">
-            Piercings
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_piercings_feature.person_piercings">
-            {{doc._source.hasFeatureCollection.person_piercings_feature.person_piercings}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount">
-            Tattoos
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount">
-            {{doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.rate_feature.rate || doc._source.hasFeatureCollection.rate_feature.length">
-            Rate(s)
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.rate_feature.rate">
-            {{doc._source.hasFeatureCollection.rate_feature.rate}}
-          </dd>
-          <dd ng-if="doc._source.hasFeatureCollection.rate_feature.length" ng-repeat="rate in doc._source.hasFeatureCollection.rate_feature">
-            {{rate.rate}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype">
-            Hips Type
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype">
-            {{doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus">
-            Cup Size
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus">
-            {{doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus}}
-          </dd>
-
-          <dt ng-if="doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']">
-            Waist Size
-          </dt>
-          <dd ng-if="doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']">
-            {{doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize">
-            Bust Band Size
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize">
-            {{doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_grooming_feature.person_grooming">
-            Grooming
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_grooming_feature.person_grooming">
-            {{doc._source.hasFeatureCollection.person_grooming_feature.person_grooming}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_build_feature.person_build">
-            Build
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_build_feature.person_build">
-            {{doc._source.hasFeatureCollection.person_build_feature.person_build}}
-          </dd>
-
-          <dt ng-if="doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']">
-            Implants
-          </dt>
-          <dd ng-if="doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']">
-            {{doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall">
-            In Call/Out Call
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall">
-            {{doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall}}
-          </dd>
-
-          <dt ng-if="doc._source.hasFeatureCollection.person_username_feature.person_username">
-            Username
-          </dt>
-          <dd ng-if="doc._source.hasFeatureCollection.person_username_feature.person_username">
-            {{doc._source.hasFeatureCollection.person_username_feature.person_username}}
-          </dd>
-
-          <dt ng-if="doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']">
-            Travel
-          </dt>
-          <dd ng-if="doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']">
-            {{doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']}}
-          </dd>
-
-          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_alias_feature ']['person_alias'] -->
-          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight'] -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_height_feature.person_height -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_eyecolor_feature.person_eyecolor -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_hairtype_feature.person_hairtype -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_hairlength_feature.person_hairlength -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_gender_feature.person_gender -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_piercings_feature.person_piercings -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_tattoocount_feature.person_tattoocount -->
-          <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && !doc._source.hasFeatureCollection.rate_feature.length -->
-          <!-- ngIf: doc._source.hasFeatureCollection.rate_feature && doc._source.hasFeatureCollection.rate_feature.length > 1 -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_hipstype_feature.person_hipstype -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_cupsizeus_feature.person_cupsizeus -->
-          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize'] -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_grooming_feature.person_grooming -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_build_feature.person_build -->
-          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent'] -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall -->
-          <!-- ngIf: doc._source.hasFeatureCollection.person_username_feature.person_username -->
-          <!-- ngIf: doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel'] -->
-
+        <dl ng-repeat-start="section in euiConfigs.detailFields" 
+          class="{{section.classes}}">
+           <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
+             <dt ng-if="field.title">{{field.title}}</dt>
+             <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
+             <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length')" 
+               ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
+           </div>
         </dl>
-
-        <hr>
-
-      <span ng-if="doc._source.hasBodyPart.text" ng-bind-html="doc._source.hasBodyPart.text"></span>
+        <hr ng-repeat-end>
 
       </div>
 

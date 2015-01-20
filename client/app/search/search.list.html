@@ -36,13 +36,12 @@
             </span>
           </div>
           <div class="col-xs-9 col-sm-10 col-lg-11">
-            {{doc._source.hasTitlePart.text}}
+            {{$eval(euiConfigs.listFields["title"][0].field)}}
             <div class="list-group-item-meta">
-              <strong>date:</strong> <span class="date">{{(doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss') || "N/A"}}</span>
-              <strong>location:</strong> <span class="location">{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality || "n/a"}}</span>
-              <strong>phone:</strong> <span class="phone">{{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber || ( doc._source.hasFeatureCollection.phonenumber_feature[0].phonenumber || "N/A")}}</span>
-              <strong>name:</strong> <span class="name">{{doc._source.hasFeatureCollection.person_name_feature.person_name || "N/A"}}</span>
-              <strong>age:</strong> <span class="age">{{doc._source.hasFeatureCollection.person_age_feature.person_age || "N/A"}}</span>
+              <span ng-repeat="field in euiConfigs.listFields['short']">
+                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+              </span>
             </div>
           </div>
         </div>
@@ -54,7 +53,7 @@
             <span ng-if="doc._source.hasImagePart">
               <div class="image-with-caption">
                 <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
-                <div class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
+                <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
                   <div class="caption-background"></div>
                   <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
                 </div>
@@ -68,52 +67,13 @@
             <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
 
             <div class="row">
-              <div class="col-sm-6">
-                <dl class="listing-details">
-
-                  <dt>Name(s)</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_name_feature.person_name}}</dd>
-
-                  <dt>City</dt>
-                  <dd>{{doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality}}</dd>
-
-                  <dt>Phone Number</dt>
-                  <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.phonenumber">
-                    {{doc._source.hasFeatureCollection.phonenumber_feature.phonenumber}}
-                  </dd>
-                  <dd ng-if="doc._source.hasFeatureCollection.phonenumber_feature.length" ng-repeat="phonenumber in doc._source.hasFeatureCollection.phonenumber_feature">
-                    {{phonenumber.phonenumber}}
-                  </dd>
-
-                  <dt>Email</dt>
-                  <dd>{{doc._source.hasFeatureCollection.emailaddress_feature.emailaddress}}</dd>
-
-                  <dt>Web Site</dt>
-                  <dd>{{doc._source.hasFeatureCollection.website_feature.website}}</dd>
-                </dl>
-              </div>
-              <div class="col-sm-6">
-                <dl class="person-details">
-
-                  <dt>Age</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_age_feature.person_age}}</dd>
-
-                  <dt>Ethnicity</dt>
-                  <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity">
-                    {{doc._source.hasFeatureCollection.person_ethnicity_feature.person_ethnicity}}
-                  </dd>
-                  <dd ng-if="doc._source.hasFeatureCollection.person_ethnicity_feature.length" ng-repeat="ethnicity in doc._source.hasFeatureCollection.person_ethnicity_feature">
-                    {{ethnicity.person_ethnicity}}
-                  </dd>
-
-                  <dt>Hair color</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_haircolor_feature.person_haircolor}}</dd>
-
-                  <dt>Height</dt>
-                  <dd>{{doc._source.hasFeatureCollection.person_height_feature.person_height}}</dd>
-
-                  <dt>Weight</dt>
-                  <dd>{{doc['_source']['hasFeatureCollection']['person_weight_feature ']['person_weight']}}</dd>
+              <div class="col-sm-6" ng-repeat="section in euiConfigs.listFields['full']">
+                <dl class="{{section.classes}}">
+                   <dt ng-repeat-start="field in section.fields">{{field.title}}</dt>
+                   <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
+                   <dd ng-if="$eval(field.featureArray + '.length')"
+                     ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
+                   <span ng-repeat-end></span>
                 </dl>
               </div>
             </div>
