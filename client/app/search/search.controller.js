@@ -26,6 +26,15 @@ angular.module('digApp')
         textFilters: {}
     };
 
+    $scope.removeAggFilter = function(key1, key2) {
+        $scope.filterStates.aggFilters[key1][key2] = false;
+    };
+
+    $scope.removeTextFilter = function(textKey) {
+        $scope.filterStates.textFilters[textKey].live = '';
+        $scope.filterStates.textFilters[textKey].submitted = '';
+    };
+
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
@@ -152,6 +161,43 @@ angular.module('digApp')
             }
         }
     );
+
+    $scope.isAggregationTermInResults = function(field, term) {
+        var aggObj = false;
+        var filteredAggObj = false;
+
+        // Return false if we have no aggregations or none on that field.
+        if (!$scope.indexVM.results.aggregations || 
+            (!$scope.indexVM.results.aggregations[field] && !$scope.indexVM.results.aggregations['filtered_' + field])) {
+            return false;
+        }
+
+        // Check for the term's presence in any stock aggregation fields.
+        aggObj = ($scope.indexVM.results.aggregations[field]) ? _.filter($scope.indexVM.results.aggregations[field].buckets, function(bucket) {
+                return (bucket.key && bucket.key == term);
+            }).length > 0 : false;
+        // check for the term's presence in any 'filtered_<field>' aggregation fields.
+        filteredAggObj = ($scope.indexVM.results.aggregations['filtered_' + field] && $scope.indexVM.results.aggregations['filtered_' + field][field]) ? _.filter($scope.indexVM.results.aggregations['filtered_' + field][field].buckets, function(bucket) {
+                return (bucket.key && bucket.key == term);
+            }).length > 0 : false;
+
+        return (aggObj || filteredAggObj);
+    };
+
+    $scope.$watch('indexVM.results.aggregations', function() {
+        // Loop over each aggregation
+        for (var field in $scope.filterStates.aggFilters) {
+            // Loop over each term in the aggregation.
+            for (var term in $scope.filterStates.aggFilters[field]) {
+                console.log("in here");
+                // If there is no entry for this field in current aggregations or filtered aggregations,
+                // clear our filter state.
+                if (!$scope.isAggregationTermInResults(field, term)) {
+                    delete $scope.filterStates.aggFilters[field][term];
+                }
+            }
+        }
+    }, true);
 
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
