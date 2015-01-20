@@ -29,7 +29,6 @@ angular.module('digApp')
     $scope.submit = function() {
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
-            console.log("Foo");
             $scope.searchConfig.euiSearchIndex = euiSearchIndex;
         }
         $scope.viewList();
