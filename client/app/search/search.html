@@ -24,9 +24,20 @@
           </div>
           </form>
         </div>
+        <div>
+          <span ng-repeat="(aggFilter, values) in filterStates.aggFilters">
+            <span ng-repeat="(filterKey, selected) in values" style="margin-bottom: 10px;">
+              <span ng-if="selected" class="search-facet" ng-click="removeAggFilter(aggFilter, filterKey)">{{filterKey}} <i class="fa fa-times-circle"></i></span>
+            </span>
+          </span>
+          <span ng-repeat="(textFilter, values) in filterStates.textFilters">
+            <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
+            <!-- <button type="button" ng-if="values.submitted.length > 0" class="search-tag" ng-click="removeTextFilter(textFilter)">{{values.submitted}}<i class="fa fa-times"></i></button> -->
+          </span>
+        </div>
         </div>
       </div>
-    </div>
+    </div> 
   </div>
 
   <div class="row" ng-show="showresults">
