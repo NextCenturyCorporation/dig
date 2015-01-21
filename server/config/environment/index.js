@@ -54,7 +54,7 @@ var all = {
     pixelatePercentage: process.env.PIXELATE_PERCENT || 5,
 
     euiConfigs: {
-        'dig': {
+        'dig-latest': {
             facets: {
                 euiFilters :[{
                     title: 'Phone',
