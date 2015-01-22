@@ -65,7 +65,7 @@ var all = {
                 simFilter: {
                     title: 'Image',
                     type: 'simFilter',
-                    field: 'hasFeatureCollection.similar_images_feature.featurevalue'
+                    field: 'hasFeatureCollection.similar_images_feature.featureValue'
                 },
                 aggFilters: [{
                     title: 'City/Region',
@@ -368,7 +368,7 @@ var all = {
                 }
             }
         },
-        'dig-mrs-dev05': {
+        'dig-mrs-dev11': {
             facets: {
                 euiFilters :[],
                 //simFilter: {},
@@ -384,6 +384,13 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'year_agg',
                     terms: 'hasFeatureCollection.publication_year_feature.publication_year',
+                    count: 20
+                },
+                {
+                    title: 'Affiliation',
+                    type: 'eui-aggregation',
+                    field: 'affiliation_agg',
+                    terms: 'hasFeatureCollection.affiliation_country_feature.affiliation_country',
                     count: 20
                 }]
             },
@@ -403,6 +410,10 @@ var all = {
                     title: 'Author',
                     field: 'doc._source.hasFeatureCollection.author_feature.author || doc._source.hasFeatureCollection.author_feature[0].author',
                     classes: 'location'
+                },{
+                    title: 'Affiliation',
+                    field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country',
+                    classes: 'location'
                 }],
                 "full": {
                     "1": {
@@ -412,6 +423,14 @@ var all = {
                             field: 'doc._source.hasFeatureCollection.author_feature.author',
                             featureArray: 'doc._source.hasFeatureCollection.author_feature',
                             featureValue: 'author'
+                        },{
+                            title: 'Affiliation',
+                            field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
+                        },{
+                            title: 'Compound(s)',
+                            field: 'doc._source.hasFeatureCollection.compound_feature.memex:compound',
+                            featureArray: 'doc._source.hasFeatureCollection.compound_feature',
+                            featureValue: 'featureValue'
                         },{
                             title: 'Abstract',
                             field: "doc['_source']['hasAbstractPart']['text']"
@@ -432,6 +451,9 @@ var all = {
                         field: 'doc._source.hasFeatureCollection.author_feature.author',
                         featureArray: 'doc._source.hasFeatureCollection.author_feature',
                         featureValue: 'author'
+                    },{
+                        title: 'Affiliation',
+                        field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
                     },{
                         title: 'Abstract',
                         field: "doc['_source']['hasAbstractPart']['text']"
