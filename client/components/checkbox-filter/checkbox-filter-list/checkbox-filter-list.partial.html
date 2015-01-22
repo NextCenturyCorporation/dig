@@ -1,4 +1,4 @@
-<div class="checkbox" ng-repeat="bucket in buckets">
+<div class="checkbox" ng-repeat="bucket in displayBuckets">
   <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
     <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
   </label>
@@ -6,10 +6,17 @@
 </div>
 <div class="clearfix">
   <div class="pull-right">
-    <i ng-click="more()" class="glyphicon glyphicon-plus" ng-class="{disabled: buttonStatus.moreButton}"></i>
+    <a href="" title="Show More">
+      <i ng-click="more()" class="fa fa-plus" ng-class="{disabled: buttonStatus.moreButton}"></i>
+    </a>
      /
-    <i ng-click="less()" class="glyphicon glyphicon-minus" ng-class="{disabled: buttonStatus.lessButton}"></i>
+    <a href="" title="Show Less">
+      <i ng-click="less()" class="fa fa-minus" ng-class="{disabled: buttonStatus.lessButton}"></i>
+    </a>
      /
-    <i ng-click="all()" class="bold-text" ng-class="{disabled: buttonStatus.allButton}">All</i>
+    <a href="" title="{{(showAll) ? 'Compact List' : 'Show All'}}">
+      <i ng-click="all()" class="bold-text" ng-class="{disabled: buttonStatus.allButton}"
+        ng-bind="(showAll) ? 'Compact' : 'All'"></i>
+    </a>
   </div>
 </div>
