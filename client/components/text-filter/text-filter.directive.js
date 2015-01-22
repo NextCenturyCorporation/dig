@@ -13,7 +13,7 @@ angular.module('digApp.directives')
             loading: '&',
             filterStates: '='
         },
-        templateUrl: '/components/text-filter/text-filter.partial.html',
+        templateUrl: 'components/text-filter/text-filter.partial.html',
         link: function($scope) {
             $scope.filterStates[$scope.filterField] = {
                 live: '',
