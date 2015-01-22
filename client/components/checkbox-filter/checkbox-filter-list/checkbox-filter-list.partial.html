@@ -1,0 +1,15 @@
+<div class="checkbox" ng-repeat="bucket in buckets">
+  <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
+    <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
+  </label>
+  <span class="badge pull-right">{{bucket.doc_count}}</span>
+</div>
+<div class="clearfix">
+  <div class="pull-right">
+    <i ng-click="more()" class="glyphicon glyphicon-plus" ng-class="{disabled: buttonStatus.moreButton}"></i>
+     /
+    <i ng-click="less()" class="glyphicon glyphicon-minus" ng-class="{disabled: buttonStatus.lessButton}"></i>
+     /
+    <i ng-click="all()" class="bold-text" ng-class="{disabled: buttonStatus.allButton}">All</i>
+  </div>
+</div>
