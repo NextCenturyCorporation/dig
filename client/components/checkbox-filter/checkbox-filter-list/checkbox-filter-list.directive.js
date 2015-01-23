@@ -30,34 +30,41 @@ angular.module('digApp.directives')
             $element.addClass('checkbox-filter-list');
 
             $scope.more = function() {
-                $scope.displayCount = $scope.displayCount + 10;
-                $scope.resetDisplayBuckets();
+                if($scope.displayCount < $scope.facetCount) {
+                    $scope.displayCount += 10;
+                    $scope.resetDisplayBuckets();
+                }
             };
 
             $scope.less = function() {
-                $scope.displayCount = $scope.displayCount - 10;
-                if ($scope.displayCount < 10) {
-                    $scope.displayCount = 10;
+                if($scope.displayCount > 10) {
+                    $scope.displayCount -= 10;
+                    if ($scope.displayCount < 10) {
+                        $scope.displayCount = 10;
+                    }
+                    $scope.resetDisplayBuckets();
                 }
-                $scope.resetDisplayBuckets();
             };
 
             $scope.all = function() {
-                if ($scope.showAll) {
-                    $scope.displayCount = $scope.lastDisplayCount;
-                } else {
-                    $scope.lastDisplayCount = $scope.displayCount;
-                    $scope.displayCount = (Math.floor($scope.facetCount / 10) * 10) + 10;
-                }
-                $scope.showAll = !$scope.showAll;
+                if($scope.facetCount > 10) {
+                    if ($scope.showAll) {
+                        $scope.displayCount = $scope.lastDisplayCount;
+                    } else {
+                        $scope.lastDisplayCount = $scope.displayCount;
+                        $scope.displayCount = (Math.floor($scope.facetCount / 10) * 10) + 10;
+                    }
+                    $scope.showAll = !$scope.showAll;
 
-                $scope.resetDisplayBuckets();
+                    $scope.resetDisplayBuckets();
+                }
             };
 
             var disableButtons = function() {
-                $scope.buttonStatus.moreButton = ($scope.displayCount === $scope.facetCount);
-                $scope.buttonStatus.lessButton = ($scope.displayCount > 10 || $scope.displayCount === 0);
-                $scope.buttonStatus.allButton = ($scope.displayCount === $scope.facetCount);
+                $scope.buttonStatus.moreButton = ($scope.displayCount >= $scope.facetCount);
+                $scope.buttonStatus.lessButton = ($scope.displayCount <= 10);
+                $scope.buttonStatus.allButton = ($scope.facetCount <= 10);
+                console.log($scope.buttonStatus);
             };
 
             $scope.getAggregationTermBucket = function(term) {
@@ -76,6 +83,8 @@ angular.module('digApp.directives')
             };
 
             $scope.resetDisplayBuckets = function() {
+                disableButtons();
+
                 $scope.displayBuckets = [];
                 var checkedItems = [];
                 var bucket;
@@ -84,10 +93,12 @@ angular.module('digApp.directives')
                     if ($scope.filterStates[$scope.aggregationName].hasOwnProperty(term) &&
                         $scope.filterStates[$scope.aggregationName][term]) {
                         checkedItems.push(term);
+                        /* jshint camelcase:false */
                         bucket = ($scope.getAggregationTermBucket(term) || {
                             key: term,
                             doc_count: 0
                         });
+                        /* jshint camelcase:true */
                         $scope.displayBuckets.push(bucket);
                     }
                 }
@@ -104,14 +115,12 @@ angular.module('digApp.directives')
                     }
                     i++;
                 }
-            }
+            };
 
             $scope.$watch('buckets', function() {
                 $scope.facetCount = ($scope.buckets ? $scope.buckets.length : 0);
 
                 $scope.resetDisplayBuckets();
-
-                disableButtons();
             }, true);
         }
     };

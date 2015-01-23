@@ -6,17 +6,16 @@
 </div>
 <div class="clearfix">
   <div class="pull-right">
-    <a href="" title="Show More">
-      <i ng-click="more()" class="fa fa-plus" ng-class="{disabled: buttonStatus.moreButton}"></i>
+    <a href="" title="Show More" ng-class="{disabled: buttonStatus.moreButton}">
+      <i ng-click="more()" class="fa fa-plus"></i>
     </a>
      /
-    <a href="" title="Show Less">
-      <i ng-click="less()" class="fa fa-minus" ng-class="{disabled: buttonStatus.lessButton}"></i>
+    <a href="" title="Show Less" ng-class="{disabled: buttonStatus.lessButton}">
+      <i ng-click="less()" class="fa fa-minus"></i>
     </a>
      /
-    <a href="" title="{{(showAll) ? 'Compact List' : 'Show All'}}">
-      <i ng-click="all()" class="bold-text" ng-class="{disabled: buttonStatus.allButton}"
-        ng-bind="(showAll) ? 'Compact' : 'All'"></i>
+    <a href="" title="{{(showAll) ? 'Compact List' : 'Show All'}}" ng-class="{disabled: buttonStatus.allButton}">
+      <i ng-click="all()" class="bold-text" ng-bind="(showAll) ? 'Compact' : 'All'"></i>
     </a>
   </div>
 </div>
