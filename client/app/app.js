@@ -9,7 +9,8 @@ var digApp = angular.module('digApp', [
     'ui.bootstrap',
     'elasticui',
 
-    'digApp.directives'
+    'digApp.directives',
+    'digApp.services'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
@@ -19,6 +20,7 @@ var digApp = angular.module('digApp', [
 });
 
 angular.module('digApp.directives', []);
+angular.module('digApp.services', []);
 
 angular.element(document).ready(function() {
     var $http = angular.injector(['ng']).get('$http');

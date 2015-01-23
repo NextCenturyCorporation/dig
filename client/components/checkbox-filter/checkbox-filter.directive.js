@@ -7,7 +7,7 @@ angular.module('digApp.directives')
         scope: {
             aggregationName: '@',
             aggregationKey: '@',
-            aggregationCount: '@',
+            aggregationCount: '&',
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',
@@ -15,8 +15,8 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/checkbox-filter/checkbox-filter.partial.html',
         link: function($scope) {
-            $scope.filterStates[$scope.aggregationName] = {};
-            $scope.aggregationCount = $scope.aggregationCount || 30;
+            $scope.filterStates[$scope.aggregationName] = $scope.filterStates[$scope.aggregationName] || {};
+            $scope.aggregationCount = $scope.aggregationCount() || 30;
         }
     };
 });
