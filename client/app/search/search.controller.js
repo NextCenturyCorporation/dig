@@ -9,7 +9,7 @@ angular.module('digApp')
     $scope.showresults = false;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
-    $scope.queryString = {live: '', submitted: ''};
+    $scope.queryString = {live: '', submitted: null};
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -153,7 +153,8 @@ angular.module('digApp')
             if(newValue !== oldValue) {
                 $scope.loading = newValue;
 
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+                if($scope.loading === false && $scope.showresults === false &&
+                  ($scope.queryString.submitted || $scope.queryString.submitted === '')) {
                     $scope.showresults = true;
                     // Reset our page collapse states
                     $scope.opened = [];
@@ -167,7 +168,7 @@ angular.module('digApp')
         var filteredAggObj = false;
 
         // Return false if we have no aggregations or none on that field.
-        if (!$scope.indexVM.results.aggregations || 
+        if (!$scope.indexVM.results.aggregations ||
             (!$scope.indexVM.results.aggregations[field] && !$scope.indexVM.results.aggregations['filtered_' + field])) {
             return false;
         }
