@@ -373,12 +373,17 @@ describe('Controller: SearchCtrl', function () {
         });
     });
 
+    it('should call state.go with reload set to true', function () {
+        scope.reload();
+        expect(state.go).toHaveBeenCalledWith('search.list', {}, {'reload': true});
+    });
+
     it('should initialize showresults to false', function () {
         expect(scope.showresults).toBe(false);
     });
 
-    it('should initialize loading to true', function () {
-        expect(scope.loading).toBe(true);
+    it('should initialize loading to false', function () {
+        expect(scope.loading).toBe(false);
     });
 
     it('should initialize queryString values to empty strings', function () {
