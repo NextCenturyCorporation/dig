@@ -368,7 +368,7 @@ var all = {
                 }
             }
         },
-        'dig-mrs-latest': {
+        'dig-mrs-dev11': {
             facets: {
                 euiFilters :[],
                 //simFilter: {},
@@ -391,13 +391,6 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'affiliation_agg',
                     terms: 'hasFeatureCollection.affiliation_country_feature.affiliation_country',
-                    count: 20
-                },
-                {
-                    title: 'Compound',
-                    type: 'eui-aggregation',
-                    field: 'compound_agg',
-                    terms: 'hasFeatureCollection.compound_feature.compound',
                     count: 20
                 }]
             },
@@ -435,9 +428,9 @@ var all = {
                             field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
                         },{
                             title: 'Compound(s)',
-                            field: 'doc._source.hasFeatureCollection.compound_feature.compound',
+                            field: 'doc._source.hasFeatureCollection.compound_feature.memex:compound',
                             featureArray: 'doc._source.hasFeatureCollection.compound_feature',
-                            featureValue: 'compound'
+                            featureValue: 'featureValue'
                         },{
                             title: 'Abstract',
                             field: "doc['_source']['hasAbstractPart']['text']"
@@ -461,11 +454,6 @@ var all = {
                     },{
                         title: 'Affiliation',
                         field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
-                    },{
-                        title: 'Compound(s)',
-                        field: 'doc._source.hasFeatureCollection.compound_feature.compound',
-                        featureArray: 'doc._source.hasFeatureCollection.compound_feature',
-                        featureValue: 'compound'
                     },{
                         title: 'Abstract',
                         field: "doc['_source']['hasAbstractPart']['text']"

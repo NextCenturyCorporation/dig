@@ -8,7 +8,6 @@ angular.module('digApp').directive('dateHistogramAggregation', ['$timeout', func
             aggregationName: '@',
             aggregationKey: '@',
             dateInterval: '@',
-            postZone: '@',
             indexVM: '=indexvm',
             ejs: '=',
             filters: '='
