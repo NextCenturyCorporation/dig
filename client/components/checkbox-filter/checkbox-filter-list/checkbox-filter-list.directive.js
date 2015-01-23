@@ -64,7 +64,6 @@ angular.module('digApp.directives')
                 $scope.buttonStatus.moreButton = ($scope.displayCount >= $scope.facetCount);
                 $scope.buttonStatus.lessButton = ($scope.displayCount <= 10);
                 $scope.buttonStatus.allButton = ($scope.facetCount <= 10);
-                console.log($scope.buttonStatus);
             };
 
             $scope.getAggregationTermBucket = function(term) {
