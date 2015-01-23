@@ -18,7 +18,7 @@ angular.module('digApp.directives')
         link: function($scope, $element) {
             $scope.facetCount = 0;
             $scope.showAll = false;
-            $scope.displayCount = $scope.searchCount;
+            $scope.userDisplayCount = -1;
             $scope.displayBuckets = [];
 
             $scope.buttonStatus = {
@@ -30,17 +30,17 @@ angular.module('digApp.directives')
             $element.addClass('checkbox-filter-list');
 
             $scope.more = function() {
-                if($scope.displayCount < $scope.facetCount) {
-                    $scope.displayCount += 10;
+                if($scope.userDisplayCount < $scope.facetCount) {
+                    $scope.userDisplayCount += 10;
                     $scope.resetDisplayBuckets();
                 }
             };
 
             $scope.less = function() {
-                if($scope.displayCount > 10) {
-                    $scope.displayCount -= 10;
-                    if ($scope.displayCount < 10) {
-                        $scope.displayCount = 10;
+                if($scope.userDisplayCount > 10) {
+                    $scope.userDisplayCount -= 10;
+                    if ($scope.userDisplayCount < 10) {
+                        $scope.userDisplayCount = 10;
                     }
                     $scope.resetDisplayBuckets();
                 }
@@ -49,10 +49,10 @@ angular.module('digApp.directives')
             $scope.all = function() {
                 if($scope.facetCount > 10) {
                     if ($scope.showAll) {
-                        $scope.displayCount = $scope.lastDisplayCount;
+                        $scope.userDisplayCount = $scope.lastDisplayCount;
                     } else {
-                        $scope.lastDisplayCount = $scope.displayCount;
-                        $scope.displayCount = (Math.floor($scope.facetCount / 10) * 10) + 10;
+                        $scope.lastDisplayCount = $scope.userDisplayCount;
+                        $scope.userDisplayCount = (Math.floor($scope.facetCount / 10) * 10) + 10;
                     }
                     $scope.showAll = !$scope.showAll;
 
@@ -61,8 +61,8 @@ angular.module('digApp.directives')
             };
 
             var disableButtons = function() {
-                $scope.buttonStatus.moreButton = ($scope.displayCount >= $scope.facetCount);
-                $scope.buttonStatus.lessButton = ($scope.displayCount <= 10);
+                $scope.buttonStatus.moreButton = ($scope.userDisplayCount >= $scope.facetCount);
+                $scope.buttonStatus.lessButton = ($scope.userDisplayCount <= 10);
                 $scope.buttonStatus.allButton = ($scope.facetCount <= 10);
             };
 
@@ -87,6 +87,10 @@ angular.module('digApp.directives')
                 $scope.displayBuckets = [];
                 var checkedItems = [];
                 var bucket;
+
+                // Reset display count if necessary.
+                $scope.userDisplayCount = ($scope.userDisplayCount < 0) ? $scope.searchCount : $scope.userDisplayCount;
+
                 // Get checked items and add to display buckets if they dropped out of our aggregations.
                 for (var term in $scope.filterStates[$scope.aggregationName]) {
                     if ($scope.filterStates[$scope.aggregationName].hasOwnProperty(term) &&
@@ -104,7 +108,7 @@ angular.module('digApp.directives')
 
                 // fill the rest of display buckets with the aggregation buckets.
                 var numBuckets = ($scope.buckets) ? $scope.buckets.length : 0;
-                var remainingBucketSlots = Math.min($scope.displayCount, numBuckets) - checkedItems.length;
+                var remainingBucketSlots = Math.min($scope.userDisplayCount, numBuckets) - checkedItems.length;
                 var i = 0;
 
                 while (remainingBucketSlots > 0) {
