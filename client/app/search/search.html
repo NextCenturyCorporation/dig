@@ -1,15 +1,13 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
 <div class="container-fluid" eui-index="searchConfig.euiSearchIndex">
   <div class="loading" ng-show="loading || imagesimLoading"></div>
   <!-- query -->
   <div class="row">
     <div class="col-sm-12 list-group-item">
-      <div class="row">
-        <div class="col-sm-2">
+      <div class="row search-header">
+        <div class="col-sm-2 logo-container-div">
           <img src="/assets/images/dig-logo-original.png" alt="" style="margin-top:8px;margin-left:10px">
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-8 search-container-div">
         <div class="controls controls-search">
           <form ng-submit="submit()">
           <div class="input-group input-group-lg">
@@ -20,20 +18,21 @@
                 <i class="glyphicon glyphicon-remove clear-search-icon"></i>
               </button>
               <button class="btn btn-primary search-btn" type="submit">Search</button>
+              <a class="btn btn-danger" ng-href="/" target="_self">Clear All</a>
             </span>
           </div>
           </form>
         </div>
-<!--         <div>
-  <span ng-repeat="(aggFilter, values) in filterStates.aggFilters">
-    <span ng-repeat="(filterKey, selected) in values">
-      <span ng-if="selected" class="search-facet" ng-click="removeAggFilter(aggFilter, filterKey)">{{filterKey}} <i class="fa fa-times-circle"></i></span>
-    </span>
-  </span>
-  <span ng-repeat="(textFilter, values) in filterStates.textFilters">
-    <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
-  </span>
-</div> -->
+        <div>
+          <span ng-repeat="(aggFilter, values) in filterStates.aggFilters">
+            <span ng-repeat="(filterKey, selected) in values">
+              <span ng-if="selected" class="search-facet" ng-click="removeAggFilter(aggFilter, filterKey)">{{filterKey}} <i class="fa fa-times-circle"></i></span>
+            </span>
+          </span>
+          <span ng-repeat="(textFilter, values) in filterStates.textFilters">
+            <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
+          </span>
+        </div>
         </div>
       </div>
     </div>
@@ -69,7 +68,7 @@
       </div>
 
       <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
-        <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="{{filter.count}}"
+        <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
           indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
         </checkbox-filter>
       </collapse-filter>
