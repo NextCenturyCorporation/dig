@@ -48,6 +48,10 @@ angular.module('digApp')
         $scope.submit();
     };
 
+    $scope.reload = function() {    
+        $state.go('search.list', {}, {'reload': true});
+    };
+
     $scope.closeOthers = function(index, array) {
         if($scope.currentOpened < array.length) {
             array[$scope.currentOpened].isOpen = false;
