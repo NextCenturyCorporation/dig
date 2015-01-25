@@ -1,4 +1,4 @@
-<div class="checkbox" ng-repeat="bucket in displayBuckets">
+<div class="checkbox" ng-repeat="bucket in displayBuckets" ng-hide="bucket.hidden">
   <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
     <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
   </label>
@@ -12,10 +12,6 @@
      /
     <a href="" title="Show Less" ng-class="{disabled: buttonStatus.lessButton}">
       <i ng-click="less()" class="fa fa-minus"></i>
-    </a>
-     /
-    <a href="" title="{{(showAll) ? 'Compact List' : 'Show All'}}" ng-class="{disabled: buttonStatus.allButton}">
-      <i ng-click="all()" class="bold-text" ng-bind="(showAll) ? 'Compact' : 'All'"></i>
     </a>
   </div>
 </div>
