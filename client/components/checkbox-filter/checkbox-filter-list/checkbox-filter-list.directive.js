@@ -115,7 +115,8 @@ angular.module('digApp.directives')
                     })) {
                         /* jshint camelcase:false */
                         $scope.displayBuckets.push({
-                            key: checkedItems[i],
+                            // TODO: Configure better type checking in euiConfigs mapping
+                            key: (isNaN(checkedItems[i]) ? checkedItems[i] : Number(checkedItems[i])),
                             doc_count: 0,
                             hidden: true
                         });
