@@ -303,22 +303,19 @@ var all = {
                         featureArray: 'doc._source.hasFeatureCollection.person_cupsizeus_feature',
                         featureValue: 'person_cupsizeus',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'Waist Size',
                         field: "doc['_source']['hasFeatureCollection']['person_waistsize_feature ']['person_waistsize']",
                         featureArray: "doc['_source']['hasFeatureCollection']['person_waistsize_feature ']",
                         featureValue: 'person_waistsize',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'Bust Band Size',
                         field: 'doc._source.hasFeatureCollection.person_bustbandsize_feature.person_bustbandsize',
                         featureArray: 'doc._source.hasFeatureCollection.person_bustbandsize_feature',
                         featureValue: 'person_bustbandsize',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'Grooming',
                         field: 'doc._source.hasFeatureCollection.person_grooming_feature.person_grooming',
                         featureArray: 'doc._source.hasFeatureCollection.person_grooming_feature',
@@ -330,15 +327,13 @@ var all = {
                         featureArray: 'doc._source.hasFeatureCollection.person_build_feature',
                         featureValue: 'person_build',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'Implants',
                         field: "doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']['person_implantspresent']",
                         featureArray: "doc['_source']['hasFeatureCollection']['person_implantspresent_feature ']",
                         featureValue: 'person_implantspresent',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'In Call/Out Call',
                         field: 'doc._source.hasFeatureCollection.person_incalloutcall_feature.person_incalloutcall',
                         featureArray: 'doc._source.hasFeatureCollection.person_incalloutcall_feature',
@@ -350,8 +345,7 @@ var all = {
                         featureArray: 'doc._source.hasFeatureCollection.person_username_feature',
                         featureValue: 'person_username',
                         hideIfMissing: true
-                    }
-                    ,{
+                    },{
                         title: 'Travel',
                         field: "doc['_source']['hasFeatureCollection']['person_travel_feature ']['person_travel']",
                         featureArray: "doc['_source']['hasFeatureCollection']['person_travel_feature ']",
@@ -378,22 +372,19 @@ var all = {
                     field: 'author_agg',
                     terms: 'hasFeatureCollection.author_feature.author',
                     count: 20
-                },
-                {
+                },{
                     title: 'Year',
                     type: 'eui-aggregation',
                     field: 'year_agg',
                     terms: 'hasFeatureCollection.publication_year_feature.publication_year',
                     count: 20
-                },
-                {
+                },{
                     title: 'Affiliation',
                     type: 'eui-aggregation',
                     field: 'affiliation_agg',
                     terms: 'hasFeatureCollection.affiliation_country_feature.affiliation_country',
                     count: 20
-                },
-                {
+                },{
                     title: 'Compound',
                     type: 'eui-aggregation',
                     field: 'compound_agg',
@@ -419,7 +410,7 @@ var all = {
                     classes: 'location'
                 },{
                     title: 'Affiliation',
-                    field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country',
+                    field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country || doc._source.hasFeatureCollection.affiliation_country_feature[0].affiliation_country',
                     classes: 'location'
                 }],
                 "full": {
@@ -432,7 +423,9 @@ var all = {
                             featureValue: 'author'
                         },{
                             title: 'Affiliation',
-                            field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
+                            field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country',
+                            featureArray: 'doc._source.hasFeatureCollection.affiliation_country_feature',
+                            featureValue: 'affiliation_country'
                         },{
                             title: 'Compound(s)',
                             field: 'doc._source.hasFeatureCollection.compound_feature.compound',
@@ -460,7 +453,9 @@ var all = {
                         featureValue: 'author'
                     },{
                         title: 'Affiliation',
-                        field: "doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country"
+                        field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country',
+                        featureArray: 'doc._source.hasFeatureCollection.affiliation_country_feature',
+                        featureValue: 'affiliation_country'
                     },{
                         title: 'Compound(s)',
                         field: 'doc._source.hasFeatureCollection.compound_feature.compound',
