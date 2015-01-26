@@ -110,7 +110,8 @@ angular.module('digApp.directives')
                 // extraneous filters being applied to elastic query searches.
                 for (i = 0; i < checkedItems.length; i++) {
                     if (!_.find($scope.displayBuckets, function(item) {
-                        return item.key === checkedItems[i];
+                        // Converting the key to a string since checkedItems is populated by string keys.
+                        return ((item.key) ? item.key.toString() : '') === checkedItems[i];
                     })) {
                         /* jshint camelcase:false */
                         $scope.displayBuckets.push({
