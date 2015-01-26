@@ -51,7 +51,7 @@ angular.module('digApp').directive('dateHistogramAggregation', ['$timeout', func
                             x: {
                                 type: 'timeseries',
                                 tick: {
-                                    format: '%m-%d-%y',
+                                    format: '%b %Y',
                                     count: 5
                                 }
                             },
