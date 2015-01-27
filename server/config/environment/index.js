@@ -72,24 +72,28 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'city_agg',
                     terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    termsType: 'string',
                     count: 30
                 },{
                     title: 'Ethnicity',
                     type: 'eui-aggregation',
                     field: 'etn_agg',
                     terms: 'person_ethnicity',
+                    termsType: 'string',
                     count: 20
                 },{
                     title: 'Hair Color',
                     type: 'eui-aggregation',
                     field: 'hc_agg',
                     terms: 'person_haircolor',
+                    termsType: 'string',
                     count: 10
                 },{
                     title: 'Age',
                     type: 'eui-aggregation',
                     field: 'age_agg',
                     terms: 'person_age',
+                    termsType: 'number',
                     count: 10
                 }]
             },
