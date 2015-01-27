@@ -7,6 +7,7 @@ angular.module('digApp.directives')
         scope: {
             aggregationName: '@',
             aggregationKey: '@',
+            aggregationTermsType: '@',
             userDisplayCount: '=searchCount',
             buckets: '=',
             indexVM: '=indexvm',
@@ -15,7 +16,7 @@ angular.module('digApp.directives')
             filterStates: '='
         },
         templateUrl: 'components/checkbox-filter/checkbox-filter-list/checkbox-filter-list.partial.html',
-        link: function($scope, $element, euiConfigs) {
+        link: function($scope, $element) {
             $scope.facetCount = 0;
             $scope.showAll = false;
             $scope.displayBuckets = [];
@@ -114,7 +115,7 @@ angular.module('digApp.directives')
                         return ((item.key) ? item.key.toString() : '') === checkedItems[i];
                     })) {
                         var key;
-                        if(euiConfigs.facets.aggFilters[$scope.aggregationKey].termsType === 'number') {
+                        if($scope.aggregationTermsType === 'number') {
                             key = Number(checkedItems[i]);
                         } else {
                             key = checkedItems[i];
