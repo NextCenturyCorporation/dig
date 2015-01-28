@@ -57,7 +57,8 @@
             <label>
               <input type="checkbox" ng-model="searchConfig.filterByImage"
                 eui-filter="ejs.TermFilter(facets.simFilter.field, getActiveImageSearch().url)"
-                eui-enabled="searchConfig.filterByImage">
+                eui-enabled="searchConfig.filterByImage"
+                ng-change="toggleImageSearchEnabled(getActiveImageSearch().url)">
             </label>
             <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
             <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">

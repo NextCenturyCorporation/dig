@@ -71,6 +71,10 @@ angular.module('digApp')
         $state.go('search.list');
     };
 
+    $scope.toggleImageSearchEnabled = function(searchUrl) {
+        imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
+    };
+
     $scope.getActiveImageSearch = function() {
         return imageSearchService.getActiveImageSearch();
     };
@@ -100,7 +104,9 @@ angular.module('digApp')
         }
 
         // If we have an active image search, check for a matching image.
-        if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
+        if (currentSearch && 
+            imageSearchService.isImageSearchEnabled(currentSearch.url) &&
+            doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                 function(item) { return item.featureValue === currentSearch.url; });
 
@@ -126,7 +132,7 @@ angular.module('digApp')
         $scope.imageMatchStates = [];
 
         // If we have an active image search and multiple image parts, check for a matching image.
-        if (imageSearchService.getActiveImageSearch() && 
+        if (imageSearchService.getActiveImageSearch() && imageSearchService.getActiveImageSearch().enabled &&
             doc._source.hasFeatureCollection.similar_images_feature &&
             doc._source.hasImagePart.length > 0) {
             currentSearch = imageSearchService.getActiveImageSearch();
@@ -166,7 +172,7 @@ angular.module('digApp')
             if(newVal) {
                 if(newVal.status === 'searching') {
                     $scope.imagesimLoading = true;
-                } else if(newVal.status === 'success') {
+                } else if(newVal.status === 'success' && newVal.enabled) {
                     // If our latest img search was successful, re-issue our query and
                     // enable our image filter.
                     $scope.imagesimLoading = false;
@@ -181,6 +187,17 @@ angular.module('digApp')
             }
         },
         true);
+
+    // TODO: When this controller is refactored for each of the views it serves, this watch should
+    // apply to the details view only.
+    $scope.$watch(function() {
+            return imageSearchService.getActiveImageSearch();
+        }, function(newVal, oldVal) {
+            // If we were toggling an image search on/off, reset our front image and highlighted thumbnails.
+            if ($scope.doc && newVal && oldVal && newVal.enabled !== oldVal.enabled) {
+                $scope.setImageSearchMatchIndices();
+            }
+        }, true);
 
     $scope.$watch('indexVM.loading',
         function(newValue, oldValue) {
