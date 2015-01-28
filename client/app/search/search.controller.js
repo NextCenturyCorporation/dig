@@ -195,9 +195,8 @@ angular.module('digApp')
     // apply to the details view only.
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
-        }, function(newVal, oldVal) {
-            // If we were toggling an image search on/off, reset our front image and highlighted thumbnails.
-            if ($scope.doc && newVal && oldVal && newVal.enabled !== oldVal.enabled) {
+        }, function() {
+            if ($scope.doc) {
                 $scope.setImageSearchMatchIndices();
             }
         }, true);
