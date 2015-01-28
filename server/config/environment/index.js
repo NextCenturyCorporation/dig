@@ -107,7 +107,7 @@ var all = {
                     classes: 'date'
                 },{
                     title: 'Location',
-                    field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality || doc._source.hasFeatureCollection.place_postalAddress_feature[0].place_postalAddress',
                     classes: 'location'
                 },{
                     title: 'Phone',
