@@ -198,7 +198,8 @@ describe('Controller: SearchCtrl', function () {
                     {
                         "featureObject": {
                             "imageObjectUris": [
-                                "http://some.server/AAAAA/BBBBB/processed"
+                                "http://some.server/AAAAA/BBBBB/processed",
+                                "http://some.server/AAAAA/CCCCC/processed"
                             ]
                         }
                     }
@@ -239,6 +240,19 @@ describe('Controller: SearchCtrl', function () {
                     "cacheUrl": "https://some.server/cached-2.jpg",
                     "uri": "http://some.server/AAAAA/BBBBB/processed",
                     "url": "http://some.server/sample-2.jpg"
+                },
+                {
+                    "snapshotUri": "http://some.server/AAAAA/CCCCC/raw",
+                    "a": "ImageObject",
+                    "wasGeneratedBy": {
+                        "databaseId": "33333",
+                        "wasAttributedTo": "http://some.server/unknown",
+                        "a": "Activity",
+                        "endedAtTime": "2015-01-01T00:00:00"
+                    },
+                    "cacheUrl": "https://some.server/cached-3.jpg",
+                    "uri": "http://some.server/AAAAA/CCCCC/processed",
+                    "url": "http://some.server/sample-3.jpg"
                 }
             ],
             "uri": "http://some.server/AAAAA/BBBBB/processed",
@@ -460,12 +474,70 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.selectedImage).toBe(2);
     });
 
+    it('should toggle the enable state of the active search appropriately', function() {
+        var enabled = false;
+        // Since this merely intiates a search which won't complete, the initial enable
+        // state should be false.  
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', true);
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(true);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', false);
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should set the image match indices and selected image when an image search is active and enabled', function() {
+        scope.doc = sampleImageSearchDoc;
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(3);
+        expect(scope.imageMatchStates[0]).toBe(false);
+        expect(scope.imageMatchStates[1]).toBe(true);
+        expect(scope.imageMatchStates[2]).toBe(true);
+        expect(scope.selectedImage).toBe(1);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should set the image match indices and selected image when only one image part is available', function() {
+        scope.doc = sampleImageSearchWithSingleImagePartDoc;
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should clear the image match indices and selected image when no image search is active', function() {
+        scope.doc = sampleImageSearchWithSingleImagePartDoc;
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
+
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', false);
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
+    });
+
     it('should select first image part if no image search is active', function() {
         expect(scope.getDisplayImageSrc(sampleDoc)).toBe("https://some.server/cached-1.jpg");
     });
 
     it('should select first matching image part if an image search is active', function() {
         imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
         expect(scope.getDisplayImageSrc(sampleImageSearchDoc)).toBe("https://some.server/cached-2.jpg")
     });
 

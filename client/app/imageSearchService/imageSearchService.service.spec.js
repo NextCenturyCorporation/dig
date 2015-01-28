@@ -125,4 +125,32 @@ describe('Service: imageSearchService', function () {
         expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('no search available');
         expect(activeSearch).toBeNull();
     });
+
+    it('should set the enable state of a search to true after it completes', function() {
+        var imgUrl = 'http://foo';
+
+        imageSearchService.imageSearch(imgUrl);
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('searching');
+        expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(false);
+
+        $httpBackend.flush();
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('success');
+        expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(true);
+    });
+
+    it('should allow the toggling of an image searchs enabled state', function() {
+        var imgUrl = 'http://foo';
+
+        imageSearchService.imageSearch(imgUrl);
+        $httpBackend.flush();
+        expect(imageSearchService.getImageSearchStatus(imgUrl)).toBe('success');
+        expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(true);
+
+        imageSearchService.setImageSearchEnabled(imgUrl, false);
+        expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(false);
+
+        imageSearchService.setImageSearchEnabled(imgUrl, true);
+        expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(true);
+    });
+
 });

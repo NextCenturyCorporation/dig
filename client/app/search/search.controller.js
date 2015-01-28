@@ -103,6 +103,7 @@ angular.module('digApp')
             src = doc._source.hasImagePart[0].cacheUrl;
         }
 
+        /* jshint camelcase:false */
         // If we have an active image search, check for a matching image.
         if (currentSearch && 
             imageSearchService.isImageSearchEnabled(currentSearch.url) &&
@@ -120,17 +121,18 @@ angular.module('digApp')
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
+        /* jshint camelcase:true */
 
         return src;
     };
 
     $scope.setImageSearchMatchIndices = function() {
-        var src = '';
         var doc = $scope.doc;
         var currentSearch, imgFeature;
         $scope.selectedImage = -1;
         $scope.imageMatchStates = [];
 
+        /* jshint camelcase:false */
         // If we have an active image search and multiple image parts, check for a matching image.
         if (imageSearchService.getActiveImageSearch() && imageSearchService.getActiveImageSearch().enabled &&
             doc._source.hasFeatureCollection.similar_images_feature &&
@@ -153,10 +155,11 @@ angular.module('digApp')
                 });
             }
         }
+        /* jshint camelcase:true */
 
         // Set to selected index to 0 if no matches were found.
         $scope.selectedImage = ($scope.selectedImage >= 0) ? $scope.selectedImage : 0;
-    }
+    };
 
     $scope.toggleListItemOpened = function(index) {
         $scope.opened[index] = !($scope.opened[index]);

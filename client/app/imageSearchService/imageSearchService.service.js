@@ -32,11 +32,11 @@ angular.module('digApp')
         if (imageSearchResults[imageUrl]) {
             imageSearchResults[imageUrl].enabled = enabled;
         }
-    }
+    };
 
     service.isImageSearchEnabled = function(imageUrl) {
         return ((imageSearchResults[imageUrl]) ? imageSearchResults[imageUrl].enabled : false);
-    }
+    };
 
     service.getActiveImageSearch = function() {
         return activeImageSearch;
