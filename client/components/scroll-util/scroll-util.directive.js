@@ -3,6 +3,9 @@
 angular.module('digApp.directives')
 .directive('scrollUtil', function($state, $window, $timeout) {
     return {
+        scope: {
+            resetScroll: '='
+        },
         restrict: 'EA',
         link: function($scope) {
             $scope.scrollPosCache = {};
@@ -21,6 +24,17 @@ angular.module('digApp.directives')
                     }
                 }, 0);
             });
+
+            $scope.$watch('resetScroll', 
+                function(newValue) {
+                    if(newValue) {
+                        for (var key in $scope.scrollPosCache) {
+                            delete $scope.scrollPosCache[key];
+                        }
+                    }
+                }
+            );
+               
         }
     };
 });
