@@ -1,2 +1,23 @@
-<p>foo</p>
+<div class="results-header-div row">
+    <button class="btn btn-default" ng-click="switchView('list')">
+        <i class="glyphicon glyphicon-th-list results-list-button" ng-class="{selected: displayMode.mode === 'list'}"></i>
+    </button>
+    <button class="btn btn-default" ng-click="switchView('gallery')">
+        <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
+    </button>
+    <!-- TODO: Implement Sort By feature - commenting out for now -->
+  <div class="btn-group pull-right">
+    <label>Sort by</label>
+    <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+      Newest first
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+    </ul>
+  </div>
+</div>
+
 <ui-view></ui-view>

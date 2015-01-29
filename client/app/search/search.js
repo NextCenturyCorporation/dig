@@ -12,11 +12,12 @@ angular.module('digApp')
       })
       .state('search.results', {
         abstract: true,
-        templateUrl: 'app/search/search-results/search-results.partial.html'
+        templateUrl: 'app/search/search-results/search-results.partial.html',
+        controller: 'SearchResultsCtrl'
       })
       .state('search.results.list', {
         url: '^/list',
-        templateUrl: 'app/search/search-results/list/list.html'
+        templateUrl: 'app/search/search-results/list/list.partial.html'
       })
       .state('search.results.gallery', {
         url: '^/gallery',
