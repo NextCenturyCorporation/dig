@@ -21,7 +21,8 @@ angular.module('digApp')
       })
       .state('search.results.gallery', {
         url: '^/gallery',
-        templateUrl: 'app/search/search-results/gallery/gallery.partial.html'
+        templateUrl: 'app/search/search-results/gallery/gallery.partial.html',
+        controller: 'GalleryCtrl'
       })
       .state('search.details', {
         url: '^/details',

@@ -5,7 +5,7 @@ angular.module('digApp')
     $scope.displayMode = {
         mode: 'list'
     };
-    $scope.indexVM.pageSize = 50;
+    $scope.indexVM.pageSize = 25;
 
 
     $scope.switchView = function(displayMode) {
