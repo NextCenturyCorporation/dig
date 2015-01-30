@@ -7,20 +7,10 @@
   </div>
 
   <!-- ng-repeat="doc in indexVM.results.hits.hits track by $index" -->
-  <div ng-repeat="row in gallery.formattedData track by $index" class="row">
-    <div ng-repeat="doc in row track by $index">
-      <div class="col-md-3 col-lg-2 text-center">
-        <span ng-if="doc._source.hasImagePart">
-          <!-- <div class="image-with-caption"> -->
-            <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
-            <!-- <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
-              <div class="caption-background"></div>
-              <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
-            </div>
-          </div> -->
-        </span>
-      </div>
-    </div>
+  <div ng-repeat="doc in gallery.rawData track by $index" class="gallery-img-container">
+    <span ng-if="doc._source.hasImagePart">
+      <img blurred-image class="gallery-img center-block" ng-src="{{getDisplayImageSrc(doc)}}">
+    </span>
   </div>
 
   <div class="text-center">

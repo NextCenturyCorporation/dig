@@ -6,7 +6,8 @@ angular.module('digApp')
         row: 5
     };
     $scope.gallery = {
-        formattedData: []
+        formattedData: [],
+        rawData: []
     };
 
     var getGalleryData = function() {
@@ -32,6 +33,7 @@ angular.module('digApp')
 
     $scope.$watch('indexVM.results', function() {
         console.log("firing data processing");
+        $scope.gallery.rawData = ($scope.indexVM.results && $scope.indexVM.results.hits ? $scope.indexVM.results.hits.hits : []);
         $scope.gallery.formattedData = getGalleryData();
     }, true);
 });
