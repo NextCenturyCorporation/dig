@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col-md-12 displayed-image-container text-center">
             <div class="image-with-caption">
-              <img blurred-image ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
+              <img blurred-image is-blurred="isBlurred" ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
               <div ng-if="facets.simFilter" class="caption image-search-caption"
                 ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
                 <div class="caption-background"></div>
@@ -33,7 +33,7 @@
               <ul class="inline list-inline text-center">
                 <li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block">
                   <a ng-href="" ng-mouseenter="selectImage($index)">
-                    <img blurred-image ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb">
+                    <img blurred-image  is-blurred="isBlurred" ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb">
                   </a>
                 </li>
               </ul>

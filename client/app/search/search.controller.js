@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
+    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
     $scope.currentOpened = 0;
     $scope.selectedImage = 0;
@@ -24,6 +24,11 @@ angular.module('digApp')
     $scope.filterStates = {
         aggFilters: {},
         textFilters: {}
+    };
+    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur';
+
+    $scope.changeBlur = function() {
+        blurImageService.changeBlurImagesEnabled($scope.isBlurred);
     };
 
     $scope.removeAggFilter = function(key1, key2) {
