@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('GalleryCtrl', function($scope) {
+.controller('GalleryCtrl', function($scope, $compile) {
     $scope.counts = {
         row: 5
     };
@@ -39,7 +39,9 @@ angular.module('digApp')
         var parentEl = getParentEl(el);
         var docNum = parentEl[0].attributes['gallery-index'].value;
         var insertAfterEl = findRowLastEl(parentEl);
-        insertAfterEl.after('<expanded-listing-view id="gallery-expander" doc="' + docNum + '"></expanded-listing-view>');
+
+        insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" doc="indexVM.results.hits.hits[' + docNum + ']" '+
+            'get-display-image-src="getDisplayImageSrc"></expanded-listing-view>')($scope));
     };
 
     var getParentEl = function(el) {
