@@ -25,7 +25,7 @@ angular.module('digApp')
         aggFilters: {},
         textFilters: {}
     };
-    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur';
+    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
 
     $scope.changeBlur = function() {
         blurImageService.changeBlurImagesEnabled($scope.isBlurred);

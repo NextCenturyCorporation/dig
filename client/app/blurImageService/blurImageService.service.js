@@ -18,13 +18,13 @@ angular.module('digApp.services')
 
     blurConfig.changeBlurImagesEnabled = function(isBlurred) {
         if(isBlurred) {
-            sessionStorage.blurImagesEnabled = 'blur';
-            sessionStorage.blurImagesPercentage = 2.5;
-            sessionStorage.pixelateImagesPercentage = 5;
+            sessionStorage.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : 'blur';
+            sessionStorage.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
+            sessionStorage.pixelateImagesPercentage = (pixelateImagesPercentage > 0) ? pixelateImagesPercentage : 2.5;
         } else {
-            sessionStorage.blurImagesEnabled = null;
-            sessionStorage.blurImagesPercentage = 0;
-            sessionStorage.pixelateImagesPercentage = 0;
+            sessionStorage.blurImagesEnabled = blurImagesEnabled ? false : blurImagesEnabled;
+            sessionStorage.blurImagesPercentage = (blurImagesPercentage === 0) ? blurImagesPercentage : 0;
+            sessionStorage.pixelateImagesPercentage = (pixelateImagesPercentage === 0) ? pixelateImagesPercentage : 0;
         }
     };
 
