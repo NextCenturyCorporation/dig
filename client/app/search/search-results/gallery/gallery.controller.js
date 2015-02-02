@@ -31,6 +31,40 @@ angular.module('digApp')
         return galleryData;
     };
 
+    $scope.renderExpander = function(clickEvent) {
+        var el = clickEvent.target;
+
+        $('#gallery-expander').remove();
+
+        var parentEl = getParentEl(el);
+        var docNum = parentEl[0].attributes['gallery-index'].value;
+        var insertAfterEl = findRowLastEl(parentEl);
+        insertAfterEl.after('<expanded-listing-view id="gallery-expander" doc="' + docNum + '"></expanded-listing-view>');
+    };
+
+    var getParentEl = function(el) {
+        var parentDiv = $(el).parent().closest('div.gallery-img-container');
+        return parentDiv;
+    };
+
+    var findRowLastEl = function(parentDiv) {
+        var y = parentDiv.position().top;
+
+        var currentEl = parentDiv;
+        var nextEl;
+        var lastEl;
+        while(!lastEl) {
+            nextEl = currentEl.next('div.gallery-img-container');
+            if(nextEl.length === 0 || (nextEl.position().top > y)) {
+                //currentEl is last el or last in row
+                lastEl = currentEl;
+            } else {
+                currentEl = nextEl;
+            }
+        }
+        return lastEl;
+    };
+
     $scope.$watch('indexVM.results', function() {
         console.log("firing data processing");
         $scope.gallery.rawData = ($scope.indexVM.results && $scope.indexVM.results.hits ? $scope.indexVM.results.hits.hits : []);
