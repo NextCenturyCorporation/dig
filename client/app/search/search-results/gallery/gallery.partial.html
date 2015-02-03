@@ -1,17 +1,11 @@
 <div ui-view>
   <div class="column-header">
     <h4>
-      <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
       <strong>{{indexVM.results.hits.total}}</strong> results
     </h4>
   </div>
 
-  <!-- ng-repeat="doc in indexVM.results.hits.hits track by $index" -->
-  <div ng-repeat="doc in gallery.rawData track by $index" class="gallery-img-container" gallery-index="{{$index}}">
-    <span ng-if="doc._source.hasImagePart">
-      <img blurred-image class="gallery-img center-block" ng-src="{{getDisplayImageSrc(doc)}}" ng-click="renderExpander($event)">
-    </span>
-  </div>
+  <image-gallery></image-gallery>
 
   <div class="text-center">
     <ul class="list-unstyled">
