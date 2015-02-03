@@ -350,9 +350,9 @@ describe('Controller: SearchCtrl', function () {
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search.list.html'))
+            $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search.list.details.html'))
+            $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
                 .respond(200, 'some text');
             imageSearchService = _imageSearchService_;
 
@@ -375,7 +375,7 @@ describe('Controller: SearchCtrl', function () {
 
     it('should call state.go with reload set to true', function () {
         scope.reload();
-        expect(state.go).toHaveBeenCalledWith('search.list', {}, {'reload': true});
+        expect(state.go).toHaveBeenCalledWith('search.results.list', {}, {'reload': true});
     });
 
     it('should initialize showresults to false', function () {
@@ -423,7 +423,7 @@ describe('Controller: SearchCtrl', function () {
     });
 
     it('should default to list view', function () {
-        expect(state.go).toHaveBeenCalledWith('search.list');
+        expect(state.go).toHaveBeenCalledWith('search.results.list');
     });
 
     it('should change currentOpened to new index and update old opened value in array', function () {
@@ -434,24 +434,6 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.currentOpened).toBe(1);
         expect(array[oldValue].isOpen).toBe(false);
-    });
-
-    it('should update state to details view and add passed in doc to scope', function () {
-        var testDoc = {name: 'TestDoc'};
-
-        scope.viewDetails(testDoc);
-
-        expect(scope.doc).not.toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.list.details');
-    });
-
-    it('should update state from details to list view and null out scope.doc if scope.doc is set', function () {
-        scope.doc = {name: 'TestDoc'};
-
-        scope.viewList();
-
-        expect(scope.doc).toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.list');
     });
 
     it('should update selectedImage', function () {
@@ -476,16 +458,6 @@ describe('Controller: SearchCtrl', function () {
 
     it('should generate an empty display image src if no cacheUrl is present', function() {
         expect(scope.getDisplayImageSrc(sampleDocMissingCacheUrl)).toBe("");
-    });
-
-    it('should return whether or not a list item is opened by id', function() {
-        expect(scope.isListItemOpened("foo")).toBe(false);
-
-        scope.toggleListItemOpened("foo");
-        expect(scope.isListItemOpened("foo")).toBe(true);
-
-        scope.toggleListItemOpened("foo");
-        expect(scope.isListItemOpened("foo")).toBe(false);
     });
 
     it('should clear the opened items list on a query change', function() {

@@ -44,9 +44,6 @@ angular.module('digApp')
         return ($scope.opened[index]) ? true : false;
     };
 
-
-
-
     $scope.switchView = function(displayMode) {
         if(displayMode === 'list') {
             $scope.viewList();
