@@ -2,11 +2,7 @@
 
 angular.module('digApp')
 .controller('GalleryCtrl', function($scope, $compile) {
-    $scope.counts = {
-        row: 5
-    };
     $scope.gallery = {
-        formattedData: [],
         rawData: []
     };
 
@@ -20,7 +16,7 @@ angular.module('digApp')
         var insertAfterEl = findRowLastEl(parentEl);
 
         insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" doc="indexVM.results.hits.hits[' + docNum + ']" '+
-            'get-display-image-src="getDisplayImageSrc"></expanded-listing-view>')($scope));
+            'get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="gallery"></expanded-listing-view>')($scope));
     };
 
     var getParentEl = function(el) {

@@ -24,8 +24,8 @@ angular.module('digApp')
         templateUrl: 'app/search/search-results/gallery/gallery.partial.html',
         controller: 'GalleryCtrl'
       })
-      .state('search.details', {
+      .state('search.results.details', {
         url: '^/details',
-        templateUrl: 'app/search/details/details.html'
+        templateUrl: 'app/search/search-results/details/details.html'
       });
   });

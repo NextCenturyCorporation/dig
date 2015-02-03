@@ -6,7 +6,9 @@ angular.module('digApp.directives')
         restrict: 'E',
         scope: {
             doc: '=',
-            getDisplayImageSrc: '=' //this should be in a service instead of on a controller scope
+            parentState: '@',
+            getDisplayImageSrc: '=', //this should be in a service instead of on a controller scope
+            viewDetails: '='
         },
         templateUrl: 'components/expanded-listing-view/expanded-listing-view.partial.html',
         link: function($scope) {

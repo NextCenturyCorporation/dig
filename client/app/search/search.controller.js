@@ -20,7 +20,6 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.opened = [];
     $scope.filterStates = {
         aggFilters: {},
         textFilters: {}
@@ -43,6 +42,10 @@ angular.module('digApp')
         $scope.viewList();
     };
 
+    $scope.viewList = function() {
+        $state.go('search.results.list');
+    };
+
     $scope.clearSearch = function() {
         $scope.queryString.live = '';
         $scope.submit();
@@ -57,18 +60,6 @@ angular.module('digApp')
             array[$scope.currentOpened].isOpen = false;
         }
         $scope.currentOpened = index;
-    };
-
-    $scope.viewDetails = function(doc) {
-        $scope.doc = doc;
-        $state.go('search.details');
-    };
-
-    $scope.viewList = function() {
-        if($scope.doc) {
-            $scope.doc = null;
-        }
-        $state.go('search.results.list');
     };
 
     $scope.getActiveImageSearch = function() {
@@ -116,14 +107,6 @@ angular.module('digApp')
         }
 
         return src;
-    };
-
-    $scope.toggleListItemOpened = function(index) {
-        $scope.opened[index] = !($scope.opened[index]);
-    };
-
-    $scope.isListItemOpened = function(index) {
-        return ($scope.opened[index]) ? true : false;
     };
 
     $scope.$watch(function() {
