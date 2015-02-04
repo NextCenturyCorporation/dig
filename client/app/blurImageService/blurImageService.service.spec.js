@@ -9,7 +9,7 @@ describe('Service: blurImageService', function () {
     beforeEach(module('digApp'));
 
     // instantiate service
-    var blurConfig;
+    var blurConfig, rootScope;
 
     beforeEach(function() {
         module(function($provide) {
@@ -18,10 +18,11 @@ describe('Service: blurImageService', function () {
             $provide.constant('pixelateImagesPercentage', pixelateImagesPercentage);
         });
 
-        inject(function(_blurImageService_) {
+        inject(function(_blurImageService_, $injector) {
             blurConfig = _blurImageService_;
+            rootScope = $injector.get('$rootScope');
+            spyOn(rootScope, '$broadcast');
         });
-
     });
 
     it('blurImageService should be instantiated', function () {
@@ -51,6 +52,8 @@ describe('Service: blurImageService', function () {
         var blurPercent = blurConfig.getBlurImagesPercentage();
         var pixPercent = blurConfig.getPixelateImagesPercentage();
 
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('blur-state-change', false);
+
         expect(blurEnabled).toBe(false);
         expect(blurPercent).toBe(0);
         expect(pixPercent).toBe(0);
@@ -63,6 +66,9 @@ describe('Service: blurImageService', function () {
         var blurEnabled = blurConfig.getBlurImagesEnabled();
         var blurPercent = blurConfig.getBlurImagesPercentage();
         var pixPercent = blurConfig.getPixelateImagesPercentage();
+
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('blur-state-change', false);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('blur-state-change', true);
 
         expect(blurEnabled).toBe(blurImagesEnabled);
         expect(blurPercent).toBe(blurImagesPercentage);

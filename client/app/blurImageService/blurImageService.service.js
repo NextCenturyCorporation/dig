@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.service('blurImageService', function(blurImagesEnabled, blurImagesPercentage, pixelateImagesPercentage) {
+.service('blurImageService', function($rootScope, blurImagesEnabled, blurImagesPercentage, pixelateImagesPercentage) {
     var blurConfig = this;
 
     blurConfig.getBlurImagesEnabled = function() {
@@ -30,6 +30,8 @@ angular.module('digApp')
             tempObject.pixelateImagesPercentage = (pixelateImagesPercentage === 0) ? pixelateImagesPercentage : 0;
             sessionStorage.blurConfig = JSON.stringify(tempObject);
         }
+
+        $rootScope.$broadcast('blur-state-change', isBlurred);
     };
 
     return blurConfig;

@@ -137,14 +137,9 @@ angular.module('digApp.directives')
                 $scope.processImageBlur(imageSource);
             });
 
-            $scope.$watch(function() {
-                return blurImageService.getBlurImagesEnabled();
-            }, function(newVal, oldVal) {
-                if(newVal !== oldVal) {
-                    $scope.processImageBlur(attrs.src);
-                }
+            $scope.$on('blur-state-change', function() {
+                $scope.processImageBlur(attrs.src);
             });
-
         }
     };
 });
