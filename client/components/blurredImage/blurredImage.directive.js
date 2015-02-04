@@ -4,9 +4,6 @@
 angular.module('digApp.directives')
 .directive('blurredImage', function(blurImageService, $timeout) {
     return {
-        scope: {
-            isBlurred: '&'
-        },
         restrict: 'A',
         link: function($scope, el, attrs) {
             var processing = false;
@@ -121,8 +118,6 @@ angular.module('digApp.directives')
                 } else if(fallback || blurImagesEnabled === 'blur') {
                     $timeout(cssBlur);
                 }
-
-
             };
 
             $scope.processImageBlur = function(imageSource) {
@@ -142,7 +137,9 @@ angular.module('digApp.directives')
                 $scope.processImageBlur(imageSource);
             });
 
-           $scope.$watch('isBlurred()', function(newVal, oldVal) {
+            $scope.$watch(function() {
+                return blurImageService.getBlurImagesEnabled();
+            }, function(newVal, oldVal) {
                 if(newVal !== oldVal) {
                     $scope.processImageBlur(attrs.src);
                 }

@@ -74,7 +74,7 @@
                 eui-filter="ejs.TermFilter(facets.simFilter.field, getActiveImageSearch().url)"
                 eui-enabled="searchConfig.filterByImage">
             </label>
-            <img blurred-image is-blurred="isBlurred" ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
+            <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
             <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
               <i class="fa fa-times-circle pull-right"></i>
             </a>
