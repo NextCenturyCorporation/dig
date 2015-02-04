@@ -69,7 +69,7 @@
 
       <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
         <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
-          indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
+          aggregation-terms-type="{{filter.termsType}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
         </checkbox-filter>
       </collapse-filter>
     </div>

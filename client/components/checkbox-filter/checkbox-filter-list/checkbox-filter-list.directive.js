@@ -7,6 +7,7 @@ angular.module('digApp.directives')
         scope: {
             aggregationName: '@',
             aggregationKey: '@',
+            aggregationTermsType: '@',
             userDisplayCount: '=searchCount',
             buckets: '=',
             indexVM: '=indexvm',
@@ -74,8 +75,8 @@ angular.module('digApp.directives')
                 }
 
                 aggObj = (_.filter($scope.buckets, function(bucket) {
-                        return (bucket.key && bucket.key == term);
-                    }));
+                    return (bucket.key && bucket.key == term);
+                }));
 
                 return (aggObj.length !== 0) ? aggObj[0] : false;
             };
@@ -106,17 +107,24 @@ angular.module('digApp.directives')
                 // Add hidden fields for any checked items that didn't come
                 // back in our current aggregation set.  This is necessary to
                 // keep the eui directives in sync with the user state.  If no
-                // controll for this these are in the page, it will result in 
+                // controll for this these are in the page, it will result in
                 // extraneous filters being applied to elastic query searches.
                 for (i = 0; i < checkedItems.length; i++) {
                     if (!_.find($scope.displayBuckets, function(item) {
                         // Converting the key to a string since checkedItems is populated by string keys.
                         return ((item.key) ? item.key.toString() : '') === checkedItems[i];
                     })) {
+                        var key;
+                        if($scope.aggregationTermsType === 'number') {
+                            key = Number(checkedItems[i]);
+                        } else {
+                            key = checkedItems[i];
+                        }
+
                         /* jshint camelcase:false */
                         $scope.displayBuckets.push({
                             // TODO: Configure better type checking in euiConfigs mapping
-                            key: (isNaN(checkedItems[i]) ? checkedItems[i] : Number(checkedItems[i])),
+                            key: key,
                             doc_count: 0,
                             hidden: true
                         });
