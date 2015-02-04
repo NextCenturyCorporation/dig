@@ -21,7 +21,7 @@ angular.module('digApp.directives')
             };
 
             var getParentEl = function(el) {
-                var parentDiv = $(el).parent().closest('div.gallery-img-container');
+                var parentDiv = $(el).parent().closest('div.image-gallery-container');
                 return parentDiv;
             };
 
@@ -32,7 +32,7 @@ angular.module('digApp.directives')
                 var nextEl;
                 var lastEl;
                 while(!lastEl) {
-                    nextEl = currentEl.next('div.gallery-img-container');
+                    nextEl = currentEl.next('div.image-gallery-container');
                     if(nextEl.length === 0 || (nextEl.position().top > y)) {
                         //currentEl is last el or last in row
                         lastEl = currentEl;
