@@ -349,8 +349,8 @@ describe('Controller: SearchCtrl', function () {
                 getBlurImagesEnabled : function() {
                     return this.blurEnabled;
                 },
-                changeBlurImagesEnabled: function(bool) {
-                    if(bool) {
+                changeBlurImagesEnabled: function(isBlurred) {
+                    if(isBlurred) {
                         blurEnabled: 'blur';
                     } else {
                         blurEnabled: false;
