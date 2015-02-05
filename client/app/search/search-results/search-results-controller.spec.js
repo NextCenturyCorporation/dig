@@ -61,12 +61,29 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.doc).toBe(undefined);
     });
 
-    it('should update state to details view and add passed in doc to scope', function () {
+    it('should not have scope.previousState', function () {
+        expect(scope.previousState).toBe(undefined);
+    });
+
+    it('should initialize opened to be an empty array', function () {
+        expect(scope.opened.length).toBe(0);
+    });
+
+    it('should initialize displayMode.mode to \'list\'', function () {
+        expect(scope.displayMode.mode).toBe('list');
+    });
+
+    it('should initialize indexVM.pageSize to 25', function () {
+        expect(scope.indexVM.pageSize).toBe(25);
+    });
+
+    it('should update state to details view and add passed in doc and state to scope', function () {
         var testDoc = {name: 'TestDoc'};
 
-        scope.viewDetails(testDoc);
+        scope.viewDetails(testDoc, 'list');
 
         expect(scope.doc).not.toBeNull();
+        expect(scope.previousState).toBe('list');
         expect(state.go).toHaveBeenCalledWith('search.results.details');
     });
 
@@ -89,6 +106,20 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(state.go).toHaveBeenCalledWith('search.results.gallery');
     });
 
+    it('should set displayMode.mode to \'gallery\' and make appropriate state call', function () {
+        scope.viewGallery();
+
+        expect(scope.displayMode.mode).toBe('gallery');
+        expect(state.go).toHaveBeenCalledWith('search.results.gallery');
+    });
+
+    it('should set displayMode.mode to \'list\' and make appropriate state call', function () {
+        scope.viewList();
+
+        expect(scope.displayMode.mode).toBe('list');
+        expect(state.go).toHaveBeenCalledWith('search.results.list');
+    });
+
     it('should return whether or not a list item is opened by id', function() {
         expect(scope.isListItemOpened('foo')).toBe(false);
 
@@ -99,7 +130,7 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
 
-    it('should clear the opened items list on a query change', function() {
+    it('should clear the opened items list on a query change and reset page to 1', function() {
         expect(scope.opened.length).toBe(0);
 
         scope.toggleListItemOpened('foo');
@@ -107,6 +138,7 @@ describe('Controller: SearchResultsCtrl', function () {
         scope.$digest();
         expect(scope.opened.length).toBe(0);
         expect(scope.isListItemOpened('foo')).toBe(false);
+        expect(scope.indexVM.page).toBe(1);
     });
 
 
