@@ -5,7 +5,7 @@ describe('Controller: SearchResultsCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var SearchCtrl, scope, state;
+    var SearchResultsCtrl, scope, state;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -48,7 +48,7 @@ describe('Controller: SearchResultsCtrl', function () {
                 pageSize: 10
             };
 
-            SearchCtrl = $controller('SearchResultsCtrl', {
+            SearchResultsCtrl = $controller('SearchResultsCtrl', {
                 $scope: scope,
                 $state: state
             });
@@ -98,4 +98,16 @@ describe('Controller: SearchResultsCtrl', function () {
         scope.toggleListItemOpened('foo');
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
+
+    it('should clear the opened items list on a query change', function() {
+        expect(scope.opened.length).toBe(0);
+
+        scope.toggleListItemOpened('foo');
+        scope.indexVM.query = 'some new query';
+        scope.$digest();
+        expect(scope.opened.length).toBe(0);
+        expect(scope.isListItemOpened('foo')).toBe(false);
+    });
+
+
 });

@@ -410,10 +410,6 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.loading).toBe(false);
     });
 
-    it('should have currentOpened default to 0', function () {
-        expect(scope.currentOpened).toBe(0);
-    });
-
     it('should have selectedImage default to 0', function () {
         expect(scope.selectedImage).toBe(0);
     });
@@ -424,16 +420,6 @@ describe('Controller: SearchCtrl', function () {
 
     it('should default to list view', function () {
         expect(state.go).toHaveBeenCalledWith('search.results.list');
-    });
-
-    it('should change currentOpened to new index and update old opened value in array', function () {
-        var array = [{obj: 1},{obj: 2}];
-        var oldValue = scope.currentOpened;
-
-        scope.closeOthers(1, array);
-
-        expect(scope.currentOpened).toBe(1);
-        expect(array[oldValue].isOpen).toBe(false);
     });
 
     it('should update selectedImage', function () {
@@ -458,15 +444,5 @@ describe('Controller: SearchCtrl', function () {
 
     it('should generate an empty display image src if no cacheUrl is present', function() {
         expect(scope.getDisplayImageSrc(sampleDocMissingCacheUrl)).toBe("");
-    });
-
-    it('should clear the opened items list on a query change', function() {
-        expect(scope.opened.length).toBe(0);
-
-        scope.toggleListItemOpened("foo");
-        scope.indexVM.query = "some new query";
-        scope.$apply();
-        expect(scope.opened.length).toBe(0);
-        expect(scope.isListItemOpened("foo")).toBe(false);
     });
 });
