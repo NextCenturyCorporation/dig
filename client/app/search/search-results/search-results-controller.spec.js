@@ -89,22 +89,34 @@ describe('Controller: SearchResultsCtrl', function () {
 
     it('should update state from details to list view and null out scope.doc if scope.doc is set and previousState is not set', function () {
         scope.doc = {name: 'TestDoc'};
+        spyOn(scope, 'viewList');
 
         scope.backToPreviousState();
 
         expect(scope.doc).toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.results.list');
+        expect(scope.viewList).toHaveBeenCalled();
+    });
+
+    it('should not null out scope.doc if it does not exist', function () {
+        spyOn(scope, 'viewList');
+
+        scope.backToPreviousState();
+
+        expect(scope.doc).toBe(undefined);
+        expect(scope.viewList).toHaveBeenCalled();
     });
 
     it('should update state from details to previous view and null out scope.doc if scope.doc is set and previousState is set', function () {
         scope.doc = {name: 'TestDoc'};
         scope.previousState = 'gallery';
+        spyOn(scope, 'viewGallery');
 
         scope.backToPreviousState();
 
         expect(scope.doc).toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.results.gallery');
+        expect(scope.viewGallery).toHaveBeenCalled();
     });
+
 
     it('should set displayMode.mode to \'gallery\' and make appropriate state call', function () {
         scope.viewGallery();
@@ -141,5 +153,27 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.indexVM.page).toBe(1);
     });
 
+    it('should switch to list view', function () {
+        spyOn(scope, 'viewList');
+        scope.switchView('list');
+
+        expect(scope.viewList).toHaveBeenCalled();
+    });
+
+    it('should switch to gallery view', function () {
+        spyOn(scope, 'viewGallery');
+        scope.switchView('gallery');
+
+        expect(scope.viewGallery).toHaveBeenCalled();
+    });
+
+    it('should not switch view', function () {
+        spyOn(scope, 'viewList');
+        spyOn(scope, 'viewGallery');
+        scope.switchView('notAView');
+
+        expect(scope.viewList).not.toHaveBeenCalled();
+        expect(scope.viewGallery).not.toHaveBeenCalled();
+    });
 
 });
