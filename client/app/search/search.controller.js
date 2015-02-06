@@ -8,7 +8,6 @@ angular.module('digApp')
     function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.showresults = false;
     $scope.currentOpened = 0;
-    $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
     $scope.imagesimLoading = false;
@@ -71,9 +70,6 @@ angular.module('digApp')
         imageSearchService.clearActiveImageSearch();
     };
 
-    $scope.selectImage = function(index) {
-        $scope.selectedImage = index;
-    };
 
     $scope.imageSearch = function(imgUrl) {
         imageSearchService.imageSearch(imgUrl);
