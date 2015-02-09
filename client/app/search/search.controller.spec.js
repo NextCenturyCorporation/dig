@@ -414,10 +414,6 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.selectedImage).toBe(0);
     });
 
-    it('should not have scope.doc', function () {
-        expect(scope.doc).toBe(undefined);
-    });
-
     it('should default to list view', function () {
         expect(state.go).toHaveBeenCalledWith('search.results.list');
     });
