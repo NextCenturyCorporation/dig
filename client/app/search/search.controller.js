@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.showresults = false;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
@@ -81,6 +81,7 @@ angular.module('digApp')
         }
 
         // If we have an active image search, check for a matching image.
+        /* jshint camelcase:false */
         if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                 function(item) { return item.featureValue === currentSearch.url; });
@@ -95,6 +96,7 @@ angular.module('digApp')
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
+        /* jshint camelcase:true */
 
         return src;
     };
