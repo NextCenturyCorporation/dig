@@ -2,12 +2,15 @@
 
 
 angular.module('digApp.directives')
-.directive('blurredImage', function(blurImagesEnabled, pixelateImagesPercentage, blurImagesPercentage, $timeout) {
+.directive('blurredImage', function(blurImageService, $timeout) {
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
             var processing = false;
             var fallback = false;
+            var blurImagesEnabled = blurImageService.getBlurImagesEnabled();
+            var blurImagesPercentage = blurImageService.getBlurImagesPercentage();
+            var pixelateImagesPercentage = blurImageService.getPixelateImagesPercentage();
 
             if(blurImagesEnabled === 'blur') {
                 element.addClass('image-blur-default');
@@ -126,7 +129,7 @@ angular.module('digApp.directives')
                 } else if(!fallback && blurImagesEnabled === 'blur') {
                     fallback = true;
 
-                    $scope.$watch($scope.getMaxSize, function(newVal, oldVal) {
+                    $scope.$watch($scope.getMaxSize, function() {
                         cssBlur();
                     });
 
@@ -136,13 +139,25 @@ angular.module('digApp.directives')
                 }
             };
 
-            attrs.$observe('src', function(imageSource) {
+            $scope.processImageBlur = function(imageSource) {
+                blurImagesEnabled = blurImageService.getBlurImagesEnabled();
+                blurImagesPercentage = blurImageService.getBlurImagesPercentage();
+                pixelateImagesPercentage = blurImageService.getPixelateImagesPercentage();
+
                 if(!processing) {
                     blurImage(imageSource);
                 } else {
                     processing.onload = null; //cancel the onload
                     blurImage(imageSource);
                 }
+            };
+
+            attrs.$observe('src', function(imageSource) {
+                $scope.processImageBlur(imageSource);
+            });
+
+            $scope.$on('blur-state-change', function() {
+                $scope.processImageBlur(attrs.src);
             });
         }
     };

@@ -7,7 +7,7 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, state;
+    var SearchCtrl, scope, state, blurImageSvcMock;
 
     var sampleDoc = {
         "_index": "dig",
@@ -338,14 +338,28 @@ describe('Controller: SearchCtrl', function () {
                 facets: [],
                 listFields: [],
                 detailsFields: []
-            })
+            });
         });
 
         inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
+            blurImageSvcMock = {
+                blurEnabled: 'blur',
+                getBlurImagesEnabled : function() {
+                    return this.blurEnabled;
+                },
+                changeBlurImagesEnabled: function(isBlurred) {
+                    if(isBlurred) {
+                        blurEnabled: 'blur';
+                    } else {
+                        blurEnabled: false;
+                    }
+                }
+            }
             state.current.name = 'search';
             spyOn(state, 'go');
+            spyOn(blurImageSvcMock, 'changeBlurImagesEnabled');
 
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
@@ -358,7 +372,8 @@ describe('Controller: SearchCtrl', function () {
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
-                $state: state
+                $state: state,
+                blurImageService: blurImageSvcMock
             });
 
             scope.indexVM = {
@@ -378,6 +393,10 @@ describe('Controller: SearchCtrl', function () {
         expect(state.go).toHaveBeenCalledWith('search.results.list', {}, {'reload': true});
     });
 
+    it('should initialize isBlurred to true', function () {
+        expect(scope.isBlurred).toBe(true);
+    });
+
     it('should initialize showresults to false', function () {
         expect(scope.showresults).toBe(false);
     });
@@ -389,6 +408,17 @@ describe('Controller: SearchCtrl', function () {
     it('should initialize queryString values to empty strings', function () {
         expect(scope.queryString.live).toBe('');
         expect(scope.queryString.submitted).toBe('');
+    });
+
+    it('should call blurImageService with true parameter', function () {
+        scope.changeBlur();
+        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(true);
+    });
+
+    it('should call blurImageService with false parameter', function () {
+        scope.isBlurred = false;
+        scope.changeBlur();
+        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
     });
 
     it('should set queryString.submitted to user input', function () {
