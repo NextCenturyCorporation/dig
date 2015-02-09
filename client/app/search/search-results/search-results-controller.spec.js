@@ -61,20 +61,6 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.doc).toBe(undefined);
     });
 
-    it('should have selectedImage default to 0', function () {
-        expect(scope.selectedImage).toBe(0);
-    });
-
-    it('should update selectedImage', function () {
-        scope.selectImage(2);
-
-        expect(scope.selectedImage).toBe(2);
-    });
-
-    it('should not have scope.previousState', function () {
-        expect(scope.previousState).toBe(undefined);
-    });
-
     it('should initialize opened to be an empty array', function () {
         expect(scope.opened.length).toBe(0);
     });
@@ -87,8 +73,22 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.indexVM.pageSize).toBe(25);
     });
 
+    it('should have selectedImage default to 0', function () {
+        expect(scope.selectedImage).toBe(0);
+    });
+
+    it('should not have scope.previousState', function () {
+        expect(scope.previousState).toBe(undefined);
+    });
+
+    it('should update selectedImage', function () {
+        scope.selectImage(2);
+
+        expect(scope.selectedImage).toBe(2);
+    });
+
     it('should update state to details view and add passed in doc and state to scope', function () {
-    	var testDoc = {name: 'TestDoc'};
+        var testDoc = {name: 'TestDoc'};
 
         scope.viewDetails(testDoc, 'list');
 
@@ -127,7 +127,6 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.viewGallery).toHaveBeenCalled();
     });
 
-
     it('should set displayMode.mode to \'gallery\' and make appropriate state call', function () {
         scope.viewGallery();
 
@@ -152,17 +151,6 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
 
-    it('should clear the opened items list on a query change and reset page to 1', function() {
-        expect(scope.opened.length).toBe(0);
-
-        scope.toggleListItemOpened('foo');
-        scope.indexVM.query = 'some new query';
-        scope.$digest();
-        expect(scope.opened.length).toBe(0);
-        expect(scope.isListItemOpened('foo')).toBe(false);
-        expect(scope.indexVM.page).toBe(1);
-    });
-
     it('should switch to list view', function () {
         spyOn(scope, 'viewList');
         scope.switchView('list');
@@ -184,6 +172,17 @@ describe('Controller: SearchResultsCtrl', function () {
 
         expect(scope.viewList).not.toHaveBeenCalled();
         expect(scope.viewGallery).not.toHaveBeenCalled();
+    });
+
+    it('should clear the opened items list on a query change and reset page to 1', function() {
+        expect(scope.opened.length).toBe(0);
+
+        scope.toggleListItemOpened('foo');
+        scope.indexVM.query = 'some new query';
+        scope.$digest();
+        expect(scope.opened.length).toBe(0);
+        expect(scope.isListItemOpened('foo')).toBe(false);
+        expect(scope.indexVM.page).toBe(1);
     });
 
 });
