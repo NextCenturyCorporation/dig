@@ -18,12 +18,13 @@ angular.module('digApp')
       .state('search.results.list', {
         url: '^/list',
         templateUrl: 'app/search/search-results/list/list.partial.html',
-		preserveScrollPos: true
+		    preserveScrollPos: true
       })
       .state('search.results.gallery', {
         url: '^/gallery',
         templateUrl: 'app/search/search-results/gallery/gallery.partial.html',
-        controller: 'GalleryCtrl'
+        controller: 'GalleryCtrl',
+        preserveScrollPos: true
       })
       .state('search.results.details', {
         url: '^/details',
