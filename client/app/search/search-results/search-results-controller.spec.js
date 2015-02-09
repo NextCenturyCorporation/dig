@@ -5,7 +5,7 @@ describe('Controller: SearchResultsCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var SearchCtrl, scope, state;
+    var SearchResultsCtrl, scope, state;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -48,7 +48,7 @@ describe('Controller: SearchResultsCtrl', function () {
                 pageSize: 10
             };
 
-            SearchCtrl = $controller('SearchResultsCtrl', {
+            SearchResultsCtrl = $controller('SearchResultsCtrl', {
                 $scope: scope,
                 $state: state
             });
@@ -71,32 +71,75 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.selectedImage).toBe(2);
     });
 
-    it('should update state to details view and add passed in doc to scope', function () {
-        var testDoc = {name: 'TestDoc'};
+    it('should not have scope.previousState', function () {
+        expect(scope.previousState).toBe(undefined);
+    });
 
-        scope.viewDetails(testDoc);
+    it('should initialize opened to be an empty array', function () {
+        expect(scope.opened.length).toBe(0);
+    });
+
+    it('should initialize displayMode.mode to \'list\'', function () {
+        expect(scope.displayMode.mode).toBe('list');
+    });
+
+    it('should initialize indexVM.pageSize to 25', function () {
+        expect(scope.indexVM.pageSize).toBe(25);
+    });
+
+    it('should update state to details view and add passed in doc and state to scope', function () {
+    	var testDoc = {name: 'TestDoc'};
+
+        scope.viewDetails(testDoc, 'list');
 
         expect(scope.doc).not.toBeNull();
+        expect(scope.previousState).toBe('list');
         expect(state.go).toHaveBeenCalledWith('search.results.details');
     });
 
     it('should update state from details to list view and null out scope.doc if scope.doc is set and previousState is not set', function () {
         scope.doc = {name: 'TestDoc'};
+        spyOn(scope, 'viewList');
 
         scope.backToPreviousState();
 
         expect(scope.doc).toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.results.list');
+        expect(scope.viewList).toHaveBeenCalled();
+    });
+
+    it('should not null out scope.doc if it does not exist', function () {
+        spyOn(scope, 'viewList');
+
+        scope.backToPreviousState();
+
+        expect(scope.doc).toBe(undefined);
+        expect(scope.viewList).toHaveBeenCalled();
     });
 
     it('should update state from details to previous view and null out scope.doc if scope.doc is set and previousState is set', function () {
         scope.doc = {name: 'TestDoc'};
         scope.previousState = 'gallery';
+        spyOn(scope, 'viewGallery');
 
         scope.backToPreviousState();
 
         expect(scope.doc).toBeNull();
+        expect(scope.viewGallery).toHaveBeenCalled();
+    });
+
+
+    it('should set displayMode.mode to \'gallery\' and make appropriate state call', function () {
+        scope.viewGallery();
+
+        expect(scope.displayMode.mode).toBe('gallery');
         expect(state.go).toHaveBeenCalledWith('search.results.gallery');
+    });
+
+    it('should set displayMode.mode to \'list\' and make appropriate state call', function () {
+        scope.viewList();
+
+        expect(scope.displayMode.mode).toBe('list');
+        expect(state.go).toHaveBeenCalledWith('search.results.list');
     });
 
     it('should return whether or not a list item is opened by id', function() {
@@ -108,4 +151,39 @@ describe('Controller: SearchResultsCtrl', function () {
         scope.toggleListItemOpened('foo');
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
+
+    it('should clear the opened items list on a query change and reset page to 1', function() {
+        expect(scope.opened.length).toBe(0);
+
+        scope.toggleListItemOpened('foo');
+        scope.indexVM.query = 'some new query';
+        scope.$digest();
+        expect(scope.opened.length).toBe(0);
+        expect(scope.isListItemOpened('foo')).toBe(false);
+        expect(scope.indexVM.page).toBe(1);
+    });
+
+    it('should switch to list view', function () {
+        spyOn(scope, 'viewList');
+        scope.switchView('list');
+
+        expect(scope.viewList).toHaveBeenCalled();
+    });
+
+    it('should switch to gallery view', function () {
+        spyOn(scope, 'viewGallery');
+        scope.switchView('gallery');
+
+        expect(scope.viewGallery).toHaveBeenCalled();
+    });
+
+    it('should not switch view', function () {
+        spyOn(scope, 'viewList');
+        spyOn(scope, 'viewGallery');
+        scope.switchView('notAView');
+
+        expect(scope.viewList).not.toHaveBeenCalled();
+        expect(scope.viewGallery).not.toHaveBeenCalled();
+    });
+
 });
