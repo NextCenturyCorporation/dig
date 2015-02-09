@@ -4,7 +4,7 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService'
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
     function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
     $scope.queryString = {live: '', submitted: ''};
