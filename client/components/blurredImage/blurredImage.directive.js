@@ -9,22 +9,41 @@ angular.module('digApp.directives')
             var processing = false;
             var fallback = false;
 
+            if(blurImagesEnabled === 'blur') {
+                el.addClass('image-blur-default');
+            }
+
             $scope.getMaxSize = function() {
                 return Math.max(el.height(), el.width());
             };
 
             var cssBlur = function() {
-                if($scope.getMaxSize() !== 0) {
-                    var blurSize = ($scope.getMaxSize() * (blurImagesPercentage / 100));
 
-                    el.css({
-                        '-webkit-filter': 'blur(' + blurSize + 'px)',
-                        '-moz-filter': 'blur(' + blurSize + 'px)',
-                        '-o-filter': 'blur(' + blurSize + 'px)',
-                        '-ms-filter': 'blur(' + blurSize + 'px)',
-                        'filter': 'blur(' + blurSize + 'px)'
+                if($scope.getMaxSize() !== 0) {
+                    addCssBlur();
+                } else {
+                    // If image has no height/width, it could be because it 
+                    // isn't yet loaded. Wait for image to load and try again.
+                    el.on('load', function() {
+                        addCssBlur();
                     });
                 }
+
+                if(el.hasClass('image-blur-default')) {
+                    el.removeClass('image-blur-default');
+                }
+            };
+
+            var addCssBlur = function() {
+                var blurSize = ($scope.getMaxSize() * (blurImagesPercentage / 100));
+
+                el.css({
+                    '-webkit-filter': 'blur(' + blurSize + 'px)',
+                    '-moz-filter': 'blur(' + blurSize + 'px)',
+                    '-o-filter': 'blur(' + blurSize + 'px)',
+                    '-ms-filter': 'blur(' + blurSize + 'px)',
+                    'filter': 'blur(' + blurSize + 'px)'
+                });
             };
 
             var bindErrorHandler = function(img) {
