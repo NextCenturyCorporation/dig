@@ -7,6 +7,11 @@ angular.module('digApp')
         mode: 'list'
     };
     $scope.indexVM.pageSize = 25;
+    $scope.selectedImage = 0;
+    
+    $scope.selectImage = function(index) {
+        $scope.selectedImage = index;
+    };
 
     $scope.viewDetails = function(doc, previousState) {
         $scope.doc = doc;
@@ -17,6 +22,7 @@ angular.module('digApp')
     $scope.backToPreviousState = function() {
         if($scope.doc) {
             $scope.doc = null;
+            $scope.selectedImage = 0;
         }
 
         if($scope.previousState && $scope.previousState === 'gallery') {

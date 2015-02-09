@@ -61,6 +61,16 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.doc).toBe(undefined);
     });
 
+    it('should have selectedImage default to 0', function () {
+        expect(scope.selectedImage).toBe(0);
+    });
+
+    it('should update selectedImage', function () {
+        scope.selectImage(2);
+
+        expect(scope.selectedImage).toBe(2);
+    });
+
     it('should update state to details view and add passed in doc to scope', function () {
         var testDoc = {name: 'TestDoc'};
 

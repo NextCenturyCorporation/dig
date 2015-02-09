@@ -414,10 +414,6 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.currentOpened).toBe(0);
     });
 
-    it('should have selectedImage default to 0', function () {
-        expect(scope.selectedImage).toBe(0);
-    });
-
     it('should not have scope.doc', function () {
         expect(scope.doc).toBe(undefined);
     });
@@ -434,12 +430,6 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.currentOpened).toBe(1);
         expect(array[oldValue].isOpen).toBe(false);
-    });
-
-    it('should update selectedImage', function () {
-        scope.selectImage(2);
-
-        expect(scope.selectedImage).toBe(2);
     });
 
     it('should select first image part if no image search is active', function() {
