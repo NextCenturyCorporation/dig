@@ -8,7 +8,9 @@ angular.module('digApp.directives')
             doc: '=',
             parentState: '@',
             getDisplayImageSrc: '=', //this should be in a service instead of on a controller scope
-            viewDetails: '='
+            viewDetails: '=',
+            facets: '=',
+            imageSearch: '='
         },
         templateUrl: 'components/expanded-listing-view/expanded-listing-view.partial.html',
         link: function($scope) {

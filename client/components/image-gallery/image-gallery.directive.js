@@ -17,7 +17,8 @@ angular.module('digApp.directives')
                 var insertAfterEl = findRowLastEl(parentEl);
 
                 insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" doc="indexVM.results.hits.hits[' + docNum + ']" '+
-                    'get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="gallery"></expanded-listing-view>')($scope));
+                    'get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="gallery" facets="facets" ' +
+                    'image-search="imageSearch"></expanded-listing-view>')($scope));
             };
 
             var getParentEl = function(el) {
