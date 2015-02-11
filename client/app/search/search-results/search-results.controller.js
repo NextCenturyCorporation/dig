@@ -55,13 +55,6 @@ angular.module('digApp')
         $scope.galleryView[pageNum] = {docId: id, docNum: index};
     };
 
-    /*$scope.isGalleryItemOpened = function(pageNum, id) {
-        if($scope.galleryView.pageNum) {
-            return $scope.galleryView.pageNum.docId === id;
-        }
-        return false;
-    };*/
-
     $scope.isGalleryItemOpened = function(pageNum) {
         console.log($scope.galleryView);
         if($scope.galleryView[pageNum]) {
@@ -69,10 +62,6 @@ angular.module('digApp')
         }
         return false;
     };
-
-/*    $scope.isGalleryItemOpened = function(pageNum, id) {
-        return ($scope.galleryView[pageNum][id]) ? true : false;
-    };*/
 
     $scope.switchView = function(displayMode) {
         if(displayMode === 'list') {
