@@ -8,7 +8,7 @@ angular.module('digApp')
     };
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
-    $scope.galleryView = {};
+    $scope.galleryItem = {};
     
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
@@ -51,16 +51,23 @@ angular.module('digApp')
         return ($scope.opened[index]) ? true : false;
     };
 
-    $scope.toggleGalleryItemOpened = function(pageNum, id, index) {
-        $scope.galleryView[pageNum] = {docId: id, docNum: index};
+    $scope.toggleGalleryItemOpened = function(id, index) {
+        $scope.galleryItem = {docId: id, docNum: index};
     };
 
-    $scope.isGalleryItemOpened = function(pageNum) {
-        console.log($scope.galleryView);
-        if($scope.galleryView[pageNum]) {
+    $scope.clearGalleryItem = function() {
+        $scope.galleryItem = {};
+    };
+
+    $scope.isGalleryItemPopulated = function() {
+        if($scope.galleryItem.docId) {
             return true;
         }
         return false;
+    };
+
+    $scope.isGalleryItemOpened = function(id) {
+        return ($scope.isGalleryItemPopulated() && $scope.galleryItem.docId === id);
     };
 
     $scope.switchView = function(displayMode) {
@@ -74,7 +81,11 @@ angular.module('digApp')
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
         $scope.opened = [];
-        $scope.galleryView = {};
+        $scope.galleryItem = {};
         $scope.indexVM.page = 1;
     });
+
+
+
+
 });
