@@ -89,10 +89,6 @@ angular.module('digApp.directives')
                 }
             }, true);
 
-            elem.on('$destroy', function(){
-                $scope.resetImageGallery();
-            });
-
         }
     };
 });
