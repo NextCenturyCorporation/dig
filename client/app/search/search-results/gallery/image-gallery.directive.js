@@ -35,6 +35,7 @@ angular.module('digApp.directives')
                     var docNum = parentEl[0].attributes['gallery-index'].value;
                     var doc = $scope.indexVM.results.hits.hits[docNum];
 
+                    // Item is already opened, if user clicks again, it is to collapse the view.
                     if($scope.isGalleryItemOpened(doc._id)) {
                         $scope.resetImageGallery();
                     } else {
@@ -56,6 +57,7 @@ angular.module('digApp.directives')
                         if($scope.isGalleryItemOpened(doc._id)) {
                             $scope.addExpandedListing(parentEl, docNum, selectedElem);
                         } else {
+                            // If galleryItem no longer matches with what's on the page, state changed and we need to do cleanup
                             $scope.resetImageGallery();
                         }
                     } 
