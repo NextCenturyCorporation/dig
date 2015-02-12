@@ -77,6 +77,10 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.selectedImage).toBe(0);
     });
 
+    it('should have galleryItem default to empty object', function () {
+        expect(scope.galleryItem).toEqual({});
+    });
+
     it('should not have scope.previousState', function () {
         expect(scope.previousState).toBe(undefined);
     });
@@ -151,6 +155,21 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
 
+
+    it('should return whether or not a gallery item is opened by id', function() {
+        expect(scope.isGalleryItemPopulated()).toBe(false);
+        expect(scope.isGalleryItemOpened('foo')).toBe(false);
+
+        scope.toggleGalleryItemOpened('foo', 1);
+        expect(scope.isGalleryItemPopulated()).toBe(true);
+        expect(scope.isGalleryItemOpened('blah')).toBe(false);
+        expect(scope.isGalleryItemOpened('foo')).toBe(true);
+
+        scope.clearGalleryItem();
+        expect(scope.isGalleryItemPopulated()).toBe(false);
+        expect(scope.isGalleryItemOpened('foo')).toBe(false);
+    });
+
     it('should switch to list view', function () {
         spyOn(scope, 'viewList');
         scope.switchView('list');
@@ -182,6 +201,7 @@ describe('Controller: SearchResultsCtrl', function () {
         scope.$digest();
         expect(scope.opened.length).toBe(0);
         expect(scope.isListItemOpened('foo')).toBe(false);
+        expect(scope.isGalleryItemPopulated()).toBe(false);
         expect(scope.indexVM.page).toBe(1);
     });
 
