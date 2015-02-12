@@ -5,7 +5,7 @@ angular.module('digApp.directives')
     return {
         restrict: 'E',
         scope: true,
-        templateUrl: 'components/image-gallery/image-gallery.partial.html',
+        templateUrl: 'app/search/search-results/gallery/image-gallery.partial.html',
         link: function($scope, elem) {
             var stylesheet = document.styleSheets[1];
             var ruleIndex = 1;
