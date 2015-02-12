@@ -39,6 +39,7 @@ angular.module('digApp')
     };
 
     $scope.viewList = function() {
+        $scope.clearGalleryItem();
         $scope.displayMode.mode = 'list';
         $state.go('search.results.list');
     };
