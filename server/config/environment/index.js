@@ -471,6 +471,98 @@ var all = {
                     }]
                 }
             }
+        },
+        'twitter36': {
+            facets: {
+                euiFilters :[],
+                //simFilter: {},
+                aggFilters: [{
+                    title: 'Name',
+                    type: 'eui-aggregation',
+                    field: 'name_agg',
+                    terms: 'screen_name',
+                    count: 20
+                },{
+                    title: 'Hashtag',
+                    type: 'eui-aggregation',
+                    field: 'hashtag_agg',
+                    terms: 'hashtagObjects.value',
+                    count: 20
+                },{
+                    title: 'Language',
+                    type: 'eui-aggregation',
+                    field: 'language_agg',
+                    terms: 'lang',
+                    count: 20
+                }]
+            },
+
+            listFields: {
+                "title": [{
+                    title: 'Text',
+                    type: 'title',
+                    field: 'doc._source.text',
+                    section: 'title'
+                }],
+                "short": [{
+                    title: 'Date',
+                    field: "doc._source.created_at | date:'MM/dd/yyyy HH:mm:ss'",
+                    classes: 'date'
+                },{
+                    title: 'Name',
+                    field: 'doc._source.screen_name',
+                    classes: 'screen_name'
+                }],
+                "full": {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Name',
+                            field: 'doc._source.screen_name',
+                            featureArray: 'doc._source.screen_name',
+                            featureValue: 'value'
+                        },{
+                            title: 'Hashtags',
+                            field: 'doc._source.hashtagObjects.value',
+                            featureArray: 'doc._source.hashtagObjects',
+                            featureValue: 'value'
+                        },{
+                            title: 'Language',
+                            field: 'doc._source.lang',
+                            featureArray: 'doc._source.lang',
+                            featureValue: 'value'
+                        },{
+                            title: 'text',
+                            field: "doc['_source']['text']"
+                        }]
+                    }
+                }
+            },
+
+            detailFields: {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Name',
+                            field: 'doc._source.screen_name',
+                            featureArray: 'doc._source.screen_name',
+                            featureValue: 'value'
+                        },{
+                            title: 'Hashtags',
+                            field: 'doc._source.hashtagObjects.value',
+                            featureArray: 'doc._source.hashtagObjects',
+                            featureValue: 'value'
+                        },{
+                            title: 'Language',
+                            field: 'doc._source.lang',
+                            featureArray: 'doc._source.lang',
+                            featureValue: 'value'
+                        },{
+                            title: 'text',
+                            field: "doc['_source']['text']"
+                        }]
+                    }
+            }
         }
     }
 };
