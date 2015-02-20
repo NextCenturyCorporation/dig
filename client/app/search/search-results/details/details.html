@@ -56,7 +56,7 @@
           class="{{section.classes}}">
            <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
              <dt ng-if="field.title">{{field.title}}</dt>
-             <dd ng-if="$eval(field.field)" ng-bind-html="renderHtml($eval(field.field))"></dd>
+             <dd ng-if="$eval(field.field)" ng-bind-html="stripHtml($eval(field.field))"></dd>
              <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length')"
                ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
            </div>

@@ -13,7 +13,7 @@ angular.module('digApp')
         $scope.selectedImage = index;
     };
 
-    $scope.renderHtml = function(data) {
+    $scope.stripHtml = function(data) {
         return $sce.trustAsHtml(String(data).replace(/<(?!\/?mark\s*\/?)[^>]+>/gm, ''));
     };
 
