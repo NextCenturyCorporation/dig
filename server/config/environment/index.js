@@ -98,11 +98,18 @@ var all = {
                 }]
             },
 
+            highlight: {
+                fields: [
+                'hasBodyPart.text',
+                'hasTitlePart.text'
+                ]
+            },
+
             listFields: {
                 "title": [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.hasTitlePart.text',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
                 "short": [{
@@ -360,7 +367,7 @@ var all = {
                 "3": {
                     classes: "",
                     fields: [{
-                        field: 'doc._source.hasBodyPart.text',
+                        field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
                         hideIfMissing: true
                     }]
                 }

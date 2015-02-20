@@ -7,19 +7,17 @@
 
   </div>
 
-
   <ul id="results" class="list-group">
-
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
       <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
-            <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
-            </span>
+              <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
+            </span> 
           </div>
           <div class="col-xs-9 col-sm-10 col-lg-11">
-            {{$eval(euiConfigs.listFields["title"][0].field)}}
+            <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
             <div class="list-group-item-meta">
               <span ng-repeat="field in euiConfigs.listFields['short']">
                 <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
