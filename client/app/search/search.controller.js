@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService', 'appVersion',
+    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService, appVersion) {
     $scope.showresults = false;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
@@ -21,6 +21,9 @@ angular.module('digApp')
         textFilters: {}
     };
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
+
+    // Temporary: Test that appVersion is logged and value is correct
+    console.log(appVersion);
 
     $scope.changeBlur = function() {
         blurImageService.changeBlurImagesEnabled($scope.isBlurred);

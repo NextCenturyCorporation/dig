@@ -2,6 +2,7 @@
 
 var path = require('path');
 var _ = require('lodash');
+var pjson = require('../../../package.json');
 
 function requiredProcessEnv(name) {
   if(!process.env[name]) {
@@ -40,6 +41,7 @@ var all = {
             }
         }
     },
+    appVersion: pjson.version,
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
