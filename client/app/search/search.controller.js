@@ -138,4 +138,24 @@ angular.module('digApp')
     if($state.current.name === 'search') {
         $scope.viewList();
     }
+
+    if($state.params.field && $state.params.value) {
+        // Get the elasticsearch aggregation field name for the given database field.
+        var aggField = "";
+        for(var key in $scope.facets.aggFilters) {
+            if($scope.facets.aggFilters[key].terms === $state.params.field) {
+                aggField = $scope.facets.aggFilters[key].field;
+            }
+        }
+
+        if(aggField) {
+            // Must set a query string for DIG to perform the initial query.
+            $scope.queryString.live = $state.params.value;
+            // Set the filter state to the given field and value.
+            $scope.filterStates.aggFilters[aggField] = {};
+            $scope.filterStates.aggFilters[aggField][$state.params.value] = true;
+            // Perform the query.
+            $scope.submit();
+        }
+    }
 }]);
