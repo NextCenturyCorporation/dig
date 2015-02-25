@@ -2,8 +2,8 @@
 
 angular.module('digApp')
 .controller('SearchResultsCtrl', function($scope, $state) {
+    $scope.openDetailsPageOnLoad = false;
     $scope.opened = [];
-    $scope.keepOpened = false;
     $scope.displayMode = {
         mode: 'list'
     };
@@ -61,15 +61,17 @@ angular.module('digApp')
 
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
-        if(!$scope.keepOpened) {
-            $scope.opened = [];
-        }
-        $scope.keepOpened = false;
+        $scope.opened = [];
         $scope.indexVM.page = 1;
     });
 
     if($state.params.id) {
-        $scope.toggleListItemOpened($state.params.id);
-        $scope.keepOpened = true;
+        $scope.openDetailsPageOnLoad = true;
+        $scope.$watch("indexVM.results.hits.hits", function(newValue, oldValue) {
+            if($scope.openDetailsPageOnLoad && newValue !== oldValue && newValue.length) {
+                $scope.viewDetails(newValue[0], "list");
+                $scope.openDetailsPageOnLoad = false;
+            }
+        });
     }
 });
