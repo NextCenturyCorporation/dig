@@ -36,7 +36,8 @@ angular.module('digApp')
     };
 
     $scope.submit = function() {
-        $scope.queryString.id = '';
+        // Don't reset queryString.id here because that would trigger a list refresh and ignore this query request.
+        // The queryString.id will be ignored as new queries are entered and their results are displayed in the list.
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
             $scope.searchConfig.euiSearchIndex = euiSearchIndex;
