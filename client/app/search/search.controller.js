@@ -7,7 +7,7 @@ angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
     function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
-    $scope.queryString = {live: '', submitted: ''};
+    $scope.queryString = {live: '', submitted: '', id: ''};
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -36,6 +36,7 @@ angular.module('digApp')
     };
 
     $scope.submit = function() {
+        $scope.queryString.id = '';
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
             $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -139,6 +140,14 @@ angular.module('digApp')
         $scope.viewList();
     }
 
+    if($state.params.id) {
+        // Save the ID so the query is automatically called in the HTML using angular after indexVM is loaded.
+        $scope.queryString.id = $state.params.id;
+        // Set the elasticsearch index so the page initializes indexVM automatically after it is loaded.
+        $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+        $scope.showresults = true;
+    }
+
     if($state.params.field && $state.params.value) {
         // Get the elasticsearch aggregation field name for the given database field.
         var aggField = "";
@@ -149,13 +158,13 @@ angular.module('digApp')
         }
 
         if(aggField) {
-            // Must set a query string for DIG to perform the initial query.
-            $scope.queryString.live = $state.params.value;
             // Set the filter state to the given field and value.
             $scope.filterStates.aggFilters[aggField] = {};
             $scope.filterStates.aggFilters[aggField][$state.params.value] = true;
-            // Perform the query.
-            $scope.submit();
+
+            // Set the elasticsearch index so the page initializes indexVM automatically after it is loaded.
+            $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+            $scope.showresults = true;
         }
     }
 }]);

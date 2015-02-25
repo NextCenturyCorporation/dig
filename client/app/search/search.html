@@ -21,7 +21,6 @@
                   <button class="btn btn-primary search-btn" type="submit">Search</button>
                   <a class="btn btn-danger clear-all-btn" ng-href="/" target="_self">Clear All</a>
                 </span>
-
               </div>
               </form>
             </div>
@@ -52,6 +51,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Must be after the Search input element -->
+  <input type="hidden" eui-query="ejs.IdsQuery(queryString.id)" eui-enabled="queryString.id.length" ng-disabled="loading"/>
 
   <div class="row" ng-show="showresults">
     <div class="left-column hidden-xs col-sm-3 col-lg-2">
