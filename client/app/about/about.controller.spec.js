@@ -39,10 +39,4 @@ describe('Controller: AboutCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-
-/*
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
-*/
 });
