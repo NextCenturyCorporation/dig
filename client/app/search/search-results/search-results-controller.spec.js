@@ -91,6 +91,14 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.selectedImage).toBe(2);
     });
 
+    it('should strip out appropriate html tags', function () {
+        var validTags = scope.stripHtml('<mark>highlighted text</mark>');
+        var invalidTags = scope.stripHtml('<b>no tags</b><br/>should be present <img src="test.jpg">');
+
+        expect(validTags.$$unwrapTrustedValue()).toBe('<mark>highlighted text</mark>');
+        expect(invalidTags.$$unwrapTrustedValue()).toBe('no tagsshould be present ');
+    });
+
     it('should update state to details view and add passed in doc and state to scope', function () {
         var testDoc = {name: 'TestDoc'};
 

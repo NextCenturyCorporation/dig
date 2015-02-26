@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchResultsCtrl', function($scope, $state) {
+.controller('SearchResultsCtrl', function($scope, $state, $sce) {
     $scope.opened = [];
     $scope.displayMode = {
         mode: 'list'
@@ -12,6 +12,10 @@ angular.module('digApp')
     
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
+    };
+
+    $scope.stripHtml = function(data) {
+        return $sce.trustAsHtml(String(data).replace(/<(?!\/?mark\s*\/?)[^>]+>/gm, ''));
     };
 
     $scope.viewDetails = function(doc, previousState) {

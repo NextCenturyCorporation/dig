@@ -88,6 +88,10 @@
           aggregation-terms-type="{{filter.termsType}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
         </checkbox-filter>
       </collapse-filter>
+
+      <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)" 
+      eui-enabled="true"></div> 
+
     </div>
 
     <div class="right-column col-sm-9">

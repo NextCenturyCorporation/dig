@@ -44,7 +44,8 @@
 
       <div class="col-md-7">
 
-        <h4 ng-if="doc._source.hasTitlePart.text" class="ng-binding ng-scope">{{doc._source.hasTitlePart.text}}</h4>
+        <h4 ng-if="$eval(euiConfigs.listFields['title'][0].field)" class="ng-binding ng-scope" 
+        ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></h4>
         <div ng-if="doc._source.url">
           <span class="to-uppercase text-muted">URL</span>
           <span><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></span>
@@ -55,13 +56,12 @@
           class="{{section.classes}}">
            <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
              <dt ng-if="field.title">{{field.title}}</dt>
-             <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
+             <dd ng-if="$eval(field.field)" ng-bind-html="stripHtml($eval(field.field))"></dd>
              <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length')"
                ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
            </div>
         </dl>
         <hr ng-repeat-end>
-
       </div>
 
       <div class="row">
@@ -76,4 +76,3 @@
   </div>
 
 </div>
-    <!-- END PAGE CONTENT -->
