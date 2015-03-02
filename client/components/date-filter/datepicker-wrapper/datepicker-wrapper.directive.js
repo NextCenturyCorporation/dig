@@ -23,10 +23,6 @@ angular.module('digApp.directives')
 
                 $scope.opened = true;
             };
-
-            $scope.clear = function () {
-                $scope.date = null;            
-            };
         }
     };
 });
