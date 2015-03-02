@@ -17,11 +17,15 @@ angular.module('digApp.directives')
                 startingDay: 1
             };
 
-            $scope.open = function($event) {
+            $scope.toggleDatepicker = function($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
 
-                $scope.opened = true;
+                if(!$scope.opened) {
+                    $scope.opened = true;
+                } else {
+                    $scope.opened = false;
+                }
             };
         }
     };

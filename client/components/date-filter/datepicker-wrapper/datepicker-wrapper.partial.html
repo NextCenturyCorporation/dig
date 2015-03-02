@@ -3,7 +3,7 @@
   <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" show-weeks="false" is-open="opened" datepicker-options="dateOptions"
   ng-required="true" close-text="Close"/>
   <span class="input-group-btn">
-    <button type="button" class="btn btn-default" ng-click="open($event)">
+    <button type="button" class="btn btn-default" ng-click="toggleDatepicker($event)">
       <i class="glyphicon glyphicon-calendar"></i>
     </button>
   </span>
