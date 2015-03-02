@@ -62,6 +62,11 @@
         <h4>Filter</h4>
       </div>
 
+      <collapse-filter title="Date" closed="false">
+        <date-filter indexvm="indexVM" ejs="ejs" filters="filters">
+        </date-filter>
+      </collapse-filter>
+
       <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
         filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
       </text-filter>
@@ -90,7 +95,8 @@
       </collapse-filter>
 
       <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)" 
-      eui-enabled="true"></div> 
+        eui-enabled="true">
+      </div> 
 
     </div>
 
