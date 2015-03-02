@@ -11,6 +11,7 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/date-filter/datepicker-wrapper/datepicker-wrapper.partial.html',
         link: function($scope) {
+            $scope.opened = false;
 
             $scope.dateOptions = {
                 formatYear: 'yy',
@@ -21,11 +22,7 @@ angular.module('digApp.directives')
                 $event.preventDefault();
                 $event.stopPropagation();
 
-                if(!$scope.opened) {
-                    $scope.opened = true;
-                } else {
-                    $scope.opened = false;
-                }
+                $scope.opened = !$scope.opened;
             };
         }
     };
