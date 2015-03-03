@@ -69,10 +69,8 @@
         <h4>Filter</h4>
       </div>
 
-      <collapse-filter ng-repeat="filter in facets.dateFilters" title="{{filter.title}}" closed="false">
-        <date-filter field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
-        </date-filter> 
-      </collapse-filter>
+      <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
+      </date-filter> 
 
       <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
         filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
