@@ -48,6 +48,13 @@
             <span ng-repeat="(textFilter, values) in filterStates.textFilters">
               <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
             </span> 
+            <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
+               <span ng-repeat="(filterKey, date) in values">
+                <span ng-if="date" class="search-facet" ng-click="removeDateFilter(dateFilter, filterKey)">
+                  {{filterKey}}: {{ date | date : 'yyyy-MM-dd'}} <i class="fa fa-times-circle"></i>
+                </span>
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -61,10 +68,10 @@
         <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
         <h4>Filter</h4>
       </div>
- 
-      <collapse-filter title="Date" closed="false">
-        <date-filter field="dateCreated" aggregationName="date_stats" indexvm="indexVM" ejs="ejs" filters="filters">
-        </date-filter>
+
+      <collapse-filter ng-repeat="filter in facets.dateFilters" title="{{filter.title}}" closed="false">
+        <date-filter field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
+        </date-filter> 
       </collapse-filter>
 
       <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"

@@ -9,12 +9,15 @@ angular.module('digApp.directives')
             field: '@',
             indexVM: '=indexvm',
             ejs: '=',
-            filters: '='
+            filters: '=',
+            filterStates: '='
         },
         templateUrl: 'components/date-filter/date-filter.partial.html',
         link: function($scope) {
-            $scope.startDate = null;
-            $scope.endDate = null;
+            $scope.filterStates[$scope.field] = {
+                startDate: null,
+                endDate: null
+            };
             $scope.dateFormat = 'yyyy-MM-dd';
 
             $scope.dateToString = function(date) {

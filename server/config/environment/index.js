@@ -95,7 +95,12 @@ var all = {
                     terms: 'person_age',
                     termsType: 'number',
                     count: 10
-                }]
+                }],
+                dateFilters: [{ 
+                    title: 'Date',
+                    aggName: 'date_agg',
+                    field: 'dateCreated'
+                }],
             },
 
             highlight: {
