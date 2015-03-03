@@ -5,6 +5,8 @@ angular.module('digApp.directives')
     return {
         restrict: 'E',
         scope: {
+            aggregationName: '=',
+            field: '@',
             indexVM: '=indexvm',
             ejs: '=',
             filters: '='

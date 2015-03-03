@@ -1,9 +1,11 @@
-<div eui-filter="ejs.RangeFilter('dateCreated').from(dateToString(startDate))" eui-enabled="startDate"></div> 
-<div eui-filter="ejs.RangeFilter('dateCreated').to(dateToString(endDate))" eui-enabled="endDate"></div> 
-<!-- ng-show="indexVM.results.hits.total > 0"-->
-<div class="row">
-  <div class="col-xs-12">
-    <datepicker-wrapper date-label="From" date="startDate" format="dateFormat"></datepicker-wrapper>
-    <datepicker-wrapper date-label="To" date="endDate" format="dateFormat"></datepicker-wrapper>
+<div eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)" eui-filter-self="false">
+  <div eui-filter="ejs.RangeFilter(field).from(dateToString(startDate))" eui-enabled="startDate"></div> 
+  <div eui-filter="ejs.RangeFilter(field).to(dateToString(endDate))" eui-enabled="endDate"></div> 
+  <!-- ng-show="indexVM.results.hits.total > 0"-->
+  <div class="row">
+    <div class="col-xs-12">
+      <datepicker-wrapper date-label="From" date="startDate" format="dateFormat" min="aggResult.min" max="aggResult.max"></datepicker-wrapper>
+      <datepicker-wrapper date-label="To" date="endDate" format="dateFormat" min="aggResult.min" max="aggResult.max"></datepicker-wrapper>
+    </div>
   </div>
 </div>

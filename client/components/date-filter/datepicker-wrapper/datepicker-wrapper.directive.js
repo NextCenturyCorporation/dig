@@ -7,7 +7,9 @@ angular.module('digApp.directives')
         scope: {
             dateLabel: '@',
             date: '=',
-            format: '='
+            format: '=',
+            min: '=',
+            max: '='
         },
         templateUrl: 'components/date-filter/datepicker-wrapper/datepicker-wrapper.partial.html',
         link: function($scope) {
@@ -24,6 +26,22 @@ angular.module('digApp.directives')
 
                 $scope.opened = !$scope.opened;
             };
+
+            $scope.$watch('min',
+                function(newValue) {
+                    if(newValue) {
+                        $scope.minDate = new Date($scope.min);
+                    }
+                }
+            );
+
+            $scope.$watch('max',
+                function(newValue) {
+                    if(newValue) {
+                        $scope.maxDate = new Date($scope.max);
+                    }
+                }
+            );
         }
     };
 });

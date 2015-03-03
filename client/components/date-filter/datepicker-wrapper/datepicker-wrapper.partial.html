@@ -1,10 +1,11 @@
 <label>{{dateLabel}}</label>
 <p class="input-group">
-  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" show-weeks="false" is-open="opened" datepicker-options="dateOptions"
-  ng-required="true" close-text="Close"/>
+  <input type="text" class="form-control" datepicker-popup="{{format}}" min-date="minDate" max-date="maxDate"
+  ng-model="date" show-weeks="false" is-open="opened" datepicker-options="dateOptions"
+  ng-required="true" show-button-bar="false"/>
   <span class="input-group-btn">
     <button type="button" class="btn btn-default" ng-click="toggleDatepicker($event)">
       <i class="glyphicon glyphicon-calendar"></i>
     </button>
-  </span>
+  </span> 
 </p>

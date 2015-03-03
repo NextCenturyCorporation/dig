@@ -61,9 +61,9 @@
         <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
         <h4>Filter</h4>
       </div>
-
+ 
       <collapse-filter title="Date" closed="false">
-        <date-filter indexvm="indexVM" ejs="ejs" filters="filters">
+        <date-filter field="dateCreated" aggregationName="date_stats" indexvm="indexVM" ejs="ejs" filters="filters">
         </date-filter>
       </collapse-filter>
 
