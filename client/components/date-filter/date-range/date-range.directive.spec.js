@@ -26,8 +26,8 @@ describe('Directive: dateRange', function () {
     }));
 
     it('should initialize all fields to the appropriate values', function () {
-        expect(element.isolateScope().beginDate).toBe(scope.beginDate);
-        expect(element.isolateScope().endDate).toBe(scope.endDate);
+        expect(element.isolateScope().beginDate.getTime()).toBe(scope.beginDate.getTime());
+        expect(element.isolateScope().endDate.getTime()).toBe(scope.endDate.getTime());
         expect(element.isolateScope().min).toBe(scope.minMillisecs);
         expect(element.isolateScope().minDate.getTime()).toBe(scope.minMillisecs);
         expect(element.isolateScope().max).toBe(scope.maxMillisecs);
