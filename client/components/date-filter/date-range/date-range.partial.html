@@ -1,7 +1,7 @@
 <label>From</label>
 <p class="input-group">
   <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" min-date="minDate" max-date="endDate || today"
-  ng-model="beginDate" is-open="beginOpened" datepicker-options="dateOptions" show-button-bar="false"/>
+  ng-model="beginDate" is-open="beginOpened" show-button-bar="false"/>
   <span class="input-group-btn">
     <button type="button" class="btn btn-default" ng-click="beginOpen($event)">
       <i class="glyphicon glyphicon-calendar"></i>
@@ -11,7 +11,7 @@
 <label>To</label>
 <p class="input-group">
   <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" min-date="beginDate || minDate" max-date="today"
-  ng-model="endDate" is-open="endOpened" datepicker-options="dateOptions" show-button-bar="false"/>
+  ng-model="endDate" is-open="endOpened" show-button-bar="false"/>
   <span class="input-group-btn">
     <button type="button" class="btn btn-default" ng-click="endOpen($event)">
       <i class="glyphicon glyphicon-calendar"></i>

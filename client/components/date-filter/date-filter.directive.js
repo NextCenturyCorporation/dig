@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('digApp.directives')
+angular.module('digApp')
 .directive('dateFilter', function($filter) {
     return {
         restrict: 'E',

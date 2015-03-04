@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('digApp.directives')
+angular.module('digApp')
 .directive('dateRange', function() {
     return {
         restrict: 'E',
         scope: {
             beginDate: '=',
             endDate: '=',
-            format: '=',
+            dateFormat: '=',
             min: '=',
             max: '='
         },
@@ -18,11 +18,6 @@ angular.module('digApp.directives')
             $scope.minDate = null;
             $scope.maxDate = null;
             $scope.today = new Date();
-
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                startingDay: 1,
-            };
 
             $scope.beginOpen = function($event) {
                 $event.preventDefault();
