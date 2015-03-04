@@ -15,7 +15,7 @@ angular.module('digApp.directives')
         templateUrl: 'components/date-filter/date-filter.partial.html',
         link: function($scope) {
             $scope.filterStates[$scope.field] = {
-                startDate: null,
+                beginDate: null,
                 endDate: null
             };
             $scope.dateFormat = 'yyyy-MM-dd';

@@ -5,7 +5,7 @@ angular.module('digApp.directives')
     return {
         restrict: 'E',
         scope: {
-            startDate: '=',
+            beginDate: '=',
             endDate: '=',
             format: '=',
             min: '=',
@@ -13,7 +13,7 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/date-filter/date-range/date-range.partial.html',
         link: function($scope) {
-            $scope.startOpened = false;
+            $scope.beginOpened = false;
             $scope.endOpened = false;
             $scope.minDate = null;
             $scope.maxDate = null;
@@ -24,13 +24,13 @@ angular.module('digApp.directives')
                 startingDay: 1,
             };
 
-            $scope.startOpen = function($event) {
+            $scope.beginOpen = function($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
 
-                $scope.startOpened = !$scope.startOpened;
+                $scope.beginOpened = !$scope.beginOpened;
 
-                if($scope.startOpened) {
+                if($scope.beginOpened) {
                     $scope.endOpened = false;
                 }
             };
@@ -42,7 +42,7 @@ angular.module('digApp.directives')
                 $scope.endOpened = !$scope.endOpened;
 
                 if($scope.endOpened) {
-                    $scope.startOpened = false;
+                    $scope.beginOpened = false;
                 }
             };
 
