@@ -26,7 +26,8 @@ module.exports = function(app) {
             simPort: config.imageSimPort,
             blurImagesEnabled: config.blurImages,
             blurImagesPercentage: config.blurPercentage,
-            pixelateImagesPercentage: config.pixelatePercentage
+            pixelateImagesPercentage: config.pixelatePercentage,
+            appVersion: config.appVersion
         };
 
         res.status(200).send(configResponse);
