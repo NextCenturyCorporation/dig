@@ -108,8 +108,14 @@ var all = {
                 'hasTitlePart.text'
                 ]
             },
-            dateSort: {
-                field: 'dateCreated'
+            sort: {
+                field: 'dateCreated',
+                defaultOption: {mode: 'rank', text: 'Best Match'}, 
+                options: [
+                    {mode: 'rank', text: 'Best Match'},
+                    {mode: 'desc', text: 'Newest First'},
+                    {mode: 'asc', text: 'Oldest First'}
+                ]
             },
             listFields: {
                 "title": [{

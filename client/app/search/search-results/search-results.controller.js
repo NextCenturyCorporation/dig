@@ -6,15 +6,8 @@ angular.module('digApp')
     $scope.displayMode = {
         mode: 'list'
     };
-    $scope.sortOptions = [
-        {mode: 'rank', text: 'Best Match'},
-        {mode: 'desc', text: 'Newest First'},
-        {mode: 'asc', text: 'Oldest First'}
-    ];
-    $scope.selectedSort = {
-        mode: 'rank', text: 'Best Match'
-    };
-    $scope.euiSortOrder = 'desc';
+    $scope.sortOptions = $scope.euiConfigs.sort.options;
+    $scope.selectedSort = $scope.euiConfigs.sort.defaultOption;
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
     $scope.galleryItem = {};
@@ -93,12 +86,17 @@ angular.module('digApp')
     };
 
     $scope.switchSort = function(index) {
-        if($scope.sortOptions[index].mode !== 'rank') {
+        if($scope.validSortOrder($scope.sortOptions[index].mode)) {
             $scope.euiSortOrder = $scope.sortOptions[index].mode;
         }
-        $scope.selectedSort.mode = $scope.sortOptions[index].mode;
-        $scope.selectedSort.text = $scope.sortOptions[index].text;
+        $scope.selectedSort = $scope.sortOptions[index];
     };
+
+    $scope.validSortOrder = function(order) {
+        return (order === 'asc' || order === 'desc');
+    };
+
+    $scope.euiSortOrder = $scope.validSortOrder($scope.selectedSort.mode) ? $scope.selectedSort.mode : 'desc';
 
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
