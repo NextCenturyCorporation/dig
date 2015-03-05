@@ -6,10 +6,19 @@ angular.module('digApp')
     $scope.displayMode = {
         mode: 'list'
     };
+    $scope.sortOptions = [
+        {mode: 'rank', text: 'Best Match'},
+        {mode: 'desc', text: 'Newest First'},
+        {mode: 'asc', text: 'Oldest First'}
+    ];
+    $scope.selectedSort = {
+        mode: 'rank', text: 'Best Match'
+    };
+    $scope.euiSortOrder = 'desc';
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
     $scope.galleryItem = {};
-    
+
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
     };
@@ -83,14 +92,19 @@ angular.module('digApp')
         }
     };
 
+    $scope.switchSort = function(index) {
+        if($scope.sortOptions[index].mode !== 'rank') {
+            $scope.euiSortOrder = $scope.sortOptions[index].mode;
+        }
+        $scope.selectedSort.mode = $scope.sortOptions[index].mode;
+        $scope.selectedSort.text = $scope.sortOptions[index].text;
+    };
+
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
         $scope.opened = [];
         $scope.galleryItem = {};
         $scope.indexVM.page = 1;
     });
-
-
-
 
 });

@@ -5,19 +5,19 @@
   <button class="btn btn-default" ng-click="switchView('gallery')">
     <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
   </button>
-  <!-- TODO: Implement Sort By feature - commenting out for now -->
-<!--  <div class="btn-group pull-right">
+  <div ng-show="euiConfigs.sort.field" class="btn-group pull-right">
     <label>Sort by</label>
-    <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
-      Newest first
+    <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
+      {{selectedSort.text}}
       <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-      <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
-    </ul>
-  </div>-->
+    <ul class="dropdown-menu" role="sortMenu" aria-labelledby="sortMenu">
+      <li ng-repeat="option in sortOptions track by $index" role="presentation" ng-class="{active: option.mode === selectedSort.mode}" ng-click="switchSort($index)">
+        <a role="menuitem" tabindex="-1" href="#">{{option.text}}</a>
+      </li>
+    </ul> 
+    <div eui-sort="ejs.Sort(euiConfigs.sort.field).order(euiSortOrder)" eui-enabled="selectedSort.mode !== 'rank'"></div>
+  </div>
 </div> 
 
 <ui-view></ui-view>

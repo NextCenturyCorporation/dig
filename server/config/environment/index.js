@@ -102,14 +102,15 @@ var all = {
                     field: 'dateCreated'
                 }],
             },
-
             highlight: {
                 fields: [
                 'hasBodyPart.text',
                 'hasTitlePart.text'
                 ]
             },
-
+            sort: {
+                field: 'dateCreated'
+            },
             listFields: {
                 "title": [{
                     title: 'Title',
