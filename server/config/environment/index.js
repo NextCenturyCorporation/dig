@@ -108,7 +108,7 @@ var all = {
                 'hasTitlePart.text'
                 ]
             },
-            sort: {
+            dateSort: {
                 field: 'dateCreated'
             },
             listFields: {

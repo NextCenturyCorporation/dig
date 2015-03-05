@@ -5,7 +5,7 @@
   <button class="btn btn-default" ng-click="switchView('gallery')">
     <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
   </button>
-  <div ng-show="euiConfigs.sort.field" class="btn-group pull-right">
+  <div ng-show="euiConfigs.dateSort.field" class="btn-group pull-right">
     <label>Sort by</label>
     <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
       {{selectedSort.text}}
@@ -16,7 +16,7 @@
         <a role="menuitem" tabindex="-1" href="#">{{option.text}}</a>
       </li>
     </ul> 
-    <div eui-sort="ejs.Sort(euiConfigs.sort.field).order(euiSortOrder)" eui-enabled="selectedSort.mode !== 'rank'"></div>
+    <div eui-sort="ejs.Sort(euiConfigs.dateSort.field).order(euiSortOrder)" eui-enabled="selectedSort.mode !== 'rank'"></div>
   </div>
 </div> 
 
