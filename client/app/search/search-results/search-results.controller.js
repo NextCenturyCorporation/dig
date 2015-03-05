@@ -86,8 +86,8 @@ angular.module('digApp')
     };
 
     $scope.switchSort = function(index) {
-        if($scope.validSortOrder($scope.sortOptions[index].mode)) {
-            $scope.euiSortOrder = $scope.sortOptions[index].mode;
+        if($scope.validSortOrder($scope.sortOptions[index].order)) {
+            $scope.euiSortOrder = $scope.sortOptions[index].order;
         }
         $scope.selectedSort = $scope.sortOptions[index];
     };
@@ -96,7 +96,7 @@ angular.module('digApp')
         return (order === 'asc' || order === 'desc');
     };
 
-    $scope.euiSortOrder = $scope.validSortOrder($scope.selectedSort.mode) ? $scope.selectedSort.mode : 'desc';
+    $scope.euiSortOrder = $scope.validSortOrder($scope.selectedSort.order) ? $scope.selectedSort.order : 'desc';
 
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.

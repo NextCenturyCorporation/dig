@@ -110,11 +110,11 @@ var all = {
             },
             sort: {
                 field: 'dateCreated',
-                defaultOption: {mode: 'rank', text: 'Best Match'}, 
+                defaultOption: {order: 'rank', title: 'Best Match'}, 
                 options: [
-                    {mode: 'rank', text: 'Best Match'},
-                    {mode: 'desc', text: 'Newest First'},
-                    {mode: 'asc', text: 'Oldest First'}
+                    {order: 'rank', title: 'Best Match'},
+                    {order: 'desc', title: 'Newest First'},
+                    {order: 'asc', title: 'Oldest First'}
                 ]
             },
             listFields: {
