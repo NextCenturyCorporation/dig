@@ -61,7 +61,7 @@
             <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
                <span ng-repeat="(filterKey, date) in values">
                 <span ng-if="date" class="search-facet" ng-click="removeDateFilter(dateFilter, filterKey)">
-                  {{filterKey}}: {{ date | date : 'yyyy-MM-dd'}} <i class="fa fa-times-circle"></i>
+                  {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}} <i class="fa fa-times-circle"></i>
                 </span>
               </span>
             </span>

@@ -18,10 +18,10 @@ angular.module('digApp')
                 beginDate: null,
                 endDate: null
             };
-            $scope.dateFormat = 'yyyy-MM-dd';
+            $scope.dateFormat = 'MM/dd/yyyy';
 
-            $scope.dateToString = function(date) {
-                return $filter('date')(date, $scope.dateFormat);
+            $scope.dateToEjsString = function(date) {
+                return $filter('date')(date, 'yyyy-MM-dd');
             };
         }
     };
