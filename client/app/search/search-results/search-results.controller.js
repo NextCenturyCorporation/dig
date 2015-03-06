@@ -6,11 +6,11 @@ angular.module('digApp')
     $scope.displayMode = {
         mode: 'list'
     };
-    $scope.sortOptions = $scope.euiConfigs.sort.options;
-    $scope.selectedSort = $scope.euiConfigs.sort.defaultOption;
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
     $scope.galleryItem = {};
+    $scope.sortOptions = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.options : [];
+    $scope.selectedSort = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.defaultOption : {};
 
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
