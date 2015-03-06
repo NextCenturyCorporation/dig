@@ -119,6 +119,9 @@ var all = {
                     {order: 'asc', title: 'Oldest First'}
                 ]
             },
+            lastUpdateQuery: {
+                field: 'dateCreated'
+            },
             listFields: {
                 "title": [{
                     title: 'Title',
