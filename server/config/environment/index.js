@@ -97,6 +97,13 @@ var all = {
                     terms: 'person_age',
                     termsType: 'number',
                     count: 10
+                },{
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'provider_name',
+                    termsType: 'string',
+                    count: 10
                 }]
             },
 
@@ -164,6 +171,11 @@ var all = {
                             field: 'doc._source.hasFeatureCollection.website_feature.website',
                             featureArray: 'doc._source.hasFeatureCollection.website_feature',
                             featureValue: 'website'
+                        },{
+                            title: 'Provider',
+                            field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                            featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                            featureValue: 'provider_name'
                         }]
                     },
                     "2": {
@@ -364,6 +376,11 @@ var all = {
                         featureArray: "doc['_source']['hasFeatureCollection']['person_travel_feature ']",
                         featureValue: 'person_travel',
                         hideIfMissing: true
+                    },{
+                        title: 'Provider',
+                        field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                        featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                        featureValue: 'provider_name'
                     }]
                 },
                 "3": {
