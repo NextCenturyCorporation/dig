@@ -9,8 +9,8 @@
       <div eui-sort="ejs.Sort(aboutSearchConfig.field).order('desc')" eui-enabled="true">
         Last Data Update: 
         <span ng-show="indexVM.loading">(loading, please wait)</span>
-        <span ng-show="!indexVM.loading" ng-if="indexVM.results.hits.hits.length > 0">
-          {{$eval('indexVM.results.hits.hits[0]._source.' + aboutSearchConfig.field) | date : shortDate}}
+        <span ng-show="!indexVM.loading && indexVM.results.hits.hits.length > 0">
+          {{$eval('indexVM.results.hits.hits[0]._source.' + aboutSearchConfig.field) | date : mediumDate}}
         </span>
       </div>
     </li>
