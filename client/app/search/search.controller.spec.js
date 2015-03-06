@@ -7,7 +7,7 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, state, blurImageSvcMock;
+    var SearchCtrl, scope, state, modal, blurImageSvcMock;
 
     var sampleDoc = {
         "_index": "dig",
@@ -323,8 +323,6 @@ describe('Controller: SearchCtrl', function () {
         }
     };
 
-
-
     // Initialize the controller and a mock scope
     beforeEach(function() {
         var simHost = 'http://localhost';
@@ -341,9 +339,10 @@ describe('Controller: SearchCtrl', function () {
             });
         });
 
-        inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
+        inject(function ($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
+            modal = $modal;
             blurImageSvcMock = {
                 blurEnabled: 'blur',
                 getBlurImagesEnabled : function() {
@@ -359,6 +358,7 @@ describe('Controller: SearchCtrl', function () {
             }
             state.current.name = 'search';
             spyOn(state, 'go');
+            spyOn(modal, 'open');
             spyOn(blurImageSvcMock, 'changeBlurImagesEnabled');
 
             $httpBackend = _$httpBackend_;
@@ -373,6 +373,7 @@ describe('Controller: SearchCtrl', function () {
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
                 $state: state,
+                $modal: modal,
                 blurImageService: blurImageSvcMock
             });
 
@@ -410,15 +411,49 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.queryString.submitted).toBe('');
     });
 
+    it('should call blurImageService with false parameter', function () {
+        scope.changeBlur();
+        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
+    });
+
     it('should call blurImageService with true parameter', function () {
+        scope.isBlurred = false;
         scope.changeBlur();
         expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(true);
     });
 
-    it('should call blurImageService with false parameter', function () {
-        scope.isBlurred = false;
-        scope.changeBlur();
-        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
+    it('should make call to open modal', function () {
+        var modalParameters = {
+          templateUrl: 'app/about/about.html',
+          controller: 'AboutCtrl',
+          size: 'sm'
+        };
+
+        scope.openAbout();
+        expect(modal.open).toHaveBeenCalledWith(modalParameters);
+    });
+
+    it('should remove correct aggFilter', function () {
+        scope.filterStates.aggFilters['test'] = {};
+        scope.filterStates.aggFilters['test']['value1'] = true; 
+        scope.filterStates.aggFilters['test']['value2'] = true; 
+
+        expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
+        expect(scope.filterStates.aggFilters['test']['value2']).toBe(true);
+
+        scope.removeAggFilter('test', 'value2');
+        expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
+        expect(scope.filterStates.aggFilters['test']['value2']).toBe(false);
+    });
+
+    it('should remove correct textFilter', function () {
+        scope.filterStates.textFilters['textKey'] = {live: 'sometext', submitted: 'somethingelse'};
+        expect(scope.filterStates.textFilters['textKey'].live).toBe('sometext');
+        expect(scope.filterStates.textFilters['textKey'].submitted).toBe('somethingelse');
+
+        scope.removeTextFilter('textKey');
+        expect(scope.filterStates.textFilters['textKey'].live).toBe('');
+        expect(scope.filterStates.textFilters['textKey'].submitted).toBe('');
     });
 
     it('should remove correct dateFilter', function() {
