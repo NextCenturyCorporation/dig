@@ -1,0 +1,5 @@
+<div ng-repeat="doc in gallery.rawData track by $index" class="image-gallery-container" gallery-index="{{$index}}">
+  <span ng-if="doc._source.hasImagePart">
+    <img blurred-image class="image-gallery-img center-block" ng-src="{{getDisplayImageSrc(doc)}}" ng-click="renderExpander($event)">
+  </span>
+</div>

@@ -52,6 +52,9 @@ angular.element(document).ready(function() {
         var pixelateImagesPercentage = config.pixelateImagesPercentage || 2.5;
         digApp.constant('pixelateImagesPercentage', pixelateImagesPercentage);
 
+        var appVersion = config.appVersion;
+        digApp.constant('appVersion', appVersion);
+
         angular.bootstrap(document, ['digApp']);
     })
     .error(function() {
@@ -65,5 +68,6 @@ angular.element(document).ready(function() {
         digApp.constant('simHost', 'http://localhost:3001');
         digApp.constant('blurImagesEnabled', true);
         digApp.constant('blurImagesPercentage', 5);
+        digApp.constant('appVersion', '0.0.0');
     });
 });

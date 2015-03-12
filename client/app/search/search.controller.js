@@ -4,26 +4,35 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
-    $scope.currentOpened = 0;
-    $scope.selectedImage = 0;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
     $scope.searchConfig.filterByImage = false;
-
     $scope.searchConfig.euiSearchIndex = '';
-
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.opened = [];
     $scope.filterStates = {
         aggFilters: {},
         textFilters: {}
+    };
+    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
+
+    $scope.changeBlur = function() {
+        $scope.isBlurred = !$scope.isBlurred;
+        blurImageService.changeBlurImagesEnabled($scope.isBlurred);
+    };
+
+    $scope.openAbout = function () {
+        $modal.open({
+          templateUrl: 'app/about/about.html',
+          controller: 'AboutCtrl',
+          size: 'sm'
+        });
     };
 
     $scope.removeAggFilter = function(key1, key2) {
@@ -43,32 +52,17 @@ angular.module('digApp')
         $scope.viewList();
     };
 
+    $scope.viewList = function() {
+        $state.go('search.results.list');
+    };
+
     $scope.clearSearch = function() {
         $scope.queryString.live = '';
         $scope.submit();
     };
 
-    $scope.reload = function() {    
-        $state.go('search.list', {}, {'reload': true});
-    };
-
-    $scope.closeOthers = function(index, array) {
-        if($scope.currentOpened < array.length) {
-            array[$scope.currentOpened].isOpen = false;
-        }
-        $scope.currentOpened = index;
-    };
-
-    $scope.viewDetails = function(doc) {
-        $scope.doc = doc;
-        $state.go('search.list.details');
-    };
-
-    $scope.viewList = function() {
-        if($scope.doc) {
-            $scope.doc = null;
-        }
-        $state.go('search.list');
+    $scope.reload = function() {
+        $state.go('search.results.list', {}, {'reload': true});
     };
 
     $scope.getActiveImageSearch = function() {
@@ -78,10 +72,6 @@ angular.module('digApp')
     $scope.clearActiveImageSearch = function() {
         $scope.searchConfig.filterByImage = false;
         imageSearchService.clearActiveImageSearch();
-    };
-
-    $scope.selectImage = function(index) {
-        $scope.selectedImage = index;
     };
 
     $scope.imageSearch = function(imgUrl) {
@@ -100,6 +90,7 @@ angular.module('digApp')
         }
 
         // If we have an active image search, check for a matching image.
+        /* jshint camelcase:false */
         if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                 function(item) { return item.featureValue === currentSearch.url; });
@@ -114,16 +105,9 @@ angular.module('digApp')
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
+        /* jshint camelcase:true */
 
         return src;
-    };
-
-    $scope.toggleListItemOpened = function(index) {
-        $scope.opened[index] = !($scope.opened[index]);
-    };
-
-    $scope.isListItemOpened = function(index) {
-        return ($scope.opened[index]) ? true : false;
     };
 
     $scope.$watch(function() {
@@ -155,18 +139,10 @@ angular.module('digApp')
 
                 if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
                     $scope.showresults = true;
-                    // Reset our page collapse states
-                    $scope.opened = [];
                 }
             }
         }
     );
-
-    $scope.$watch('indexVM.query', function(){
-        // Reset our opened document state and page on a new query.
-        $scope.opened = [];
-        $scope.indexVM.page = 1;
-    });
 
     if($state.current.name === 'search') {
         $scope.viewList();

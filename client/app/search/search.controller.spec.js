@@ -7,7 +7,7 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, state;
+    var SearchCtrl, scope, state, modal, blurImageSvcMock;
 
     var sampleDoc = {
         "_index": "dig",
@@ -323,8 +323,6 @@ describe('Controller: SearchCtrl', function () {
         }
     };
 
-
-
     // Initialize the controller and a mock scope
     beforeEach(function() {
         var simHost = 'http://localhost';
@@ -338,27 +336,45 @@ describe('Controller: SearchCtrl', function () {
                 facets: [],
                 listFields: [],
                 detailsFields: []
-            })
+            });
         });
 
-        inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
+        inject(function ($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
+            modal = $modal;
+            blurImageSvcMock = {
+                blurEnabled: 'blur',
+                getBlurImagesEnabled : function() {
+                    return this.blurEnabled;
+                },
+                changeBlurImagesEnabled: function(isBlurred) {
+                    if(isBlurred) {
+                        blurEnabled: 'blur';
+                    } else {
+                        blurEnabled: false;
+                    }
+                }
+            }
             state.current.name = 'search';
             spyOn(state, 'go');
+            spyOn(modal, 'open');
+            spyOn(blurImageSvcMock, 'changeBlurImagesEnabled');
 
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search.list.html'))
+            $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search.list.details.html'))
+            $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
                 .respond(200, 'some text');
             imageSearchService = _imageSearchService_;
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
-                $state: state
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
             });
 
             scope.indexVM = {
@@ -375,7 +391,11 @@ describe('Controller: SearchCtrl', function () {
 
     it('should call state.go with reload set to true', function () {
         scope.reload();
-        expect(state.go).toHaveBeenCalledWith('search.list', {}, {'reload': true});
+        expect(state.go).toHaveBeenCalledWith('search.results.list', {}, {'reload': true});
+    });
+
+    it('should initialize isBlurred to true', function () {
+        expect(scope.isBlurred).toBe(true);
     });
 
     it('should initialize showresults to false', function () {
@@ -389,6 +409,51 @@ describe('Controller: SearchCtrl', function () {
     it('should initialize queryString values to empty strings', function () {
         expect(scope.queryString.live).toBe('');
         expect(scope.queryString.submitted).toBe('');
+    });
+
+    it('should call blurImageService with false parameter', function () {
+        scope.changeBlur();
+        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
+    });
+
+    it('should call blurImageService with true parameter', function () {
+        scope.isBlurred = false;
+        scope.changeBlur();
+        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(true);
+    });
+
+    it('should make call to open modal', function () {
+        var modalParameters = {
+          templateUrl: 'app/about/about.html',
+          controller: 'AboutCtrl',
+          size: 'sm'
+        };
+
+        scope.openAbout();
+        expect(modal.open).toHaveBeenCalledWith(modalParameters);
+    });
+
+    it('should remove correct aggFilter', function () {
+        scope.filterStates.aggFilters['test'] = {};
+        scope.filterStates.aggFilters['test']['value1'] = true; 
+        scope.filterStates.aggFilters['test']['value2'] = true; 
+
+        expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
+        expect(scope.filterStates.aggFilters['test']['value2']).toBe(true);
+
+        scope.removeAggFilter('test', 'value2');
+        expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
+        expect(scope.filterStates.aggFilters['test']['value2']).toBe(false);
+    });
+
+    it('should remove correct textFilter', function () {
+        scope.filterStates.textFilters['textKey'] = {live: 'sometext', submitted: 'somethingelse'};
+        expect(scope.filterStates.textFilters['textKey'].live).toBe('sometext');
+        expect(scope.filterStates.textFilters['textKey'].submitted).toBe('somethingelse');
+
+        scope.removeTextFilter('textKey');
+        expect(scope.filterStates.textFilters['textKey'].live).toBe('');
+        expect(scope.filterStates.textFilters['textKey'].submitted).toBe('');
     });
 
     it('should set queryString.submitted to user input', function () {
@@ -410,54 +475,8 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.loading).toBe(false);
     });
 
-    it('should have currentOpened default to 0', function () {
-        expect(scope.currentOpened).toBe(0);
-    });
-
-    it('should have selectedImage default to 0', function () {
-        expect(scope.selectedImage).toBe(0);
-    });
-
-    it('should not have scope.doc', function () {
-        expect(scope.doc).toBe(undefined);
-    });
-
     it('should default to list view', function () {
-        expect(state.go).toHaveBeenCalledWith('search.list');
-    });
-
-    it('should change currentOpened to new index and update old opened value in array', function () {
-        var array = [{obj: 1},{obj: 2}];
-        var oldValue = scope.currentOpened;
-
-        scope.closeOthers(1, array);
-
-        expect(scope.currentOpened).toBe(1);
-        expect(array[oldValue].isOpen).toBe(false);
-    });
-
-    it('should update state to details view and add passed in doc to scope', function () {
-        var testDoc = {name: 'TestDoc'};
-
-        scope.viewDetails(testDoc);
-
-        expect(scope.doc).not.toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.list.details');
-    });
-
-    it('should update state from details to list view and null out scope.doc if scope.doc is set', function () {
-        scope.doc = {name: 'TestDoc'};
-
-        scope.viewList();
-
-        expect(scope.doc).toBeNull();
-        expect(state.go).toHaveBeenCalledWith('search.list');
-    });
-
-    it('should update selectedImage', function () {
-        scope.selectImage(2);
-
-        expect(scope.selectedImage).toBe(2);
+        expect(state.go).toHaveBeenCalledWith('search.results.list');
     });
 
     it('should select first image part if no image search is active', function() {
@@ -476,25 +495,5 @@ describe('Controller: SearchCtrl', function () {
 
     it('should generate an empty display image src if no cacheUrl is present', function() {
         expect(scope.getDisplayImageSrc(sampleDocMissingCacheUrl)).toBe("");
-    });
-
-    it('should return whether or not a list item is opened by id', function() {
-        expect(scope.isListItemOpened("foo")).toBe(false);
-
-        scope.toggleListItemOpened("foo");
-        expect(scope.isListItemOpened("foo")).toBe(true);
-
-        scope.toggleListItemOpened("foo");
-        expect(scope.isListItemOpened("foo")).toBe(false);
-    });
-
-    it('should clear the opened items list on a query change', function() {
-        expect(scope.opened.length).toBe(0);
-
-        scope.toggleListItemOpened("foo");
-        scope.indexVM.query = "some new query";
-        scope.$apply();
-        expect(scope.opened.length).toBe(0);
-        expect(scope.isListItemOpened("foo")).toBe(false);
     });
 });

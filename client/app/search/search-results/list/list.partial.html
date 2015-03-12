@@ -1,0 +1,44 @@
+<div ui-view>
+  <div class="column-header">
+    <h4>
+      <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
+      <strong>{{indexVM.results.hits.total}}</strong> results
+    </h4>
+
+  </div>
+
+  <ul id="results" class="list-group">
+    <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
+      <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
+        <div class="row">
+          <div class="col-xs-3 col-sm-2 col-lg-1">
+            <span ng-if="doc._source.hasImagePart">
+              <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
+            </span> 
+          </div>
+          <div class="col-xs-9 col-sm-10 col-lg-11">
+            <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
+            <div class="list-group-item-meta">
+              <span ng-repeat="field in euiConfigs.listFields['short']">
+                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
+        <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
+      </div>
+    </li>
+  </ul>
+
+  <div class="text-center">
+    <ul class="list-unstyled">
+    <li><pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
+    ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize"
+    class="pagination-sm" num-pages="indexVM.pageCount" ng-change="onPageChange()"></pagination></li>
+    <li ng-show="indexVM.results.hits.total > 0">Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</li>
+    </ul>
+  </div>
+</div>

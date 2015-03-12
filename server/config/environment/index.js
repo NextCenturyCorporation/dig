@@ -2,6 +2,7 @@
 
 var path = require('path');
 var _ = require('lodash');
+var pjson = require('../../../package.json');
 
 function requiredProcessEnv(name) {
   if(!process.env[name]) {
@@ -40,6 +41,7 @@ var all = {
             }
         }
     },
+    appVersion: pjson.version,
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
@@ -72,33 +74,51 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'city_agg',
                     terms: 'hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
+                    termsType: 'string',
                     count: 30
                 },{
                     title: 'Ethnicity',
                     type: 'eui-aggregation',
                     field: 'etn_agg',
                     terms: 'person_ethnicity',
+                    termsType: 'string',
                     count: 20
                 },{
                     title: 'Hair Color',
                     type: 'eui-aggregation',
                     field: 'hc_agg',
                     terms: 'person_haircolor',
+                    termsType: 'string',
                     count: 10
                 },{
                     title: 'Age',
                     type: 'eui-aggregation',
                     field: 'age_agg',
                     terms: 'person_age',
+                    termsType: 'number',
+                    count: 10
+                },{
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'provider_name',
+                    termsType: 'string',
                     count: 10
                 }]
+            },
+
+            highlight: {
+                fields: [
+                'hasBodyPart.text',
+                'hasTitlePart.text'
+                ]
             },
 
             listFields: {
                 "title": [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.hasTitlePart.text',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
                 "short": [{
@@ -151,6 +171,11 @@ var all = {
                             field: 'doc._source.hasFeatureCollection.website_feature.website',
                             featureArray: 'doc._source.hasFeatureCollection.website_feature',
                             featureValue: 'website'
+                        },{
+                            title: 'Provider',
+                            field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                            featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                            featureValue: 'provider_name'
                         }]
                     },
                     "2": {
@@ -351,12 +376,17 @@ var all = {
                         featureArray: "doc['_source']['hasFeatureCollection']['person_travel_feature ']",
                         featureValue: 'person_travel',
                         hideIfMissing: true
+                    },{
+                        title: 'Provider',
+                        field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                        featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                        featureValue: 'provider_name'
                     }]
                 },
                 "3": {
                     classes: "",
                     fields: [{
-                        field: 'doc._source.hasBodyPart.text',
+                        field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
                         hideIfMissing: true
                     }]
                 }

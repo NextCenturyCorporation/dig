@@ -10,12 +10,24 @@ angular.module('digApp')
         abstract: true,
         controller: 'SearchCtrl'
       })
-      .state('search.list', {
-        url: '^/list',
-        templateUrl: 'app/search/search.list.html'
+      .state('search.results', {
+        abstract: true,
+        templateUrl: 'app/search/search-results/search-results.partial.html',
+        controller: 'SearchResultsCtrl'
       })
-      .state('search.list.details', {
-        url: '^/list/details',
-        templateUrl: 'app/search/search.list.details.html'
+      .state('search.results.list', {
+        url: '^/list',
+        templateUrl: 'app/search/search-results/list/list.partial.html',
+		    preserveScrollPos: true
+      })
+      .state('search.results.gallery', {
+        url: '^/gallery',
+        templateUrl: 'app/search/search-results/gallery/gallery.partial.html',
+        controller: 'GalleryCtrl',
+        preserveScrollPos: true
+      })
+      .state('search.results.details', {
+        url: '^/details',
+        templateUrl: 'app/search/search-results/details/details.html'
       });
   });

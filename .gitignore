@@ -9,3 +9,4 @@ dist
 *.sublime-workspace
 /*.sublime-project
 npm-debug*
+coverage

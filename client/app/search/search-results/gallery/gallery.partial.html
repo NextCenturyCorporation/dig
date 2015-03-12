@@ -1,0 +1,18 @@
+<div ui-view>
+  <div class="column-header">
+    <h4>
+      <strong>{{indexVM.results.hits.total}}</strong> results
+    </h4>
+  </div>
+
+  <image-gallery></image-gallery>
+
+  <div class="text-center">
+    <ul class="list-unstyled">
+    <li><pagination total-items="indexVM.results.hits.total" ng-show="indexVM.results.hits.total > 10"
+    ng-model="indexVM.page" max-size="10" items-per-page="indexVM.pageSize"
+    class="pagination-sm" num-pages="indexVM.pageCount" ng-change="onPageChange()"></pagination></li>
+    <li ng-show="indexVM.results.hits.total > 0">Displaying page {{indexVM.page}} of {{indexVM.pageCount}}</li>
+    </ul>
+  </div>
+</div>

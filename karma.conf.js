@@ -29,10 +29,19 @@ module.exports = function(config) {
       'client/components/**/*.html'
     ],
 
+    reporters: ['progress', 'coverage'],
+
     preprocessors: {
       '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
       '**/*.coffee': 'coffee',
+      'client/app/!(lib)/**/!(*spec).js': 'coverage',
+      'client/components/!(modal|socket|navbar)/**/!(*spec).js':'coverage'
+    },
+
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
     },
 
     ngHtml2JsPreprocessor: {

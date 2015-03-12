@@ -372,6 +372,25 @@ label{
 	box-shadow: none;;
 }
 
+.btn-settings {
+	position: relative; 
+	padding-top: 10px;
+	color: #cccccc;
+	background: #f4efec;
+	box-shadow: none;
+	font-size: 32px;
+	border: 0;
+	font-weight: bold;
+}
+
+.btn-settings:hover {
+	color: #034154;
+}
+
+.settings-checkbox {
+	padding-left: 10px;
+}
+
 /* Images */
 
 .thumbnail {
@@ -383,9 +402,12 @@ label{
 
 
 // injector
+@import 'search/search-results/gallery/image-gallery.less';
 @import 'search/search.less';
+@import 'blurredImage/blurredImage.less';
 @import 'checkbox-filter/checkbox-filter-list/checkbox-filter-list.less';
 @import 'collapse-filter/collapse-filter.less';
 @import 'date-histogram-aggregation/date-histogram-aggregation.less';
+@import 'expanded-listing-view/expanded-listing-view.less';
 @import 'modal/modal.less';
 // endinjector

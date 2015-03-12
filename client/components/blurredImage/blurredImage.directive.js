@@ -2,29 +2,51 @@
 
 
 angular.module('digApp.directives')
-.directive('blurredImage', function(blurImagesEnabled, pixelateImagesPercentage, blurImagesPercentage, $timeout) {
+.directive('blurredImage', function(blurImageService, $timeout) {
     return {
         restrict: 'A',
-        link: function($scope, el, attrs) {
+        link: function($scope, element, attrs) {
             var processing = false;
             var fallback = false;
+            var blurImagesEnabled = blurImageService.getBlurImagesEnabled();
+            var blurImagesPercentage = blurImageService.getBlurImagesPercentage();
+            var pixelateImagesPercentage = blurImageService.getPixelateImagesPercentage();
+
+            if(blurImagesEnabled === 'blur') {
+                element.addClass('image-blur-default');
+            }
 
             $scope.getMaxSize = function() {
-                return Math.max(el.height(), el.width());
+                return Math.max(element.height(), element.width());
             };
 
             var cssBlur = function() {
-                if($scope.getMaxSize() !== 0) {
-                    var blurSize = ($scope.getMaxSize() * (blurImagesPercentage / 100));
 
-                    el.css({
-                        '-webkit-filter': 'blur(' + blurSize + 'px)',
-                        '-moz-filter': 'blur(' + blurSize + 'px)',
-                        '-o-filter': 'blur(' + blurSize + 'px)',
-                        '-ms-filter': 'blur(' + blurSize + 'px)',
-                        'filter': 'blur(' + blurSize + 'px)'
+                if($scope.getMaxSize() !== 0) {
+                    addCssBlur();
+                } else {
+                    // If image has no height/width, it could be because it 
+                    // isn't yet loaded. Wait for image to load and try again.
+                    element.on('load', function() {
+                        addCssBlur();
                     });
                 }
+
+                if(element.hasClass('image-blur-default')) {
+                    element.removeClass('image-blur-default');
+                }
+            };
+
+            var addCssBlur = function() {
+                var blurSize = ($scope.getMaxSize() * (blurImagesPercentage / 100));
+
+                element.css({
+                    '-webkit-filter': 'blur(' + blurSize + 'px)',
+                    '-moz-filter': 'blur(' + blurSize + 'px)',
+                    '-o-filter': 'blur(' + blurSize + 'px)',
+                    '-ms-filter': 'blur(' + blurSize + 'px)',
+                    'filter': 'blur(' + blurSize + 'px)'
+                });
             };
 
             var bindErrorHandler = function(img) {
@@ -37,7 +59,7 @@ angular.module('digApp.directives')
                             });
                             fallback = true;
                             processing = null;
-                            el.removeClass('hide-preblur-image');
+                            element.removeClass('hide-preblur-image');
                             $timeout(cssBlur);
                             e.preventDefault(); // Prevent error from getting thrown
                         });
@@ -49,7 +71,7 @@ angular.module('digApp.directives')
                             cssBlur();
                         });
                         fallback = true;
-                        el.removeClass('hide-preblur-image');
+                        element.removeClass('hide-preblur-image');
                         processing=null;
                         $scope.$watch('getMaxSize', cssBlur);
                         $timeout(cssBlur);
@@ -59,7 +81,7 @@ angular.module('digApp.directives')
             };
 
             var pixelate = function(imageSource) {
-                el.addClass('hide-preblur-image');
+                element.addClass('hide-preblur-image');
 
                 var canvas = document.createElement('canvas');
                 var ctx = canvas.getContext('2d');
@@ -87,8 +109,8 @@ angular.module('digApp.directives')
 
                         var imgStr2 = canvas.toDataURL('image/png');
 
-                        el.attr('src', imgStr2);
-                        el.removeClass('hide-preblur-image');
+                        element.attr('src', imgStr2);
+                        element.removeClass('hide-preblur-image');
                     } else {
                         cssBlur();
                     }
@@ -107,7 +129,7 @@ angular.module('digApp.directives')
                 } else if(!fallback && blurImagesEnabled === 'blur') {
                     fallback = true;
 
-                    $scope.$watch($scope.getMaxSize, function(newVal, oldVal) {
+                    $scope.$watch($scope.getMaxSize, function() {
                         cssBlur();
                     });
 
@@ -117,13 +139,25 @@ angular.module('digApp.directives')
                 }
             };
 
-            attrs.$observe('src', function(imageSource) {
+            $scope.processImageBlur = function(imageSource) {
+                blurImagesEnabled = blurImageService.getBlurImagesEnabled();
+                blurImagesPercentage = blurImageService.getBlurImagesPercentage();
+                pixelateImagesPercentage = blurImageService.getPixelateImagesPercentage();
+
                 if(!processing) {
                     blurImage(imageSource);
                 } else {
                     processing.onload = null; //cancel the onload
                     blurImage(imageSource);
                 }
+            };
+
+            attrs.$observe('src', function(imageSource) {
+                $scope.processImageBlur(imageSource);
+            });
+
+            $scope.$on('blur-state-change', function() {
+                $scope.processImageBlur(attrs.src);
             });
         }
     };
