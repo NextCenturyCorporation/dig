@@ -5,6 +5,7 @@ RUN sudo apt-get install -y nodejs
 RUN sudo npm update -g npm
 RUN sudo apt-get install -y git
 COPY dist /
+RUN npm cache clean
 RUN npm install
 RUN sudo npm install -g forever
 EXPOSE 8080
