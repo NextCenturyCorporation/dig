@@ -24,7 +24,7 @@ angular.module('digApp.directives')
                 $('#gallery-expander').remove();
                 insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" class="gallery-item-expanded" ' +
                 'doc="indexVM.results.hits.hits[' + docNum + ']" get-display-image-src="getDisplayImageSrc" ' +
-                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></expanded-listing-view>')($scope));
+                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch" strip-html="stripHtml"></expanded-listing-view>')($scope));
             };
 
             $scope.renderExpander = function(clickEvent) {
