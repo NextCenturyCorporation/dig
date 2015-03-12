@@ -420,14 +420,27 @@ var all = {
                     field: 'compound_agg',
                     terms: 'hasFeatureCollection.compound_feature.compound',
                     count: 20
+                },{
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'hasFeatureCollection.provider_name_feature.provider_name',
+                    count: 20
                 }]
+            },
+
+            highlight: {
+                fields: [
+                'hasAbstractPart.text',
+                'hasTitlePart.text'
+                ]
             },
 
             listFields: {
                 "title": [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.hasTitlePart.text',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
                 "short": [{
@@ -462,8 +475,13 @@ var all = {
                             featureArray: 'doc._source.hasFeatureCollection.compound_feature',
                             featureValue: 'compound'
                         },{
+                            title: 'Provider',
+                            field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                            featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                            featureValue: 'provider_name'
+                        },{
                             title: 'Abstract',
-                            field: "doc['_source']['hasAbstractPart']['text']"
+                            field: 'doc.highlight["hasAbstractPart.text"][0] || doc._source.hasAbstractPart.text',
                         }]
                     }
                 }
@@ -492,8 +510,13 @@ var all = {
                         featureArray: 'doc._source.hasFeatureCollection.compound_feature',
                         featureValue: 'compound'
                     },{
+                        title: 'Provider',
+                        field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
+                        featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
+                        featureValue: 'provider_name'
+                    },{
                         title: 'Abstract',
-                        field: "doc['_source']['hasAbstractPart']['text']"
+                        field: 'doc.highlight["hasAbstractPart.text"][0] || doc._source.hasAbstractPart.text',
                     }]
                 }
             }
