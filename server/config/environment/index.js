@@ -224,7 +224,9 @@ var all = {
                     }
                 }
             },
-
+            debugFields: {
+                fields: ['doc._id', 'doc._source.uri']
+            },
             detailFields: {
                 "1": {
                     classes: 'listing-details',

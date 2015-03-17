@@ -25,6 +25,10 @@
         </dl>
       </div>
     </div>
+    <span ng-repeat="field in euiConfigs.debugFields.fields" class="hidden">
+      <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
+    </span>
+
     <button type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">View Details</button>
   </div>
 </div>
