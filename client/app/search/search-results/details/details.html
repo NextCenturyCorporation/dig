@@ -1,5 +1,5 @@
   <!-- PAGE CONTENT -->
-<div ui-view  autoscroll="true">
+<div ui-view  autoscroll="true" onload="setImageSearchMatchIndices()">
   <div class="container-fluid">
 
     <div class="column-header">
@@ -33,7 +33,8 @@
               <ul class="inline list-inline text-center">
                 <li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block">
                   <a ng-href="" ng-mouseenter="selectImage($index)">
-                    <img blurred-image ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb">
+                    <img blurred-image ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb" 
+                      ng-class="{'image-search-match-thumb': imageMatchStates[$index]}">
                   </a>
                 </li>
               </ul>

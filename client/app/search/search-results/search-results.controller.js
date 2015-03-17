@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchResultsCtrl', function($scope, $state, $sce) {
+.controller('SearchResultsCtrl', function($scope, $state, $sce, imageSearchService) {
     $scope.opened = [];
     $scope.displayMode = {
         mode: 'list'
@@ -96,6 +96,41 @@ angular.module('digApp')
         return (order === 'asc' || order === 'desc');
     };
 
+    $scope.setImageSearchMatchIndices = function() {
+        var doc = $scope.doc;
+        var currentSearch, imgFeature;
+        $scope.selectedImage = -1;
+        $scope.imageMatchStates = [];
+
+        /* jshint camelcase:false */
+        // If we have an active image search and multiple image parts, check for a matching image.
+        if (imageSearchService.getActiveImageSearch() && imageSearchService.getActiveImageSearch().enabled &&
+            doc._source.hasFeatureCollection.similar_images_feature &&
+            doc._source.hasImagePart.length > 0) {
+            currentSearch = imageSearchService.getActiveImageSearch();
+            imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
+                function(item) { return item.featureValue === currentSearch.url; });
+
+            // Verify that the current search url is in the similar images feature.  If so, select the matching
+            // image.
+            if (imgFeature) {
+                var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
+                    function(item) { return (typeof item.featureObject !== 'undefined'); });
+
+                _.each(doc._source.hasImagePart, function(part, index) { 
+                    $scope.imageMatchStates[index] = _.contains(imgObj.featureObject.imageObjectUris, part.uri);
+                    if ($scope.imageMatchStates[index] && $scope.selectedImage < 0) {
+                        $scope.selectedImage = index;
+                    }
+                });
+            }
+        }
+        /* jshint camelcase:true */
+
+        // Set to selected index to 0 if no matches were found.
+        $scope.selectedImage = ($scope.selectedImage >= 0) ? $scope.selectedImage : 0;
+    };
+
     $scope.euiSortOrder = $scope.validSortOrder($scope.selectedSort.order) ? $scope.selectedSort.order : 'desc';
 
     $scope.$watch('indexVM.query', function(){
@@ -104,5 +139,13 @@ angular.module('digApp')
         $scope.galleryItem = {};
         $scope.indexVM.page = 1;
     });
+
+    $scope.$watch(function() {
+            return imageSearchService.getActiveImageSearch();
+        }, function() {
+            if ($scope.doc) {
+                $scope.setImageSearchMatchIndices();
+            }
+        }, true);
 
 });

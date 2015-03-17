@@ -61,6 +61,10 @@ angular.module('digApp')
         $state.go('search.results.list');
     };
 
+    $scope.toggleImageSearchEnabled = function(searchUrl) {
+        imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
+    };
+
     $scope.clearSearch = function() {
         $scope.queryString.live = '';
         $scope.submit();
@@ -94,9 +98,11 @@ angular.module('digApp')
             src = doc._source.hasImagePart[0].cacheUrl;
         }
 
-        // If we have an active image search, check for a matching image.
         /* jshint camelcase:false */
-        if (imageSearchService.getActiveImageSearch() && doc._source.hasFeatureCollection.similar_images_feature) {
+        // If we have an active image search, check for a matching image.
+        if (currentSearch && 
+            imageSearchService.isImageSearchEnabled(currentSearch.url) &&
+            doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                 function(item) { return item.featureValue === currentSearch.url; });
 
@@ -115,13 +121,21 @@ angular.module('digApp')
         return src;
     };
 
+    $scope.toggleListItemOpened = function(index) {
+        $scope.opened[index] = !($scope.opened[index]);
+    };
+
+    $scope.isListItemOpened = function(index) {
+        return ($scope.opened[index]) ? true : false;
+    };
+
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
             if(newVal) {
                 if(newVal.status === 'searching') {
                     $scope.imagesimLoading = true;
-                } else if(newVal.status === 'success') {
+                } else if(newVal.status === 'success' && newVal.enabled) {
                     // If our latest img search was successful, re-issue our query and
                     // enable our image filter.
                     $scope.imagesimLoading = false;

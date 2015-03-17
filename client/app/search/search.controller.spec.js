@@ -198,7 +198,8 @@ describe('Controller: SearchCtrl', function () {
                     {
                         "featureObject": {
                             "imageObjectUris": [
-                                "http://some.server/AAAAA/BBBBB/processed"
+                                "http://some.server/AAAAA/BBBBB/processed",
+                                "http://some.server/AAAAA/CCCCC/processed"
                             ]
                         }
                     }
@@ -239,6 +240,19 @@ describe('Controller: SearchCtrl', function () {
                     "cacheUrl": "https://some.server/cached-2.jpg",
                     "uri": "http://some.server/AAAAA/BBBBB/processed",
                     "url": "http://some.server/sample-2.jpg"
+                },
+                {
+                    "snapshotUri": "http://some.server/AAAAA/CCCCC/raw",
+                    "a": "ImageObject",
+                    "wasGeneratedBy": {
+                        "databaseId": "33333",
+                        "wasAttributedTo": "http://some.server/unknown",
+                        "a": "Activity",
+                        "endedAtTime": "2015-01-01T00:00:00"
+                    },
+                    "cacheUrl": "https://some.server/cached-3.jpg",
+                    "uri": "http://some.server/AAAAA/CCCCC/processed",
+                    "url": "http://some.server/sample-3.jpg"
                 }
             ],
             "uri": "http://some.server/AAAAA/BBBBB/processed",
@@ -501,6 +515,7 @@ describe('Controller: SearchCtrl', function () {
 
     it('should select first matching image part if an image search is active', function() {
         imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
         expect(scope.getDisplayImageSrc(sampleImageSearchDoc)).toBe("https://some.server/cached-2.jpg")
     });
 
@@ -512,4 +527,19 @@ describe('Controller: SearchCtrl', function () {
     it('should generate an empty display image src if no cacheUrl is present', function() {
         expect(scope.getDisplayImageSrc(sampleDocMissingCacheUrl)).toBe("");
     });
+
+    it('should toggle the enable state of the active search appropriately', function() {
+        var enabled = false;
+        // Since this merely intiates a search which won't complete, the initial enable
+        // state should be false.  
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', true);
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(true);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', false);
+        expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
+    });
+
 });

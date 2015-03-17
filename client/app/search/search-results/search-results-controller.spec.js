@@ -5,7 +5,195 @@ describe('Controller: SearchResultsCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var SearchResultsCtrl, scope, state;
+    var SearchResultsCtrl, scope, state, imageSearchService;
+
+        var sampleImageSearchDoc = {
+        "_index": "dig",
+        "_type": "WebPage",
+        "_id": "SOMEUNIQUEID",
+        "_score": 1.0,
+        "_source": {
+            "@context": "https://some.server/context.json",
+            "snapshotUri": "http://some.server/AAAAA/BBBBB/raw",
+            "a": "WebPage",
+            "hasBodyPart": {
+                "text": "some sample text",
+                "a": "WebPageElement",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/body"
+            },
+            "dateCreated": "2015-01-01T00:00:00",
+            "hasFeatureCollection": {
+                "a": "FeatureCollection",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/featurecollection",
+                "phonenumber_feature": [
+                    {
+                        "featureObject": {
+                            "location": {
+                                "a": "Place",
+                                "uri": "http://some.server/data/phone/exchange/123456"
+                            },
+                            "a": "PhoneNumber",
+                            "label": "1234567890",
+                            "uri": "http://some.server/data/phonenumber/x-1234567890"
+                        },
+                        "featureName": "phonenumber",
+                        "a": "Feature",
+                        "uri": "http://some.server/AAAAA/BBBBB/raw/featurecollection/phonenumber/x-1234567890",
+                        "featureValue": "1234567890"
+                    }
+                ],
+                "similar_images_feature": [
+                    {
+                        "featureName": "similarimageurl",
+                        "similarimageurl": "https://some.server/placeholder.jpg",
+                        "featureValue": "https://some.server/placeholder.jpg"
+                    },
+                    {
+                        "featureName": "similarimageurl",
+                        "similarimageurl": "https://some.server/test.jpg",
+                        "featureValue": "https://some.server/test.jpg"
+                    },
+                    {
+                        "featureObject": {
+                            "imageObjectUris": [
+                                "http://some.server/AAAAA/BBBBB/processed",
+                                "http://some.server/AAAAA/CCCCC/processed"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "provider": {
+                "a": "Organization",
+                "uri": "http://some.server"
+            },
+            "hasTitlePart": {
+                "text": "Sample Title",
+                "a": "WebPageElement",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/title"
+            },
+            "hasImagePart": [
+                {
+                    "snapshotUri": "http://some.server/AAAAA/AAAAA/raw",
+                    "a": "ImageObject",
+                    "wasGeneratedBy": {
+                        "databaseId": "11111",
+                        "wasAttributedTo": "http://some.server/unknown",
+                        "a": "Activity",
+                        "endedAtTime": "2015-01-01T00:00:00"
+                    },
+                    "cacheUrl": "https://some.server/cached-1.jpg",
+                    "uri": "http://some.server/AAAAA/AAAAA/processed",
+                    "url": "http://some.server/sample-1.jpg"
+                },
+                {
+                    "snapshotUri": "http://some.server/AAAAA/BBBBB/raw",
+                    "a": "ImageObject",
+                    "wasGeneratedBy": {
+                        "databaseId": "22222",
+                        "wasAttributedTo": "http://some.server/unknown",
+                        "a": "Activity",
+                        "endedAtTime": "2015-01-01T00:00:00"
+                    },
+                    "cacheUrl": "https://some.server/cached-2.jpg",
+                    "uri": "http://some.server/AAAAA/BBBBB/processed",
+                    "url": "http://some.server/sample-2.jpg"
+                },
+                {
+                    "snapshotUri": "http://some.server/AAAAA/CCCCC/raw",
+                    "a": "ImageObject",
+                    "wasGeneratedBy": {
+                        "databaseId": "33333",
+                        "wasAttributedTo": "http://some.server/unknown",
+                        "a": "Activity",
+                        "endedAtTime": "2015-01-01T00:00:00"
+                    },
+                    "cacheUrl": "https://some.server/cached-3.jpg",
+                    "uri": "http://some.server/AAAAA/CCCCC/processed",
+                    "url": "http://some.server/sample-3.jpg"
+                }
+            ],
+            "uri": "http://some.server/AAAAA/BBBBB/processed",
+            "url": "http://some.server/sample.html"
+        }
+    };
+
+    var sampleImageSearchWithSingleImagePartDoc = {
+        "_index": "dig",
+        "_type": "WebPage",
+        "_id": "SOMEUNIQUEID",
+        "_score": 1.0,
+        "_source": {
+            "@context": "https://some.server/context.json",
+            "snapshotUri": "http://some.server/AAAAA/BBBBB/raw",
+            "a": "WebPage",
+            "hasBodyPart": {
+                "text": "some sample text",
+                "a": "WebPageElement",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/body"
+            },
+            "dateCreated": "2015-01-01T00:00:00",
+            "hasFeatureCollection": {
+                "a": "FeatureCollection",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/featurecollection",
+                "phonenumber_feature": [
+                    {
+                        "featureObject": {
+                            "location": {
+                                "a": "Place",
+                                "uri": "http://some.server/data/phone/exchange/123456"
+                            },
+                            "a": "PhoneNumber",
+                            "label": "1234567890",
+                            "uri": "http://some.server/data/phonenumber/x-1234567890"
+                        },
+                        "featureName": "phonenumber",
+                        "a": "Feature",
+                        "uri": "http://some.server/AAAAA/BBBBB/raw/featurecollection/phonenumber/x-1234567890",
+                        "featureValue": "1234567890"
+                    }
+                ],
+                "similar_images_feature": [
+                    {
+                        "featureName": "similarimageurl",
+                        "similarimageurl": "https://some.server/test.jpg",
+                        "featureValue": "https://some.server/test.jpg"
+                    },
+                    {
+                        "featureObject": {
+                            "imageObjectUris": [
+                                "http://some.server/AAAAA/BBBBB/processed"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "provider": {
+                "a": "Organization",
+                "uri": "http://some.server"
+            },
+            "hasTitlePart": {
+                "text": "Sample Title",
+                "a": "WebPageElement",
+                "uri": "http://some.server/AAAAA/BBBBB/processed/title"
+            },
+            "hasImagePart": {
+                "snapshotUri": "http://some.server/AAAAA/BBBBB/raw",
+                "a": "ImageObject",
+                "wasGeneratedBy": {
+                    "databaseId": "22222",
+                    "wasAttributedTo": "http://some.server/unknown",
+                    "a": "Activity",
+                    "endedAtTime": "2015-01-01T00:00:00"
+                },
+                "cacheUrl": "https://some.server/cached-2.jpg",
+                "uri": "http://some.server/AAAAA/BBBBB/processed",
+                "url": "http://some.server/sample-2.jpg"
+            },
+            "uri": "http://some.server/AAAAA/BBBBB/processed",
+            "url": "http://some.server/sample.html"
+        }
+    };
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -17,7 +205,7 @@ describe('Controller: SearchResultsCtrl', function () {
             $provide.constant('euiSearchIndex', 'dig');
         });
 
-        inject(function ($controller, $rootScope, $state, _$httpBackend_) {
+        inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
             state.current.name = 'search.results.list';
@@ -32,6 +220,7 @@ describe('Controller: SearchResultsCtrl', function () {
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
                 .respond(200, 'some text');
+            imageSearchService = _imageSearchService_;
 
             scope.indexVM = {
                 filters: {
@@ -279,6 +468,49 @@ describe('Controller: SearchResultsCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
         expect(scope.isGalleryItemPopulated()).toBe(false);
         expect(scope.indexVM.page).toBe(1);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should set the image match indices and selected image when an image search is active and enabled', function() {
+        scope.doc = sampleImageSearchDoc;
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(3);
+        expect(scope.imageMatchStates[0]).toBe(false);
+        expect(scope.imageMatchStates[1]).toBe(true);
+        expect(scope.imageMatchStates[2]).toBe(true);
+        expect(scope.selectedImage).toBe(1);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should set the image match indices and selected image when only one image part is available', function() {
+        scope.doc = sampleImageSearchWithSingleImagePartDoc;
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', true);
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
+    });
+
+    // TODO: Move this to the spec for the details page controller when the search controller is
+    // refactored.
+    it('.setImageSearchMatchIndices() should clear the image match indices and selected image when no image search is active', function() {
+        scope.doc = sampleImageSearchWithSingleImagePartDoc;
+        scope.setImageSearchMatchIndices();
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
+
+        imageSearchService.imageSearch('https://some.server/test.jpg');
+        imageSearchService.setImageSearchEnabled('https://some.server/test.jpg', false);
+
+        expect(scope.imageMatchStates.length).toBe(0);
+        expect(scope.selectedImage).toBe(0);
     });
 
 });
