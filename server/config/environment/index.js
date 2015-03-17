@@ -109,16 +109,14 @@ var all = {
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
-                }],
+                }]
             },
-
             highlight: {
                 fields: [
                 'hasBodyPart.text',
                 'hasTitlePart.text'
                 ]
             },
-
             sort: {
                 field: 'dateCreated',
                 defaultOption: {order: 'rank', title: 'Best Match'}, 
