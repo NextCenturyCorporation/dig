@@ -15,11 +15,6 @@ describe('Controller: SearchResultsCtrl', function () {
         module(function($provide) {
             $provide.constant('simHost', simHost);
             $provide.constant('euiSearchIndex', 'dig');
-            $provide.constant('euiConfigs', {
-                facets: [],
-                listFields: [],
-                detailsFields: []
-            });
         });
 
         inject(function ($controller, $rootScope, $state, _$httpBackend_) {
@@ -48,6 +43,18 @@ describe('Controller: SearchResultsCtrl', function () {
                 pageSize: 10
             };
 
+            scope.euiConfigs = {
+                sort: {
+                    field: 'dateCreated',
+                    defaultOption: {order: 'rank', title: 'Best Match'}, 
+                    options: [
+                        {order: 'rank', title: 'Best Match'},
+                        {order: 'desc', title: 'Newest First'},
+                        {order: 'asc', title: 'Oldest First'}
+                    ]
+                }
+            };
+
             SearchResultsCtrl = $controller('SearchResultsCtrl', {
                 $scope: scope,
                 $state: state
@@ -60,7 +67,7 @@ describe('Controller: SearchResultsCtrl', function () {
     it('should not have scope.doc', function () {
         expect(scope.doc).toBe(undefined);
     });
-
+   
     it('should initialize opened to be an empty array', function () {
         expect(scope.opened.length).toBe(0);
     });
@@ -79,6 +86,46 @@ describe('Controller: SearchResultsCtrl', function () {
 
     it('should have galleryItem default to empty object', function () {
         expect(scope.galleryItem).toEqual({});
+    });
+
+    it('should initialize sort variables based on euiConfigs.sort values if present', function () {
+        expect(scope.sortOptions).toEqual(scope.euiConfigs.sort.options);
+        expect(scope.selectedSort).toEqual(scope.euiConfigs.sort.defaultOption);
+        expect(scope.euiSortOrder).toEqual('desc');
+    });
+
+    it('should initialize sort variables to appropriate values if config not present', function () {
+        inject(function ($controller) {
+
+            scope.euiConfigs = {};
+
+            SearchResultsCtrl = $controller('SearchResultsCtrl', {
+                $scope: scope,
+                $state: state
+            });
+
+            scope.$digest();
+        });
+
+        expect(scope.sortOptions).toEqual([]);
+        expect(scope.selectedSort).toEqual({});
+        expect(scope.euiSortOrder).toEqual('desc');
+    });
+
+    it('should initialize euiSortOrder to match default option if it is a valid sort order', function () {
+        inject(function ($controller) {
+
+            scope.euiConfigs.sort.defaultOption = {order: 'asc', title: 'Oldest First'};
+
+            SearchResultsCtrl = $controller('SearchResultsCtrl', {
+                $scope: scope,
+                $state: state
+            });
+
+            scope.$digest();
+        });
+
+        expect(scope.euiSortOrder).toEqual('asc');
     });
 
     it('should not have scope.previousState', function () {
@@ -199,6 +246,27 @@ describe('Controller: SearchResultsCtrl', function () {
 
         expect(scope.viewList).not.toHaveBeenCalled();
         expect(scope.viewGallery).not.toHaveBeenCalled();
+    });
+
+    it('should switch selectedSort and euiSortOrder to new value', function() {
+        scope.switchSort(2);
+
+        expect(scope.selectedSort).toEqual(scope.sortOptions[2]);
+        expect(scope.euiSortOrder).toEqual(scope.sortOptions[2].order);
+    });
+
+    it('should switch selectedSort but not euiSortOrder to new value', function() {
+        scope.switchSort(0);
+
+        expect(scope.selectedSort).toEqual(scope.sortOptions[0]);
+        expect(scope.euiSortOrder).toNotEqual(scope.sortOptions[0].order);
+    });
+
+    it('should check for valid sort orders', function() {
+        expect(scope.validSortOrder('asc')).toBe(true);
+        expect(scope.validSortOrder('desc')).toBe(true);
+        expect(scope.validSortOrder('invalid')).toBe(false);
+        expect(scope.validSortOrder('rank')).toBe(false);
     });
 
     it('should clear the opened items list on a query change and reset page to 1', function() {

@@ -456,6 +456,22 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates.textFilters['textKey'].submitted).toBe('');
     });
 
+    it('should remove correct dateFilter', function() {
+        var beginDate = new Date(2014, 11, 31);
+        var endDate = new Date(2015, 0, 1); 
+
+        scope.filterStates.dateFilters['test'] = {};
+        scope.filterStates.dateFilters['test']['value1'] = beginDate;
+        scope.filterStates.dateFilters['test']['value2'] = endDate;
+        
+        expect(scope.filterStates.dateFilters['test']['value1'].getTime()).toBe(beginDate.getTime());
+        expect(scope.filterStates.dateFilters['test']['value2'].getTime()).toBe(endDate.getTime());
+
+        scope.removeDateFilter('test', 'value2');
+        expect(scope.filterStates.dateFilters['test']['value1'].getTime()).toBe(beginDate.getTime());
+        expect(scope.filterStates.dateFilters['test']['value2']).toBe(null);
+    });
+
     it('should set queryString.submitted to user input', function () {
         scope.queryString.live = 'test';
         scope.submit();

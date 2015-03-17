@@ -11,7 +11,7 @@ describe('Directive: collapseFilter', function () {
 	// Initialize the mock scope
 	beforeEach(inject(function ($compile, $rootScope) {
 		scope = $rootScope;
-		element = angular.element('<collapse-filter title=\"Test\" closed=\"false\">content</collapse-filters-filter>');
+		element = angular.element('<collapse-filter title=\"Test\" closed=\"false\">content</collapse-filter>');
 		$compile(element)(scope);
 		element.scope().$digest();
 	}));

@@ -1,0 +1,11 @@
+<div eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)" eui-filter-self="false">
+  <div eui-filter="ejs.RangeFilter(field).from(dateToEjsString(filterStates[field].beginDate))" eui-enabled="filterStates[field].beginDate"></div> 
+  <div eui-filter="ejs.RangeFilter(field).to(dateToEjsString(filterStates[field].endDate))" eui-enabled="filterStates[field].endDate"></div>
+  <div class="row">
+    <div class="col-xs-12">
+      <date-range begin-date="filterStates[field].beginDate" end-date="filterStates[field].endDate" 
+        date-format="dateFormat" min="aggResult.min" max="aggResult.max">
+      </date-range>
+    </div>
+  </div>
+</div>

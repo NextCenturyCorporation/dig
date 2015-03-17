@@ -18,7 +18,8 @@ angular.module('digApp')
     $scope.facets = euiConfigs.facets;
     $scope.filterStates = {
         aggFilters: {},
-        textFilters: {}
+        textFilters: {},
+        dateFilters: {}
     };
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
 
@@ -39,6 +40,10 @@ angular.module('digApp')
         $scope.filterStates.aggFilters[key1][key2] = false;
     };
 
+    $scope.removeDateFilter = function(key1, key2) {
+        $scope.filterStates.dateFilters[key1][key2] = null;
+    };
+    
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';

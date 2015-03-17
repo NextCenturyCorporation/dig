@@ -2,7 +2,19 @@
   <h3 class="modal-title">DIG</h3>
 </div>
 <div class="modal-body">
-  Version: {{appVersion}}
+  <ul class="list-unstyled">   
+    <li>Version: {{appVersion}}</li>
+    <li ng-if="aboutSearchConfig.field" eui-index="aboutSearchConfig.index">
+      <input type="hidden" eui-query="ejs.MatchQuery('_all', '')"/>
+      <div eui-sort="ejs.Sort(aboutSearchConfig.field).order('desc')" eui-enabled="true">
+        Last Data Update: 
+        <span ng-show="indexVM.loading">(loading, please wait)</span>
+        <span ng-show="!indexVM.loading && indexVM.results.hits.hits.length > 0">
+          {{$eval('indexVM.results.hits.hits[0]._source.' + aboutSearchConfig.field) | date : mediumDate}}
+        </span>
+      </div>
+    </li>
+  </ul>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" ng-click="ok()">OK</button>

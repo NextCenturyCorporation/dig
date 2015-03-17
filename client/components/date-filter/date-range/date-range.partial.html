@@ -1,0 +1,20 @@
+<label>From</label>
+<p class="input-group">
+  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}" min-date="minDate" max-date="endDate || today"
+  ng-model="beginDate" is-open="beginOpened" show-button-bar="false"/>
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default" ng-click="beginOpen($event)">
+      <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+  </span> 
+</p>
+<label>To</label>
+<p class="input-group">
+  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}" min-date="beginDate || minDate" max-date="today"
+  ng-model="endDate" is-open="endOpened" show-button-bar="false"/>
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default" ng-click="endOpen($event)">
+      <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+  </span> 
+</p> 

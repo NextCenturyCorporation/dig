@@ -97,6 +97,7 @@ var all = {
                     terms: 'person_age',
                     termsType: 'number',
                     count: 10
+<<<<<<< HEAD
                 },{
                     title: 'Provider',
                     type: 'eui-aggregation',
@@ -104,21 +105,22 @@ var all = {
                     terms: 'provider_name',
                     termsType: 'string',
                     count: 10
+                }]
+=======
                 }],
                 dateFilters: [{ 
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
                 }],
+>>>>>>> origin/DIG-341
             },
-
             highlight: {
                 fields: [
                 'hasBodyPart.text',
                 'hasTitlePart.text'
                 ]
             },
-
             sort: {
                 field: 'dateCreated',
                 defaultOption: {order: 'rank', title: 'Best Match'}, 
