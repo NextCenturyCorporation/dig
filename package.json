@@ -1,6 +1,6 @@
 {
   "name": "dig",
-  "version": "0.9.1-0",
+  "version": "0.9.2-0",
   "main": "server/app.js",
   "dependencies": {
     "express": "~4.0.0",
