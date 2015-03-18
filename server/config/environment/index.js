@@ -105,7 +105,7 @@ var all = {
                     termsType: 'string',
                     count: 10
                 }],
-                dateFilters: [{ 
+                dateFilters: [{
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
@@ -119,7 +119,7 @@ var all = {
             },
             sort: {
                 field: 'dateCreated',
-                defaultOption: {order: 'rank', title: 'Best Match'}, 
+                defaultOption: {order: 'rank', title: 'Best Match'},
                 options: [
                     {order: 'rank', title: 'Best Match'},
                     {order: 'desc', title: 'Newest First'},
