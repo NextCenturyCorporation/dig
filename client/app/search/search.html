@@ -57,9 +57,10 @@
                 </span>
               </span>
             </span>
-            <span ng-repeat="(textFilter, values) in filterStates.textFilters">
-              <span ng-if="values.submitted.length > 0" class="search-facet">
-                {{values.submitted}} <i class="fa fa-times-circle" ng-click="removeTextFilter(textFilter)"></i>
+            <span ng-repeat="textFilter in facets.euiFilters">
+              <span ng-if="filterStates.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
+                {{textFilter.title}}: {{filterStates.textFilters[textFilter.field].submitted}}
+                <i class="fa fa-times-circle" ng-click="removeTextFilter(textFilter.field)"></i>
               </span>
             </span>
             <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
