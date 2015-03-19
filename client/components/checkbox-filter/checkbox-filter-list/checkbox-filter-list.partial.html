@@ -1,9 +1,3 @@
-<div class="checkbox" ng-hide="bucket.hidden">
-  <label eui-filter="ejs.MissingFilter(aggregationKey)" eui-enabled="filterStates[aggregationName]['__include_missing']">
-    <input type="checkbox"  ng-model="filterStates[aggregationName]['__include_missing']">
-    Include Missing
-  </label>
-</div>
 <div class="checkbox" ng-repeat="bucket in displayBuckets" ng-hide="bucket.hidden">
   <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
     <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
