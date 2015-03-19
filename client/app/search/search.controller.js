@@ -7,7 +7,10 @@ angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
     function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
-    $scope.queryString = {live: '', submitted: ''};
+    $scope.queryString = {
+        live: '',
+        submitted: ''
+    };
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -28,7 +31,7 @@ angular.module('digApp')
         blurImageService.changeBlurImagesEnabled($scope.isBlurred);
     };
 
-    $scope.openAbout = function () {
+    $scope.openAbout = function() {
         $modal.open({
           templateUrl: 'app/about/about.html',
           controller: 'AboutCtrl',
@@ -43,7 +46,7 @@ angular.module('digApp')
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
-    
+
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
@@ -71,7 +74,9 @@ angular.module('digApp')
     };
 
     $scope.reload = function() {
-        $state.go('search.results.list', {}, {'reload': true});
+        $state.go('search.results.list', {}, {
+            reload: true
+        });
     };
 
     $scope.getActiveImageSearch = function() {
@@ -92,27 +97,33 @@ angular.module('digApp')
         var currentSearch = imageSearchService.getActiveImageSearch();
 
         // Default behavior.  Grab the only cached versions of the images from our docs.
-        if (doc._source.hasImagePart && doc._source.hasImagePart.cacheUrl) {
+        if(doc._source.hasImagePart && doc._source.hasImagePart.cacheUrl) {
             src = doc._source.hasImagePart.cacheUrl;
-        } else if (doc._source.hasImagePart[0] && doc._source.hasImagePart[0].cacheUrl) {
+        } else if(doc._source.hasImagePart[0] && doc._source.hasImagePart[0].cacheUrl) {
             src = doc._source.hasImagePart[0].cacheUrl;
         }
 
         /* jshint camelcase:false */
         // If we have an active image search, check for a matching image.
-        if (currentSearch && 
+        if(currentSearch &&
             imageSearchService.isImageSearchEnabled(currentSearch.url) &&
             doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                function(item) { return item.featureValue === currentSearch.url; });
+                function(item) {
+                    return item.featureValue === currentSearch.url;
+                });
 
             // Verify that the current search url is in the similar images feature.  If so, select the matching
             // image.
-            if (imgFeature) {
+            if(imgFeature) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                    function(item) { return (typeof item.featureObject !== 'undefined'); });
+                    function(item) {
+                        return (typeof item.featureObject !== 'undefined');
+                    });
                 var imgMatch = _.find(doc._source.hasImagePart,
-                    function(part) { return (part.uri === imgObj.featureObject.imageObjectUris[0]); });
+                    function(part) {
+                        return (part.uri === imgObj.featureObject.imageObjectUris[0]);
+                    });
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }
