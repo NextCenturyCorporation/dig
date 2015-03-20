@@ -6,8 +6,6 @@ var config = require('../../config/environment');
 
 var router = express.Router();
 
-router.get('/', controller.index);
 router.get('/me', controller.me);
-router.get('/:id', controller.show);
 
 module.exports = router;
