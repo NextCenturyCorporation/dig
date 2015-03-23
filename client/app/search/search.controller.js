@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'includeMissingDefault', 'blurImageService',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, includeMissingDefault, blurImageService) {
     $scope.showresults = false;
     $scope.queryString = {
         live: '',
@@ -25,7 +25,10 @@ angular.module('digApp')
         dateFilters: {}
     };
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
-    $scope.includeMissing = {};
+    $scope.includeMissing = {
+        aggregations: {},
+        allIncludeMissing: false
+    };
 
     $scope.changeBlur = function() {
         $scope.isBlurred = !$scope.isBlurred;
@@ -46,6 +49,13 @@ angular.module('digApp')
 
     $scope.removeMissingFilter = function(key) {
         $scope.includeMissing[key].active = false;
+    };
+
+    $scope.setAllIncludeMissing = function() {
+        $scope.includeMissing.allIncludeMissing = !$scope.includeMissing.allIncludeMissing;
+        for(var aggregation in $scope.includeMissing.aggregations) {
+            $scope.includeMissing.aggregations[aggregation].active = $scope.includeMissing.allIncludeMissing;
+        }
     };
 
     $scope.removeDateFilter = function(key1, key2) {

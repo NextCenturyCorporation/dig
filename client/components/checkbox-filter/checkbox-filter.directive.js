@@ -13,8 +13,7 @@ angular.module('digApp.directives')
             ejs: '=',
             filters: '=',
             filterStates: '=',
-            includeMissing: '=',
-            includeMissingDefault: '='
+            includeMissing: '='
         },
         templateUrl: 'components/checkbox-filter/checkbox-filter.partial.html',
         link: function($scope) {
@@ -22,7 +21,7 @@ angular.module('digApp.directives')
             $scope.aggregationCount = $scope.aggregationCount() || 30;
             $scope.includeMissing[$scope.aggregationName] = $scope.includeMissing[$scope.aggregationKey] || {
                 otherFiltersSet: false,
-                active: $scope.includeMissingDefault
+                active: false
             };
 
             var checkAnyFiltersActive = function() {
