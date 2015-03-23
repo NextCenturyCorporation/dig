@@ -12,12 +12,17 @@ angular.module('digApp.directives')
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',
-            filterStates: '='
+            filterStates: '=',
+            includeMissing: '='
         },
         templateUrl: 'components/checkbox-filter/checkbox-filter.partial.html',
         link: function($scope) {
             $scope.filterStates[$scope.aggregationName] = $scope.filterStates[$scope.aggregationName] || {};
             $scope.aggregationCount = $scope.aggregationCount() || 30;
+            $scope.includeMissing[$scope.aggregationName] = $scope.includeMissing[$scope.aggregationKey] || {
+                otherFiltersSet: false,
+                active: false
+            };
 
             var checkAnyFiltersActive = function() {
                 var filterState = $scope.filterStates[$scope.aggregationName];
@@ -36,7 +41,7 @@ angular.module('digApp.directives')
             $scope.$watch(function() {
                 return $scope.filterStates[$scope.aggregationName];
             }, function() {
-                $scope.activeFilters.filtersAreSet = checkAnyFiltersActive();
+                $scope.includeMissing[$scope.aggregationName].otherFiltersSet = checkAnyFiltersActive();
             }, true);
         }
     };

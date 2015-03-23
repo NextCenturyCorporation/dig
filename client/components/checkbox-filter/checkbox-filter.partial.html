@@ -1,8 +1,8 @@
 <div eui-or-filter>
   <div eui-aggregation="ejs.MissingAggregation(aggregationName + '_missing_agg').field(aggregationKey)" eui-filter-self="false"
     class="checkbox pull-right">
-    <label eui-filter="ejs.MissingFilter(aggregationKey)" eui-enabled="activeFilters.filtersAreSet && filterStates[aggregationName]['__include_missing']">
-      <input type="checkbox"  ng-model="filterStates[aggregationName]['__include_missing']">
+    <label eui-filter="ejs.MissingFilter(aggregationKey)" eui-enabled="includeMissing[aggregationName].otherFiltersSet && includeMissing[aggregationName].active">
+      <input type="checkbox"  ng-model="includeMissing[aggregationName].active">
       Include Missing
     </label>
     <span class="badge pull-right">{{aggResult.doc_count}}</span>

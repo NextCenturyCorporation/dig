@@ -52,12 +52,16 @@
           <div class="row breadcrumb-box">
             <span ng-repeat="aggFilter in facets.aggFilters">
               <span ng-repeat="(filterKey, selected) in filterStates.aggFilters[aggFilter.field]">
-                <span ng-if="selected" class="search-facet"
-                  ng-class="{'include-missing': (filterKey === '__include_missing')}">
-                  {{aggFilter.title}}: {{filterKey === '__include_missing' ? 'Missing' : filterKey}}
+                <span ng-if="selected" class="search-facet">
+                  {{aggFilter.title}}: {{filterKey}}
                   <i class="fa fa-times-circle" ng-click="removeAggFilter(aggFilter.field, filterKey)"></i>
                 </span>
               </span>
+              <span ng-if="includeMissing[aggFilter.field].otherFiltersSet && includeMissing[aggFilter.field].active" class="search-facet"
+                  ng-class="{'include-missing': (includeMissing[aggFilter.field].active)}">
+                  {{aggFilter.title}}: Missing
+                  <i class="fa fa-times-circle" ng-click="removeMissingFilter(aggFilter.field)"></i>
+                </span>
             </span>
             <span ng-repeat="textFilter in facets.euiFilters">
               <span ng-if="filterStates.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
@@ -113,7 +117,8 @@
 
       <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
         <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
-          aggregation-terms-type="{{filter.termsType}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
+        aggregation-terms-type="{{filter.termsType}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters"
+        include-missing="includeMissing">
         </checkbox-filter>
       </collapse-filter>
 

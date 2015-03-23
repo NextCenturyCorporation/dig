@@ -25,6 +25,7 @@ angular.module('digApp')
         dateFilters: {}
     };
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
+    $scope.includeMissing = {};
 
     $scope.changeBlur = function() {
         $scope.isBlurred = !$scope.isBlurred;
@@ -41,6 +42,10 @@ angular.module('digApp')
 
     $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
+    };
+
+    $scope.removeMissingFilter = function(key) {
+        $scope.includeMissing[key].active = false;
     };
 
     $scope.removeDateFilter = function(key1, key2) {
