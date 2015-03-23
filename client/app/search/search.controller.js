@@ -27,7 +27,7 @@ angular.module('digApp')
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
     $scope.includeMissing = {
         aggregations: {},
-        allIncludeMissing: false
+        allIncludeMissing: includeMissingDefault
     };
 
     $scope.changeBlur = function() {

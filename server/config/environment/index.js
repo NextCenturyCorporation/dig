@@ -5,10 +5,10 @@ var _ = require('lodash');
 var pjson = require('../../../package.json');
 
 function requiredProcessEnv(name) {
-  if(!process.env[name]) {
-    throw new Error('You must set the ' + name + ' environment variable');
-  }
-  return process.env[name];
+    if(!process.env[name]) {
+        throw new Error('You must set the ' + name + ' environment variable');
+    }
+    return process.env[name];
 }
 
 // All configurations will extend these options
@@ -55,10 +55,12 @@ var all = {
     blurPercentage: process.env.BLUR_PERCENT || 2.5,
     pixelatePercentage: process.env.PIXELATE_PERCENT || 5,
 
+    includeMissingAggregationsDefault: (!!process.env.INCLUDE_MISSING_DEFAULT && process.env.INCLUDE_MISSING_DEFAULT === 'true') ? true : false,
+
     euiConfigs: {
         'dig-latest': {
             facets: {
-                euiFilters :[{
+                euiFilters: [{
                     title: 'Phone',
                     type: 'eui-filter',
                     field: 'phonenumber',
@@ -119,24 +121,33 @@ var all = {
             },
             sort: {
                 field: 'dateCreated',
-                defaultOption: {order: 'rank', title: 'Best Match'},
+                defaultOption: {
+                    order: 'rank', title: 'Best Match'
+                },
                 options: [
-                    {order: 'rank', title: 'Best Match'},
-                    {order: 'desc', title: 'Newest First'},
-                    {order: 'asc', title: 'Oldest First'}
+                    {
+                        order: 'rank',
+                        title: 'Best Match'
+                    },{
+                        order: 'desc',
+                        title: 'Newest First'
+                    },{
+                        order: 'asc',
+                        title: 'Oldest First'
+                    }
                 ]
             },
             lastUpdateQuery: {
                 field: 'dateCreated'
             },
             listFields: {
-                "title": [{
+                title: [{
                     title: 'Title',
                     type: 'title',
                     field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
-                "short": [{
+                short: [{
                     title: 'Date',
                     field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'",
                     classes: 'date'
@@ -157,7 +168,7 @@ var all = {
                     field: 'doc._source.hasFeatureCollection.person_age_feature.person_age || doc._source.hasFeatureCollection.person_age_feature[0].person_age',
                     classes: 'age'
                 }],
-                "full": {
+                full: {
                     "1": {
                         classes: 'listing-details',
                         fields: [{
@@ -411,7 +422,7 @@ var all = {
         },
         'dig-mrs-latest': {
             facets: {
-                euiFilters :[],
+                euiFilters: [],
                 //simFilter: {},
                 aggFilters: [{
                     title: 'Author',
@@ -441,13 +452,13 @@ var all = {
             },
 
             listFields: {
-                "title": [{
+                title: [{
                     title: 'Title',
                     type: 'title',
                     field: 'doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
-                "short": [{
+                short: [{
                     title: 'Date',
                     field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'",
                     classes: 'date'
@@ -460,7 +471,7 @@ var all = {
                     field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country || doc._source.hasFeatureCollection.affiliation_country_feature[0].affiliation_country',
                     classes: 'location'
                 }],
-                "full": {
+                full: {
                     "1": {
                         classes: 'listing-details',
                         fields: [{

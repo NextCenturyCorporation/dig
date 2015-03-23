@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('checkboxFilter', function() {
+.directive('checkboxFilter', function(includeMissingDefault) {
     return {
         restrict: 'E',
         scope: {
@@ -21,7 +21,7 @@ angular.module('digApp.directives')
             $scope.aggregationCount = $scope.aggregationCount() || 30;
             $scope.includeMissing[$scope.aggregationName] = $scope.includeMissing[$scope.aggregationKey] || {
                 otherFiltersSet: false,
-                active: false
+                active: includeMissingDefault
             };
 
             var checkAnyFiltersActive = function() {
