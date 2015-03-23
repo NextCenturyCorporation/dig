@@ -4,6 +4,14 @@
 @icon-font-path: '/bower_components/bootstrap/fonts/';
 @fa-font-path: '/bower_components/font-awesome/fonts';
 
+@light: #D5E88D;
+@mid: #BAD741;
+@dark: #A5C907;
+@light-gray: #CCC;
+@gray: #756F6B;
+@black: #000;
+@background: #F4EFEC;
+
 /**
  * App-wide Styles
  */
@@ -130,7 +138,7 @@ hr{
 }
 .right-column{
 	box-shadow: -1px 0 0 #ddd8d4;
-	
+
 }
 .left-column{
 	border-right: 1px solid #ddd8d4;
@@ -373,18 +381,27 @@ label{
 }
 
 .btn-settings {
-	position: relative; 
-	padding-top: 10px;
-	color: #cccccc;
+	position: relative;
+	margin-top: 15px;
+	color: @light-gray;
 	background: #f4efec;
 	box-shadow: none;
-	font-size: 32px;
+	font-size: 24px;
 	border: 0;
 	font-weight: bold;
 }
 
 .btn-settings:hover {
-	color: #034154;
+	color: @gray;
+}
+
+.btn-settings:focus {
+	outline: none;
+	color: @gray;
+}
+
+.btn-settings:active {
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
 }
 
 .settings-checkbox {
