@@ -4,6 +4,13 @@
 @icon-font-path: '/bower_components/bootstrap/fonts/';
 @fa-font-path: '/bower_components/font-awesome/fonts';
 
+@light: #D5E88D;
+@mid: #BAD741;
+@dark: #A5C907;
+@gray: #756F6B;
+@black: #000;
+@background: #F4EFEC;
+
 /**
  * App-wide Styles
  */
@@ -16,7 +23,7 @@
 }
 
 body{
-	background-color: #f4efec;
+	background-color: @background;
 	font-family: 'Lato', sans-serif;
 }
 
@@ -130,7 +137,7 @@ hr{
 }
 .right-column{
 	box-shadow: -1px 0 0 #ddd8d4;
-	
+
 }
 .left-column{
 	border-right: 1px solid #ddd8d4;
@@ -373,7 +380,7 @@ label{
 }
 
 .btn-settings {
-	position: relative; 
+	position: relative;
 	padding-top: 10px;
 	color: #cccccc;
 	background: #f4efec;

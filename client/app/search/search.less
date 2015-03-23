@@ -177,7 +177,9 @@ div.search-container-div {
 
 .search-facet {
     padding: 5px;
+    margin-right: 5px;
     white-space: nowrap;
+    background-color: @light;
 
     i:hover {
         cursor: pointer;
@@ -185,6 +187,14 @@ div.search-container-div {
     }
 }
 
+.search-facet.include-missing {
+    background-color: @dark;
+}
+
 .bold-text {
     font-weight: bold;
+}
+
+.breadcrumb-box {
+    padding: 0px 10px 10px 10px;
 }

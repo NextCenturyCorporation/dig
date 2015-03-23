@@ -49,11 +49,13 @@
               </span>
             </div>
           </div>
-          <div class="row">
+          <div class="row breadcrumb-box">
             <span ng-repeat="aggFilter in facets.aggFilters">
               <span ng-repeat="(filterKey, selected) in filterStates.aggFilters[aggFilter.field]">
-                <span ng-if="selected" class="search-facet">
-                  {{aggFilter.title}}: {{filterKey}} <i class="fa fa-times-circle" ng-click="removeAggFilter(aggFilter.field, filterKey)"></i>
+                <span ng-if="selected" class="search-facet"
+                  ng-class="{'include-missing': (filterKey === '__include_missing')}">
+                  {{aggFilter.title}}: {{filterKey === '__include_missing' ? 'Missing' : filterKey}}
+                  <i class="fa fa-times-circle" ng-click="removeAggFilter(aggFilter.field, filterKey)"></i>
                 </span>
               </span>
             </span>
