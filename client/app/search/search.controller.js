@@ -165,9 +165,8 @@ angular.module('digApp')
 
     $scope.$watch('indexVM.error', function() {
         if($scope.indexVM.error) {
-            console.log($scope.indexVM.error);
             $scope.loading = false;
-            $scope.showresults = true;
+            $scope.showresults = false;
 
             $state.go('search.error');
         }
