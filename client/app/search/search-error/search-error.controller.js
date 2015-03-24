@@ -21,7 +21,7 @@ angular.module('digApp')
     var parseError = function() {
         $scope.error = {
             message: '',
-            title: '',
+            title: 'Search Error',
             showDetails: false
         };
 
@@ -38,7 +38,7 @@ angular.module('digApp')
                 }
             } else {
                 if($scope.indexVM.error.message === 'No Living connections') {
-                    $scope.error.title = 'Cannot Connect to ElasticSearch';
+                    $scope.error.title = 'Cannot Connect to Database';
                 }
             }
         }
