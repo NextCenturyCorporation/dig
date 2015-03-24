@@ -1,23 +1,77 @@
-<div class="results-header-div row">
-  <button class="btn btn-default" ng-click="switchView('list')">
-    <i class="glyphicon glyphicon-th-list results-list-button" ng-class="{selected: displayMode.mode === 'list'}"></i>
-  </button>
-  <button class="btn btn-default" ng-click="switchView('gallery')">
-    <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
-  </button>
-  <div ng-show="euiConfigs.sort.field" class="btn-group pull-right">
-    <label>Sort by</label>
-    <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
-      {{selectedSort.title}}
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu" role="sortMenu" aria-labelledby="sortMenu">
-      <li ng-repeat="option in sortOptions track by $index" role="presentation" ng-class="{active: option.order === selectedSort.order}" ng-click="switchSort($index)">
-        <a role="menuitem" tabindex="-1" href="#">{{option.title}}</a>
-      </li>
-    </ul> 
-    <div eui-sort="ejs.Sort(euiConfigs.sort.field).order(euiSortOrder)" eui-enabled="validSortOrder(selectedSort.order)"></div>
-  </div>
-</div> 
+<div ng-show="showresults" scroll-util reset-scroll="loading">
+  <div class="left-column hidden-xs col-sm-3 col-lg-2">
+    <div class="column-header">
+      <!-- TODO: Implement Clear All button - commenting out for now -->
+      <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
+      <h4>Filter</h4>
+    </div>
 
-<ui-view></ui-view>
+    <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
+    </date-filter>
+
+    <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
+      filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
+    </text-filter>
+
+    <div ng-if="facets.simFilter" class="form-group" ng-show="getActiveImageSearch()">
+      <h5><i class="fa fa-chevron-down fa-fw"></i> {{facets.simFilter.title}} <a href="#" class="pull-right" title="Search values"><i class="fa fa-search"></i></a></h5>
+      <div>
+        <div class="checkbox image-search-filter">
+          <label>
+            <input type="checkbox" ng-model="searchConfig.filterByImage"
+              eui-filter="ejs.TermFilter(facets.simFilter.field, getActiveImageSearch().url)"
+              eui-enabled="searchConfig.filterByImage"
+              ng-change="toggleImageSearchEnabled(getActiveImageSearch().url)">
+          </label>
+          <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb">
+          <a href="#" ng-click="clearActiveImageSearch()" class="text-danger">
+            <i class="fa fa-times-circle pull-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
+      <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
+        aggregation-terms-type="{{filter.termsType}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters">
+      </checkbox-filter>
+    </collapse-filter>
+
+    <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)"
+      eui-enabled="true">
+    </div>
+
+  </div>
+
+  <div class="right-column col-sm-9">
+    <div class="row">
+      <!-- <date-histogram-aggregation aggregation-name="date_hist_agg"
+        aggregation-key="dateCreated" date-interval="month"
+        indexvm="indexVM" ejs="ejs" filters="filters">
+      </date-histogram-aggregation> -->
+    </div>
+    <div class="results-header-div row">
+      <button class="btn btn-default" ng-click="switchView('list')">
+        <i class="glyphicon glyphicon-th-list results-list-button" ng-class="{selected: displayMode.mode === 'list'}"></i>
+      </button>
+      <button class="btn btn-default" ng-click="switchView('gallery')">
+        <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
+      </button>
+      <div ng-show="euiConfigs.sort.field" class="btn-group pull-right">
+        <label>Sort by</label>
+        <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
+          {{selectedSort.title}}
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="sortMenu" aria-labelledby="sortMenu">
+          <li ng-repeat="option in sortOptions track by $index" role="presentation" ng-class="{active: option.order === selectedSort.order}" ng-click="switchSort($index)">
+            <a role="menuitem" tabindex="-1" href="#">{{option.title}}</a>
+          </li>
+        </ul>
+        <div eui-sort="ejs.Sort(euiConfigs.sort.field).order(euiSortOrder)" eui-enabled="validSortOrder(selectedSort.order)"></div>
+      </div>
+    </div>
+
+    <ui-view></ui-view>
+  </div>
+</div>
