@@ -117,7 +117,7 @@ angular.module('digApp')
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
                     function(item) { return (typeof item.featureObject !== 'undefined'); });
 
-                _.each(doc._source.hasImagePart, function(part, index) { 
+                _.each(doc._source.hasImagePart, function(part, index) {
                     $scope.imageMatchStates[index] = _.contains(imgObj.featureObject.imageObjectUris, part.uri);
                     if ($scope.imageMatchStates[index] && $scope.selectedImage < 0) {
                         $scope.selectedImage = index;

@@ -13,7 +13,7 @@
               <form ng-submit="submit()">
               <div class="input-group input-group-lg">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields('_all')" 
+                <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields('_all')"
                 ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
                 <span class="input-group-btn">
                   <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search" ng-click="clearSearch()">
@@ -46,7 +46,7 @@
                     </a>
                   </li>
                 </ul>
-              </span> 
+              </span>
             </div>
           </div>
           <div class="row">
@@ -57,7 +57,7 @@
             </span>
             <span ng-repeat="(textFilter, values) in filterStates.textFilters">
               <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
-            </span> 
+            </span>
             <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
                <span ng-repeat="(filterKey, date) in values">
                 <span ng-if="date" class="search-facet" ng-click="removeDateFilter(dateFilter, filterKey)">
@@ -80,7 +80,7 @@
       </div>
 
       <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
-      </date-filter> 
+      </date-filter>
 
       <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
         filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
@@ -110,9 +110,9 @@
         </checkbox-filter>
       </collapse-filter>
 
-      <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)" 
+      <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)"
         eui-enabled="true">
-      </div> 
+      </div>
 
     </div>
 

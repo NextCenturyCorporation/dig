@@ -43,7 +43,7 @@ angular.module('digApp')
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
-    
+
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
@@ -100,7 +100,7 @@ angular.module('digApp')
 
         /* jshint camelcase:false */
         // If we have an active image search, check for a matching image.
-        if (currentSearch && 
+        if (currentSearch &&
             imageSearchService.isImageSearchEnabled(currentSearch.url) &&
             doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
@@ -156,12 +156,22 @@ angular.module('digApp')
             if(newValue !== oldValue) {
                 $scope.loading = newValue;
 
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted) {
+                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted && !$scope.indexVM.error) {
                     $scope.showresults = true;
                 }
             }
         }
     );
+
+    $scope.$watch('indexVM.error', function() {
+        if($scope.indexVM.error) {
+            console.log($scope.indexVM.error);
+            $scope.loading = false;
+            $scope.showresults = true;
+
+            $state.go('search.error');
+        }
+    }, true);
 
     if($state.current.name === 'search') {
         $scope.viewList();
