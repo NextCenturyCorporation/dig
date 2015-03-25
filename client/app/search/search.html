@@ -115,9 +115,12 @@
         </checkbox-filter>
       </collapse-filter>
 
-      <div>
-        <label><input type="checkbox" eui-filter="ejs.ExistsFilter('hasImagePart.cacheUrl')"
-          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly">With Images Only</label>
+      <div class="form-group images-only-filter">
+        <div class="filter-header filter-header-selected">
+          <h5><input type="checkbox" eui-filter="ejs.ExistsFilter('hasImagePart.cacheUrl')"
+            ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Images Only
+          </h5>
+        </div>
       </div>
 
       <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)"
