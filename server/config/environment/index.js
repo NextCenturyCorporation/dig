@@ -105,7 +105,7 @@ var all = {
                     termsType: 'string',
                     count: 10
                 }],
-                dateFilters: [{ 
+                dateFilters: [{
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
@@ -119,7 +119,7 @@ var all = {
             },
             sort: {
                 field: 'dateCreated',
-                defaultOption: {order: 'rank', title: 'Best Match'}, 
+                defaultOption: {order: 'rank', title: 'Best Match'},
                 options: [
                     {order: 'rank', title: 'Best Match'},
                     {order: 'desc', title: 'Newest First'},
@@ -191,6 +191,9 @@ var all = {
                             field: 'doc._source.hasFeatureCollection.provider_name_feature.provider_name',
                             featureArray: 'doc._source.hasFeatureCollection.provider_name_feature',
                             featureValue: 'provider_name'
+                        },{
+                            title: 'Created',
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'"
                         }]
                     },
                     "2": {
@@ -231,6 +234,9 @@ var all = {
                 "1": {
                     classes: 'listing-details',
                     fields: [{
+                        title: 'Created',
+                        field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'"
+                    },{
                         title: 'City',
                         field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
                         featureArray: 'doc._source.hasFeatureCollection.place_postalAddress_feature',
@@ -481,6 +487,9 @@ var all = {
                         },{
                             title: 'Abstract',
                             field: "doc['_source']['hasAbstractPart']['text']"
+                        },{
+                            title: 'Date',
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss'"
                         }]
                     }
                 }
