@@ -65,6 +65,11 @@
                 </span>
               </span>
             </span>
+            <span ng-if="filterStates.withImagesOnly">
+              <span class="search-facet">
+                With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -78,9 +83,6 @@
         <!-- <a href="#" class="text-danger pull-right"><i class="fa fa-times-circle"></i> Clear All</a> -->
         <h4>Filter</h4>
       </div>
-
-      <label><input type="checkbox" eui-filter="ejs.OrFilter([ejs.ExistsFilter('hasImagePart.cacheUrl'), ejs.ExistsFilter('hasImagePart[0].cacheUrl')])" ng-model="imagesOnly.enabled" eui-enabled="imagesOnly.enabled">Images</label>
-      {{imagesOnly}}
 
       <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
       </date-filter>
@@ -113,10 +115,14 @@
         </checkbox-filter>
       </collapse-filter>
 
+      <div>
+        <label><input type="checkbox" eui-filter="ejs.ExistsFilter('hasImagePart.cacheUrl')"
+          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly">With Images Only</label>
+      </div>
+
       <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)"
         eui-enabled="true">
       </div>
-
     </div>
 
     <div class="right-column col-sm-9">
