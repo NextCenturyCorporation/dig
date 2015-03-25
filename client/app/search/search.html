@@ -50,6 +50,11 @@
             </div>
           </div>
           <div class="row">
+            <span ng-if="filterStates.withImagesOnly">
+              <span class="search-facet">
+                With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
+              </span>
+            </span>
             <span ng-repeat="(aggFilter, values) in filterStates.aggFilters">
               <span ng-repeat="(filterKey, selected) in values">
                 <span ng-if="selected" class="search-facet" ng-click="removeAggFilter(aggFilter, filterKey)">{{filterKey}} <i class="fa fa-times-circle"></i></span>
@@ -63,11 +68,6 @@
                 <span ng-if="date" class="search-facet" ng-click="removeDateFilter(dateFilter, filterKey)">
                   {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}} <i class="fa fa-times-circle"></i>
                 </span>
-              </span>
-            </span>
-            <span ng-if="filterStates.withImagesOnly">
-              <span class="search-facet">
-                With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
               </span>
             </span>
           </div>
