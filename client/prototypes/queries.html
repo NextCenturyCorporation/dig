@@ -86,12 +86,18 @@
         <li class="list-group-item">
           <a href="#collapse1" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
             <div class="row">
-              <div class="col-xs-9 col-sm-10 col-lg-11">            
+              <div class="col-xs-9 col-sm-10 col-lg-11">
                 Name: Query #1
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
                 <div class="list-group-item-meta">
-
                   <span class="searchTerms">Search Terms: "Bob DC"</span>
-                  <span class="filters">Filters: [{"hair_color": "brown", "hair_color":"not specified"}]</span>
+                  <span class="filters">Filters: Hair Color: brown, Hair Color : not specified</span>
                   <span class="dateCreated" title="03/21/2015 02:28:00">Created: 03/21/2015</span>
                   <span class="dateRun" title="03/24/2015 02:28:00">Last Run: 03/24/2015</span>
                 </div>
@@ -101,54 +107,47 @@
 
           <div id="collapse1" class="list-group-item-text collapse">
             <div class="row">
-              <div class="col-xs-9 col-lg-11">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
                 <h4>Name: Query #1</h4>
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
                 <div class="row">
-                  <div class="col-sm-6">
-                    <ul class="list-unstyled query-details">
-                      <li>
-                        <dl>
-                          <dt>Search Terms</dt>
-                          <dd>"Bob DC"</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Filters</dt>
-                          <dd>[{"hair_color": "brown", "hair_color":"not specified"}]</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Created</dt>
-                          <dd>03/21/2015</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Last Run</dt>
-                          <dd>03/24/2015</dd>
-                        </dl>
-                      </li>
-                      <li><label>Frequency of Execution</label> 
-                        <ul class="list-unstyled query-details-inner">
-                          <li><input type="radio">Daily</li>
-                          <li><input type="radio">Weekly</li>
-                          <li><input type="radio">Monthly</li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-6">
-                    <span class="pull-right">
-                      <ul class="list-unstyled query-options">
-                        <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
-                        <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
-                        <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
-                      </ul>
-                    </span>
+                  <div class="col-sm-9 query-details">
+                    <dl>
+                      <dt>Search Terms</dt>
+                      <dd>"Bob DC"</dd>
+
+                      <dt>Filters</dt>
+                      <dd>Hair Color: brown, Hair Color : not specified</dd>
+                    </dl>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Created</dt>
+                      <dd>03/21/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Last Run</dt>
+                      <dd>03/24/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/> 
+                    <select>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>                  
               </div>
             </div>
           </div>
@@ -157,12 +156,18 @@
         <li class="list-group-item">
           <a href="#collapse2" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
             <div class="row">
-              <div class="col-xs-9 col-sm-10 col-lg-11">            
+              <div class="col-xs-9 col-sm-10 col-lg-11">
                 Name: Query #2
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
                 <div class="list-group-item-meta">
-
                   <span class="searchTerms">Search Terms: "Lorem ipsum dolor sit amet..."</span>
-                  <span class="filters">Filters: [{"filter": "option1"}]</span>
+                  <span class="filters">Filters: Filter1: option1</span>
                   <span class="dateCreated" title="03/21/2015 02:28:00">Created: 03/21/2015</span>
                   <span class="dateRun" title="03/24/2015 02:28:00">Last Run: 03/24/2015</span>
                 </div>
@@ -172,58 +177,51 @@
 
           <div id="collapse2" class="list-group-item-text collapse">
             <div class="row">
-              <div class="col-xs-9 col-lg-11">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
                 <h4>Name: Query #2</h4>
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
                 <div class="row">
-                  <div class="col-sm-9">
-                    <ul class="list-unstyled query-details">
-                      <li>
-                        <dl>
-                          <dt>Search Terms</dt>
-                          <dd>"Lorem ipsum dolor sit amet, putent blandit mandamus vel ea. Quo eirmod aliquid definitionem ex, et qui utinam definitiones"</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Filters</dt>
-                          <dd>[{"filter": "option1"}]</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Created</dt>
-                          <dd>03/21/2015</dd>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>Last Run</dt>
-                          <dd>03/24/2015</dd>
-                        </dl>
-                      </li>
-                      <li><label>Frequency of Execution</label> 
-                        <ul class="list-unstyled query-details-inner">
-                          <li><input type="radio">Daily</li>
-                          <li><input type="radio">Weekly</li>
-                          <li><input type="radio">Monthly</li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-3">
-                    <span class="pull-right">
-                      <ul class="list-unstyled query-options">
-                        <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
-                        <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
-                        <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
-                      </ul>
-                    </span>
+                  <div class="col-sm-9 query-details">
+                    <dl>
+                      <dt>Search Terms</dt>
+                      <dd>"Lorem ipsum dolor sit amet, putent blandit mandamus vel ea. Quo eirmod aliquid definitionem ex, et qui utinam definitiones"</dd>
+
+                      <dt>Filters</dt>
+                      <dd>Filter1: option1</dd>
+                    </dl>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Created</dt>
+                      <dd>03/21/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Last Run</dt>
+                      <dd>03/24/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/> 
+                    <select>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>                  
               </div>
             </div>
           </div>
-        </li>
+        </li> 
       </ul>
 
 <!--       <nav>
