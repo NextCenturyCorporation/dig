@@ -19,30 +19,7 @@ angular.module('digApp.directives')
         link: function($scope) {
             $scope.filterStates[$scope.aggregationName] = $scope.filterStates[$scope.aggregationName] || {};
             $scope.aggregationCount = $scope.aggregationCount() || 30;
-            $scope.includeMissing[$scope.aggregationName] = $scope.includeMissing[$scope.aggregationKey] || {
-                otherFiltersSet: false,
-                active: includeMissingDefault
-            };
-
-            var checkAnyFiltersActive = function() {
-                var filterState = $scope.filterStates[$scope.aggregationName];
-                for(var key in filterState) {
-                    if(key !== '__include_missing' &&!!filterState[key]) {
-                        return true;
-                    }
-                }
-                return false;
-            };
-
-            $scope.activeFilters = {
-                filtersAreSet: checkAnyFiltersActive()
-            };
-
-            $scope.$watch(function() {
-                return $scope.filterStates[$scope.aggregationName];
-            }, function() {
-                $scope.includeMissing[$scope.aggregationName].otherFiltersSet = checkAnyFiltersActive();
-            }, true);
+            $scope.includeMissing[$scope.aggregationName] = $scope.includeMissing[$scope.aggregationName];
         }
     };
 });

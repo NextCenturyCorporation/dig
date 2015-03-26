@@ -58,9 +58,8 @@
           </div>
           <div class="row breadcrumb-box">
             <span ng-repeat="aggFilter in facets.aggFilters">
-              <span ng-if="includeMissing.aggregations[aggFilter.field].otherFiltersSet && includeMissing.aggregations[aggFilter.field].active" class="search-facet"
-                ng-class="{'include-missing': (includeMissing.aggregations[aggFilter.field].active)}">
-                {{aggFilter.title}}: Missing
+              <span ng-if="includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
+                {{aggFilter.title}}: Not Specified
                 <i class="fa fa-times-circle" ng-click="removeMissingFilter(aggFilter.field)"></i>
               </span>
               <span ng-repeat="(filterKey, selected) in filterStates.aggFilters[aggFilter.field]">
