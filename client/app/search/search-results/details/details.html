@@ -1,5 +1,8 @@
   <!-- PAGE CONTENT -->
 <div ui-view  autoscroll="true" onload="setImageSearchMatchIndices()">
+  <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
+    <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
+  </span>
   <div class="container-fluid">
 
     <div class="column-header">
