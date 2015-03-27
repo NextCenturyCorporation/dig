@@ -7,6 +7,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <div class="navbar-brand">
+        <img src="/assets/images/dig-logo-original.png" alt="">
+      </div>
     </div>
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
@@ -18,6 +21,9 @@
                 {{item.title}} <span class="{{item.icon}}"></span>
             </a>
         </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><p class="navbar-text">Hello {{ getCurrentUser.email }}</p> </li>
       </ul>
     </div>
   </div>
