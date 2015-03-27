@@ -5,8 +5,12 @@ angular.module('digApp')
     $scope.menu = [
     {
       'title': 'Home',
-      'link': '/',
+      'link': '/list',
       'icon':'glyphicon glyphicon-home',
+      'reload': true
+    }, {
+      'title': 'Search Queries',
+      'link': '/queries',
       'reload': true
     }];
 

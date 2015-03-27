@@ -1,0 +1,94 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="column-header">
+<!--         <div class="btn-group pull-right">
+  <label>Sort by</label>
+  <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+    Newest first
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+  </ul>
+</div> -->
+        <h4>
+          <strong>{{queryResults.length}}</strong> queries for user {{currentUser.email}}
+        </h4>
+      </div>
+      <ul id="queryResults" class="list-group">
+        <li class="list-group-item" ng-repeat="query in queryResults track by $index">
+          <a href="" ng-click="toggleListItemOpened(query._id)" class="list-group-item-heading collapsed" target="_self">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                {{query.name}}
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                 <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
+                    <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+
+                <div class="list-group-item-meta">
+                  <span>Search Terms: {{query.searchTerms}}</span>
+                  <span>Filters: {{query.filters}}</span>
+                  <span>Created: {{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
+                  <span>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+          <div collapse="!isListItemOpened(query._id)" class="list-group-item-text collapse">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                <h4>Name: {{query.name}}</h4>
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                 <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
+                    <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+                <div class="row">
+                  <div class="col-sm-9 query-details">
+                    <dl>
+                      <dt>Search Terms</dt>
+                      <dd>{{query.searchTerms}}</dd>
+
+                      <dt>Filters</dt>
+                      <dd>{{query.filters}}</dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Created</dt>
+                      <dd>{{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Last Run</dt>
+                      <dd>{{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/> 
+                    <select ng-options="option for option in frequencyOptions" ng-model="query.frequency" 
+                        ng-change="toggleFrequency(query._id, query.frequency)">
+                    </select>
+                  </div>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
