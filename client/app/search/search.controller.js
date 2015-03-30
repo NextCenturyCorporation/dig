@@ -4,10 +4,13 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'includeMissingDefault', 'blurImageService',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, includeMissingDefault, blurImageService) {
     $scope.showresults = false;
-    $scope.queryString = {live: '', submitted: ''};
+    $scope.queryString = {
+        live: '',
+        submitted: ''
+    };
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -22,13 +25,17 @@ angular.module('digApp')
         dateFilters: {}
     };
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
+    $scope.includeMissing = {
+        aggregations: {},
+        allIncludeMissing: includeMissingDefault
+    };
 
     $scope.changeBlur = function() {
         $scope.isBlurred = !$scope.isBlurred;
         blurImageService.changeBlurImagesEnabled($scope.isBlurred);
     };
 
-    $scope.openAbout = function () {
+    $scope.openAbout = function() {
         $modal.open({
           templateUrl: 'app/about/about.html',
           controller: 'AboutCtrl',
@@ -38,6 +45,17 @@ angular.module('digApp')
 
     $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
+    };
+
+    $scope.removeMissingFilter = function(key) {
+        $scope.includeMissing.aggregations[key].active = false;
+    };
+
+    $scope.setAllIncludeMissing = function() {
+        $scope.includeMissing.allIncludeMissing = !$scope.includeMissing.allIncludeMissing;
+        for(var aggregation in $scope.includeMissing.aggregations) {
+            $scope.includeMissing.aggregations[aggregation].active = $scope.includeMissing.allIncludeMissing;
+        }
     };
 
     $scope.removeDateFilter = function(key1, key2) {
@@ -71,7 +89,9 @@ angular.module('digApp')
     };
 
     $scope.reload = function() {
-        $state.go('search.results.list', {}, {'reload': true});
+        $state.go('search.results.list', {}, {
+            reload: true
+        });
     };
 
     $scope.getActiveImageSearch = function() {
@@ -92,27 +112,33 @@ angular.module('digApp')
         var currentSearch = imageSearchService.getActiveImageSearch();
 
         // Default behavior.  Grab the only cached versions of the images from our docs.
-        if (doc._source.hasImagePart && doc._source.hasImagePart.cacheUrl) {
+        if(doc._source.hasImagePart && doc._source.hasImagePart.cacheUrl) {
             src = doc._source.hasImagePart.cacheUrl;
-        } else if (doc._source.hasImagePart[0] && doc._source.hasImagePart[0].cacheUrl) {
+        } else if(doc._source.hasImagePart[0] && doc._source.hasImagePart[0].cacheUrl) {
             src = doc._source.hasImagePart[0].cacheUrl;
         }
 
         /* jshint camelcase:false */
         // If we have an active image search, check for a matching image.
-        if (currentSearch &&
+        if(currentSearch &&
             imageSearchService.isImageSearchEnabled(currentSearch.url) &&
             doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                function(item) { return item.featureValue === currentSearch.url; });
+                function(item) {
+                    return item.featureValue === currentSearch.url;
+                });
 
             // Verify that the current search url is in the similar images feature.  If so, select the matching
             // image.
-            if (imgFeature) {
+            if(imgFeature) {
                 var imgObj = _.find(doc._source.hasFeatureCollection.similar_images_feature,
-                    function(item) { return (typeof item.featureObject !== 'undefined'); });
+                    function(item) {
+                        return (typeof item.featureObject !== 'undefined');
+                    });
                 var imgMatch = _.find(doc._source.hasImagePart,
-                    function(part) { return (part.uri === imgObj.featureObject.imageObjectUris[0]); });
+                    function(part) {
+                        return (part.uri === imgObj.featureObject.imageObjectUris[0]);
+                    });
                 src = (imgMatch && imgMatch.cacheUrl) ? imgMatch.cacheUrl : src;
             }
         }

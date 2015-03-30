@@ -39,6 +39,13 @@
                       Blur Images
                     </a>
                   </li>
+                  <li role="setting">
+                    <a role="menuitem" ng-href="#" ng-click="setAllIncludeMissing()">
+                      <span ng-if="includeMissing.allIncludeMissing"><input type="checkbox" ng-checked="true"></span>
+                      <span ng-if="!includeMissing.allIncludeMissing"><input type="checkbox" ng-checked="false"></span>
+                      Include Missing
+                    </a>
+                  </li>
                   <li class="divider"></li>
                   <li role="setting">
                     <a role="menuitem" tabindex="-1" ng-href="#" ng-click="openAbout()">
@@ -49,19 +56,34 @@
               </span>
             </div>
           </div>
-          <div class="row">
-            <span ng-repeat="(aggFilter, values) in filterStates.aggFilters">
-              <span ng-repeat="(filterKey, selected) in values">
-                <span ng-if="selected" class="search-facet" ng-click="removeAggFilter(aggFilter, filterKey)">{{filterKey}} <i class="fa fa-times-circle"></i></span>
+          <div class="row breadcrumb-box">
+            <span ng-if="filterStates.withImagesOnly">
+              <span class="search-facet">
+                With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
               </span>
             </span>
-            <span ng-repeat="(textFilter, values) in filterStates.textFilters">
-              <span ng-if="values.submitted.length > 0" class="search-facet" ng-click="removeTextFilter(textFilter)">{{values.submitted}} <i class="fa fa-times-circle"></i></span>
+            <span ng-repeat="aggFilter in facets.aggFilters">
+              <span ng-if="includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
+                {{aggFilter.title}}: Not Specified
+                <i class="fa fa-times-circle" ng-click="removeMissingFilter(aggFilter.field)"></i>
+              </span>
+              <span ng-repeat="(filterKey, selected) in filterStates.aggFilters[aggFilter.field]">
+                <span ng-if="selected" class="search-facet">
+                  {{aggFilter.title}}: {{filterKey}}
+                  <i class="fa fa-times-circle" ng-click="removeAggFilter(aggFilter.field, filterKey)"></i>
+                </span>
+              </span>
+            </span>
+            <span ng-repeat="textFilter in facets.euiFilters">
+              <span ng-if="filterStates.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
+                {{textFilter.title}}: {{filterStates.textFilters[textFilter.field].submitted}}
+                <i class="fa fa-times-circle" ng-click="removeTextFilter(textFilter.field)"></i>
+              </span>
             </span>
             <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
                <span ng-repeat="(filterKey, date) in values">
-                <span ng-if="date" class="search-facet" ng-click="removeDateFilter(dateFilter, filterKey)">
-                  {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}} <i class="fa fa-times-circle"></i>
+                <span ng-if="date" class="search-facet">
+                  {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}} <i class="fa fa-times-circle" ng-click="removeDateFilter(dateFilter, filterKey)"></i>
                 </span>
               </span>
             </span>

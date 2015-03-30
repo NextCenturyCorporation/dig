@@ -1,7 +1,6 @@
 'use strict';
 
-describe('Controller: SearchCtrl', function () {
-
+describe('Controller: SearchCtrl', function() {
     // load the controller's module
     beforeEach(module('digApp'));
 
@@ -351,15 +350,16 @@ describe('Controller: SearchCtrl', function () {
                 listFields: [],
                 detailsFields: []
             });
+            $provide.constant('includeMissingDefault', false);
         });
 
-        inject(function ($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {
+        inject(function($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
             modal = $modal;
             blurImageSvcMock = {
                 blurEnabled: 'blur',
-                getBlurImagesEnabled : function() {
+                getBlurImagesEnabled: function() {
                     return this.blurEnabled;
                 },
                 changeBlurImagesEnabled: function(isBlurred) {
@@ -403,40 +403,40 @@ describe('Controller: SearchCtrl', function () {
         });
     });
 
-    it('should call state.go with reload set to true', function () {
+    it('should call state.go with reload set to true', function() {
         scope.reload();
         expect(state.go).toHaveBeenCalledWith('search.results.list', {}, {'reload': true});
     });
 
-    it('should initialize isBlurred to true', function () {
+    it('should initialize isBlurred to true', function() {
         expect(scope.isBlurred).toBe(true);
     });
 
-    it('should initialize showresults to false', function () {
+    it('should initialize showresults to false', function() {
         expect(scope.showresults).toBe(false);
     });
 
-    it('should initialize loading to false', function () {
+    it('should initialize loading to false', function() {
         expect(scope.loading).toBe(false);
     });
 
-    it('should initialize queryString values to empty strings', function () {
+    it('should initialize queryString values to empty strings', function() {
         expect(scope.queryString.live).toBe('');
         expect(scope.queryString.submitted).toBe('');
     });
 
-    it('should call blurImageService with false parameter', function () {
+    it('should call blurImageService with false parameter', function() {
         scope.changeBlur();
         expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
     });
 
-    it('should call blurImageService with true parameter', function () {
+    it('should call blurImageService with true parameter', function() {
         scope.isBlurred = false;
         scope.changeBlur();
         expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(true);
     });
 
-    it('should make call to open modal', function () {
+    it('should make call to open modal', function() {
         var modalParameters = {
           templateUrl: 'app/about/about.html',
           controller: 'AboutCtrl',
@@ -447,10 +447,10 @@ describe('Controller: SearchCtrl', function () {
         expect(modal.open).toHaveBeenCalledWith(modalParameters);
     });
 
-    it('should remove correct aggFilter', function () {
+    it('should remove correct aggFilter', function() {
         scope.filterStates.aggFilters['test'] = {};
-        scope.filterStates.aggFilters['test']['value1'] = true; 
-        scope.filterStates.aggFilters['test']['value2'] = true; 
+        scope.filterStates.aggFilters['test']['value1'] = true;
+        scope.filterStates.aggFilters['test']['value2'] = true;
 
         expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
         expect(scope.filterStates.aggFilters['test']['value2']).toBe(true);
@@ -460,7 +460,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates.aggFilters['test']['value2']).toBe(false);
     });
 
-    it('should remove correct textFilter', function () {
+    it('should remove correct textFilter', function() {
         scope.filterStates.textFilters['textKey'] = {live: 'sometext', submitted: 'somethingelse'};
         expect(scope.filterStates.textFilters['textKey'].live).toBe('sometext');
         expect(scope.filterStates.textFilters['textKey'].submitted).toBe('somethingelse');
@@ -472,12 +472,12 @@ describe('Controller: SearchCtrl', function () {
 
     it('should remove correct dateFilter', function() {
         var beginDate = new Date(2014, 11, 31);
-        var endDate = new Date(2015, 0, 1); 
+        var endDate = new Date(2015, 0, 1);
 
         scope.filterStates.dateFilters['test'] = {};
         scope.filterStates.dateFilters['test']['value1'] = beginDate;
         scope.filterStates.dateFilters['test']['value2'] = endDate;
-        
+
         expect(scope.filterStates.dateFilters['test']['value1'].getTime()).toBe(beginDate.getTime());
         expect(scope.filterStates.dateFilters['test']['value2'].getTime()).toBe(endDate.getTime());
 
@@ -486,26 +486,26 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates.dateFilters['test']['value2']).toBe(null);
     });
 
-    it('should set queryString.submitted to user input', function () {
+    it('should set queryString.submitted to user input', function() {
         scope.queryString.live = 'test';
         scope.submit();
         expect(scope.queryString.submitted).toBe('test');
      });
 
-    it('should set showresults to true', function () {
+    it('should set showresults to true', function() {
         scope.queryString.submitted = 'test';
         scope.indexVM.loading = false;
         scope.$digest();
         expect(scope.showresults).toBe(true);
     });
 
-    it('should set loading to false', function () {
+    it('should set loading to false', function() {
         scope.indexVM.loading = false;
         scope.$digest();
         expect(scope.loading).toBe(false);
     });
 
-    it('should default to list view', function () {
+    it('should default to list view', function() {
         expect(state.go).toHaveBeenCalledWith('search.results.list');
     });
 
@@ -531,7 +531,7 @@ describe('Controller: SearchCtrl', function () {
     it('should toggle the enable state of the active search appropriately', function() {
         var enabled = false;
         // Since this merely intiates a search which won't complete, the initial enable
-        // state should be false.  
+        // state should be false.
         imageSearchService.imageSearch('https://some.server/test.jpg');
         expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
 
@@ -541,5 +541,4 @@ describe('Controller: SearchCtrl', function () {
         scope.toggleImageSearchEnabled('https://some.server/test.jpg', false);
         expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
     });
-
 });

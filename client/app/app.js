@@ -12,7 +12,7 @@ var digApp = angular.module('digApp', [
     'digApp.directives',
     'digApp.services'
 ])
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
       .otherwise('/list');
 
@@ -51,6 +51,9 @@ angular.element(document).ready(function() {
 
         var pixelateImagesPercentage = config.pixelateImagesPercentage || 2.5;
         digApp.constant('pixelateImagesPercentage', pixelateImagesPercentage);
+
+        var includeMissingDefault = (config.includeMissingDefault !== undefined ? config.includeMissingDefault : false);
+        digApp.constant('includeMissingDefault', includeMissingDefault);
 
         var appVersion = config.appVersion;
         digApp.constant('appVersion', appVersion);
