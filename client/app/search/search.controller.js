@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.showresults = false;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
@@ -20,20 +20,6 @@ angular.module('digApp')
         aggFilters: {},
         textFilters: {},
         dateFilters: {}
-    };
-    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
-
-    $scope.changeBlur = function() {
-        $scope.isBlurred = !$scope.isBlurred;
-        blurImageService.changeBlurImagesEnabled($scope.isBlurred);
-    };
-
-    $scope.openAbout = function () {
-        $modal.open({
-          templateUrl: 'app/about/about.html',
-          controller: 'AboutCtrl',
-          size: 'sm'
-        });
     };
 
     $scope.removeAggFilter = function(key1, key2) {

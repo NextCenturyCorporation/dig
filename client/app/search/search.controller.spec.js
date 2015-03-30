@@ -408,10 +408,6 @@ describe('Controller: SearchCtrl', function () {
         expect(state.go).toHaveBeenCalledWith('search.results.list', {}, {'reload': true});
     });
 
-    it('should initialize isBlurred to true', function () {
-        expect(scope.isBlurred).toBe(true);
-    });
-
     it('should initialize showresults to false', function () {
         expect(scope.showresults).toBe(false);
     });
@@ -423,28 +419,6 @@ describe('Controller: SearchCtrl', function () {
     it('should initialize queryString values to empty strings', function () {
         expect(scope.queryString.live).toBe('');
         expect(scope.queryString.submitted).toBe('');
-    });
-
-    it('should call blurImageService with false parameter', function () {
-        scope.changeBlur();
-        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(false);
-    });
-
-    it('should call blurImageService with true parameter', function () {
-        scope.isBlurred = false;
-        scope.changeBlur();
-        expect(blurImageSvcMock.changeBlurImagesEnabled).toHaveBeenCalledWith(true);
-    });
-
-    it('should make call to open modal', function () {
-        var modalParameters = {
-          templateUrl: 'app/about/about.html',
-          controller: 'AboutCtrl',
-          size: 'sm'
-        };
-
-        scope.openAbout();
-        expect(modal.open).toHaveBeenCalledWith(modalParameters);
     });
 
     it('should remove correct aggFilter', function () {
