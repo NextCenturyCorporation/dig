@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
-    function($scope, $state, $http, imageSearchService, euiSearchIndex, euiConfigs) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.showresults = false;
     $scope.queryString = {live: '', submitted: ''};
     $scope.loading = false;
@@ -20,6 +20,19 @@ angular.module('digApp')
         aggFilters: {},
         textFilters: {},
         dateFilters: {}
+    };
+
+    $scope.saveQuery = function() {
+        $modal.open({
+            templateUrl: 'app/queries/save-query.html',
+            controller: 'SaveQueryCtrl',
+            resolve: {
+                indexVM: function() {
+                    return $scope.indexVM;
+                }
+            },
+            size: 'sm'
+        });
     };
 
     $scope.removeAggFilter = function(key1, key2) {

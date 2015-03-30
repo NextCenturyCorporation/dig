@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h3 class="modal-title">Save Query</h3>
+</div>
+<div class="modal-body">
+  <label>Name:</label>
+  <input type="text" ng-model="query.name">
+  <br/><br/>
+  <label>Frequency of Execution:</label><br/> 
+  <select ng-options="option for option in frequencyOptions" ng-model="query.frequency">
+  </select>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="save()" value="Save" ng-disabled="query.name.length === 0">Save</button>
+  <button class="btn btn-primary" ng-click="cancel()" value="Cancel">Cancel</button>
+</div>

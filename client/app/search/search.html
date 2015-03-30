@@ -8,22 +8,28 @@
       <div class="row search-header">
         <div class="col-sm-12 search-container-div">
           <div class="row">
-            <div class="col-xs-11 controls controls-search">
+            <div class="col-xs-10 controls controls-search">
               <form ng-submit="submit()">
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields('_all')"
-                ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
-                <span class="input-group-btn">
-                  <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search" ng-click="clearSearch()">
-                    <i class="glyphicon glyphicon-remove clear-search-icon"></i>
-                  </button>
-                  <button class="btn btn-primary search-btn" type="submit">Search</button>
-                  <a class="btn btn-danger clear-all-btn" ng-href="/" target="_self">Clear All</a>
-                </span>
-
-              </div>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                  <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields('_all')"
+                  ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
+                  <span class="input-group-btn">
+                    <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search" ng-click="clearSearch()">
+                      <i class="glyphicon glyphicon-remove clear-search-icon"></i>
+                    </button>
+                    <button class="btn btn-primary search-btn" type="submit">Search</button>
+                    <a class="btn btn-danger clear-all-btn" ng-href="/" target="_self">Clear All</a>
+                  </span>
+                </div>
               </form>
+            </div>
+            <div class="col-xs-2 controls controls-search">
+              <div class="input-group input-group-lg">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary search-btn" ng-click="saveQuery()">Save Query</button>
+                </span>
+              </div>
             </div>
           </div>
           <div class="row">
