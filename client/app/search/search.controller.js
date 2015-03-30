@@ -48,7 +48,7 @@ angular.module('digApp')
     };
 
     $scope.removeMissingFilter = function(key) {
-        $scope.includeMissing[key].active = false;
+        $scope.includeMissing.aggregations[key].active = false;
     };
 
     $scope.setAllIncludeMissing = function() {
