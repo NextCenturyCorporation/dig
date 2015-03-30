@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link type="image/png" rel="shortcut icon" href="images/favicon.png">
+  <title>DIG</title>
+
+
+  <!-- Bootstrap -->
+  <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+  <script src="http://cdn.jsdelivr.net/holder/2.4.0/holder.js"></script>
+
+  <!-- Temporary CDN -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+<!-- PAGE CONTENT -->
+
+<div class="container-fluid">
+  <div class="row nav">
+    <div class="navbar-header">
+      <div class="navbar-brand">
+        <img src="./images/dig-logo-original.png" alt="">
+      </div>
+    </div>
+    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main" style="height: 0px;">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}" class="ng-scope active">
+            <a ng-href="/list" target="_self" ng-if="item.reload" class="ng-binding ng-scope" href="">
+                Home <span class="glyphicon glyphicon-home"></span>
+            </a>
+        </li>
+        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}" class="ng-scope">
+            <a ng-href="/queries" target="_self" ng-if="item.reload" class="ng-binding ng-scope" href="">
+                Saved Queries <span class=""></span>
+            </a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><p class="navbar-text ng-binding">Hello test@test.com</p> </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+
+
+    <div class="col-sm-12">
+
+      <div class="column-header">
+
+        <div class="btn-group pull-right">
+          <label>Sort by</label>
+          <a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+            Newest first
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+          </ul>
+        </div>
+
+        <h4>
+          <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a>
+          <strong>2</strong> queries for user test@test.com
+        </h4>
+
+      </div>
+
+      <ul id="results" class="list-group">
+        <li class="list-group-item">
+          <a href="#collapse1" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                Name: Query #1
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+                <div class="list-group-item-meta">
+                  <span class="searchTerms">Search Terms: "Bob DC"</span>
+                  <span class="filters">Filters: Hair Color: brown, Hair Color : not specified</span>
+                  <span class="dateCreated" title="03/21/2015 02:28:00">Created: 03/21/2015</span>
+                  <span class="dateRun" title="03/24/2015 02:28:00">Last Run: 03/24/2015</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <div id="collapse1" class="list-group-item-text collapse">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                <h4>Name: Query #1</h4>
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+                <div class="row">
+                  <div class="col-sm-9 query-details">
+                    <dl>
+                      <dt>Search Terms</dt>
+                      <dd>"Bob DC"</dd>
+
+                      <dt>Filters</dt>
+                      <dd>Hair Color: brown, Hair Color : not specified</dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Created</dt>
+                      <dd>03/21/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Last Run</dt>
+                      <dd>03/24/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/> 
+                    <select>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>                  
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <a href="#collapse2" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                Name: Query #2
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+                <div class="list-group-item-meta">
+                  <span class="searchTerms">Search Terms: "Lorem ipsum dolor sit amet..."</span>
+                  <span class="filters">Filters: Filter1: option1</span>
+                  <span class="dateCreated" title="03/21/2015 02:28:00">Created: 03/21/2015</span>
+                  <span class="dateRun" title="03/24/2015 02:28:00">Last Run: 03/24/2015</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <div id="collapse2" class="list-group-item-text collapse">
+            <div class="row">
+              <div class="col-xs-9 col-sm-10 col-lg-11">
+                <h4>Name: Query #2</h4>
+                <span class="pull-right">
+                  <ul class="list-unstyled query-options horizontal-list">
+                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li>
+                    <li><button style="btn"><i class="fa fa-trash-o"></i> Delete</button></li>
+                  </ul>
+                </span>
+                <div class="row">
+                  <div class="col-sm-9 query-details">
+                    <dl>
+                      <dt>Search Terms</dt>
+                      <dd>"Lorem ipsum dolor sit amet, putent blandit mandamus vel ea. Quo eirmod aliquid definitionem ex, et qui utinam definitiones"</dd>
+
+                      <dt>Filters</dt>
+                      <dd>Filter1: option1</dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Created</dt>
+                      <dd>03/21/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <dl>
+                      <dt>Last Run</dt>
+                      <dd>03/24/2015</dd>
+                    </dl>
+                  </div>
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/> 
+                    <select>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>                  
+              </div>
+            </div>
+          </div>
+        </li> 
+      </ul>
+
+<!--       <nav>
+  <ul class="pagination pull-right">
+    <li class="disabled"><a href="#"><span aria-hidden="true" class="fa fa-chevron-left"></span><span class="sr-only">Previous</span></a></li>
+    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#"><span aria-hidden="true" class="fa fa-chevron-right"></span><span class="sr-only">Next</span></a></li>
+  </ul>
+</nav> -->
+
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- END PAGE CONTENT -->
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
+
+  <!-- Temporary CDN -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

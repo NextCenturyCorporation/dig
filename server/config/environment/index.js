@@ -236,7 +236,7 @@ var all = {
                 }
             },
             debugFields: {
-                fields: ['doc._id', 'doc._source.uri']
+                fields: ['doc._id']
             },
             detailFields: {
                 "1": {
@@ -418,7 +418,8 @@ var all = {
                         hideIfMissing: true
                     }]
                 }
-            }
+            },
+            imageField: 'hasImagePart.cacheUrl'
         },
         'dig-mrs-latest': {
             facets: {
