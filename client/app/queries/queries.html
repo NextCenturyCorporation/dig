@@ -27,7 +27,7 @@
                 {{query.name}}
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
-                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
                  <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
@@ -48,7 +48,7 @@
                 <h4>Name: {{query.name}}</h4>
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
-                    <li><button style="btn"><i class="fa fa-share"></i> Run</button></li>
+                    <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
                  <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
@@ -78,11 +78,11 @@
                     </dl>
                   </div>
                   <div class="col-sm-3 query-details">
-                    <label>Frequency of Execution</label><br/> 
-                    <select ng-options="option for option in frequencyOptions" ng-model="query.frequency" 
+                    <label>Frequency of Execution</label><br/>
+                    <select ng-options="option for option in frequencyOptions" ng-model="query.frequency"
                         ng-change="toggleFrequency(query._id, query.frequency)">
                     </select>
-                  </div>                  
+                  </div>
                 </div>
               </div>
             </div>

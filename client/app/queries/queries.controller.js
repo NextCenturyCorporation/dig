@@ -41,6 +41,13 @@ angular.module('digApp')
 
     $scope.$on('$destroy', function () {
         socket.unsyncUpdates('query');
-    });   
+    });
 
+    $scope.runQuery = function(query) {
+        $state.go('search.results.list', {
+            query: query
+        }, {
+            location: true
+        });
+    };
 }]);

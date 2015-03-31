@@ -4,10 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs) {
-    $scope.showresults = false;
-    $scope.queryString = {live: '', submitted: ''};
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$timeout',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, $timeout) {
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -16,10 +14,33 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.filterStates = {
-        aggFilters: {},
-        textFilters: {},
-        dateFilters: {}
+
+    $scope.init = function() {
+        if($state.params && $state.params.query) {
+            $scope.showresults = false;
+            $scope.queryString = {
+                live: $state.params.query.searchTerms,
+                submitted: ''
+            };
+            $scope.filterStates = $state.params.query.filters;
+
+            $scope.filterStates.aggFilters = $scope.filterStates.aggFilters || {};
+            $scope.filterStates.textFilters = $scope.filterStates.textFilters || {};
+            $scope.filterStates.dateFilters = $scope.filterStates.dateFilters || {};
+
+            //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
+            $timeout($scope.submit);
+        } else {
+            $scope.showresults = false;
+            $scope.queryString = {
+                live: '', submitted: ''
+            };
+            $scope.filterStates = {
+                aggFilters: {},
+                textFilters: {},
+                dateFilters: {}
+            };
+        }
     };
 
     $scope.saveQuery = function() {
@@ -45,7 +66,7 @@ angular.module('digApp')
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
-    
+
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
@@ -102,7 +123,7 @@ angular.module('digApp')
 
         /* jshint camelcase:false */
         // If we have an active image search, check for a matching image.
-        if (currentSearch && 
+        if (currentSearch &&
             imageSearchService.isImageSearchEnabled(currentSearch.url) &&
             doc._source.hasFeatureCollection.similar_images_feature) {
             var imgFeature = _.find(doc._source.hasFeatureCollection.similar_images_feature,
@@ -168,4 +189,6 @@ angular.module('digApp')
     if($state.current.name === 'search') {
         $scope.viewList();
     }
+
+    $scope.init();
 }]);
