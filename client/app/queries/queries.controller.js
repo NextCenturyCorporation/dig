@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('digApp')
-.controller('QueriesCtrl', ['$scope', '$state', '$http', 'socket', 'User',
-    function($scope, $state, $http, socket, User) {
+.controller('QueriesCtrl', ['$scope', '$state', '$http', 'socket', 'User', 'euiConfigs',
+    function($scope, $state, $http, socket, User, euiConfigs) {
 
     $scope.currentUser = User.get();
     $scope.opened = [];
     $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
+    $scope.facets = euiConfigs.facets;
 
     $http.get('api/query/').
         success(function(data) {
@@ -50,4 +51,5 @@ angular.module('digApp')
             location: true
         });
     };
+
 }]);

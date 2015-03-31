@@ -34,8 +34,7 @@
                 </span>
 
                 <div class="list-group-item-meta">
-                  <span>Search Terms: {{query.searchTerms}}</span>
-                  <span>Filters: {{query.filters}}</span>
+                  <span>Search Terms: {{query.searchTerms | limitTo: 20}}{{query.searchTerms.length > 20 ? '...' : ''}}</span>
                   <span>Created: {{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                   <span>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                 </div>
@@ -58,10 +57,34 @@
                     <dl>
                       <dt>Search Terms</dt>
                       <dd>{{query.searchTerms}}</dd>
-
-                      <dt>Filters</dt>
-                      <dd>{{query.filters}}</dd>
                     </dl>
+                    <label>Filters</label><br/>
+                    <span ng-if="query.filters.withImagesOnly" class="search-facet">
+                      With Images Only
+                    </span>
+                    <span ng-repeat="aggFilter in facets.aggFilters">
+                      <!--TODO: Include missing-->
+                      <!-- <span ng-if="includeMissing.aggregations[aggFilter.field].active">
+                        {{aggFilter.title}}: Not Specified
+                      </span> -->
+                      <span ng-repeat="(filterKey, selected) in query.filters.aggFilters[aggFilter.field]">
+                        <span ng-if="selected" class="search-facet">
+                          {{aggFilter.title}}: {{filterKey}}
+                        </span>
+                      </span>
+                    </span>
+                    <span ng-repeat="textFilter in facets.euiFilters">
+                      <span ng-if="filterStates.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
+                        {{textFilter.title}}: {{filterStates.textFilters[textFilter.field].submitted}}
+                      </span>
+                    </span>
+                    <span ng-repeat="(dateFilter, values) in query.filters.dateFilters">
+                      <span ng-repeat="(filterKey, date) in values">
+                        <span ng-if="date" class="search-facet">
+                          {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}}
+                        </span>
+                      </span>
+                    </span>
                   </div>
                 </div>
                 <div class="row">

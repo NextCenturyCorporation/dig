@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', 'User', 'queryString', 'filterStates', 'euiConfigs',
-    function($scope, $modalInstance, $http, User, queryString, filterStates, euiConfigs) {
+.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', 'User', 'queryString', 'filterStates',
+    function($scope, $modalInstance, $http, User, queryString, filterStates) {
     $scope.queryString = queryString;
     $scope.filterStates = filterStates;
     $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
     $scope.query = {name: '', frequency: 'daily'};
     $scope.currentUser = User.get();
-    $scope.facets = euiConfigs.facets;
 
     $scope.saveQuery = function() {
         $scope.query.searchTerms = $scope.queryString;
