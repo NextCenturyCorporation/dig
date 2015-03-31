@@ -26,8 +26,8 @@
             </div>
             <div class="col-xs-2 controls controls-search">
               <div class="input-group input-group-lg">
-                <span class="input-group-btn">
-                  <button class="btn btn-primary search-btn" ng-click="saveQuery()">Save Query</button>
+                <span class="input-group-btn" ng-hide="searchConfig.euiSearchIndex === ''">
+                  <button class="btn btn-primary search-btn" ng-click="saveQuery()">Save</button>
                 </span>
               </div>
             </div>

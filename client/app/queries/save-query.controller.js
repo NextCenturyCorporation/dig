@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', 'User', 'indexVM',
-    function($scope, $modalInstance, $http, User, indexVM) {
-    $scope.indexVM = indexVM;
+.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', 'User', 'queryString', 'filterStates', 'euiConfigs',
+    function($scope, $modalInstance, $http, User, queryString, filterStates, euiConfigs) {
+    $scope.queryString = queryString;
+    $scope.filterStates = filterStates;
     $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
     $scope.query = {name: '', frequency: 'daily'};
     $scope.currentUser = User.get();
+    $scope.facets = euiConfigs.facets;
 
     $scope.saveQuery = function() {
-
-        $scope.query.searchTerms = $scope.indexVM.query.toJSON().query_string.query;
+        $scope.query.searchTerms = $scope.queryString;
         $scope.query.email = $scope.currentUser.email;
-        $scope.query.filters = $scope.indexVM.filters.jsonObjects;
+        $scope.query.filters = $scope.filterStates;
         $scope.query.createDate = new Date();
         $scope.query.lastRunDate = new Date();
 

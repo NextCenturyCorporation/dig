@@ -27,8 +27,11 @@ angular.module('digApp')
             templateUrl: 'app/queries/save-query.html',
             controller: 'SaveQueryCtrl',
             resolve: {
-                indexVM: function() {
-                    return $scope.indexVM;
+                queryString: function() {
+                    return $scope.queryString.submitted;
+                },
+                filterStates: function() {
+                    return $scope.filterStates;
                 }
             },
             size: 'sm'

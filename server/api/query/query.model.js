@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var QuerySchema = new Schema({
   name: String,
   searchTerms: String,
-  filters: Array,
+  filters: Object,
   email: { type: String, lowercase: true, index: true },
   createDate: Date,
   lastRunDate: Date,
