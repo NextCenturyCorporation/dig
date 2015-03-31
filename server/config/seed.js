@@ -25,7 +25,7 @@ Query.find({}).remove(function() {
   Query.create({
     name: 'Query #1',
     searchTerms: 'bob smith',
-    filters: 'City/Region: DC',
+    filters: {"aggFilters":{"city_agg":{"LittleRock":true,"FortSmith":true}},"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
     email: 'test@test.com',
     frequency: 'weekly',
     createDate: new Date(),
@@ -33,7 +33,7 @@ Query.find({}).remove(function() {
   }, {
     name: 'Query #2',
     searchTerms: 'jane doe',
-    filters: ['City/Region: VA', 'City/Region: DC'],
+    filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":"2013-02-02T05:00:00.000Z","endDate":"2015-02-03T05:00:00.000Z"}}},
     email: 'test@test.com',
     frequency: 'daily',
     createDate: new Date(),
@@ -41,7 +41,7 @@ Query.find({}).remove(function() {
   }, {
     name: 'Query #3',
     searchTerms: 'another users query',
-    filters: 'City/Region: nowhere',
+    filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
     email: 'test2@test.com',
     frequency: 'weekly',
     createDate: new Date(),
