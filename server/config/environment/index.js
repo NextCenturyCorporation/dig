@@ -55,8 +55,6 @@ var all = {
     blurPercentage: process.env.BLUR_PERCENT || 2.5,
     pixelatePercentage: process.env.PIXELATE_PERCENT || 5,
 
-    includeMissingAggregationsDefault: (!!process.env.INCLUDE_MISSING_DEFAULT && process.env.INCLUDE_MISSING_DEFAULT === 'true') ? true : false,
-
     euiConfigs: {
         'dig-latest': {
             facets: {

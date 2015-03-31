@@ -52,9 +52,6 @@ angular.element(document).ready(function() {
         var pixelateImagesPercentage = config.pixelateImagesPercentage || 2.5;
         digApp.constant('pixelateImagesPercentage', pixelateImagesPercentage);
 
-        var includeMissingDefault = (config.includeMissingDefault !== undefined ? config.includeMissingDefault : false);
-        digApp.constant('includeMissingDefault', includeMissingDefault);
-
         var appVersion = config.appVersion;
         digApp.constant('appVersion', appVersion);
 

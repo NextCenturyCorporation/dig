@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'includeMissingDefault', 'blurImageService',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, includeMissingDefault, blurImageService) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
     $scope.showresults = false;
     $scope.queryString = {
         live: '',
@@ -27,7 +27,7 @@ angular.module('digApp')
     $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
     $scope.includeMissing = {
         aggregations: {},
-        allIncludeMissing: includeMissingDefault
+        allIncludeMissing: false
     };
 
     $scope.changeBlur = function() {
