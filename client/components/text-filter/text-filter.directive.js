@@ -15,7 +15,7 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/text-filter/text-filter.partial.html',
         link: function($scope) {
-            $scope.filterStates[$scope.filterField] = {
+            $scope.filterStates[$scope.filterField] = $scope.filterStates[$scope.filterField] || {
                 live: '',
                 submitted: ''
             };

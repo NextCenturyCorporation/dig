@@ -22,11 +22,17 @@ angular.module('digApp')
                 live: $state.params.query.searchTerms,
                 submitted: ''
             };
-            $scope.filterStates = $state.params.query.filters;
 
-            $scope.filterStates.aggFilters = $scope.filterStates.aggFilters || {};
-            $scope.filterStates.textFilters = $scope.filterStates.textFilters || {};
-            $scope.filterStates.dateFilters = $scope.filterStates.dateFilters || {};
+            $scope.filterStates = {
+                aggFilters: {},
+                textFilters: {},
+                dateFilters: {}
+            };
+            // $scope.filterStates = $state.params.query.filters;
+
+            $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.filters.aggFilters);
+            $scope.filterStates.textFilters = _.cloneDeep($state.params.query.filters.textFilters);
+            // $scope.filterStates.dateFilters = $scope.filterStates.dateFilters || {};
 
             //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
             $timeout($scope.submit);
