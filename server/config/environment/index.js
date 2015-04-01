@@ -147,7 +147,7 @@ var all = {
                 }],
                 short: [{
                     title: 'Date',
-                    field: "doc._source.dateCreated | toLocalTime",
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
                     title: 'Location',
@@ -202,7 +202,7 @@ var all = {
                             featureValue: 'provider_name'
                         },{
                             title: 'Created',
-                            field: "doc._source.dateCreated | toLocalTime"
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
                         }]
                     },
                     "2": {
@@ -244,7 +244,7 @@ var all = {
                     classes: 'listing-details',
                     fields: [{
                         title: 'Created',
-                        field: "doc._source.dateCreated | toLocalTime"
+                        field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
                     },{
                         title: 'City',
                         field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.featureObject.addressLocality',
@@ -465,7 +465,7 @@ var all = {
                 }],
                 short: [{
                     title: 'Date',
-                    field: "doc._source.dateCreated | toLocalTime",
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
                     title: 'Author',
@@ -499,7 +499,7 @@ var all = {
                             field: "doc['_source']['hasAbstractPart']['text']"
                         },{
                             title: 'Date',
-                            field: "doc._source.dateCreated | toLocalTime"
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
                         }]
                     }
                 }
@@ -510,7 +510,7 @@ var all = {
                     classes: 'listing-details',
                     fields: [{
                         title: 'Date',
-                        field: "doc._source.dateCreated | toLocalTime",
+                        field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
                         classes: 'date'
                     },{
                         title: 'Authors(s)',
