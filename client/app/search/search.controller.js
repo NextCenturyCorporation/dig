@@ -16,36 +16,38 @@ angular.module('digApp')
     $scope.facets = euiConfigs.facets;
 
     $scope.init = function() {
+        $scope.showresults = true;
+        $scope.queryString = {
+            live: '', submitted: ''
+        };
+        $scope.filterStates = {
+            aggFilters: {},
+            textFilters: {},
+            dateFilters: {}
+        };
+
         if($state.params && $state.params.query) {
-            $scope.showresults = false;
-            $scope.queryString = {
-                live: $state.params.query.searchTerms,
-                submitted: ''
-            };
+            if($state.params.query.searchTerms === '') {
+                $scope.showresults = true;
+            }
 
-            $scope.filterStates = {
-                aggFilters: {},
-                textFilters: {},
-                dateFilters: {}
-            };
-            // $scope.filterStates = $state.params.query.filters;
+            if($state.params.query.searchTerms) {
+                $scope.queryString.live = $state.params.query.searchTerms;
+            }
 
-            $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.filters.aggFilters);
-            $scope.filterStates.textFilters = _.cloneDeep($state.params.query.filters.textFilters);
-            // $scope.filterStates.dateFilters = $scope.filterStates.dateFilters || {};
+            if($state.params.query.filters.aggFilters) {
+                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.filters.aggFilters);
+            }
+            if($state.params.query.filters.textFilters) {
+                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.filters.textFilters);
+            }
+
+            if($state.params.query.filters.dateFilters) {
+                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.filters.dateFilters);
+            }
 
             //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
             $timeout($scope.submit);
-        } else {
-            $scope.showresults = false;
-            $scope.queryString = {
-                live: '', submitted: ''
-            };
-            $scope.filterStates = {
-                aggFilters: {},
-                textFilters: {},
-                dateFilters: {}
-            };
         }
     };
 

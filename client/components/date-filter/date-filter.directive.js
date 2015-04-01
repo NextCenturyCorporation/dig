@@ -14,10 +14,15 @@ angular.module('digApp')
         },
         templateUrl: 'components/date-filter/date-filter.partial.html',
         link: function($scope) {
-            $scope.filterStates[$scope.field] = {
-                beginDate: null,
-                endDate: null
-            };
+            if($scope.filterStates[$scope.field]) {
+                $scope.filterStates[$scope.field].beginDate = new Date($scope.filterStates[$scope.field].beginDate);
+                $scope.filterStates[$scope.field].endDate = new Date($scope.filterStates[$scope.field].endDate);
+            } else {
+                $scope.filterStates[$scope.field] = {
+                    beginDate: null,
+                    endDate: null
+                };
+            }
             $scope.dateFormat = 'MM/dd/yyyy';
 
             $scope.dateToEjsString = function(date) {
