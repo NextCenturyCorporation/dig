@@ -31,10 +31,21 @@ angular.module('digApp')
         };
 
         if($state.params && $state.params.query) {
+            $scope.showresults = false;
+            $scope.toApplySavedQuery = true;
+
+            //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
+            $timeout($scope.submit);
+        }
+    };
+
+    $scope.applySavedQuery = function() {
+        if($state.params && $state.params.query) {
             $scope.showresults = true;
 
             if($state.params.query.searchTerms) {
                 $scope.queryString.live = $state.params.query.searchTerms;
+                $scope.queryString.submitted = $state.params.query.searchTerms;
             }
 
             if($state.params.query.filters.aggFilters) {
@@ -47,13 +58,10 @@ angular.module('digApp')
             if($state.params.query.filters.dateFilters) {
                 $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.filters.dateFilters);
             }
-            
+
             if($state.params.query.includeMissing) {
                 $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
             }
-
-            //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
-            $timeout($scope.submit);
         }
     };
 
@@ -94,7 +102,7 @@ angular.module('digApp')
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
-    
+
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
@@ -217,6 +225,10 @@ angular.module('digApp')
 
                 if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted && !$scope.indexVM.error) {
                     $scope.showresults = true;
+                }
+
+                if($scope.loading === false && $scope.toApplySavedQuery) {
+                    $scope.applySavedQuery();
                 }
             }
         }
