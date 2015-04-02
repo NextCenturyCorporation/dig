@@ -74,8 +74,8 @@
                       </span>
                     </span>
                     <span ng-repeat="textFilter in facets.euiFilters">
-                      <span ng-if="filterStates.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
-                        {{textFilter.title}}: {{filterStates.textFilters[textFilter.field].submitted}}
+                      <span ng-if="query.filters.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
+                        {{textFilter.title}}: {{query.filters.textFilters[textFilter.field].submitted}}
                       </span>
                     </span>
                     <span ng-repeat="(dateFilter, values) in query.filters.dateFilters">

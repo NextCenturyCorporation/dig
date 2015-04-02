@@ -16,7 +16,7 @@ angular.module('digApp')
     $scope.facets = euiConfigs.facets;
 
     $scope.init = function() {
-        $scope.showresults = true;
+        $scope.showresults = false;
         $scope.queryString = {
             live: '', submitted: ''
         };
@@ -27,9 +27,7 @@ angular.module('digApp')
         };
 
         if($state.params && $state.params.query) {
-            if($state.params.query.searchTerms === '') {
-                $scope.showresults = true;
-            }
+            $scope.showresults = true;
 
             if($state.params.query.searchTerms) {
                 $scope.queryString.live = $state.params.query.searchTerms;
