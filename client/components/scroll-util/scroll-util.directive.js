@@ -25,16 +25,15 @@ angular.module('digApp.directives')
                 }, 0);
             });
 
-            $scope.$watch('resetScroll', 
+            $scope.$watch('resetScroll',
                 function(newValue) {
                     if(newValue) {
-                        for (var key in $scope.scrollPosCache) {
+                        for(var key in $scope.scrollPosCache) {
                             delete $scope.scrollPosCache[key];
                         }
                     }
                 }
             );
-               
         }
     };
 });

@@ -6,17 +6,19 @@ describe('Controller: SaveQueryCtrl', function () {
     beforeEach(module('digApp'));
 
     // instantiate service
-    var SaveQueryCtrl, scope, modalInstance, http, $httpBackend, mockUser, queryString, filterStates;
+    var SaveQueryCtrl, scope, modalInstance, http, $httpBackend, mockUser, queryString, filterStates, includeMissing;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
 
         queryString = 'search terms';
         filterStates = {'filter': 'option'};
+        includeMissing = {'aggregations': {}, 'allIncludeMissing': false};
 
         module(function($provide) {
             $provide.constant('queryString', queryString);
             $provide.constant('filterStates', filterStates);
+            $provide.constant('includeMissing', includeMissing);
         });
 
         inject(function ($controller, $rootScope, _$httpBackend_, $http) {
@@ -55,6 +57,10 @@ describe('Controller: SaveQueryCtrl', function () {
 
     it('should initialize filterStates to correct value', function () {
         expect(scope.filterStates).toBe(filterStates);
+    });
+
+    it('should initialize includeMissing to correct value', function () {
+        expect(scope.includeMissing).toBe(includeMissing);
     });
 
     it('should initialize user', function () {

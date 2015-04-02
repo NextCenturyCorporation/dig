@@ -1,0 +1,6 @@
+<div class="error col-xs-12">
+  <i class="fa show-details" ng-class="error.showDetails ? 'fa-chevron-down' : 'fa-chevron-right'"
+    ng-click="error.showDetails = !error.showDetails"></i>
+  <h5 class="error-message-title">Error: {{getTitle()}}</h5>
+  <pre ng-show="error.showDetails">{{getErrorMessage()}}</pre>
+</div>

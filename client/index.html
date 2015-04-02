@@ -32,6 +32,7 @@
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
+      /* jshint ignore:start *//* jscs:disable */
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -39,6 +40,7 @@
 
       ga('create', 'UA-XXXXX-X');
       ga('send', 'pageview');
+      /* jshint ignore:end */
     </script>
 
     <!--[if lt IE 9]>
@@ -77,6 +79,7 @@
           <script src="app/queries/queries.controller.js"></script>
           <script src="app/queries/queries.js"></script>
           <script src="app/queries/save-query.controller.js"></script>
+          <script src="app/search/search-error/search-error.controller.js"></script>
           <script src="app/search/search-results/gallery/gallery.controller.js"></script>
           <script src="app/search/search-results/gallery/image-gallery.directive.js"></script>
           <script src="app/search/search-results/search-results.controller.js"></script>
@@ -91,6 +94,7 @@
           <script src="components/date-filter/date-range/date-range.directive.js"></script>
           <script src="components/date-histogram-aggregation/date-histogram-aggregation.directive.js"></script>
           <script src="components/expanded-listing-view/expanded-listing-view.directive.js"></script>
+          <script src="components/local-time-filter/local-time-filter.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
