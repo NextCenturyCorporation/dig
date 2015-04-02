@@ -9,13 +9,11 @@ angular.module('digApp')
     $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
     $scope.facets = euiConfigs.facets;
 
+
     $http.get('api/query/').
         success(function(data) {
             $scope.queryResults = data;
             socket.syncUpdates('query', $scope.queryResults);
-        }).
-        error(function(data, status, headers, config) {
-            console.log(config.method + ' to ' + config.url + ' returned with status code of ' + status);
         });
 
     $scope.toggleListItemOpened = function(index) {
@@ -27,17 +25,11 @@ angular.module('digApp')
     };
 
     $scope.deleteQuery = function(id) {
-        $http.delete('api/query/' + id).
-            error(function(data, status, headers, config) {
-                console.log(config.method + ' to ' + config.url + ' returned with status code of ' + status);
-            });
+        $http.delete('api/query/' + id);
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {
-        $http.put('api/query/' + id, {frequency: selectedOption}).
-            error(function(data, status, headers, config) {
-                console.log(config.method + ' to ' + config.url + ' returned with status code of ' + status);
-            });
+        $http.put('api/query/' + id, {frequency: selectedOption});
     };
 
     $scope.$on('$destroy', function () {

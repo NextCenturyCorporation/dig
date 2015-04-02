@@ -16,10 +16,7 @@ angular.module('digApp')
         $scope.query.createDate = new Date();
         $scope.query.lastRunDate = new Date();
 
-        $http.post('api/query', $scope.query).
-            error(function(data, status, headers, config) {
-                console.log(config.method + ' to ' + config.url + ' returned with status code of ' + status);
-        });
+        $http.post('api/query', $scope.query);
     };
 
     $scope.save = function () {
