@@ -12,7 +12,7 @@ var digApp = angular.module('digApp', [
     'digApp.directives',
     'digApp.services'
 ])
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
       .otherwise('/list');
 

@@ -351,6 +351,7 @@ describe('Controller: SearchCtrl', function () {
                 listFields: [],
                 detailsFields: []
             });
+            $provide.constant('includeMissingDefault', false);
         });
 
         inject(function ($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {

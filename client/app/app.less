@@ -4,6 +4,13 @@
 @icon-font-path: '/bower_components/bootstrap/fonts/';
 @fa-font-path: '/bower_components/font-awesome/fonts';
 
+@black: #000;
+@background: #F4EFEC;
+
+@light-gray: #d8d8d8;
+@mid-gray: #c0c0c0;
+@dark-gray: #989898;
+
 /**
  * App-wide Styles
  */
@@ -16,9 +23,10 @@
 }
 
 body{
-	background-color: #f4efec;
+	background-color: @background;
 	font-family: 'Lato', sans-serif;
 }
+
 
 /**
  * navbar styling
@@ -390,11 +398,13 @@ label{
 
 
 // injector
+@import 'search/search-error/search-error.less';
 @import 'queries/queries.less';
 @import 'search/search-results/gallery/image-gallery.less';
 @import 'search/search.less';
 @import 'blurredImage/blurredImage.less';
 @import 'checkbox-filter/checkbox-filter-list/checkbox-filter-list.less';
+@import 'checkbox-filter/checkbox-filter.less';
 @import 'collapse-filter/collapse-filter.less';
 @import 'date-filter/date-range/date-range.less';
 @import 'date-histogram-aggregation/date-histogram-aggregation.less';

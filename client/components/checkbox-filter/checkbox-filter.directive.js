@@ -12,7 +12,8 @@ angular.module('digApp.directives')
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',
-            filterStates: '='
+            filterStates: '=',
+            includeMissing: '='
         },
         templateUrl: 'components/checkbox-filter/checkbox-filter.partial.html',
         link: function($scope) {
