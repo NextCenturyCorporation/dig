@@ -28,7 +28,6 @@
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
-                 <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
                 </span>
@@ -48,7 +47,6 @@
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
-                 <!--    <li><button style="btn"><i class="fa fa-files-o"></i> Duplicate</button></li> -->
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
                 </span>
@@ -63,10 +61,9 @@
                       With Images Only
                     </span>
                     <span ng-repeat="aggFilter in facets.aggFilters">
-                      <!--TODO: Include missing-->
-                      <!-- <span ng-if="includeMissing.aggregations[aggFilter.field].active">
+                      <span ng-if="query.includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
                         {{aggFilter.title}}: Not Specified
-                      </span> -->
+                      </span>
                       <span ng-repeat="(filterKey, selected) in query.filters.aggFilters[aggFilter.field]">
                         <span ng-if="selected" class="search-facet">
                           {{aggFilter.title}}: {{filterKey}}

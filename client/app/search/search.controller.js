@@ -14,10 +14,6 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.includeMissing = {
-        aggregations: {},
-        allIncludeMissing: false
-    };
 
     $scope.init = function() {
         $scope.showresults = false;
@@ -28,6 +24,10 @@ angular.module('digApp')
             aggFilters: {},
             textFilters: {},
             dateFilters: {}
+        };
+        $scope.includeMissing = {
+            aggregations: {},
+            allIncludeMissing: false
         };
 
         if($state.params && $state.params.query) {
@@ -47,6 +47,10 @@ angular.module('digApp')
             if($state.params.query.filters.dateFilters) {
                 $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.filters.dateFilters);
             }
+            
+            if($state.params.query.includeMissing) {
+                $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
+            }
 
             //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
             $timeout($scope.submit);
@@ -63,6 +67,9 @@ angular.module('digApp')
                 },
                 filterStates: function() {
                     return $scope.filterStates;
+                },
+                includeMissing: function() {
+                    return $scope.includeMissing;
                 }
             },
             size: 'sm'
