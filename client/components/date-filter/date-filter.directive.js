@@ -15,8 +15,12 @@ angular.module('digApp')
         templateUrl: 'components/date-filter/date-filter.partial.html',
         link: function($scope) {
             if($scope.filterStates[$scope.field]) {
-                $scope.filterStates[$scope.field].beginDate = new Date($scope.filterStates[$scope.field].beginDate);
-                $scope.filterStates[$scope.field].endDate = new Date($scope.filterStates[$scope.field].endDate);
+                if($scope.filterStates[$scope.field].beginDate) {
+                    $scope.filterStates[$scope.field].beginDate = new Date($scope.filterStates[$scope.field].beginDate);
+                }
+                if($scope.filterStates[$scope.field].endDate) {
+                    $scope.filterStates[$scope.field].endDate = new Date($scope.filterStates[$scope.field].endDate);
+                }
             } else {
                 $scope.filterStates[$scope.field] = {
                     beginDate: null,
