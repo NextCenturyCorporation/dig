@@ -14,6 +14,10 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
+    $scope.includeMissing = {
+        aggregations: {},
+        allIncludeMissing: false
+    };
 
     $scope.init = function() {
         $scope.showresults = false;
