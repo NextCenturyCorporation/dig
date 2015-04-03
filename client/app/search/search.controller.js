@@ -52,8 +52,9 @@ angular.module('digApp')
                 $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
             }
 
-            //this 0ms timeout is necessary to avoid uiRouter issues, allowing the state change to complete before further state changes
-            $timeout($scope.submit);
+            $scope.$on('$locationChangeSuccess', function() {
+                $scope.submit();
+            });
         }
     };
 
