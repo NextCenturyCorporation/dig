@@ -13,7 +13,14 @@ angular.module('digApp')
             filterStates: '='
         },
         templateUrl: 'components/date-filter/date-filter.partial.html',
+        controller: function($scope) {
+            $scope.dateToEjsString = function(date) {
+                return $filter('date')(date, 'yyyy-MM-dd');
+            };
+            $scope.dateFormat = 'MM/dd/yyyy';
+        },
         link: function($scope) {
+
             if($scope.filterStates[$scope.field]) {
                 if($scope.filterStates[$scope.field].beginDate) {
                     $scope.filterStates[$scope.field].beginDate = new Date($scope.filterStates[$scope.field].beginDate);
@@ -27,11 +34,6 @@ angular.module('digApp')
                     endDate: null
                 };
             }
-            $scope.dateFormat = 'MM/dd/yyyy';
-
-            $scope.dateToEjsString = function(date) {
-                return $filter('date')(date, 'yyyy-MM-dd');
-            };
         }
     };
 });
