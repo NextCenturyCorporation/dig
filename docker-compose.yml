@@ -11,7 +11,8 @@ digapp:
     IMAGE_SIM_PORT: '80'
     EUI_SEARCH_INDEX: 'dig-latest'
     BLUR_IMAGES: 'false'
-    MONGOHQ_URL: 'mongodb://mongodb/dig'
+    MONGOHQ_URL: 'mongodb://mongo/dig'
+    NODE_ENV: 'production'
 
 nginx:
   image: nginx
