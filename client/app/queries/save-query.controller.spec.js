@@ -144,6 +144,13 @@ describe('Controller: SaveQueryCtrl', function () {
         expect(scope.query.name).toEqual(scope.existingQuery.name);
     });
 
+    it('should reset query.name to blank value', function () {
+        scope.query.name = 'test';
+        scope.updateName();
+
+        expect(scope.query.name).toEqual('');
+    });
+
     it('should save, post, and call close() function', function () {
         $httpBackend.expectPOST('api/query').respond(200, {});
 

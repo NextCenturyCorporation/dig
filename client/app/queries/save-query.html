@@ -3,7 +3,9 @@
 </div>
 <div class="modal-body">
   <label>Previously saved queries:</label>
-  <select ng-options="result.name for result in queryResults" ng-model="existingQuery" ng-change="updateName()"></select>
+  <select ng-options="result.name for result in queryResults" size="10" ng-model="existingQuery" ng-change="updateName()">
+    <option value="">--- choose query ---</option>
+  </select>
   <br/><br/>
   <label>Name:</label><br/>
   <input type="text" ng-model="query.name">

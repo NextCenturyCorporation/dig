@@ -16,8 +16,10 @@ angular.module('digApp')
     });
 
     $scope.updateName = function() {
-        if($scope.existingQuery.name) {
+        if($scope.existingQuery && $scope.existingQuery.name) {
             $scope.query.name = $scope.existingQuery.name;
+        } else {
+            $scope.query.name = '';
         }
     };
 
@@ -46,5 +48,6 @@ angular.module('digApp')
     $scope.cancel = function () {
         $modalInstance.close();
     };
+
 
 }]);
