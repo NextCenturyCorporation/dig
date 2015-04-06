@@ -2,7 +2,10 @@
   <h3 class="modal-title">Save Query</h3>
 </div>
 <div class="modal-body">
-  <label>Name:</label>
+  <label>Previously saved queries:</label>
+  <select ng-options="result.name for result in queryResults" ng-model="existingQuery" ng-change="updateName()"></select>
+  <br/><br/>
+  <label>Name:</label><br/>
   <input type="text" ng-model="query.name">
   <br/><br/>
   <label>Frequency of Execution:</label><br/> 

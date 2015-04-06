@@ -35,6 +35,9 @@ exports.update = function(req, res) {
   Query.findById(req.params.id, function (err, query) {
     if (err) { return handleError(res, err); }
     if(!query) { return res.send(404); }
+    // clear out old filters if user wants to save over old query, otherwise old filters
+    // will be merged with new ones. 
+    if(req.body.filters) { query.filters = {}; }
     var updated = _.merge(query, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
