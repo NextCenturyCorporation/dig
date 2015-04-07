@@ -1,5 +1,5 @@
 digapp:
-  image: node:onbuild
+  build: dist
   ports:
     - "8080:8080"
   links:
