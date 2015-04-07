@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('digApp')
-.controller('QueriesCtrl', ['$scope', '$state', '$http', 'socket', 'User', 'euiConfigs',
-    function($scope, $state, $http, socket, User, euiConfigs) {
+.controller('QueriesCtrl', ['$scope', '$state', '$http', 'User', 'euiConfigs',
+    function($scope, $state, $http, User, euiConfigs) {
 
     $scope.currentUser = User.get();
     $scope.opened = [];
@@ -10,11 +10,12 @@ angular.module('digApp')
     $scope.facets = euiConfigs.facets;
 
 
-    $http.get('api/query/').
-        success(function(data) {
-            $scope.queryResults = data;
-            socket.syncUpdates('query', $scope.queryResults);
-        });
+    $scope.getQueries = function() {
+        $http.get('api/query/').
+            success(function(data) {
+                $scope.queryResults = data;
+            });
+    };
 
     $scope.toggleListItemOpened = function(index) {
         $scope.opened[index] = !($scope.opened[index]);
@@ -25,16 +26,15 @@ angular.module('digApp')
     };
 
     $scope.deleteQuery = function(id) {
-        $http.delete('api/query/' + id);
+        $http.delete('api/query/' + id).
+            success(function() {
+                $scope.getQueries();
+            });
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {
         $http.put('api/query/' + id, {frequency: selectedOption});
     };
-
-    $scope.$on('$destroy', function () {
-        socket.unsyncUpdates('query');
-    });
 
     $scope.runQuery = function(query) {
         $state.go('search.results.list', {
@@ -43,5 +43,7 @@ angular.module('digApp')
             location: true
         });
     };
+
+    $scope.getQueries();
 
 }]);

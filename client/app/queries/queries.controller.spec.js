@@ -4,7 +4,6 @@ describe('Controller: QueriesCtrl', function () {
 
     // load the controller's module
     beforeEach(module('digApp'));
-    beforeEach(module('socketMock'));
 
     var queryResults = 
     [
@@ -133,8 +132,9 @@ describe('Controller: QueriesCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
 
-    it('should make delete request with correct id', function () {
+    it('should make delete request with correct id and update queryResults', function () {
         $httpBackend.expectDELETE('api/query/1').respond(200, {});
+        $httpBackend.expectGET('api/query/').respond(200, queryResults);
 
         scope.deleteQuery(1);
         $httpBackend.flush();
