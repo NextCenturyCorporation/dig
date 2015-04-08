@@ -25,7 +25,7 @@ get_options() {
 	esac
     done
     # Locate conf dir
-    read -p "Location of config dir? [$DEFAULT_CFGDIR] " dirloc
+    read -e -p "Location of config dir? [$DEFAULT_CFGDIR] " dirloc
     CFGDIR=${dirloc:-$DEFAULT_CFGDIR}    
 }
 
