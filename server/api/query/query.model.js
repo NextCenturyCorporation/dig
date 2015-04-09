@@ -6,8 +6,9 @@ var Schema = mongoose.Schema;
 var QuerySchema = new Schema({
   name: String,
   searchTerms: String,
-  filters: Object,
-  includeMissing: Object,
+  filters: Schema.Types.Mixed,
+  includeMissing: Schema.Types.Mixed,
+  selectedSort: { order: String, title: String },
   email: { type: String, lowercase: true, index: true },
   createDate: Date,
   lastRunDate: Date,

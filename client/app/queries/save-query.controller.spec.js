@@ -33,6 +33,10 @@ describe('Controller: SaveQueryCtrl', function () {
         },
         'email': 'test@test.com',
         'frequency': 'daily',
+        'selectedSort': {
+          'title':'Best Match',
+          'order':'rank'
+        },
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
@@ -56,13 +60,18 @@ describe('Controller: SaveQueryCtrl', function () {
         },
         'email': 'test@test.com',
         'frequency': 'daily',
+        'selectedSort': {
+          'title':'Best Match',
+          'order':'rank'
+        },
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       }
     ];
 
     // instantiate service
-    var SaveQueryCtrl, scope, modalInstance, http, window, $httpBackend, mockUser, queryString, filterStates, includeMissing;
+    var SaveQueryCtrl, scope, modalInstance, http, window, $httpBackend, mockUser, 
+        queryString, filterStates, includeMissing, selectedSort;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -70,11 +79,13 @@ describe('Controller: SaveQueryCtrl', function () {
         queryString = 'search terms';
         filterStates = {'filter': 'option'};
         includeMissing = {'aggregations': {}, 'allIncludeMissing': false};
+        selectedSort =  {'title':'Newest First','order':'desc'};
 
         module(function($provide) {
             $provide.constant('queryString', queryString);
             $provide.constant('filterStates', filterStates);
             $provide.constant('includeMissing', includeMissing);
+            $provide.constant('selectedSort', selectedSort);
         });
 
         inject(function ($controller, $rootScope, _$httpBackend_, $http, $window) {
@@ -123,6 +134,10 @@ describe('Controller: SaveQueryCtrl', function () {
 
     it('should initialize includeMissing to correct value', function () {
         expect(scope.includeMissing).toBe(includeMissing);
+    });
+
+    it('should initialize selectedSort to correct value', function () {
+        expect(scope.selectedSort).toBe(selectedSort);
     });
 
     it('should initialize user', function () {

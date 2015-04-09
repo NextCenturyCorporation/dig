@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$timeout',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, $timeout) {
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -14,6 +14,28 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
+
+    $scope.saveQuery = function() {
+        $modal.open({
+            templateUrl: 'app/queries/save-query.html',
+            controller: 'SaveQueryCtrl',
+            resolve: {
+                queryString: function() {
+                    return $scope.queryString.submitted;
+                },
+                filterStates: function() {
+                    return $scope.filterStates;
+                },
+                includeMissing: function() {
+                    return $scope.includeMissing;
+                }, 
+                selectedSort: function() {
+                    return $scope.selectedSort;
+                }
+            },
+            size: 'sm'
+        });
+    };
 
     $scope.init = function() {
         $scope.showresults = false;
@@ -29,6 +51,8 @@ angular.module('digApp')
             aggregations: {},
             allIncludeMissing: false
         };
+
+        $scope.selectedSort = {};
 
         if($state.params && $state.params.query) {
             $scope.showresults = true;
@@ -52,29 +76,14 @@ angular.module('digApp')
                 $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
             }
 
+            if($state.params.query.selectedSort) {
+                $scope.selectedSort = _.cloneDeep($state.params.query.selectedSort);
+            }   
+
             $scope.$on('$locationChangeSuccess', function() {
                 $scope.submit();
             });
         }
-    };
-
-    $scope.saveQuery = function() {
-        $modal.open({
-            templateUrl: 'app/queries/save-query.html',
-            controller: 'SaveQueryCtrl',
-            resolve: {
-                queryString: function() {
-                    return $scope.queryString.submitted;
-                },
-                filterStates: function() {
-                    return $scope.filterStates;
-                },
-                includeMissing: function() {
-                    return $scope.includeMissing;
-                }
-            },
-            size: 'sm'
-        });
     };
 
     $scope.removeAggFilter = function(key1, key2) {

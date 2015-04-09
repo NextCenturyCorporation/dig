@@ -1,0 +1,13 @@
+<div ng-show="euiConfigs.sort.field" class="btn-group pull-right">
+  <label>Sort by</label>
+  <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
+    {{title}}
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="sortMenu" aria-labelledby="sortMenu">
+    <li ng-repeat="option in sortOptions track by $index" role="presentation" ng-class="{active: option.order === order}" ng-click="switchSort($index)">
+      <a role="menuitem" tabindex="-1" href="#">{{option.title}}</a>
+    </li>
+  </ul>
+  <div eui-sort="ejs.Sort(euiConfigs.sort.field).order(euiSortOrder)" eui-enabled="validSortOrder(order)"></div>
+</div>

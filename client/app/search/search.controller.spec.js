@@ -422,6 +422,23 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.queryString.submitted).toBe('');
     });
 
+    it('should make call to open modal', function () {
+        var modalParameters = {
+            templateUrl: 'app/queries/save-query.html',
+            controller: 'SaveQueryCtrl',
+            resolve: {
+                queryString: jasmine.any(Function),
+                filterStates: jasmine.any(Function),
+                includeMissing: jasmine.any(Function), 
+                selectedSort: jasmine.any(Function)
+            },
+            size: 'sm'
+        };
+
+        scope.saveQuery();
+        expect(modal.open).toHaveBeenCalledWith(modalParameters);
+    });
+
     it('should remove correct aggFilter', function () {
         scope.filterStates.aggFilters['test'] = {};
         scope.filterStates.aggFilters['test']['value1'] = true; 
