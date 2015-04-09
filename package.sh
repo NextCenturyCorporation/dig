@@ -1,32 +1,58 @@
 #!/bin/bash
+## DEFAULTS
+DEFAULT_INSTALL_PATH=/usr/local/dig
+DEFAULT_CFGDIR=./conf
+
+## FLAGS
+RMDIR=1
+INTERACTIVE=0
 
 DISTFILES=dist/
 DOCKER_COMPOSE_FILE=docker-compose.yml
-DEFAULT_INSTALL_PATH=/usr/local/dig
-DEFAULT_CFGDIR=./conf
-RMDIR=1
 TEMP_DIR=$(mktemp -d)
+
 
 cleanup() {
     [[ $RMDIR ]] && rm -rf ${TEMP_DIR}
     exit 0
 }
 
+help() {
+cat <<EOF
+Usage
+-i Interactive mode, you will be prompted for configuration values
+-c Set the config dir to use
+-k Don't delete the temp directory after running
+-h This message
+EOF
+exit 0
+}
+
 get_options() {
-    while getopts ":k" opt; do
+    while getopts ":kic:h" opt; do
 	case $opt in
 	    k)
 		echo "Not removing temporary directory: ${TEMP_DIR}"
 		unset RMDIR
 		;;
+	    i)
+		echo "Runing in Interactive Mode..."
+		INTERACTIVE=1
+		;;
+	    c)
+		CFGDIR=$OPTARG
+		;;
 	    \?)
 		echo "INVALID OPTION: -$OPTARG" >&2
+		help
+		;;
+	    h)
+		help
 		;;
 	esac
     done
     # Locate conf dir
-    read -e -p "Location of config dir? [$DEFAULT_CFGDIR] " dirloc
-    CFGDIR=${dirloc:-$DEFAULT_CFGDIR}    
+
 }
 
 copy_files() {
@@ -48,6 +74,17 @@ EOF
     cp docker-compose.yml ${TEMP_DIR}
 }
 
+configure_settings() {
+    if [[ $INTERACTIVE -eq 1 ]]; then
+	echo "Settings have been configured interactively"
+	read -e -p "Location of config dir? [$DEFAULT_CFGDIR] " CFGDIR
+	CFGDIR=${CFGDIR:-$DEFAULT_CFGDIR}    
+    else
+	CFGDIR=${CFGDIR:-$DEFAULT_CFGDIR}
+	echo "Settings will be set using cmdline options"
+    fi
+}
+
 create_package() {
     makeself --notemp ${TEMP_DIR} dig_deploy.sh "Deployment package for DIG" ./bootstrap.sh
 }
@@ -55,7 +92,8 @@ create_package() {
 
 
 
-get_options
+get_options $@
+configure_settings
 copy_files
 create_package
 cleanup
