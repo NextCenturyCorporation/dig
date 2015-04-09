@@ -7,7 +7,7 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, state, modal, blurImageSvcMock;
+    var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock;
 
     var sampleDoc = {
         "_index": "dig",
@@ -355,6 +355,8 @@ describe('Controller: SearchCtrl', function () {
         });
 
         inject(function ($controller, $rootScope, $state, $modal, _$httpBackend_, _imageSearchService_) {
+
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             state = $state;
             modal = $modal;
@@ -379,6 +381,8 @@ describe('Controller: SearchCtrl', function () {
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
+            $httpBackend.when('GET', new RegExp('app/search/search-results/search-results.partial.html'))
+                .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
@@ -400,8 +404,100 @@ describe('Controller: SearchCtrl', function () {
                 page: 1,
                 query: 'someValue'
             };
+
             scope.$digest();
         });
+
+    });
+
+    it('should initialize variables based on state params', function() {
+        inject(function($controller) {
+            state.params = {
+                query: { 
+                    _id: 1,
+                    name: 'Query #1',
+                    searchTerms: 'bob smith',
+                    filters: {
+                        aggFilters: {
+                            city_agg: {
+                              'LittleRock': true,
+                              'FortSmith': true
+                            }
+                        },
+                        textFilters: {
+                            phonenumber: {
+                              live: '',
+                              submitted: ''
+                            }
+                        },
+                        dateFilters: {
+                            dateCreated: {
+                              beginDate: null,
+                              endDate: null
+                            }
+                        }
+                    },
+                    email: 'test@test.com',
+                    includeMissing: {
+                        allIncludeMissing : false, 
+                        aggregations : { 
+                            city_agg : { 
+                                active : true 
+                            } 
+                        } 
+                    },
+                    frequency: 'daily',
+                    selectedSort: {
+                        title:'Best Match',
+                        order:'rank'
+                    },
+                    createDate: '2015-04-01T20:13:11.093Z',
+                    lastRunDate: '2015-04-01T20:13:11.093Z'
+                }    
+            };
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+        });
+    
+        expect(scope.showresults).toBe(true);
+        expect(scope.queryString.live).toBe(state.params.query.searchTerms);
+        expect(scope.queryString.submitted).toBe(state.params.query.searchTerms);
+        expect(scope.filterStates).toEqual(state.params.query.filters);
+        expect(scope.includeMissing).toEqual(state.params.query.includeMissing);
+        expect(scope.selectedSort).toEqual(state.params.query.selectedSort);
+
+    });
+
+    it('should not initialize query state if query params blank', function() {
+        inject(function($controller) {
+            state.params = {query: {filters: {}}};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+        });
+    
+        expect(scope.showresults).toBe(true);
+        expect(scope.queryString.live).toBe('');
+        expect(scope.queryString.submitted).toBe('');
+        expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}});
+        expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
+        expect(scope.selectedSort).toEqual({});
+
     });
 
     it('should call state.go with reload set to true', function () {

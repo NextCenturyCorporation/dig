@@ -29,6 +29,7 @@ Query.find({}).remove(function() {
     email: 'test@test.com',
     frequency: 'weekly',
     selectedSort: {"title":"Best Match","order":"rank"},
+    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
@@ -38,6 +39,7 @@ Query.find({}).remove(function() {
     email: 'test@test.com',
     frequency: 'daily',
     selectedSort: {"title":"Best Match","order":"rank"},
+    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
@@ -47,6 +49,7 @@ Query.find({}).remove(function() {
     email: 'test2@test.com',
     frequency: 'weekly',
     selectedSort: {"title":"Best Match","order":"rank"},
+    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
     createDate: new Date(),
     lastRunDate: new Date()
   }, function() {
