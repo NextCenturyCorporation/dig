@@ -26,7 +26,7 @@ angular.module('digApp')
 
     $scope.saveQuery = function() {
         $scope.query.searchTerms = $scope.queryString;
-        $scope.query.email = $scope.currentUser.email;
+        $scope.query.username = $scope.currentUser.username;
         $scope.query.filters = $scope.filterStates;
         $scope.query.includeMissing = $scope.includeMissing;
         $scope.query.createDate = new Date();

@@ -31,7 +31,7 @@ describe('Controller: SaveQueryCtrl', function () {
             }
           }
         },
-        'email': 'test@test.com',
+        'username': 'test',
         'frequency': 'daily',
         'selectedSort': {
           'title':'Best Match',
@@ -58,7 +58,7 @@ describe('Controller: SaveQueryCtrl', function () {
             }
           }
         },
-        'email': 'test@test.com',
+        'username': 'test',
         'frequency': 'daily',
         'selectedSort': {
           'title':'Best Match',
@@ -99,7 +99,7 @@ describe('Controller: SaveQueryCtrl', function () {
 
             mockUser = {
                 get: function() {
-                    return {'email': 'test@test.com'};
+                    return {'username': 'test'};
                 }
             };
 
@@ -141,7 +141,7 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should initialize user', function () {
-        expect(scope.currentUser).toEqual({'email': 'test@test.com'});
+        expect(scope.currentUser).toEqual({'username': 'test'});
     });
 
     it('should initialize query to correct value', function () {

@@ -437,7 +437,7 @@ describe('Controller: SearchCtrl', function () {
                             }
                         }
                     },
-                    email: 'test@test.com',
+                    username: 'test',
                     includeMissing: {
                         allIncludeMissing : false, 
                         aggregations : { 

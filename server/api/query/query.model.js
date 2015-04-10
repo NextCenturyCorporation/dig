@@ -9,7 +9,7 @@ var QuerySchema = new Schema({
   filters: Schema.Types.Mixed,
   includeMissing: Schema.Types.Mixed,
   selectedSort: { order: String, title: String },
-  email: { type: String, lowercase: true, index: true },
+  username: { type: String, index: true },
   createDate: Date,
   lastRunDate: Date,
   frequency: String

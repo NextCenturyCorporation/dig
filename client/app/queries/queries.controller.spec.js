@@ -31,7 +31,7 @@ describe('Controller: QueriesCtrl', function () {
             }
           }
         },
-        'email': 'test@test.com',
+        'username': 'test',
         'frequency': 'daily',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
@@ -54,7 +54,7 @@ describe('Controller: QueriesCtrl', function () {
             }
           }
         },
-        'email': 'test@test.com',
+        'username': 'test',
         'frequency': 'daily',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
@@ -82,7 +82,7 @@ describe('Controller: QueriesCtrl', function () {
 
             mockUser = {
                 get: function() {
-                    return {'email': 'test@test.com'};
+                    return {'username': 'test'};
                 }
             };
 
@@ -111,7 +111,7 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should initialize user', function () {
-        expect(scope.currentUser).toEqual({'email': 'test@test.com'});
+        expect(scope.currentUser).toEqual({'username': 'test'});
     });
 
     it('should initialize scope.frequencyOptions', function () {
