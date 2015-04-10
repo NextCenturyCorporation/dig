@@ -11,13 +11,13 @@ var validationError = function(res, err) {
  * Get my info
  */
 exports.me = function(req, res, next) {
-  var userEmail = req.headers.user;
+  var userId = req.headers.user;
   User.findOne({
-    email: userEmail
+    username: userId
   }, function(err, user) {
     if (err) return next(err);
     if (!user) {
-      user = new User({email: req.headers.user});
+      user = new User({username: req.headers.user});
       user.save(function(createErr) {
         if(createErr) return next(createErr);
       });

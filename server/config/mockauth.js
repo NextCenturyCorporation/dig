@@ -3,7 +3,7 @@
 */
 module.exports = function(req, res, next) {       
     if(!req.headers.user) {
-        req.headers.user = 'test@test.com';
+        req.headers.user = 'test';
     }
     next();          
 }
