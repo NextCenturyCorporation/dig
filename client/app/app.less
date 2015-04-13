@@ -27,6 +27,7 @@ body{
 	font-family: 'Lato', sans-serif;
 }
 
+
 /**
  * navbar styling
  */
@@ -36,7 +37,7 @@ body{
 }
 
 .navbar-brand, li a {
-    padding-top: 0px;
+    padding-top: 5px;
 }
 
 /* Typography */
@@ -125,7 +126,7 @@ hr{
 }
 .right-column{
 	box-shadow: -1px 0 0 #ddd8d4;
-
+	
 }
 .left-column{
 	border-right: 1px solid #ddd8d4;
@@ -368,7 +369,7 @@ label{
 }
 
 .btn-settings {
-	position: relative;
+	position: relative; 
 	padding-top: 10px;
 	color: #cccccc;
 	background: #f4efec;
@@ -397,6 +398,8 @@ label{
 
 
 // injector
+@import 'queries/queries.less';
+@import 'queries/save-query.less';
 @import 'search/search-error/search-error.less';
 @import 'search/search-results/gallery/image-gallery.less';
 @import 'search/search.less';
