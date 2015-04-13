@@ -89,9 +89,16 @@ create_package() {
     makeself --notemp ${TEMP_DIR} dig_deploy.sh "Deployment package for DIG" ./bootstrap.sh
 }
 
-
-
-
+welcome() {
+    cat <<EOF
+** WARNING **
+Make sure that you have rebuilt the project with 'grunt build' before packaging!
+If you have not, hit Ctrl-c and rebuild
+(continuing in 5s)
+EOF
+sleep 5s
+}
+welcome
 get_options $@
 configure_settings
 copy_files
