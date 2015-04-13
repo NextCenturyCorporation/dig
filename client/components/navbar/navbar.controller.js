@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-  .controller('NavbarCtrl', function ($scope, $location) {
+  .controller('NavbarCtrl', function ($scope, $location, User) {
     $scope.menu = [
     {
       'title': 'Home',
@@ -11,6 +11,7 @@ angular.module('digApp')
     }];
 
     $scope.isCollapsed = true;
+    $scope.getCurrentUser = User.get();
 
     $scope.isActive = function(route) {
       return route === $location.path();
