@@ -27,3 +27,10 @@ nginx:
 
 mongo:
   image: mongo
+  volumes_from:
+    - mongodata
+
+mongodata:
+  image: busybox
+  volumes:
+    - /data/db/
