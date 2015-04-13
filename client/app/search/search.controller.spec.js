@@ -412,6 +412,7 @@ describe('Controller: SearchCtrl', function () {
 
     it('should initialize variables based on state params', function() {
         inject(function($controller) {
+            state.current.name = 'search.results.list';
             state.params = {
                 query: { 
                     _id: 1,
@@ -466,8 +467,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
 
         });
-    
-        expect(scope.showresults).toBe(true);
+
         expect(scope.queryString.live).toBe(state.params.query.searchTerms);
         expect(scope.queryString.submitted).toBe(state.params.query.searchTerms);
         expect(scope.filterStates).toEqual(state.params.query.filters);
@@ -491,7 +491,6 @@ describe('Controller: SearchCtrl', function () {
 
         });
     
-        expect(scope.showresults).toBe(true);
         expect(scope.queryString.live).toBe('');
         expect(scope.queryString.submitted).toBe('');
         expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}});
