@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
+var mockAuth = require('./mockauth.js');
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -40,6 +41,7 @@ module.exports = function(app) {
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
+    app.use(mockAuth);
     app.use(errorHandler()); // Error handler - has to be last
   }
 };

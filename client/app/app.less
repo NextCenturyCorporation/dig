@@ -32,23 +32,12 @@ body{
  * navbar styling
  */
 .navbar {
-	margin-bottom: 0px;
-	min-height: 0px;
+    margin-bottom: 0px;
+    border-bottom: 0px;
 }
 
-.navbar-inner {
-    min-height: 0px;
-}
-
-.nav, .navbar-brand,
-.navbar-nav, .navbar-default, .navbar-static-top li a {
-    line-height: 30px;
-    height: 30px;
-    padding-top: 0;
-}
-
-.navbar-brand {
-	margin-top: -15px;
+.navbar-brand, li a {
+    padding-top: 5px;
 }
 
 /* Typography */
@@ -137,7 +126,7 @@ hr{
 }
 .right-column{
 	box-shadow: -1px 0 0 #ddd8d4;
-
+	
 }
 .left-column{
 	border-right: 1px solid #ddd8d4;
@@ -380,7 +369,7 @@ label{
 }
 
 .btn-settings {
-	position: relative;
+	position: relative; 
 	padding-top: 10px;
 	color: #cccccc;
 	background: #f4efec;
@@ -409,6 +398,8 @@ label{
 
 
 // injector
+@import 'queries/queries.less';
+@import 'queries/save-query.less';
 @import 'search/search-error/search-error.less';
 @import 'search/search-results/gallery/image-gallery.less';
 @import 'search/search.less';

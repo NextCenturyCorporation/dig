@@ -7,6 +7,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <div class="navbar-brand">
+        <img src="/assets/images/dig-logo-40pxh.png" alt="">
+      </div>
     </div>
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
@@ -17,6 +20,29 @@
             <a ng-href="{{item.link}}" target="_self" ng-if="item.reload">
                 {{item.title}} <span class="{{item.icon}}"></span>
             </a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><p class="navbar-text">Hello {{ getCurrentUser.username }}</p> </li>
+        <li>
+          <a href="#" class="dropdown-toggle" id="settingsMenu" data-toggle="dropdown" aria-expanded="false">
+            <span class="glyphicon glyphicon-cog">
+          </a>
+          <ul class="dropdown-menu" role="settingsMenu" aria-labelledby="settingsMenu">
+            <li role="setting">
+              <a role="menuitem" tabindex="-1" ng-href="#"  ng-click="changeBlur()">
+                <span ng-if="isBlurred"><input type="checkbox" ng-checked="true"></span>
+                <span ng-if="!isBlurred"><input type="checkbox" ng-checked="false"></span>
+                Blur Images
+              </a>
+            </li>
+            <li class="divider"></li>
+            <li role="setting">
+              <a role="menuitem" tabindex="-1" ng-href="#" ng-click="openAbout()">
+                About DIG
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

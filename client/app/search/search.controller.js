@@ -4,13 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'blurImageService',
-    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs, blurImageService) {
-    $scope.showresults = false;
-    $scope.queryString = {
-        live: '',
-        submitted: ''
-    };
+.controller('SearchCtrl', ['$scope', '$state', '$http', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
+    function($scope, $state, $http, $modal, imageSearchService, euiSearchIndex, euiConfigs) {
     $scope.loading = false;
     $scope.imagesimLoading = false;
     $scope.searchConfig = {};
@@ -19,28 +14,77 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.filterStates = {
-        aggFilters: {},
-        textFilters: {},
-        dateFilters: {}
-    };
-    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur' || blurImageService.getBlurImagesEnabled() === 'pixelate';
-    $scope.includeMissing = {
-        aggregations: {},
-        allIncludeMissing: false
-    };
 
-    $scope.changeBlur = function() {
-        $scope.isBlurred = !$scope.isBlurred;
-        blurImageService.changeBlurImagesEnabled($scope.isBlurred);
-    };
-
-    $scope.openAbout = function() {
+    $scope.saveQuery = function() {
         $modal.open({
-          templateUrl: 'app/about/about.html',
-          controller: 'AboutCtrl',
-          size: 'sm'
+            templateUrl: 'app/queries/save-query.html',
+            controller: 'SaveQueryCtrl',
+            resolve: {
+                queryString: function() {
+                    return $scope.queryString.submitted;
+                },
+                filterStates: function() {
+                    return $scope.filterStates;
+                },
+                includeMissing: function() {
+                    return $scope.includeMissing;
+                }, 
+                selectedSort: function() {
+                    return $scope.selectedSort;
+                }
+            },
+            size: 'sm'
         });
+    };
+
+    $scope.init = function() {
+        $scope.showresults = false;
+        $scope.queryString = {
+            live: '', submitted: ''
+        };
+        $scope.filterStates = {
+            aggFilters: {},
+            textFilters: {},
+            dateFilters: {}
+        };
+        $scope.includeMissing = {
+            aggregations: {},
+            allIncludeMissing: false
+        };
+
+        $scope.selectedSort = {};
+
+        if($state.params && $state.params.query) {
+
+            if($state.params.query.searchTerms) {
+                $scope.queryString.live = $state.params.query.searchTerms;
+            }
+
+            if($state.params.query.filters.aggFilters) {
+                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.filters.aggFilters);
+            }
+            if($state.params.query.filters.textFilters) {
+                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.filters.textFilters);
+            }
+
+            if($state.params.query.filters.dateFilters) {
+                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.filters.dateFilters);
+            }
+            
+            if($state.params.query.includeMissing) {
+                $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
+            }
+
+            if($state.params.query.selectedSort) {
+                $scope.selectedSort = _.cloneDeep($state.params.query.selectedSort);
+            }   
+
+            $scope.$on('$locationChangeSuccess', function() {
+                if($state.current.name === 'search.results.list') {
+                    $scope.submit();
+                }
+            });
+        }
     };
 
     $scope.removeAggFilter = function(key1, key2) {
@@ -61,7 +105,7 @@ angular.module('digApp')
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
-
+    
     $scope.removeTextFilter = function(textKey) {
         $scope.filterStates.textFilters[textKey].live = '';
         $scope.filterStates.textFilters[textKey].submitted = '';
@@ -201,4 +245,6 @@ angular.module('digApp')
     if($state.current.name === 'search') {
         $scope.viewList();
     }
+
+    $scope.init();
 }]);
