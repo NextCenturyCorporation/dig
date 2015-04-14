@@ -59,7 +59,7 @@ copy_files() {
     cp bootstrap.sh ${TEMP_DIR}
     cat > ${TEMP_DIR}/run.sh <<EOF
 #!/bin/bash
-./docker-compose up
+./docker-compose up -d
 EOF
     chmod +x ${TEMP_DIR}/bootstrap.sh
     chmod +x ${TEMP_DIR}/run.sh
