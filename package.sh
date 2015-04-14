@@ -3,6 +3,9 @@
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
 
+FILES_TO_COPY=(bootstrap.sh run.sh scripts/backupdb.sh docker-compose.yml)
+EXECUTABLES=(bootstrap.sh run.sh backupdb.sh)
+
 ## FLAGS
 RMDIR=1
 INTERACTIVE=0
@@ -56,13 +59,20 @@ get_options() {
 }
 
 copy_files() {
-    cp bootstrap.sh ${TEMP_DIR}
     cat > ${TEMP_DIR}/run.sh <<EOF
 #!/bin/bash
 ./docker-compose up -d
 EOF
-    chmod +x ${TEMP_DIR}/bootstrap.sh
-    chmod +x ${TEMP_DIR}/run.sh
+
+    for file in ${FILES_TO_COPY[*]}
+    do
+	cp $file ${TEMP_DIR}
+    done
+    for file in ${EXECUTABLES[*]}
+    do
+	chmod +x ${TEMP_DIR}/${file}
+    done
+
     cp -r dist/ ${TEMP_DIR}
     if [[ ! -d "${CFGDIR}" ]]; then
 	echo "Could not find config dir!"
@@ -71,7 +81,7 @@ EOF
 	echo "Found config dir, copying"
     fi
     cp -r ${CFGDIR} ${TEMP_DIR}
-    cp docker-compose.yml ${TEMP_DIR}
+
 }
 
 configure_settings() {
@@ -98,6 +108,7 @@ If you have not, hit Ctrl-c and rebuild
 EOF
 sleep 5s
 }
+
 welcome
 get_options $@
 configure_settings
