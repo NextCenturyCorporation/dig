@@ -12,7 +12,7 @@ INTERACTIVE=0
 
 DISTFILES=dist/
 DOCKER_COMPOSE_FILE=docker-compose.yml
-TEMP_DIR=$(mktemp -d)
+TEMP_DIR=$(mktemp -d /tmp/tmp.XXXXXXXXXX)
 
 
 cleanup() {
