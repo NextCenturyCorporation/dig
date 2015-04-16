@@ -11,7 +11,7 @@ angular.module('digApp')
     $scope.query = {name: '', frequency: 'daily'};
     $scope.currentUser = User.get();
 
-    $http.get('api/query/').
+    $http.get('api/queries/').
         success(function(data) {
             $scope.queryResults = data;
     });
@@ -35,10 +35,10 @@ angular.module('digApp')
 
         if($scope.existingQuery && $scope.existingQuery.name === $scope.query.name) {
             if($window.confirm('Are you sure you want to save over existing query \"' + $scope.query.name + '\"?')) {
-                $http.put('api/query/' + $scope.existingQuery._id, $scope.query);
+                $http.put('api/queries/' + $scope.existingQuery._id, $scope.query);
             }
         } else {
-            $http.post('api/query', $scope.query);
+            $http.post('api/queries', $scope.query);
         }
     };
 

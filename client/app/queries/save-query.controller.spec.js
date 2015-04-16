@@ -103,7 +103,7 @@ describe('Controller: SaveQueryCtrl', function () {
                 }
             };
 
-            $httpBackend.expectGET('api/query/').respond(200, queryResults);
+            $httpBackend.expectGET('api/queries/').respond(200, queryResults);
 
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
@@ -167,7 +167,7 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should save, post, and call close() function', function () {
-        $httpBackend.expectPOST('api/query').respond(200, {});
+        $httpBackend.expectPOST('api/queries').respond(200, {});
 
         scope.save();
         
@@ -182,7 +182,7 @@ describe('Controller: SaveQueryCtrl', function () {
 
         scope.existingQuery = queryResults[0];
         scope.query.name = 'Query #1';
-        $httpBackend.expectPUT('api/query/1', scope.query).respond(200, {});
+        $httpBackend.expectPUT('api/queries/1', scope.query).respond(200, {});
 
         scope.save();
         
