@@ -16,7 +16,7 @@
   
   <div class="col-md-7 col-lg-8">
     <h4>URL</h4>
-    <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
+    <a href="{{doc._source.isPartOf.url}}" target="_blank">{{doc._source.isPartOf.url || "N/A"}}</a>
     <div class="row">
       <div class="col-sm-6" ng-repeat="section in euiConfigs.listFields['full']">
         <dl class="{{section.classes}}">
@@ -28,6 +28,6 @@
         </dl>
       </div>
     </div>
-    <button type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">View Details</button>
+<!--     <button type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">View Details</button> -->
   </div>
 </div>

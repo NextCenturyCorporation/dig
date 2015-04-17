@@ -533,6 +533,123 @@ var all = {
                     }]
                 }
             }
+        },
+        'dig-atf-latest': {
+            facets: {
+                euiFilters: [],
+                //simFilter: {},
+                aggFilters: [{
+                    title: 'Firearm',
+                    type: 'eui-aggregation',
+                    field: 'weapon_agg',
+                    terms: 'weaponsMentioned',
+                    count: 20
+                },
+                {
+                    title: 'User',
+                    type: 'eui-aggregation',
+                    field: 'username_agg',
+                    terms: 'person_username',
+                    termsType: 'string',
+                    count: 20
+                },
+                {
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'provider_name',
+                    termsType: 'string',
+                    count: 10
+                }],                
+                dateFilters: [{
+                    title: 'Date',
+                    aggName: 'date_agg',
+                    field: 'dateCreated'
+                }]
+            },
+
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'User',
+                    field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                    classes: 'name'
+                },{
+                    title: 'Post Count',
+                    field: 'doc._source.hasFeatureCollection.person_postCount_feature.person_postCount',
+                    classes: 'name'
+                },{
+                    title: 'Enrollment Date',
+                    field: 'doc._source.hasFeatureCollection.enrollment_date_feature.enrollment_date',
+                    classes: 'date'
+                }],
+                full: {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'User',
+                            field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                        },{
+                            title: 'Price(s)',
+                            field: 'doc._source.hasFeatureCollection.pricesMentioned_feature.pricesMentioned',
+                            featureArray: 'doc._source.hasFeatureCollection.pricesMentioned_feature',
+                            featureValue: 'pricesMentioned'
+                        },{
+                            title: 'Address',
+                            field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.postalAddress',
+                        },{
+                            title: 'Firearm(s)',
+                            field: 'doc._source.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
+                            featureArray: 'doc._source.hasFeatureCollection.weaponsMentioned_feature',
+                            featureValue: 'weaponsMentioned'
+                        },{
+                            title: 'Post',
+                            field: "doc['_source']['hasBodyPart']['text']"
+                        },{
+                            title: 'Date',
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        }]
+                    }
+                }
+            },
+
+            detailFields: {
+                "1": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Date',
+                        field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        classes: 'date'
+                    },{
+                        title: 'Authors(s)',
+                        field: 'doc._source.hasFeatureCollection.author_feature.author',
+                        featureArray: 'doc._source.hasFeatureCollection.author_feature',
+                        featureValue: 'author'
+                    },{
+                        title: 'Affiliation',
+                        field: 'doc._source.hasFeatureCollection.affiliation_country_feature.affiliation_country',
+                        featureArray: 'doc._source.hasFeatureCollection.affiliation_country_feature',
+                        featureValue: 'affiliation_country'
+                    },{
+                        title: 'Compound(s)',
+                        field: 'doc._source.hasFeatureCollection.compound_feature.compound',
+                        featureArray: 'doc._source.hasFeatureCollection.compound_feature',
+                        featureValue: 'compound'
+                    },{
+                        title: 'Abstract',
+                        field: "doc['_source']['hasAbstractPart']['text']"
+                    }]
+                }
+            }
         }
     }
 };
