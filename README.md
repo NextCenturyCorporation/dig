@@ -1,12 +1,14 @@
 #dig
 =========
 
-This is the software project for Dig search application.
+DIG is a visual analysis tool based on a faceted search engine that enables rapid, interactive exploration of large data sets. Users refine their queries by entering search terms or selecting values from lists of aggregated attributes. DIG can be quickly configured for a new domain through simple configuration. 
 
 Prerequisites:
 - node.js
 - grunt-cli installed globally (npm i -g grunt-cli)
 - bower installed globally (npm i -g bower)
+- MongoDB
+- Elasticsearch
 
 To use the yeoman angular-fullstack-generator to create new components for
 the application, see the documentation at 
@@ -20,6 +22,8 @@ When cloning this repository for the first time, run these two commands:
   
   `npm install`
 
+  `bower install`
+
 The workflow is:
   
   `grunt serve # starts the server and opens up the home page in your browser`
@@ -31,6 +35,15 @@ The workflow is:
 Once the server is started with grunt, when you modify the
 application, the browser will refresh and show those changes.
 
+To package the application for deployment:
+
+  `grunt build # builds the application and prepares the dist/ directory`
+
+  `bash ./package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
+
+The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will extract the dig application and download docker-compose into a directory called `dig/`.  Inside the `dig/` directory is `run.sh` which can be used to run the dig application as a daemon.
+
+All configuration for dig is done by modifying the docker-compose.yml file in the `dig/` directory.
 
 
 Configuration:
