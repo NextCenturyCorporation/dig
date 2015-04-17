@@ -7,8 +7,14 @@ Prerequisites:
 - node.js
 - grunt-cli installed globally (npm i -g grunt-cli)
 - bower installed globally (npm i -g bower)
-- MongoDB
+- MongoDB (http://docs.mongodb.org/manual/installation/)
 - Elasticsearch
+
+Elasticsearch Setup:
+
+Refer to installation instructions at www.elastic.co/downloads/elasticsearch. DIG can be configured and used with any document corpus which can be loaded and indexed into elasticsearch. If the elasticsearch server is installed on a host machine other than the machine which dig executes, it will be necessary to either configure a reverse proxy and DIG to direct all elasticsearch requests through the proxy first, or to enable CORS in elasticsearch (refer to elasticsearch reference).
+A sample data set and installer can be used in initialize elasticsearch. This is found in dig/data/ import_test_data.sh.
+
 
 To use the yeoman angular-fullstack-generator to create new components for
 the application, see the documentation at 
@@ -34,6 +40,26 @@ The workflow is:
 
 Once the server is started with grunt, when you modify the
 application, the browser will refresh and show those changes.
+
+Various application parameters can be configured via environment variables - these parameters are assigned default values in server/config/environment/index.js.  The values in the files development.js and production.js override the values in index.js when DIG is run in development and production mode, respectively.  The parameters are:
+
+- NODE_ENV: determines whether DIG runs in production or development mode (default: 'development')
+- PORT: The port on which the application listens for browser requests (default: 9000)
+- EUI_SERVER_URL: The base URL at which ELasticsearch can be found (default: 'http://localhost')
+- EUI_SERVER_PORT: The port on which to connect to Elasticsearch (default: 9200)
+- EUI_SEARCH_INDEX: The name of the Elasticsearch index (default: 'dig')
+- BLUR_IMAGES: Determines whether images linked to in the Elasticsearch data are blurred in the user interface (default: 'blur')
+- BLUR_PERCENT: Set the amount of image blurring (default: 2.5)
+- MONGOHQ_URL: The MongoDB connection string (default: 'mongodb://localhost/dig').  In development mode, this variable is ignored and the MongoDB URL is set to 'mongodb://localhost/dig-dev'
+
+
+MongoDB is used to store relevant data for users.
+
+When running in development mode:
+The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in server/config/seed.js. 
+
+Similarly, in a production environment a user would be supplied in the request header, but in development, the header will be auto populated with the mock user specified in the seed.js file. 
+
 
 To package the application for deployment:
 
