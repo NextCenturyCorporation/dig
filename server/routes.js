@@ -17,15 +17,6 @@ module.exports = function(app) {
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
     .get(errors[404]);
 
-    app.route('*')
-    .get(function(req, res, next) {
-        if(req.headers.user) {
-            next();
-        } else {
-            res.status(401).send('no username present');
-        }
-    });
-
     app.get('/config/?', function(req, res) {
         var configResponse = {
             euiHost: config.euiServerUrl,
