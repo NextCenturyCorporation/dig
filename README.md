@@ -172,13 +172,14 @@ as bold text or with a title CSS style.
 
 Descriptions for the configuration object attributes in the JSON block above are provided below:
 
-|Key|Description|Examples|
-|+--|+----------|--------|
-|classes|A list of CSS class names to use on this element|title alert|
-|field|A document field value to display.  Use this for primitive values| doc.name|
-|fieldArray|A document array value to display.  Use this for multi-valued fields.| doc.aliases|
-|fieldArray|An object attribute.  This is necessary if fieldArray contains objects instead of primitives|value|
-|title|A descriptive label to identify a field|Source, Url, Name|
+| Key  | Description  | Examples |
+| :------------ | :--------------- | :----- |
+| classes | A list of CSS class names to use on this element | title alert |
+| field  | A document field value to display.  Use this for primitive values  | doc.name |
+| fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
+| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value |
+| title | A descriptive label to identify a field | Source, URL, Name |
+
 
 > Both field and fieldArray can be defined.  This is useful for result attributes that
 > may be returned as either a single value OR an array of values, potentially named
@@ -224,14 +225,14 @@ organized into multiple sections of one or more result fields.
 
 Descriptions for the configuration object attributes in the JSON block above are provided below:
 
-|Key|Description|Examples|
-|+--|+----------|--------|
-|classes|A list of CSS class names to use on this element|title alert|
-|field|A document field value to display.  Use this for primitive values| doc.name|
-|fieldArray|A document array value to display.  Use this for multi-valued fields.| doc.aliases|
-|fieldArray|An object attribute.  This is necessary if fieldArray contains objects instead of primitives|value|
-|hideIfMissing|Boolean value; true, if this field and its label should be hidden when either field or fieldArray is undefined in a result|
-|title|A descriptive label to identify a field|Source, Url, Name|
+| Key  | Description  | Examples |
+| :------------ | :--------------- | :----- |
+| classes | A list of CSS class names to use on this element | title alert |
+| field  | A document field value to display.  Use this for primitive values  | doc.name |
+| fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
+| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value |
+| hideIfMissing |Boolean value; true, if this field and its label should be hidden when either field or fieldArray is undefined in a result | true, false |
+| title | A descriptive label to identify a field | Source, URL, Name |
 
 > Both field and fieldArray can be defined.  This is useful for result attributes that
 > may be returned as either a single value OR an array of values, potentially named
