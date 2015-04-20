@@ -1,16 +1,34 @@
-#dig
-=========
+# DIG
 
-This is the software project for Dig search application.
+DIG is a visual analysis tool based on a faceted search engine that enables rapid, interactive exploration of large data sets. Users refine their queries by entering search terms or selecting values from lists of aggregated attributes. DIG can be quickly configured for a new domain through simple configuration. 
 
-##Prerequisites
+## Prerequisites
 - [node.js]
 - [grunt-cli] installed globally (npm i -g grunt-cli)
 - [Bower] installed globally (npm i -g bower)
+- [mongoDB] [installed locally for development](http://docs.mongodb.org/manual/installation/)
+- [Elasticsearch]
 
-To use the yeoman angular-fullstack-generator to create new components for
-the application, see the documentation at
-[AngularJS Full-Stack Generator] which has useful generators to
+### mongoDB Notes
+
+MongoDB is used to store relevant data for users.
+
+When running in development mode:
+The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in server/config/seed.js. 
+
+Similarly, in a production environment a user would be supplied in the request header, but in development, the header will be auto populated with the mock user specified in the seed.js file. 
+
+### Elasticsearch Setup
+
+Refer to installation instructions at www.elastic.co/downloads/elasticsearch. DIG can be configured and used with any document corpus which can be loaded and indexed into Elasticsearch. If the Elasticsearch server is installed on a host machine other than the machine which dig executes, it will be necessary to either configure a reverse proxy and DIG to direct all Elasticsearch requests through the proxy first, or to enable CORS in Elasticsearch (refer to Elasticsearch reference).
+A sample data set and installer can be used in initialize Elasticsearch. This is found in dig/data/ import_test_data.sh.
+Depending on the version of Elasticsearch (>= 1.4.x), it may be necessary to add add **http.cors.enabled : true** to elasticsearch.yml in the config directory of Elasticsearch
+
+# Contributing to DIG
+
+[dig] is built upon the [Yoeman] based [AngularJS Full-Stack Generator]. To use the yeoman angular-fullstack-generator to create new components for
+this application, see the documentation at
+[documentation][AngularJS Full-Stack Generator] which has useful generators to
 create angular.js elements such as models, views, controllers, routes,
 directives, factories, etc.
 
@@ -33,6 +51,23 @@ The workflow is:
 Once the server is started with grunt, when you modify the
 application, the browser will refresh and show those changes.
 
+## Setting Your Environment Variables
+
+Various application parameters can be configured via environment variables - these parameters are assigned default values in server/config/environment/index.js.  The values in the files development.js and production.js override the values in index.js when DIG is run in development and production mode, respectively.  The parameters are:
+
+| Variable  | Default  Value | Description |
+| :------------ | :--------------- | :----- |
+| NODE_ENV | 'development' | Determines whether DIG runs in production or development mode.  ['development, 'test', 'production'] |
+| PORT | 9000 | The port on which the application listens for browser requests |
+| EUI_SERVER_URL | 'http://localhost' | The base URL at which [Elasticsearch] can be found |
+| EUI_SERVER_PORT | 9200 | The port on which to connect to [Elasticsearch] |
+| EUI_SEARCH_INDEX | 'dig' | The name of the [Elasticsearch] index |
+| BLUR_IMAGES | 'blur' | Determines whether images linked to the [Elasticsearch] data are blurred in the user interface |
+| BLUR_PERCENT | 2.5 | The amount of image blurring |
+| MONGOHQ_URL | 'mongodb://localhost/dig-dev' | In development mode, this variable is ignored and the default value is used |
+
+
+## Deployment
 
 To package the application for deployment:
 
@@ -42,20 +77,19 @@ To package the application for deployment:
 
 The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will extract the dig application and download docker-compose into a directory called `dig/`.  Inside the `dig/` directory is `run.sh` which can be used to run the dig application as a daemon.
 
-All configuration for dig is done by modifying the docker-compose.yml file in the `dig/` directory.
+All deployment configuration for dig is done by modifying the docker-compose.yml file in the `dig/` directory.
 
+## Configuration Files
+This section of the [dig] README will highlight [dig]-specific configuration elements.
 
-##Configuration
-The [dig] project was seeded by the [Yoeman] based [AngularJS Full-Stack Generator]. The overall maintenance of the project structure and new module generation is facilitated by those tools.  To understand the full suite of configuration options, please review their documentation.  This section of the [dig] README will highlight [dig]-specific configuration elements.
-
-### Configuration File Overview
-[dig] generally manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [dig] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST enpoint that returns all UI configuration elements within a JSON object.
+### Overview
+[dig] manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [dig] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST enpoint that returns all UI configuration elements within a JSON object.
 
 The UI is built upon the [AngularJS] framework and loads configuration variables during the bootstrapping phase of [dig]'s [AngularJS] application.  The [dig] app pulls variabes via the `/config` REST endpoint and stores them as [AngularJS] constants or values.
 
 ### Environment Variables
 
-Some configuration elements such as SECRET KEYS, or server-specific addresses and ports are inappropriate to store in Github managed files.  [dig] loads these configuration elements from environment variables.  `server/config/local.env.sample.js` provides a sample use of environment variables.  `server/config/local.env.js` will be loaded prior to `server/config/environment/index.js` so environment variables can be used within the primary configuration file.
+Some configuration elements such as SECRET KEYS, or server-specific addresses and ports are inappropriate to store in Github managed files.  See the [Setting Your Environment Variables][] section for [dig]'s core variables.  Note that the `server/config/local.env.js` file can provide overrides to environment variables.  This file is loaded prior to `server/config/environment/index.js`, so environment variables can be used within the primary configuration file.
 
 ### Elastic Search Index
 The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify the **euiHost** variable in `client/app/app.js`.
@@ -76,18 +110,13 @@ to the elasticSearchIndex used to pull data from an ElasticSearch service.  The 
         '<dataset name | elastic search index id>': {
             facets: {
                 euiFilters: [{
-                    title: 'Example',
+                    title: '<field label>',
                     type: 'eui-filter',
                     field: '<document field>',
                     terms: 'phone'
                 }],
-                simFilter: {
-                    title: 'Image',
-                    type: 'simFilter',
-                    field: '<document field>'
-                },
                 aggFilters: [{
-                    title: 'Label Name',
+                    title: '<field label>',
                     type: 'eui-aggregation',
                     field: '<document field>',
                     terms: '<document attribute array>',
@@ -132,7 +161,11 @@ angular expressions to decorate the values before display.  Examples:
 
 ##### Facets
 
+
+
 ##### Highlights
+
+The highlight section provides a list of fields in which search terms should be highlighted when rendered to the screen.  A highlight may be as simple as a yellow background behind <span style="background: #ffff00;">matching document text</span>.
 
 ##### Sorting Fields
 
@@ -265,6 +298,8 @@ Descriptions for the configuration object attributes in the JSON block above are
 [AngularJS Full-Stack Generator]: https://github.com/DaftMonk/generator-angular-fullstack
 [Bower]: http://bower.io/
 [dig]: https://github.com/NextCenturyCorporation/dig
+[Elasticsearch]: https://www.elastic.co/products/elasticsearch
 [grunt-cli]: https://github.com/gruntjs/grunt-cli
+[mongoDB]: http://www.mongodb.org/
 [node.js]: https://nodejs.org/
 [Yoeman]: http://yeoman.io/
