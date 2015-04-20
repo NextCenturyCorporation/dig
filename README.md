@@ -3,10 +3,10 @@
 DIG is a visual analysis tool based on a faceted search engine that enables rapid, interactive exploration of large data sets. Users refine their queries by entering search terms or selecting values from lists of aggregated attributes. DIG can be quickly configured for a new domain through simple configuration. 
 
 ## Prerequisites
-- [node.js]
+- [Node.js]
 - [grunt-cli] installed globally (npm i -g grunt-cli)
 - [Bower] installed globally (npm i -g bower)
-- [mongoDB][] [installed locally for development](http://docs.mongodb.org/manual/installation/)
+- [MongoDB]
 - [Elasticsearch]
 
 ### mongoDB Notes
@@ -26,7 +26,7 @@ Depending on the version of Elasticsearch (>= 1.4.x), it may be necessary to add
 
 # Contributing to DIG
 
-[dig] is built upon the [Yoeman] based [AngularJS Full-Stack Generator]. To use the yeoman angular-fullstack-generator to create new components for
+[DIG] is built upon the [Yeoman] based [AngularJS Full-Stack Generator]. To use the yeoman angular-fullstack-generator to create new components for
 this application, see the documentation at
 [documentation][AngularJS Full-Stack Generator] which has useful generators to
 create angular.js elements such as models, views, controllers, routes,
@@ -80,21 +80,21 @@ The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will e
 All deployment configuration for dig is done by modifying the docker-compose.yml file in the `dig/` directory.
 
 ## Configuration Files
-This section of the [dig] README will highlight [dig]-specific configuration elements.
+This section of the [DIG] README will highlight [DIG]-specific configuration elements.
 
 ### Overview
-[dig] manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [dig] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST endpoint that returns all UI configuration elements within a JSON object.
+[DIG] manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [DIG] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST endpoint that returns all UI configuration elements within a JSON object.
 
-The UI is built upon the [AngularJS] framework and loads configuration variables during the bootstrapping phase of [dig]'s [AngularJS] application.  The [dig] app pulls variabes via the `/config` REST endpoint and stores them as [AngularJS] constants or values.
+The UI is built upon the [AngularJS] framework and loads configuration variables during the bootstrapping phase of [DIG]'s [AngularJS] application.  The [DIG] app pulls variabes via the `/config` REST endpoint and stores them as [AngularJS] constants or values.
 
 ### Environment Variables
 Some configuration elements such as SECRET KEYS, or server-specific addresses and ports are inappropriate to store in Github managed files.  See the 
-[Setting Your Environment Variables](#setting-your-environment-variables) section for [dig]'s core variables.  Note that the `server/config/local.env.js` file can provide overrides to environment variables.  This file is loaded prior to `server/config/environment/index.js`, so environment variables can be used within the primary configuration file.
+[Setting Your Environment Variables](#setting-your-environment-variables) section for [DIG]'s core variables.  Note that the `server/config/local.env.js` file can provide overrides to environment variables.  This file is loaded prior to `server/config/environment/index.js`, so environment variables can be used within the primary configuration file.
 
 ### Elastic Search Index
-The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify the **euiHost** variable in `client/app/app.js` or set the **EUI_SEARCH_INDEX** environment variable.
+The application is currently configured to use an internal Elasticsearch service.  To change this configuration, modify the **euiHost** variable in `client/app/app.js` or set the **EUI_SEARCH_INDEX** environment variable.
 
->Depending on version (>= 1.4.x), it may be necessary to add **http.cors.enabled : true** to elasticsearch.yml in the config directory of ElasticSearch
+>Depending on version (>= 1.4.x), it may be necessary to add **http.cors.enabled : true** to elasticsearch.yml in the config directory of Elasticsearch
 
 ### User Interface
 
@@ -102,7 +102,7 @@ The dig user interface is built from a series of templates that define the prima
 the listing view, the details view, etc.  To allow for quick reconfiguration and begin decoupling the templates from the underlying data store, templates reference a configuration parameter passed from
 the server.   This parameter, **euiConfigs**, contains descriptions of the search controls, facets, and
 data fields that should be displayed for a particular dataset.  At present, a dataset corresponds
-to the elasticSearchIndex used to pull data from an ElasticSearch service.  The following sections describe the major elements of this configuration object.
+to the Elasticsearch index used to pull data from an Elasticsearch service.  The following sections describe the major elements of this configuration object.
 
 #### euiConfigs Structure
 
@@ -210,7 +210,7 @@ sort: {
 }
 ```
 
-**sort** defines the parameters of the sort control on the [dig] UI.  It defineds the document field, default sorting option and available sorting options.  These are mapped to [Elasticsearch] sort orders.  To change the sorting field, use the example above and simply change the *field* value to the desired document field (e.g., dateCreated, name).
+**sort** defines the parameters of the sort control on the [DIG] UI.  It defineds the document field, default sorting option and available sorting options.  These are mapped to [Elasticsearch] sort orders.  To change the sorting field, use the example above and simply change the *field* value to the desired document field (e.g., dateCreated, name).
 
 #### Listing View Fields
 
@@ -252,12 +252,12 @@ listFields: {
 }
 ```
 
-When using [dig] to search an [Elasticsearch] index, the results are provided in
+When using [DIG] to search an [Elasticsearch] index, the results are provided in
 a simple, paged list view by default.  Items in this view have a *short* description
 useful for displaying the first few key fields of a result.  Additionally,
 results can be clicked on to provide a *full* listing view.  The full description is a
 more informative slide out display that may or may not include images and may include all values of a
-particular result field.  The full fiew may include multiple sections, each
+particular result field.  The full view may include multiple sections, each
 possibly set off by their own CSS class and containing one or more fields.
 However, this view is not intended to display the superset
 of fields for a result document.  That duty is left to the [Details View](). The
@@ -314,7 +314,7 @@ detailFields: {
 }
 ```
 
-The [dig] details view provides a complete description of a single search result,
+The [DIG] details view provides a complete description of a single search result,
 including all available fields of that result.  Typically, this will be a full
 page view of a single result.  The details view is similar to the *full* view
 of a listing described in the previous section--it is
@@ -360,9 +360,9 @@ debugFields: {
 [AngularJS]: https://www.angularjs.org/
 [AngularJS Full-Stack Generator]: https://github.com/DaftMonk/generator-angular-fullstack
 [Bower]: http://bower.io/
-[dig]: https://github.com/NextCenturyCorporation/dig
+[DIG]: https://github.com/NextCenturyCorporation/dig
 [Elasticsearch]: https://www.elastic.co/products/elasticsearch
 [grunt-cli]: https://github.com/gruntjs/grunt-cli
-[mongoDB]: http://www.mongodb.org/
-[node.js]: https://nodejs.org/
-[Yoeman]: http://yeoman.io/
+[MongoDB]: http://www.mongodb.org/
+[Node.js]: https://nodejs.org/
+[Yeoman]: http://yeoman.io/
