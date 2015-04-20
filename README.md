@@ -140,14 +140,14 @@ euiConfigs: {
         listfields: {
             // See the Listing View Fields section
         },
-        detailsFields: {
+        detailFields: {
             // See the Details View Fields section
         }
     }
 }
 ```
 
-> For brevity, **listFields** and **detailsFields** are described in the
+> For brevity, **listFields** and **detailFields** are described in the
 > [Listing View Fields](#listing-view-fields) and [Details View Fields](#details-view-fields) sections below.
 
 Note that in most cases, document attributes often passed through an [AngularJS]
@@ -320,7 +320,7 @@ page view of a single result.  The details view is similar to the *full* view
 of a listing described in the previous section--it is
 organized into multiple sections of one or more result fields.
 
-Descriptions for the configuration object attributes in the **detailsFields** block above are provided below:
+Descriptions for the configuration object attributes in the **detailFields** block above are provided below:
 
 | Key  | Description  | Examples |
 | :------------ | :--------------- | :----- |
