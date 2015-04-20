@@ -162,7 +162,7 @@ field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
 
 > By convention, controls that impact an entire result set refer to document fields simply by their name (e.g., name, dateCreate, color).  Controls or display fields that are shown for each document in a result set refer to document fields as sub-elements of a 'doc'.  (e.g., doc.name, doc.dateCreated, doc.color). Facets, sorting, and highlights use the former style while listingFields and detailsFields use the latter.
 
-##### Facets
+#### Facets
 
 Facets define the document fields on which we want to aggregate and filter our search results.  In the user interface, they are most recognized by their controls:  search boxes, checkboxes, and calendars.  The primary facet types in the euiConfigs object are euiFilters, aggFilters, and dateFilters.  
 
@@ -183,11 +183,11 @@ Descriptions for the configuration object attributes in the **facets** block abo
 | termsType | A type field for the terms field. This is used for fields that may be ambiguous when they are parsed from text (e.g., string fields that contain only digits).  Accepted values are 'string' or 'number' | 'string' |
 | title | A descriptive label to identify a field | Date, Color, Size |
 
-##### Highlights
+#### Highlights
 
 The **highlight** section provides a list of fields in which search terms should be highlighted when rendered to the screen.  A highlight may be as simple as a yellow background behind <span style="background: #ffff00;">matching document text</span>.
 
-##### Sorting
+#### Sorting
 
 ``` javascript
 sort: {
@@ -212,7 +212,7 @@ sort: {
 
 **sort** defines the parameters of the sort control on the [dig] UI.  It defineds the document field, default sorting option and available sorting options.  These are mapped to [Elasticsearch] sort orders.  To change the sorting field, use the example above and simply change the *field* value to the desired document field (e.g., dateCreated, name).
 
-##### Listing View Fields
+#### Listing View Fields
 
 ``` javascript
 listFields: {
@@ -284,7 +284,7 @@ Descriptions for the configuration object attributes in the **listFields** block
 > Using meaningful names instead of numbers may provide a convenience for the developer.
 > However, note that their order in the rendered listing is determined by the alphabetical ordering of their key values.
 
-### Details View Fields
+#### Details View Fields
 
 ``` javascript
 detailFields: {
@@ -339,7 +339,7 @@ Descriptions for the configuration object attributes in the **detailFields** blo
 > Using meaningful names instead of numbers may provide a convenience for the developer.
 > However, note that their order in the rendered listing is determined by the alphabetical ordering of their key values.
 
-### Image Field
+#### Image Field
 
 This entry specifies which document field, if any, contains a representative image of an individual search result. Example:  
 
@@ -347,7 +347,7 @@ This entry specifies which document field, if any, contains a representative ima
 imageField: 'hasImage.imageURL'
 ```
 
-### Debug Fields
+#### Debug Fields
 
 For debugging purposes only, the **debugFields** list allows a developer to inject fields into each listing that may help with testing but should not be displayed to a user.  Document IDs fall into this category.  If this field is not defined, then the UI will not render the area for them.
 
