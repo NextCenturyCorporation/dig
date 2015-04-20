@@ -1,4 +1,5 @@
 #dig
+=========
 
 This is the software project for Dig search application.
 
@@ -19,6 +20,8 @@ When cloning this repository for the first time, run these two commands:
   
   `npm install`
 
+  `bower install`
+
 The workflow is:
   
   `grunt serve # starts the server and opens up the home page in your browser`
@@ -29,6 +32,18 @@ The workflow is:
 
 Once the server is started with grunt, when you modify the
 application, the browser will refresh and show those changes.
+
+
+To package the application for deployment:
+
+  `grunt build # builds the application and prepares the dist/ directory`
+
+  `bash ./package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
+
+The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will extract the dig application and download docker-compose into a directory called `dig/`.  Inside the `dig/` directory is `run.sh` which can be used to run the dig application as a daemon.
+
+All configuration for dig is done by modifying the docker-compose.yml file in the `dig/` directory.
+
 
 ##Configuration
 The [dig] project was seeded by the [Yoeman] based [AngularJS Full-Stack Generator]. The overall maintenance of the project structure and new module generation is facilitated by those tools.  To understand the full suite of configuration options, please review their documentation.  This section of the [dig] README will highlight [dig]-specific configuration elements.
