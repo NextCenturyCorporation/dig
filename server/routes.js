@@ -8,14 +8,6 @@ var errors = require('./components/errors');
 var config = require('./config/environment');
 
 module.exports = function(app) {
-    // Insert routes below
-    app.use('/api/queries', require('./api/query'));
-    app.use('/api/things', require('./api/thing'));
-    app.use('/api/users', require('./api/user'));
-
-    // All undefined asset or api routes should return a 404
-    app.route('/:url(api|auth|components|app|bower_components|assets)/*')
-    .get(errors[404]);
 
     app.route('*')
     .get(function(req, res, next) {
@@ -25,6 +17,15 @@ module.exports = function(app) {
             res.status(401).send('no username present');
         }
     });
+
+    // Insert routes below
+    app.use('/api/queries', require('./api/query'));
+    app.use('/api/things', require('./api/thing'));
+    app.use('/api/users', require('./api/user'));
+
+    // All undefined asset or api routes should return a 404
+    app.route('/:url(api|auth|components|app|bower_components|assets)/*')
+    .get(errors[404]);
 
     app.get('/config/?', function(req, res) {
         var configResponse = {
