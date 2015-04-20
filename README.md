@@ -6,7 +6,7 @@ DIG is a visual analysis tool based on a faceted search engine that enables rapi
 - [node.js]
 - [grunt-cli] installed globally (npm i -g grunt-cli)
 - [Bower] installed globally (npm i -g bower)
-- [mongoDB] [installed locally for development](http://docs.mongodb.org/manual/installation/)
+- [mongoDB][] [installed locally for development](http://docs.mongodb.org/manual/installation/)
 - [Elasticsearch]
 
 ### mongoDB Notes
@@ -14,7 +14,7 @@ DIG is a visual analysis tool based on a faceted search engine that enables rapi
 MongoDB is used to store relevant data for users.
 
 When running in development mode:
-The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in server/config/seed.js. 
+The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in `server/config/seed.js`. 
 
 Similarly, in a production environment a user would be supplied in the request header, but in development, the header will be auto populated with the mock user specified in the seed.js file. 
 
@@ -83,16 +83,16 @@ All deployment configuration for dig is done by modifying the docker-compose.yml
 This section of the [dig] README will highlight [dig]-specific configuration elements.
 
 ### Overview
-[dig] manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [dig] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST enpoint that returns all UI configuration elements within a JSON object.
+[dig] manages system and User Interface (UI) configuration variables server-side.  Both system and UI variables are defined within `server/config/environment/index.js`.  [dig] loads this file when the system starts.  `server/app.js` uses system configuration elements as necessary or passes them along to server-side modules. `server/routes.js` defines a `/config` REST endpoint that returns all UI configuration elements within a JSON object.
 
 The UI is built upon the [AngularJS] framework and loads configuration variables during the bootstrapping phase of [dig]'s [AngularJS] application.  The [dig] app pulls variabes via the `/config` REST endpoint and stores them as [AngularJS] constants or values.
 
 ### Environment Variables
-
-Some configuration elements such as SECRET KEYS, or server-specific addresses and ports are inappropriate to store in Github managed files.  See the [Setting Your Environment Variables][] section for [dig]'s core variables.  Note that the `server/config/local.env.js` file can provide overrides to environment variables.  This file is loaded prior to `server/config/environment/index.js`, so environment variables can be used within the primary configuration file.
+Some configuration elements such as SECRET KEYS, or server-specific addresses and ports are inappropriate to store in Github managed files.  See the 
+[Setting Your Environment Variables](#setting-your-environment-variables) section for [dig]'s core variables.  Note that the `server/config/local.env.js` file can provide overrides to environment variables.  This file is loaded prior to `server/config/environment/index.js`, so environment variables can be used within the primary configuration file.
 
 ### Elastic Search Index
-The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify the **euiHost** variable in `client/app/app.js`.
+The application is currently configured to use an internal ElasticSearch service.  To change this configuration, modify the **euiHost** variable in `client/app/app.js` or set the **EUI_SEARCH_INDEX** environment variable.
 
 >Depending on version (>= 1.4.x), it may be necessary to add **http.cors.enabled : true** to elasticsearch.yml in the config directory of ElasticSearch
 
@@ -100,115 +100,162 @@ The application is currently configured to use an internal ElasticSearch service
 
 The dig user interface is built from a series of templates that define the primary search forms,
 the listing view, the details view, etc.  To allow for quick reconfiguration and begin decoupling the templates from the underlying data store, templates reference a configuration parameter passed from
-the server.   This parameter, *euiConfigs*, contains descriptions of the search controls, facets, and
+the server.   This parameter, **euiConfigs**, contains descriptions of the search controls, facets, and
 data fields that should be displayed for a particular dataset.  At present, a dataset corresponds
 to the elasticSearchIndex used to pull data from an ElasticSearch service.  The following sections describe the major elements of this configuration object.
 
 #### euiConfigs Structure
 
-    euiConfigs: {
-        '<dataset name | elastic search index id>': {
-            facets: {
-                euiFilters: [{
-                    title: '<field label>',
-                    type: 'eui-filter',
-                    field: '<document field>',
-                    terms: 'phone'
-                }],
-                aggFilters: [{
-                    title: '<field label>',
-                    type: 'eui-aggregation',
-                    field: '<document field>',
-                    terms: '<document attribute array>',
-                    termsType: 'string|number'
-                    count: '30'
-                },
-                dateFilters:[{
-                    title: 'Date Field Label',
-                    aggName: 'date_agg',
-                    field: 'dateCreated'
-                }]
+``` javascript
+euiConfigs: {
+    '<dataset name | elastic search index id>': {
+        facets: {
+            euiFilters: [{
+                title: '<field label>',
+                field: '<document field>',
+                terms: '<document array field>'
+            }],
+            aggFilters: [{
+                title: '<field label>',
+                field: '<document field>',
+                terms: '<document array field>',
+                termsType: '<string|number>'
+                count: '30'
             },
-            highlight: {
-                fields: [
-                    '<document field>',
-                    '<document field>'
-                ]
-            },
-            sort: {},
-            listfields: {
-                // See the [Listing View Fields] section
-            },
-            detailsFields: {
-                // See the [Details View Fields] section
-            }
+            dateFilters:[{
+                title: '<date field label>',
+                aggName: 'date_agg',
+                field: '<document date field>'
+            }]
+        },
+        highlight: {
+            fields: [
+                '<document field>',
+                '<document field>'
+            ]
+        },
+        sort: {
+            // see the Sorting section
+        },
+        listfields: {
+            // See the Listing View Fields section
+        },
+        detailsFields: {
+            // See the Details View Fields section
         }
     }
-> For brevity, listFields and detailsFields are described in the
-> [Listing View Fields][] and [Details View Fields][] sections below.
+}
+```
 
-The UI passes each result object to the listing templates via a "doc"
-variable.  Thus, the &lt;document field&gt; configuration to display the name
-of a result would be 'doc.name'.
+> For brevity, **listFields** and **detailsFields** are described in the
+> [Listing View Fields](#listing-view-fields) and [Details View Fields](#details-view-fields) sections below.
 
 Note that in most cases, document attributes often passed through an [AngularJS]
 $eval for display.   Thus, basic attribute references can be replaced by
 angular expressions to decorate the values before display.  Examples:
 
-    field: "doc.name"
-    field: "doc.some_primary_value || doc.some_alternate_value"
-    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
+``` javascript
+field: "doc.name"
+field: "doc.some_primary_value || doc.some_alternate_value"
+field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
+```
+
+> By convention, controls that impact an entire result set refer to document fields simply by their name (e.g., name, dateCreate, color).  Controls or display fields that are shown for each document in a result set refer to document fields as sub-elements of a 'doc'.  (e.g., doc.name, doc.dateCreated, doc.color). Facets, sorting, and highlights use the former style while listingFields and detailsFields use the latter.
 
 ##### Facets
 
+Facets define the document fields on which we want to aggregate and filter our search results.  In the user interface, they are most recognized by their controls:  search boxes, checkboxes, and calendars.  The primary facet types in the euiConfigs object are euiFilters, aggFilters, and dateFilters.  
 
+**euiFilters** are text filters that will refine a search based on text matches to a particular document field.  
+
+**aggFilters** will calculate the aggregate number of documents matching each unique value of a particular document field.  These are rendered as a series of checkboxes that will filter the search results on particular values.  For example, an aggFilter on a color field may yield checkboxes for red, green, and blue which would allow a user to display only 'red' search results, if red was checked.
+
+**dateFilters** will filter all search results on a date range.  These filters must be attached to fields or terms that are stored as Date objects.  Each dateFilter appears on the UI as a TO/FROM control that allows the user to specify both a start and end date via a text field or calendar.
+
+Descriptions for the configuration object attributes in the **facets** block above are provided below:
+
+| Key  | Description  | Examples |
+| :------------ | :--------------- | :----- |
+| aggName | A custom name to use for the Elasticsearch results aggregation on date fields | date_agg |
+| count | The number of unique values to display by default.  This pertains only to aggFilters. | 30 |
+| field | A document field value to display. Use this for primitive values | name |
+| terms | A document field array to display.  Use this for multi-valued fields.  | phonenumbers |
+| termsType | A type field for the terms field. This is used for fields that may be ambiguous when they are parsed from text (e.g., string fields that contain only digits).  Accepted values are 'string' or 'number' | 'string' |
+| title | A descriptive label to identify a field | Date, Color, Size |
 
 ##### Highlights
 
-The highlight section provides a list of fields in which search terms should be highlighted when rendered to the screen.  A highlight may be as simple as a yellow background behind <span style="background: #ffff00;">matching document text</span>.
+The **highlight** section provides a list of fields in which search terms should be highlighted when rendered to the screen.  A highlight may be as simple as a yellow background behind <span style="background: #ffff00;">matching document text</span>.
 
-##### Sorting Fields
+##### Sorting
+
+``` javascript
+sort: {
+    field: '<document field>',
+    defaultOption: {
+        order: 'rank', title: 'Best Match'
+    },
+    options: [
+        {
+            order: 'rank',
+            title: 'Best Match'
+        },{
+            order: 'desc',
+            title: 'Newest First'
+        },{
+            order: 'asc',
+            title: 'Oldest First'
+        }
+    ]
+}
+```
+
+**sort** defines the parameters of the sort control on the [dig] UI.  It defineds the document field, default sorting option and available sorting options.  These are mapped to [Elasticsearch] sort orders.  To change the sorting field, use the example above and simply change the *field* value to the desired document field (e.g., dateCreated, name).
 
 ##### Listing View Fields
 
-    listFields: {
-        title: [{
-            title: '<field label>',
-            field: '<document field>',
-        }],
-        short: [{
-            title: 'Field 1 Label',
-            field: '<document field>',
-            classes: 'date'
-        },{
-            title: 'Field 2 Label',
-            field: '<document field>',
-            classes: 'location'
-        }],
-        full: {
-            "1": {
-                classes: 'section1-css-class',
-                fields: [{
-                    title: '<field label>',
-                    field: '<document field>',
-                    featureArray: '<document field>; used when fields can be an array',
-                    featureValue: 'the key of the attribute to display if featureArray contains Objects'
-                }]
-            },
-            "2": {
-                classes: 'section2-css-class anoter-section2-css-class',
-                fields: [{
-                    title: '<field label>',
-                    field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
-                    featureArray: '<document field>; used when fields can be an array',
-                    featureValue: 'the key of the attribute to display if featureArray contains Objects'
-                }]
-            }
+``` javascript
+listFields: {
+    title: [{
+        title: '<field label>',
+        field: '<document field>',
+    }],
+    short: [{
+        title: 'Field 1 Label',
+        field: '<document field>',
+        classes: '<CSS class list>'
+    },{
+        title: 'Field 2 Label',
+        field: '<document field>',
+        classes: '<CSS class list>'
+    }],
+    full: {
+        "1": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: '<document field>',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            }]
+        },
+        "2": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: 'doc._source.hasFeatureCollection.person_name_feature.person_name',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            }]
+        }
+    }
+}
+```
 
-When using [dig] to search an elastic search index, the results are provided in
-a simple, paged list view by default.  Items in this view have a 'short' description
+When using [dig] to search an [Elasticsearch] index, the results are provided in
+a simple, paged list view by default.  Items in this view have a *short* description
 useful for displaying the first few key fields of a result.  Additionally,
-results can be clicked on to provide a 'full' listing view.  The full description is a
+results can be clicked on to provide a *full* listing view.  The full description is a
 more informative slide out display that may or may not include images and may include all values of a
 particular result field.  The full fiew may include multiple sections, each
 possibly set off by their own CSS class and containing one or more fields.
@@ -216,16 +263,16 @@ However, this view is not intended to display the superset
 of fields for a result document.  That duty is left to the [Details View](). The
 'title' configuration denotes the result field to be used as the title field for the
 listing in either the short or full descriptive views.  A title field may be rendered
-as bold text or with a title CSS style.
+as **bold text** or with a **TITLE** CSS style.
 
-Descriptions for the configuration object attributes in the JSON block above are provided below:
+Descriptions for the configuration object attributes in the **listFields** block above are provided below:
 
 | Key  | Description  | Examples |
 | :------------ | :--------------- | :----- |
-| classes | A list of CSS class names to use on this element | title alert |
+| classes | A list of CSS class names to use on this element | title info section-1 |
 | field  | A document field value to display.  Use this for primitive values  | doc.name |
 | fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
-| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value |
+| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value (resolves to doc.aliases.value here) |
 | title | A descriptive label to identify a field | Source, URL, Name |
 
 
@@ -239,46 +286,48 @@ Descriptions for the configuration object attributes in the JSON block above are
 
 ### Details View Fields
 
-    detailFields: {
-        "1": {
-            classes: 'listing-details',
-            fields: [{
-                title: '<field label>',
-                field: '<document field>',
-                featureArray: '<document field>; used when fields can be an array',
-                featureValue: 'the key of the attribute to display if featureArray contains Objects'
-                hideIfMissing: false
-            }]
-        },
-        "2": {
-            classes: 'listing-details',
-            fields: [{
-                title: '<field label>',
-                field: '<document field>'
-            },{
-                title: '<field label>',
-                field: '<document field>',
-                featureArray: '<document field>; used when fields can be an array',
-                featureValue: 'the key of the attribute to display if featureArray contains Objects'
-                hideIfMissing: true
-            }]
-        }
+``` javascript
+detailFields: {
+    "1": {
+        classes: '<CSS class list>',
+        fields: [{
+            title: '<field label>',
+            field: '<document field>',
+            featureArray: '<document field>; used when fields can be an array',
+            featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            hideIfMissing: false
+        }]
+    },
+    "2": {
+        classes: '<CSS class list>',
+        fields: [{
+            title: '<field label>',
+            field: '<document field>'
+        },{
+            title: '<field label>',
+            field: '<document field>',
+            featureArray: '<document field>; used when fields can be an array',
+            featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            hideIfMissing: true
+        }]
     }
+}
+```
 
 The [dig] details view provides a complete description of a single search result,
 including all available fields of that result.  Typically, this will be a full
-page view of a single result.  The details view is similar to the 'full' view
+page view of a single result.  The details view is similar to the *full* view
 of a listing described in the previous section--it is
 organized into multiple sections of one or more result fields.
 
-Descriptions for the configuration object attributes in the JSON block above are provided below:
+Descriptions for the configuration object attributes in the **detailsFields** block above are provided below:
 
 | Key  | Description  | Examples |
 | :------------ | :--------------- | :----- |
-| classes | A list of CSS class names to use on this element | title alert |
+| classes | A list of CSS class names to use on this element | title info section-1 |
 | field  | A document field value to display.  Use this for primitive values  | doc.name |
 | fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
-| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value |
+| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value (resolves to doc.aliases.value here) |
 | hideIfMissing |Boolean value; true, if this field and its label should be hidden when either field or fieldArray is undefined in a result | true, false |
 | title | A descriptive label to identify a field | Source, URL, Name |
 
@@ -292,7 +341,21 @@ Descriptions for the configuration object attributes in the JSON block above are
 
 ### Image Field
 
-### Image Blurring
+This entry specifies which document field, if any, contains a representative image of an individual search result. Example:  
+
+``` javascript
+imageField: 'hasImage.imageURL'
+```
+
+### Debug Fields
+
+For debugging purposes only, the **debugFields** list allows a developer to inject fields into each listing that may help with testing but should not be displayed to a user.  Document IDs fall into this category.  If this field is not defined, then the UI will not render the area for them.
+
+``` javascript
+debugFields: {
+    fields: ['doc._id']
+}
+```
 
 [AngularJS]: https://www.angularjs.org/
 [AngularJS Full-Stack Generator]: https://github.com/DaftMonk/generator-angular-fullstack
