@@ -7,7 +7,7 @@ angular.module('digApp')
     },
     {
       update: {
-        method: 'POST',
+        method: 'PUT',
         params: {
           id:'me'
         }
