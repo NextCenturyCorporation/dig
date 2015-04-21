@@ -11,7 +11,7 @@ var UserSchema = new Schema({
     default: 'user'
   },
   provider: String,
-  notificationCount: Number
+  notificationCount: { type: Number, default: 0 }
 });
 
 /**
