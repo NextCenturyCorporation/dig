@@ -7,6 +7,7 @@
 
 var User = require('../api/user/user.model');
 var Query = require('../api/query/query.model');
+var Notification = require('../api/notification/notification.model');
 
 
 User.find({}).remove(function() {
@@ -14,7 +15,8 @@ User.find({}).remove(function() {
     provider: 'local',
     role: 'user',
     name: 'Test User',
-    username: 'test'
+    username: 'test',
+    notificationCount: 2
   }, function() {
       console.log('finished populating users');
     }

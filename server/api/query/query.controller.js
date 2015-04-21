@@ -5,7 +5,11 @@ var Query = require('./query.model');
 
 // Get list of querys based on user
 exports.index = function(req, res) {
-  Query.find({username: req.headers.user}, function (err, query) {
+  var criteria = {username: req.headers.user};
+  if(req.query.queryId) {
+    criteria.queryId = req.query.queryId;
+  }
+  Query.find(criteria, function (err, query) {
     if(err) { return handleError(res, err); }
     if(!query) { return res.send(404); }
     return res.json(query);

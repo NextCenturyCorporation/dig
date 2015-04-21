@@ -6,6 +6,12 @@ angular.module('digApp')
       id: '@_id'
     },
     {
+      update: {
+        method: 'POST',
+        params: {
+          id:'me'
+        }
+      },
       get: {
         method: 'GET',
         params: {

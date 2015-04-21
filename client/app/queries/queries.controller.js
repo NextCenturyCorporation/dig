@@ -17,6 +17,13 @@ angular.module('digApp')
             });
     };
 
+    $scope.getNotifications = function() {
+        $http.get('api/notifications/').
+            success(function(data) {
+                $scope.notifications = data;
+            });
+    };
+
     $scope.toggleListItemOpened = function(index) {
         $scope.opened[index] = !($scope.opened[index]);
     };
@@ -29,7 +36,28 @@ angular.module('digApp')
         $http.delete('api/queries/' + id).
             success(function() {
                 $scope.getQueries();
+                $http.get('api/notifications?queryId=' + id).
+                    success(function(notifications) {
+                        notifications.forEach(function(notification) {
+                            $scope.deleteNotification(notification);
+                        });
+                        $scope.getNotifications();                        
+                    });
             });
+    };
+
+    $scope.deleteNotification = function(notification) {
+        if(!notification.hasRun) {
+            User.update({notificationCount: $scope.currentUser.notificationCount - 1});
+        }
+        $http.delete('api/notifications/' + notification._id);
+    };
+
+    $scope.updateNotification = function(notification) {
+        if(!notification.hasRun) {
+            User.update({notificationCount: $scope.currentUser.notificationCount - 1});
+        }
+        $http.put('api/notifications/' + notification._id, {hasRun: true});            
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {
@@ -37,6 +65,13 @@ angular.module('digApp')
     };
 
     $scope.runQuery = function(query) {
+        $http.put('api/queries/' + query._id, {lastRunDate: new Date()});
+        $http.get('api/notifications?queryId=' + query._id).
+            success(function(notifications) {
+                notifications.forEach(function(notification) {
+                    $scope.updateNotification(notification);
+                });
+            });
         $state.go('search.results.list', {
             query: query
         }, {
@@ -45,5 +80,6 @@ angular.module('digApp')
     };
 
     $scope.getQueries();
+    $scope.getNotifications();
 
 }]);

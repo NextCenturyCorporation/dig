@@ -19,6 +19,7 @@ module.exports = function(app) {
     });
 
     // Insert routes below
+    app.use('/api/notifications', require('./api/notification'));
     app.use('/api/queries', require('./api/query'));
     app.use('/api/things', require('./api/thing'));
     app.use('/api/users', require('./api/user'));

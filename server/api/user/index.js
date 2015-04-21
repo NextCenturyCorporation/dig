@@ -7,5 +7,6 @@ var config = require('../../config/environment');
 var router = express.Router();
 
 router.get('/me', controller.me);
+router.post('/me', controller.updateMe);
 
 module.exports = router;
