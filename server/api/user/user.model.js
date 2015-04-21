@@ -17,11 +17,15 @@ var UserSchema = new Schema({
  * Validations
  */
 
+var validatePresenceOf = function(value) {
+  return value && value.length;
+};
+
 // Validate empty username
 UserSchema
   .path('username')
   .validate(function(username) {
-    return username.length;
+    return validatePresenceOf(username);
   }, 'Username cannot be blank');
 
 // Validate username is not taken
@@ -38,9 +42,5 @@ UserSchema
       respond(true);
     });
 }, 'The specified username is already in use.');
-
-var validatePresenceOf = function(value) {
-  return value && value.length;
-};
 
 module.exports = mongoose.model('User', UserSchema);

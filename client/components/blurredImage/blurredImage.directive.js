@@ -42,6 +42,7 @@ angular.module('digApp.directives')
 
                 element.css({
                     '-webkit-filter': 'blur(' + blurSize + 'px)',
+                    '-webkit-transform': 'translate3d(0, 0, 0)',
                     '-moz-filter': 'blur(' + blurSize + 'px)',
                     '-o-filter': 'blur(' + blurSize + 'px)',
                     '-ms-filter': 'blur(' + blurSize + 'px)',

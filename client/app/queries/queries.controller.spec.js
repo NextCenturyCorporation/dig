@@ -93,7 +93,7 @@ describe('Controller: QueriesCtrl', function () {
             $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
 
-            $httpBackend.expectGET('api/query/').respond(200, queryResults);
+            $httpBackend.expectGET('api/queries/').respond(200, queryResults);
 
             QueriesCtrl = $controller('QueriesCtrl', {
                 $scope: scope,
@@ -133,15 +133,15 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should make delete request with correct id and update queryResults', function () {
-        $httpBackend.expectDELETE('api/query/1').respond(200, {});
-        $httpBackend.expectGET('api/query/').respond(200, queryResults);
+        $httpBackend.expectDELETE('api/queries/1').respond(200, {});
+        $httpBackend.expectGET('api/queries/').respond(200, queryResults);
 
         scope.deleteQuery(1);
         $httpBackend.flush();
     });
 
     it('should make put request with correct id and parameter', function () {
-        $httpBackend.expectPUT('api/query/2', {frequency: 'monthly'}).respond(200, {});
+        $httpBackend.expectPUT('api/queries/2', {frequency: 'monthly'}).respond(200, {});
 
         scope.toggleFrequency(2, 'monthly');
         $httpBackend.flush();

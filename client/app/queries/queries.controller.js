@@ -11,7 +11,7 @@ angular.module('digApp')
 
 
     $scope.getQueries = function() {
-        $http.get('api/query/').
+        $http.get('api/queries/').
             success(function(data) {
                 $scope.queryResults = data;
             });
@@ -26,14 +26,14 @@ angular.module('digApp')
     };
 
     $scope.deleteQuery = function(id) {
-        $http.delete('api/query/' + id).
+        $http.delete('api/queries/' + id).
             success(function() {
                 $scope.getQueries();
             });
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {
-        $http.put('api/query/' + id, {frequency: selectedOption});
+        $http.put('api/queries/' + id, {frequency: selectedOption});
     };
 
     $scope.runQuery = function(query) {

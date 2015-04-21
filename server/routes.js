@@ -8,8 +8,18 @@ var errors = require('./components/errors');
 var config = require('./config/environment');
 
 module.exports = function(app) {
+
+    app.route('*')
+    .get(function(req, res, next) {
+        if(req.headers.user) {
+            next();
+        } else {
+            res.status(401).send('no username present');
+        }
+    });
+
     // Insert routes below
-    app.use('/api/query', require('./api/query'));
+    app.use('/api/queries', require('./api/query'));
     app.use('/api/things', require('./api/thing'));
     app.use('/api/users', require('./api/user'));
 
