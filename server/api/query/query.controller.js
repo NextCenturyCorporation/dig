@@ -36,13 +36,12 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!query) { return res.send(404); }
     var updated = _.merge(query, req.body);
-    // since filter and includeMissing are Mixed types, need to explicitly
-    // tell Mongoose to save over existing fields 
-    if(req.body.filters) { 
-      updated.markModified('filters'); 
+    // for Mixed types, need to tell Mongoose to save over existing fields 
+    if(req.body.digState) { 
+      updated.markModified('digState'); 
     }
-    if(req.body.includeMissing) { 
-      updated.markModified('includeMissing'); 
+    if(req.body.elasticUIState) { 
+      updated.markModified('elasticUIState'); 
     }
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
