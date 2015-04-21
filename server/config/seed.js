@@ -25,6 +25,7 @@ User.find({}).remove(function() {
 
 Query.find({}).remove(function() {
   Query.create({
+    _id: '55366684f6867d4715f4f9e9',
     name: 'Query #1',
     searchTerms: 'bob smith',
     filters: {"aggFilters":{"city_agg":{"LittleRock":true,"FortSmith":true}},"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
@@ -35,6 +36,7 @@ Query.find({}).remove(function() {
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
+    _id: '55366684f6867d4715f4f9ea',
     name: 'Query #2',
     searchTerms: 'jane doe',
     filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":"2013-02-02T05:00:00.000Z","endDate":"2015-02-03T05:00:00.000Z"}}},
@@ -45,6 +47,7 @@ Query.find({}).remove(function() {
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
+    _id: '55366684f6867d4715f4f9eb',
     name: 'Query #3',
     searchTerms: 'another users query',
     filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
@@ -56,6 +59,28 @@ Query.find({}).remove(function() {
     lastRunDate: new Date()
   }, function() {
       console.log('finished populating queries');
+    }
+  );
+});
+
+Notification.find({}).remove(function() {
+  Notification.create({
+    queryId: '55366684f6867d4715f4f9e9',
+    username: 'test',
+    hasRun: false,
+    dateCreated: new Date()
+  },{
+    queryId: '55366684f6867d4715f4f9ea',
+    username: 'test',
+    hasRun: false,
+    dateCreated: new Date()
+  },{
+    queryId: '55366684f6867d4715f4f9eb',
+    username: 'test2',
+    hasRun: false,
+    dateCreated: new Date()
+  }, function() {
+      console.log('finished populating notifications');
     }
   );
 });

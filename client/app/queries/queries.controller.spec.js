@@ -61,7 +61,7 @@ describe('Controller: QueriesCtrl', function () {
       }
     ];
 
-    var QueriesCtrl, scope, state, $httpBackend, http, mockUser;
+    var QueriesCtrl, scope, state, $httpBackend, http, mockUserSvc, user, notifications;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -80,11 +80,39 @@ describe('Controller: QueriesCtrl', function () {
 
             spyOn(state, 'go');
 
-            mockUser = {
+            user = 
+            {
+              'username': 'test', 
+              'notificationCount' : 2
+            };
+
+            mockUserSvc = {
                 get: function() {
-                    return {'username': 'test'};
+                    return user;
+                },
+                update: function(jsonObj) {
+                    user.notificationCount = jsonObj.notificationCount;
+                    return user;
                 }
             };
+
+            notifications = 
+            [
+              {
+                '_id': 11,
+                'queryId': 1,
+                'username': 'test',
+                'hasRun': false,
+                'dateCreated': '2015-04-01T20:13:11.093Z'
+              },
+              {
+                '_id': 12,
+                'queryId': 2,
+                'username': 'test',
+                'hasRun': false,
+                'dateCreated': '2015-04-01T20:13:11.093Z'
+              }
+            ];
 
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
@@ -94,12 +122,13 @@ describe('Controller: QueriesCtrl', function () {
                 .respond(200, 'some text');
 
             $httpBackend.expectGET('api/queries/').respond(200, queryResults);
+            $httpBackend.expectGET('api/notifications/').respond(200, notifications);
 
             QueriesCtrl = $controller('QueriesCtrl', {
                 $scope: scope,
                 $state: state,
                 $http: http,
-                User: mockUser
+                User: mockUserSvc
             });
 
             $httpBackend.flush();
@@ -111,7 +140,7 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should initialize user', function () {
-        expect(scope.currentUser).toEqual({'username': 'test'});
+        expect(scope.currentUser).toEqual(user);
     });
 
     it('should initialize scope.frequencyOptions', function () {
@@ -120,6 +149,10 @@ describe('Controller: QueriesCtrl', function () {
 
     it('should initalize scope.queryResults', function () {
         expect(scope.queryResults).toEqual(queryResults);
+    });
+
+    it('should initalize scope.notifications', function () {
+        expect(scope.notifications).toEqual(notifications);
     });
 
     it('should return whether or not a list item is opened by id', function() {
@@ -132,12 +165,17 @@ describe('Controller: QueriesCtrl', function () {
         expect(scope.isListItemOpened('foo')).toBe(false);
     });
 
-    it('should make delete request with correct id and update queryResults', function () {
-        $httpBackend.expectDELETE('api/queries/1').respond(200, {});
+    it('should make delete request with correct id and update queryResults and notifications', function () {
+        $httpBackend.expectDELETE('api/queries/1').respond(204, {});
         $httpBackend.expectGET('api/queries/').respond(200, queryResults);
+        $httpBackend.expectGET('api/notifications?queryId=1').respond(200, [].concat(notifications[0]));
+        $httpBackend.expectDELETE('api/notifications/11').respond(204, {});
+        $httpBackend.expectGET('api/notifications/').respond(200, notifications);
 
         scope.deleteQuery(1);
         $httpBackend.flush();
+        
+        expect(scope.currentUser.notificationCount).toBe(1);
     });
 
     it('should make put request with correct id and parameter', function () {
@@ -148,8 +186,58 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should call state.go with correct parameters', function () {
-        scope.runQuery(queryResults[0]);
+        $httpBackend.expectPUT('api/queries/1', {lastRunDate: new Date()}).respond(200, {});
+        $httpBackend.expectGET('api/notifications?queryId=1').respond(200, [].concat(notifications[0]));
+        $httpBackend.expectPUT('api/notifications/11', {hasRun: true}).respond(200, {});
 
+        scope.runQuery(queryResults[0]);
+        $httpBackend.flush();
+
+        expect(scope.currentUser.notificationCount).toBe(1);
         expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0]}, {location: true});
+    });
+
+
+    it('should make put request with correct id and parameter', function () {
+        $httpBackend.expectPUT('api/queries/2', {frequency: 'monthly'}).respond(200, {});
+
+        scope.toggleFrequency(2, 'monthly');
+        $httpBackend.flush();
+    });
+
+    it('should delete notification and update user', function () {
+        $httpBackend.expectDELETE('api/notifications/11').respond(204, {});
+
+        scope.deleteNotification(notifications[0]);
+        $httpBackend.flush();
+        
+        expect(scope.currentUser.notificationCount).toBe(1);
+    });
+
+    it('should delete notification but not update user', function () {
+        notifications[0].hasRun = true;
+        $httpBackend.expectDELETE('api/notifications/11').respond(204, {});
+
+        scope.deleteNotification(notifications[0]);
+        $httpBackend.flush();
+        
+        expect(scope.currentUser.notificationCount).toBe(2);
+    });
+
+    it('should update notification and user', function () {
+        $httpBackend.expectPUT('api/notifications/11', {hasRun: true}).respond(200, {});
+
+        scope.updateNotification(notifications[0]);
+        $httpBackend.flush();
+        
+        expect(scope.currentUser.notificationCount).toBe(1);
+    });
+
+    it('should not update notification or user', function () {
+        notifications[0].hasRun = true;
+
+        scope.updateNotification(notifications[0]);
+        
+        expect(scope.currentUser.notificationCount).toBe(2);
     });
 });

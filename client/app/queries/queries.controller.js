@@ -32,6 +32,13 @@ angular.module('digApp')
         return ($scope.opened[index]) ? true : false;
     };
 
+    $scope.deleteNotification = function(notification) {
+        if(!notification.hasRun) {
+            $scope.currentUser = User.update({notificationCount: $scope.currentUser.notificationCount - 1});
+        }
+        $http.delete('api/notifications/' + notification._id);
+    };
+
     $scope.deleteQuery = function(id) {
         $http.delete('api/queries/' + id).
             success(function() {
@@ -46,18 +53,11 @@ angular.module('digApp')
             });
     };
 
-    $scope.deleteNotification = function(notification) {
-        if(!notification.hasRun) {
-            User.update({notificationCount: $scope.currentUser.notificationCount - 1});
-        }
-        $http.delete('api/notifications/' + notification._id);
-    };
-
     $scope.updateNotification = function(notification) {
         if(!notification.hasRun) {
-            User.update({notificationCount: $scope.currentUser.notificationCount - 1});
+            $scope.currentUser = User.update({notificationCount: $scope.currentUser.notificationCount - 1});
+            $http.put('api/notifications/' + notification._id, {hasRun: true});    
         }
-        $http.put('api/notifications/' + notification._id, {hasRun: true});            
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {

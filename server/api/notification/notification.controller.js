@@ -27,6 +27,7 @@ exports.show = function(req, res) {
 
 // Creates a new notification in the DB.
 exports.create = function(req, res) {
+  if(req.body.username !== req.headers.user) { return res.send(401); }
   Notification.create(req.body, function(err, notification) {
     if(err) { return handleError(res, err); }
     return res.json(201, notification);
