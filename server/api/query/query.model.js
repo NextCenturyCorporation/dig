@@ -5,10 +5,8 @@ var Schema = mongoose.Schema;
 
 var QuerySchema = new Schema({
   name: String,
-  searchTerms: String,
-  filters: Schema.Types.Mixed,
-  includeMissing: Schema.Types.Mixed,
-  selectedSort: { order: String, title: String },
+  digState: Schema.Types.Mixed,
+  elasticUIState: Schema.Types.Mixed,
   username: { type: String, index: true },
   createDate: Date,
   lastRunDate: Date,

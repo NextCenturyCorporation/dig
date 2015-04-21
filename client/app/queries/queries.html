@@ -33,7 +33,7 @@
                 </span>
 
                 <div class="list-group-item-meta">
-                  <span>Search Terms: {{query.searchTerms | limitTo: 20}}{{query.searchTerms.length > 20 ? '...' : ''}}</span>
+                  <span>Search Terms: {{query.digState.searchTerms | limitTo: 20}}{{query.digState.searchTerms.length > 20 ? '...' : ''}}</span>
                   <span>Created: {{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                   <span>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                 </div>
@@ -54,28 +54,28 @@
                   <div class="col-sm-9 query-details">
                     <dl>
                       <dt>Search Terms</dt>
-                      <dd>{{query.searchTerms}}</dd>
+                      <dd>{{query.digState.searchTerms}}</dd>
                     </dl>
                     <label>Filters</label><br/>
-                    <span ng-if="query.filters.withImagesOnly" class="search-facet">
+                    <span ng-if="query.digState.filters.withImagesOnly" class="search-facet">
                       With Images Only
                     </span>
                     <span ng-repeat="aggFilter in facets.aggFilters">
-                      <span ng-if="query.includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
+                      <span ng-if="query.digState.includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
                         {{aggFilter.title}}: Not Specified
                       </span>
-                      <span ng-repeat="(filterKey, selected) in query.filters.aggFilters[aggFilter.field]">
+                      <span ng-repeat="(filterKey, selected) in query.digState.filters.aggFilters[aggFilter.field]">
                         <span ng-if="selected" class="search-facet">
                           {{aggFilter.title}}: {{filterKey}}
                         </span>
                       </span>
                     </span>
                     <span ng-repeat="textFilter in facets.euiFilters">
-                      <span ng-if="query.filters.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
-                        {{textFilter.title}}: {{query.filters.textFilters[textFilter.field].submitted}}
+                      <span ng-if="query.digState.filters.textFilters[textFilter.field].submitted.length > 0" class="search-facet">
+                        {{textFilter.title}}: {{query.digState.filters.textFilters[textFilter.field].submitted}}
                       </span>
                     </span>
-                    <span ng-repeat="(dateFilter, values) in query.filters.dateFilters">
+                    <span ng-repeat="(dateFilter, values) in query.digState.filters.dateFilters">
                       <span ng-repeat="(filterKey, date) in values">
                         <span ng-if="date" class="search-facet">
                           {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}}
@@ -84,7 +84,7 @@
                     </span>
                     <dl>
                       <dt>Sort By</dt>
-                      <dd>{{query.selectedSort.title}}</dd>
+                      <dd>{{query.digState.selectedSort.title}}</dd>
                     </dl>
                   </div>
                 </div>
