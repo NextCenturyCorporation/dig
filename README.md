@@ -9,7 +9,7 @@ DIG is a visual analysis tool based on a faceted search engine that enables rapi
 - [MongoDB]
 - [Elasticsearch]
 
-### mongoDB Notes
+### MongoDB Notes
 
 MongoDB is used to store relevant data for users.
 
