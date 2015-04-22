@@ -10,60 +10,128 @@ describe('Controller: SaveQueryCtrl', function () {
       {
         '_id': 1,
         'name': 'Query #1',
-        'searchTerms': 'bob smith',
-        'filters': {
-          'aggFilters': {
-            'city_agg': {
-              'LittleRock': true,
-              'FortSmith': true
+        'digState': {
+            'searchTerms': 'bob smith',
+            'filters': {
+                'aggFilters': {
+                    'city_agg': {
+                        'LittleRock': true,
+                        'FortSmith': true
+                    }
+                },
+                'textFilters': {
+                    'phonenumber': {
+                        'live': '',
+                        'submitted': ''
+                    }
+                },
+                'dateFilters': {
+                    'dateCreated': {
+                        'beginDate': null,
+                        'endDate': null
+                    }
+                }
+            },
+            'selectedSort': {
+                'title': 'Best Match',
+                'order': 'rank'
+            },
+            'includeMissing': {
+                'aggregations': {},
+                'allIncludeMissing': false
             }
-          },
-          'textFilters': {
-            'phonenumber': {
-              'live': '',
-              'submitted': ''
+        },
+        'elasticUIState': {
+            'queryState': {
+                'query_string': {
+                    'fields': ['_all'],
+                    'query': 'bob smith'
+                }
+            },
+            'filterState': {
+                'bool': {
+                    'should': [
+                        {
+                            'terms': {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality': [
+                                    'LittleRock'
+                                ]
+                            }
+                        },
+                        {
+                            'terms': {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality': [
+                                    'FortSmith'
+                                ]
+                            }
+                        }
+                    ]
+                }
             }
-          },
-          'dateFilters': {
-            'dateCreated': {
-              'beginDate': null,
-              'endDate': null
-            }
-          }
         },
         'username': 'test',
         'frequency': 'daily',
-        'selectedSort': {
-          'title':'Best Match',
-          'order':'rank'
-        },
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
       {
         '_id': 2,
         'name': 'Query #2',
-        'searchTerms': 'jane doe',
-        'filters': {
-          'textFilters': {
-            'phonenumber': {
-              'live': '',
-              'submitted': ''
+        'digState': {
+            'searchTerms': 'jane doe',
+            'filters': {
+                'textFilters': {
+                    'phonenumber': {
+                        'live': '',
+                        'submitted': ''
+                    }
+                },
+                'dateFilters': {
+                    'dateCreated': {
+                        'beginDate': '2013-02-02T05:00:00.000Z',
+                        'endDate': '2015-02-03T05:00:00.000Z'
+                    }
+                }
+            },
+            'selectedSort': {
+                'title':'Best Match',
+                'order':'rank'
+            },
+            'includeMissing': {
+                'aggregations': {},
+                'allIncludeMissing': false
             }
-          },
-          'dateFilters': {
-            'dateCreated': {
-              'beginDate': '2013-02-02T05:00:00.000Z',
-              'endDate': '2015-02-03T05:00:00.000Z'
+        },
+        'elasticUIState': {
+            'queryState': {
+                'query_string': {
+                    'query': 'jane doe',
+                    'fields': ['_all']
+                }
+            },
+            'filterState': {
+                'bool': {
+                    'must': [
+                        {
+                            'range': {
+                                'dateCreated': {
+                                    'from':'2013-02-02'
+                                }
+                            }
+                        },
+                        {
+                            'range': {
+                                'dateCreated': {
+                                    'to':'2015-02-03'
+                                }
+                            }
+                        }
+                    ]
+                }
             }
-          }
         },
         'username': 'test',
         'frequency': 'daily',
-        'selectedSort': {
-          'title':'Best Match',
-          'order':'rank'
-        },
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       }
@@ -71,21 +139,33 @@ describe('Controller: SaveQueryCtrl', function () {
 
     // instantiate service
     var SaveQueryCtrl, scope, modalInstance, http, window, $httpBackend, mockUser, 
-        queryString, filterStates, includeMissing, selectedSort;
+        digState, elasticUIState;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
 
-        queryString = 'search terms';
-        filterStates = {'filter': 'option'};
-        includeMissing = {'aggregations': {}, 'allIncludeMissing': false};
-        selectedSort =  {'title':'Newest First','order':'desc'};
+        digState = {
+            searchTerms: 'search terms',
+            filter: {'filter': 'option'},
+            includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
+            selectedSort:  {'title':'Newest First','order':'desc'}
+        };
+
+        elasticUIState = {
+            queryState: {
+                queryString: {
+                    query: 'search terms',
+                    fields: ['_all']
+                }
+            },
+            filterState: {
+                filter: 'option' 
+            }
+        };
 
         module(function($provide) {
-            $provide.constant('queryString', queryString);
-            $provide.constant('filterStates', filterStates);
-            $provide.constant('includeMissing', includeMissing);
-            $provide.constant('selectedSort', selectedSort);
+            $provide.constant('digState', digState);
+            $provide.constant('elasticUIState', elasticUIState);
         });
 
         inject(function ($controller, $rootScope, _$httpBackend_, $http, $window) {
@@ -125,19 +205,19 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should initialize queryString to correct value', function () {
-        expect(scope.queryString).toBe(queryString);
+        expect(scope.searchTerms).toBe(digState.searchTerms);
     });
 
     it('should initialize filterStates to correct value', function () {
-        expect(scope.filterStates).toBe(filterStates);
+        expect(scope.filters).toBe(digState.filters);
     });
 
     it('should initialize includeMissing to correct value', function () {
-        expect(scope.includeMissing).toBe(includeMissing);
+        expect(scope.includeMissing).toBe(digState.includeMissing);
     });
 
     it('should initialize selectedSort to correct value', function () {
-        expect(scope.selectedSort).toBe(selectedSort);
+        expect(scope.selectedSort).toBe(digState.selectedSort);
     });
 
     it('should initialize user', function () {
@@ -145,7 +225,7 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should initialize query to correct value', function () {
-        expect(scope.query).toEqual({name: '', frequency: 'daily'});
+        expect(scope.query).toEqual({name: '', frequency: 'daily', digState: {}, elasticUIState: {}});
     });
 
     it('should initialize scope.frequencyOptions', function () {
@@ -168,17 +248,20 @@ describe('Controller: SaveQueryCtrl', function () {
 
     it('should save, post, and call close() function', function () {
         $httpBackend.expectPOST('api/queries').respond(200, {});
+        spyOn(scope, 'replacePeriods');
 
         scope.save();
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
+        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should save, update, and call close() function', function () {
         spyOn(window, 'confirm').andCallFake(function () {
             return true;
         });
+        spyOn(scope, 'replacePeriods');
 
         scope.existingQuery = queryResults[0];
         scope.query.name = 'Query #1';
@@ -188,6 +271,7 @@ describe('Controller: SaveQueryCtrl', function () {
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
+        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should not update if user cancels existing query overwrite', function() {
@@ -209,5 +293,11 @@ describe('Controller: SaveQueryCtrl', function () {
     it('should call close() function', function () {
         scope.cancel();
         expect(modalInstance.close).toHaveBeenCalled();
+    });
+
+    it('should strip out invalid character', function() {
+        var obj = {'string.with.dots': true};
+
+        expect(scope.replacePeriods(obj)).toEqual({'string\uff0ewith\uff0edots': true});
     });
 });
