@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', '$window', 'User', 'digState',
-    function($scope, $modalInstance, $http, $window, User, digState) {
+.controller('SaveQueryCtrl', ['$scope', '$modalInstance', '$http', '$window', 'User', 'digState', 'elasticUIState',
+    function($scope, $modalInstance, $http, $window, User, digState, elasticUIState) {
     $scope.searchTerms = digState.searchTerms;
     $scope.filters = digState.filters;
     $scope.includeMissing = digState.includeMissing;
     $scope.selectedSort = digState.selectedSort;
+    $scope.euiQuery = elasticUIState.queryState;
+    $scope.euiFilters = elasticUIState.filterState;
     $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
-    $scope.query = {name: '', frequency: 'daily', digState: {}};
+    $scope.query = {name: '', frequency: 'daily', digState: {}, elasticUIState: {}};
     $scope.currentUser = User.get();
 
     $http.get('api/queries/').
@@ -24,7 +26,15 @@ angular.module('digApp')
         }
     };
 
+    $scope.replacePeriods = function(obj) {
+        var tempStr = JSON.stringify(obj);
+        tempStr = tempStr.replace(/\./g, '\\uff0e'); 
+        return JSON.parse(tempStr);
+    };
+
     $scope.saveQuery = function() {
+        $scope.query.elasticUIState.queryState = $scope.euiQuery;
+        $scope.query.elasticUIState.filterState = $scope.replacePeriods($scope.euiFilters);
         $scope.query.digState.searchTerms = $scope.searchTerms;
         $scope.query.digState.filters = $scope.filters;
         $scope.query.digState.includeMissing = $scope.includeMissing;

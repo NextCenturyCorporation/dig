@@ -27,6 +27,11 @@ angular.module('digApp')
                         includeMissing: $scope.includeMissing,
                         selectedSort: $scope.selectedSort
                     };
+                }, elasticUIState: function() {
+                    return {
+                        queryState: $scope.indexVM.query.toJSON(),
+                        filterState: $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {}
+                    };
                 }
             },
             size: 'sm'
