@@ -30,6 +30,10 @@ Query.find({}).remove(function() {
       selectedSort: {"title":"Best Match","order":"rank"},
       includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
     },
+    elasticUIState: {
+      queryState:{"query_string":{"fields":["_all"],"query":"bob smith"}}},
+      filterState:{"bool":{"should":[{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["LittleRock"]}},{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["FortSmith"]}}]}
+    },
     username: 'test',
     frequency: 'weekly',
     createDate: new Date(),
@@ -42,6 +46,10 @@ Query.find({}).remove(function() {
       selectedSort: {"title":"Best Match","order":"rank"},
       includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
     },
+    elasticUIState: {
+      queryState: {"query_string":{"query":"jane doe","fields":["_all"]}},
+      filterState:{"bool":{"must":[{"range":{"dateCreated":{"from":"2013-02-02"}}},{"range":{"dateCreated":{"to":"2015-02-03"}}}]}}
+    },
     username: 'test',
     frequency: 'daily',
     createDate: new Date(),
@@ -53,6 +61,9 @@ Query.find({}).remove(function() {
       filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
       selectedSort: {"title":"Best Match","order":"rank"},
       includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+    },
+    elasticUIState: {
+      queryState: {"query_string":{"fields":["_all"],"query":"another users query"}}
     },
     username: 'test2',
     frequency: 'weekly',
