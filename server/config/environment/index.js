@@ -617,6 +617,9 @@ var all = {
                         },{
                             title: 'Date',
                             field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'Data Provider',
+                            field: "doc._source.hasFeatureCollection.provider_name_feature.provider_name"
                         }]
                     }
                 }
