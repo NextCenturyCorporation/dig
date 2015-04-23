@@ -186,7 +186,7 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should call state.go with correct parameters', function () {
-        $httpBackend.expectPUT('api/queries/1', {lastRunDate: new Date()}).respond(200, {});
+        $httpBackend.expectPATCH('api/queries/1').respond(200, {});
         $httpBackend.expectGET('api/notifications?queryId=1').respond(200, [].concat(notifications[0]));
         $httpBackend.expectPUT('api/notifications/11', {hasRun: true}).respond(200, {});
 
@@ -199,7 +199,7 @@ describe('Controller: QueriesCtrl', function () {
 
 
     it('should make put request with correct id and parameter', function () {
-        $httpBackend.expectPUT('api/queries/2', {frequency: 'monthly'}).respond(200, {});
+        $httpBackend.expectPATCH('api/queries/2', {frequency: 'monthly'}).respond(200, {});
 
         scope.toggleFrequency(2, 'monthly');
         $httpBackend.flush();
