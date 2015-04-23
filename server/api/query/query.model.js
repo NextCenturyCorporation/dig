@@ -7,7 +7,7 @@ var QuerySchema = new Schema({
   name: String,
   digState: Schema.Types.Mixed,
   elasticUIState: Schema.Types.Mixed,
-  username: { type: String, index: true },
+  username: { type: String, index: true, required: true },
   createDate: Date,
   lastRunDate: Date,
   frequency: { type: String, default: 'never' }
