@@ -35,7 +35,7 @@ Query.find({}).remove(function() {
       filterState:{"bool":{"should":[{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["LittleRock"]}},{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["FortSmith"]}}]}
     },
     username: 'test',
-    frequency: 'weekly',
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
@@ -51,7 +51,7 @@ Query.find({}).remove(function() {
       filterState:{"bool":{"must":[{"range":{"dateCreated":{"from":"2013-02-02"}}},{"range":{"dateCreated":{"to":"2015-02-03"}}}]}}
     },
     username: 'test',
-    frequency: 'daily',
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
@@ -66,7 +66,7 @@ Query.find({}).remove(function() {
       queryState: {"query_string":{"fields":["_all"],"query":"another users query"}}
     },
     username: 'test2',
-    frequency: 'weekly',
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, function() {

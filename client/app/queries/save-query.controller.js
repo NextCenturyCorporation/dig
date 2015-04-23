@@ -9,8 +9,8 @@ angular.module('digApp')
     $scope.selectedSort = digState.selectedSort;
     $scope.euiQuery = elasticUIState.queryState;
     $scope.euiFilters = elasticUIState.filterState;
-    $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
-    $scope.query = {name: '', frequency: 'daily', digState: {}, elasticUIState: {}};
+    $scope.frequencyOptions = ['never', 'hourly', 'daily', 'weekly'];
+    $scope.query = {name: '', frequency: 'never', digState: {}, elasticUIState: {}};
     $scope.currentUser = User.get();
 
     $http.get('api/queries/').
