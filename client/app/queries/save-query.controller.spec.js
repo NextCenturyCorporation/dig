@@ -70,7 +70,7 @@ describe('Controller: SaveQueryCtrl', function () {
             }
         },
         'username': 'test',
-        'frequency': 'daily',
+        'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
@@ -131,7 +131,7 @@ describe('Controller: SaveQueryCtrl', function () {
             }
         },
         'username': 'test',
-        'frequency': 'daily',
+        'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       }
@@ -225,11 +225,11 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should initialize query to correct value', function () {
-        expect(scope.query).toEqual({name: '', frequency: 'daily', digState: {}, elasticUIState: {}});
+        expect(scope.query).toEqual({name: '', frequency: 'never', digState: {}, elasticUIState: {}});
     });
 
     it('should initialize scope.frequencyOptions', function () {
-        expect(scope.frequencyOptions).toEqual(['daily', 'weekly', 'monthly']);
+        expect(scope.frequencyOptions).toEqual(['never', 'hourly', 'daily', 'weekly']);
     });
 
     it('should update query.name to match existingQuery.name', function () {

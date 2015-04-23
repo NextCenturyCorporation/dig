@@ -10,7 +10,7 @@ var QuerySchema = new Schema({
   username: { type: String, index: true },
   createDate: Date,
   lastRunDate: Date,
-  frequency: String
+  frequency: { type: String, default: 'never' }
 });
 
 module.exports = mongoose.model('Query', QuerySchema);
