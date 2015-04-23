@@ -58,12 +58,6 @@ var all = {
     euiConfigs: {
         'dig-latest': {
             facets: {
-                euiFilters: [{
-                    title: 'Phone',
-                    type: 'eui-filter',
-                    field: 'phonenumber',
-                    terms: 'phone'
-                }],
                 simFilter: {
                     title: 'Image',
                     type: 'simFilter',
