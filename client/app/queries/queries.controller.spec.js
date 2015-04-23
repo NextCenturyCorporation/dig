@@ -141,7 +141,7 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should make put request with correct id and parameter', function () {
-        $httpBackend.expectPUT('api/queries/2', {frequency: 'monthly'}).respond(200, {});
+        $httpBackend.expectPATCH('api/queries/2', {frequency: 'monthly'}).respond(200, {});
 
         scope.toggleFrequency(2, 'monthly');
         $httpBackend.flush();
