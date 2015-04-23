@@ -15,14 +15,14 @@ digapp:
     NODE_ENV: 'production'
 
 nginx:
-  image: dockerfile/nginx
+  image: nginx
   links:
     - digapp
   ports:
     - "80:80"
   volumes:
     - ./conf/nginx/.htpasswd:/etc/nginx/.htpasswd
-    - ./conf/nginx_sites_enabled:/etc/nginx/sites-enabled
+    - ./conf/nginx_sites_enabled:/etc/nginx/conf.d
     - ./logs/nginx:/var/log/nginx
 
 mongo:

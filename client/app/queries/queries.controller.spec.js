@@ -32,7 +32,7 @@ describe('Controller: QueriesCtrl', function () {
           }
         },
         'username': 'test',
-        'frequency': 'daily',
+        'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
@@ -55,7 +55,7 @@ describe('Controller: QueriesCtrl', function () {
           }
         },
         'username': 'test',
-        'frequency': 'daily',
+        'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       }
@@ -144,7 +144,7 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should initialize scope.frequencyOptions', function () {
-        expect(scope.frequencyOptions).toEqual(['daily', 'weekly', 'monthly']);
+        expect(scope.frequencyOptions).toEqual(['never', 'hourly', 'daily', 'weekly']);
     });
 
     it('should initalize scope.queryResults', function () {
@@ -179,9 +179,9 @@ describe('Controller: QueriesCtrl', function () {
     });
 
     it('should make put request with correct id and parameter', function () {
-        $httpBackend.expectPUT('api/queries/2', {frequency: 'monthly'}).respond(200, {});
+        $httpBackend.expectPATCH('api/queries/2', {frequency: 'hourly'}).respond(200, {});
 
-        scope.toggleFrequency(2, 'monthly');
+        scope.toggleFrequency(2, 'hourly');
         $httpBackend.flush();
     });
 
