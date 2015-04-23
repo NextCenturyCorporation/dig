@@ -4,8 +4,8 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var NotificationSchema = new Schema({
-  queryId: { type: Schema.ObjectId, index: true },
-  username: { type: String, index: true },
+  queryId: { type: Schema.ObjectId, index: true, required: true },
+  username: { type: String, index: true, required: true },
   hasRun: Boolean,
   dateCreated: Date
 });
