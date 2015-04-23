@@ -29,8 +29,19 @@ exports.create = function(req, res) {
   });
 };
 
+
+// Overwrites an existing query in the DB.
+exports.updatePut = function(req, res) {
+  if(req.body._id) { delete req.body._id; }
+  Query.findOneAndUpdate(req.params.id, req.body, function (err, query) {
+    if (err) { return handleError(res, err); }
+    if(!query) { return res.send(404); }
+    return res.json(200, query);
+  });
+};
+
 // Updates an existing query in the DB.
-exports.update = function(req, res) {
+exports.updatePatch = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Query.findById(req.params.id, function (err, query) {
     if (err) { return handleError(res, err); }
