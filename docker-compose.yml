@@ -22,7 +22,7 @@ nginx:
     - "80:80"
   volumes:
     - ./conf/nginx/.htpasswd:/etc/nginx/.htpasswd
-    - ./conf/nginx_sites_enabled:/etc/nginx/conf.d
+    - ./conf/nginx_sites_enabled/dig:/etc/nginx/conf.d/default.conf
     - ./logs/nginx:/var/log/nginx
 
 mongo:

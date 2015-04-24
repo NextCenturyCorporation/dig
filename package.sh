@@ -73,7 +73,7 @@ EOF
 	chmod +x ${TEMP_DIR}/${file}
     done
 
-    cp -r dist/ ${TEMP_DIR}
+    cp -r dist ${TEMP_DIR}
     if [[ ! -d "${CFGDIR}" ]]; then
 	echo "Could not find config dir!"
 	exit 1
