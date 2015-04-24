@@ -65,7 +65,7 @@ angular.module('digApp')
     };
 
     $scope.runQuery = function(query) {
-        $http.patch('api/queries/' + query._id, {lastRunDate: new Date()});
+        $http.put('api/queries/' + query._id, {lastRunDate: new Date()});
         $http.get('api/notifications?queryId=' + query._id).
             success(function(notifications) {
                 notifications.forEach(function(notification) {
