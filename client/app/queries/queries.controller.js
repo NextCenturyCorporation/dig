@@ -61,7 +61,7 @@ angular.module('digApp')
     };
 
     $scope.toggleFrequency = function(id, selectedOption) {
-        $http.patch('api/queries/' + id, {frequency: selectedOption});
+        $http.put('api/queries/' + id, {frequency: selectedOption});
     };
 
     $scope.runQuery = function(query) {
