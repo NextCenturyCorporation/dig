@@ -31,25 +31,20 @@ exports.create = function(req, res) {
   });
 };
 
-
-// Overwrites an existing query in the DB.
-exports.updatePut = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Query.findOneAndUpdate(req.params.id, req.body, function (err, query) {
-    if (err) { return handleError(res, err); }
-    if(!query) { return res.send(404); }
-    if(query.username !== req.headers.user) { return res.send(401); }
-
-    return res.json(200, query);
-  });
-};
-
 // Updates an existing query in the DB.
-exports.updatePatch = function(req, res) {
+exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Query.findById(req.params.id, function (err, query) {
     if (err) { return handleError(res, err); }
     if(!query) { return res.send(404); }
+    // clear out old object fields if user wants to save over old query, otherwise old states
+    // will be merged with new ones. 
+    if(req.body.digState) { 
+      query.digState = {}; 
+    }
+    if(req.body.elasticUIState) 
+      { query.elasticUIState = {}; 
+    }
     var updated = _.merge(query, req.body);
     if(updated.username !== req.headers.user) { return res.send(401); }
     // for Mixed types, need to tell Mongoose to save over existing fields 
