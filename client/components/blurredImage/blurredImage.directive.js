@@ -6,7 +6,6 @@ angular.module('digApp.directives')
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
-            var processing = false;
             var fallback = false;
             var blurImagesEnabled = blurImageService.getBlurImagesEnabled();
             var blurImagesPercentage = blurImageService.getBlurImagesPercentage();
@@ -67,12 +66,7 @@ angular.module('digApp.directives')
                 blurImagesEnabled = blurImageService.getBlurImagesEnabled();
                 blurImagesPercentage = blurImageService.getBlurImagesPercentage();
 
-                if(!processing) {
-                    blurImage();
-                } else {
-                    processing.onload = null; //cancel the onload
-                    blurImage();
-                }
+                blurImage();
             };
 
             attrs.$observe('src', function() {
