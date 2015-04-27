@@ -22,7 +22,7 @@ angular.module('digApp')
     };
 
     // settings methods
-    $scope.isBlurred = blurImageService.getBlurImagesEnabled() === 'blur';
+    $scope.isBlurred = blurImageService.getBlurImagesEnabled();
 
     $scope.changeBlur = function() {
         $scope.isBlurred = !$scope.isBlurred;

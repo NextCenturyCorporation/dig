@@ -16,7 +16,7 @@ angular.module('digApp')
         var blurAttributes = {};
         
         if(isBlurred) {
-            blurAttributes.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : 'blur';
+            blurAttributes.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : true;
             blurAttributes.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
             sessionStorage.blurConfig = JSON.stringify(blurAttributes);
         } else {

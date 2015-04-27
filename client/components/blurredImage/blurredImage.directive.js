@@ -10,7 +10,7 @@ angular.module('digApp.directives')
             var blurImagesEnabled = blurImageService.getBlurImagesEnabled();
             var blurImagesPercentage = blurImageService.getBlurImagesPercentage();
 
-            if(blurImagesEnabled === 'blur') {
+            if(blurImagesEnabled) {
                 element.addClass('image-blur-default');
             }
 
@@ -49,7 +49,7 @@ angular.module('digApp.directives')
             };
 
             var blurImage = function() {
-                if(!fallback && blurImagesEnabled === 'blur') {
+                if(!fallback && blurImagesEnabled) {
                     fallback = true;
 
                     $scope.$watch($scope.getMaxSize, function() {
@@ -57,7 +57,7 @@ angular.module('digApp.directives')
                     });
 
                     $timeout(cssBlur);
-                } else if(fallback || blurImagesEnabled === 'blur') {
+                } else if(fallback || blurImagesEnabled) {
                     $timeout(cssBlur);
                 }
             };

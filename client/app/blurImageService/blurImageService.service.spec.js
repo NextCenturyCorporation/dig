@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Service: blurImageService', function () {
-    var blurImagesEnabled = 'blur';
+    var blurImagesEnabled = true;
     var blurImagesPercentage = 2.5;
 
     // load the service's module

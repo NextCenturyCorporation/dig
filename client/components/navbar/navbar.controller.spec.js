@@ -16,13 +16,13 @@ describe('Controller: NavbarCtrl', function () {
             modal = $modal;
 
             blurImageSvcMock = {
-                blurEnabled: 'blur',
+                blurEnabled: true,
                 getBlurImagesEnabled : function() {
                     return this.blurEnabled;
                 },
                 changeBlurImagesEnabled: function(isBlurred) {
                     if(isBlurred) {
-                        this.blurEnabled = 'blur';
+                        this.blurEnabled = true;
                     } else {
                         this.blurEnabled = false;
                     }
