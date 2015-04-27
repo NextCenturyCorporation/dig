@@ -53,7 +53,6 @@ var all = {
     blurImages: ((!!process.env.BLUR_IMAGES && process.env.BLUR_IMAGES === 'false') ? false : (process.env.BLUR_IMAGES ? process.env.BLUR_IMAGES : 'blur')),
 
     blurPercentage: process.env.BLUR_PERCENT || 2.5,
-    pixelatePercentage: process.env.PIXELATE_PERCENT || 5,
 
     euiConfigs: {
         'dig-latest': {

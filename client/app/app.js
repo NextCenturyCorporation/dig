@@ -49,9 +49,6 @@ angular.element(document).ready(function() {
         var blurImagesPercentage = config.blurImagesPercentage || 10;
         digApp.constant('blurImagesPercentage', blurImagesPercentage);
 
-        var pixelateImagesPercentage = config.pixelateImagesPercentage || 2.5;
-        digApp.constant('pixelateImagesPercentage', pixelateImagesPercentage);
-
         var appVersion = config.appVersion;
         digApp.constant('appVersion', appVersion);
 
