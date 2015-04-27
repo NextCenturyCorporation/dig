@@ -74,7 +74,7 @@ angular.module('digApp.directives')
             });
 
             $scope.$on('blur-state-change', function() {
-                $scope.processImageBlur(attrs.src);
+                $scope.processImageBlur();
             });
         }
     };
