@@ -39,8 +39,8 @@ exports.updateMe = function(req, res, next) {
     if (!user) { return res.send(404); }
     var updated = _.merge(user, req.body);
     // for Mixed types, need to tell Mongoose to save over existing fields 
-    if(req.body.blurAttributes) { 
-      updated.markModified('blurAttributes'); 
+    if(req.body.blurConfig) { 
+      updated.markModified('blurConfig'); 
     }
     updated.save(function (saveErr) {
       if (saveErr) { return next(saveErr); }

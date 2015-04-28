@@ -6,25 +6,25 @@ angular.module('digApp')
     var user = User.get();
 
     blurConfig.getBlurImagesEnabled = function() {
-        return (user.blurAttributes ? user.blurAttributes.blurImagesEnabled : blurImagesEnabled);
+        return (user.blurConfig ? user.blurConfig.blurImagesEnabled : blurImagesEnabled);
     };
 
     blurConfig.getBlurImagesPercentage = function() {
-        return (user.blurAttributes ? user.blurAttributes.blurImagesPercentage : blurImagesPercentage);
+        return (user.blurConfig ? user.blurConfig.blurImagesPercentage : blurImagesPercentage);
     };
 
     blurConfig.changeBlurImagesEnabled = function(isBlurred) {
-        var blurUpdate = {blurAttributes: {}};
+        var blurAttributes = {blurConfig: {}};
         
         if(isBlurred) {
-            blurUpdate.blurAttributes.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : true;
-            blurUpdate.blurAttributes.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
+            blurAttributes.blurConfig.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : true;
+            blurAttributes.blurConfig.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
         } else {
-            blurUpdate.blurAttributes.blurImagesEnabled = blurImagesEnabled ? false : blurImagesEnabled;
-            blurUpdate.blurAttributes.blurImagesPercentage = (blurImagesPercentage === 0) ? blurImagesPercentage : 0;
+            blurAttributes.blurConfig.blurImagesEnabled = blurImagesEnabled ? false : blurImagesEnabled;
+            blurAttributes.blurConfig.blurImagesPercentage = (blurImagesPercentage === 0) ? blurImagesPercentage : 0;
         }
 
-        user = User.update(blurUpdate);
+        user = User.update(blurAttributes);
 
         $rootScope.$broadcast('blur-state-change', isBlurred);
     };
