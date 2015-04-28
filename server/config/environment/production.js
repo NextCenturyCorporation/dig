@@ -19,5 +19,12 @@ module.exports = {
             process.env.MONGOHQ_URL ||
             process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
             'mongodb://localhost/dig'
-  }
+  },
+
+  // Sequelize ORM options specific to production env
+  sequelize: {
+    database: 'digappprod'
+  },
+
+  seedDB: false
 };

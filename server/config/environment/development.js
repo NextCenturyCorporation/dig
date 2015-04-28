@@ -8,5 +8,13 @@ module.exports = {
     uri: 'mongodb://localhost/dig-dev'
   },
 
+  // Sequelize ORM options specific to production env
+  sequelize: {
+    database: 'digappdev',
+    options: {
+        host: 'localhost'
+    }
+  },
+
   seedDB: true
 };

@@ -19,7 +19,6 @@ module.exports = function(config) {
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
-      'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/elasticsearch/elasticsearch.angular.js',
       'client/app/app.js',
@@ -36,7 +35,7 @@ module.exports = function(config) {
       '**/*.html': 'html2js',
       '**/*.coffee': 'coffee',
       'client/app/!(lib)/**/!(*spec).js': 'coverage',
-      'client/components/!(modal|socket|navbar)/**/!(*spec).js':'coverage'
+      'client/components/!(modal|navbar)/**/!(*spec).js':'coverage'
     },
 
     coverageReporter: {
