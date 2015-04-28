@@ -4,7 +4,7 @@
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
 DOCKER_PREFIX="digmemex/digapp"
-FILES_TO_COPY=(bootstrap.sh scripts/backupdb.sh docker-compose.yml)
+FILES_TO_COPY=(scripts/bootstrap.sh scripts/run.sh scripts/backupdb.sh docker-compose.yml)
 EXECUTABLES=(bootstrap.sh run.sh backupdb.sh)
 
 ## FLAGS
@@ -14,7 +14,10 @@ PUSH_TO_DOCKER=0
 
 DISTFILES=dist/
 DOCKER_COMPOSE_FILE=docker-compose.yml
+
+
 TEMP_DIR=$(mktemp -d /tmp/tmp.XXXXXXXXXX)
+DEST_DIR=${TEMP_DIR}/dig
 
 cleanup() {
     [[ $RMDIR ]] && rm -rf ${TEMP_DIR}
@@ -76,28 +79,25 @@ get_options() {
 }
 
 copy_files() {
-    cat > ${TEMP_DIR}/run.sh <<EOF
-#!/bin/bash
-./docker-compose up -d
-EOF
+    mkdir -p ${DEST_DIR}
 
     for file in ${FILES_TO_COPY[*]}
     do
-	cp $file ${TEMP_DIR}
+	cp $file ${DEST_DIR}
     done
     for file in ${EXECUTABLES[*]}
     do
-	chmod +x ${TEMP_DIR}/${file}
+	chmod +x ${DEST_DIR}/${file}
     done
 
-    cp -r dist ${TEMP_DIR}
+    cp -r dist ${DEST_DIR}
     if [[ ! -d "${CFGDIR}" ]]; then
 	echo "Could not find config dir!"
 	exit 1
     else
 	echo "Found config dir, copying"
     fi
-    cp -r ${CFGDIR} ${TEMP_DIR}
+    cp -r ${CFGDIR} ${DEST_DIR}
 
 }
 
@@ -114,7 +114,7 @@ configure_settings() {
 }
 
 create_package() {
-    makeself --notemp ${TEMP_DIR} dig_deploy.sh "Deployment package for DIG:${DIG_VERSION}" ./bootstrap.sh
+    makeself --notemp ${DEST_DIR} dig_deploy.sh "Deployment package for DIG:${DIG_VERSION}" ./bootstrap.sh
 }
 
 
