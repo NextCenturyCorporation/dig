@@ -10,7 +10,8 @@ var UserSchema = new Schema({
     type: String,
     default: 'user'
   },
-  provider: String
+  provider: String,
+  blurAttributes: Schema.Types.Mixed
 });
 
 /**

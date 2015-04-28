@@ -1,29 +1,30 @@
 'use strict';
 
 angular.module('digApp')
-.service('blurImageService', function($rootScope, blurImagesEnabled, blurImagesPercentage) {
+.service('blurImageService', function($rootScope, blurImagesEnabled, blurImagesPercentage, User) {
     var blurConfig = this;
+    var user = User.get();
 
     blurConfig.getBlurImagesEnabled = function() {
-        return (sessionStorage.blurConfig ? JSON.parse(sessionStorage.blurConfig).blurImagesEnabled : blurImagesEnabled);
+        return (user.blurAttributes ? user.blurAttributes.blurImagesEnabled : blurImagesEnabled);
     };
 
     blurConfig.getBlurImagesPercentage = function() {
-        return (sessionStorage.blurConfig ? JSON.parse(sessionStorage.blurConfig).blurImagesPercentage : blurImagesPercentage);
+        return (user.blurAttributes ? user.blurAttributes.blurImagesPercentage : blurImagesPercentage);
     };
 
     blurConfig.changeBlurImagesEnabled = function(isBlurred) {
-        var blurAttributes = {};
+        var blurUpdate = {blurAttributes: {}};
         
         if(isBlurred) {
-            blurAttributes.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : true;
-            blurAttributes.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
-            sessionStorage.blurConfig = JSON.stringify(blurAttributes);
+            blurUpdate.blurAttributes.blurImagesEnabled = blurImagesEnabled ? blurImagesEnabled : true;
+            blurUpdate.blurAttributes.blurImagesPercentage = (blurImagesPercentage > 0) ? blurImagesPercentage : 2.5;
         } else {
-            blurAttributes.blurImagesEnabled = blurImagesEnabled ? false : blurImagesEnabled;
-            blurAttributes.blurImagesPercentage = (blurImagesPercentage === 0) ? blurImagesPercentage : 0;
-            sessionStorage.blurConfig = JSON.stringify(blurAttributes);
+            blurUpdate.blurAttributes.blurImagesEnabled = blurImagesEnabled ? false : blurImagesEnabled;
+            blurUpdate.blurAttributes.blurImagesPercentage = (blurImagesPercentage === 0) ? blurImagesPercentage : 0;
         }
+
+        user = User.update(blurUpdate);
 
         $rootScope.$broadcast('blur-state-change', isBlurred);
     };
