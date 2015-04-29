@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 ## DEFAULTS
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
@@ -48,7 +48,7 @@ push_docker() {
 }
 
 get_options() {
-    while getopts ":kic:hd:" opt; do
+    while getopts ":kic:hd" opt; do
 	case $opt in
 	    k)
 		echo "Not removing temporary directory: ${TEMP_DIR}"
@@ -63,6 +63,7 @@ get_options() {
 		;;
 	    d)
 		#Push to docker-hub
+		echo "Pushing to docker-hub..."
 		PUSH_TO_DOCKER=1
 		;;
 	    \?)
