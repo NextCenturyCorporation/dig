@@ -3,7 +3,18 @@
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
-CURRENT_DIR=$(readlink -f $(dirname ${BASH_SOURCE[0]}) )
+
+# Macs don't have a proper readlink
+realpath_Darwin() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/$1#./}"
+}
+
+realpath_Linux() {
+    readlink -f ${1}
+}
+
+#call the proper version based on your kernel type
+CURRENT_DIR=$(realpath_$(uname) $(dirname ${BASH_SOURCE[0]}) )
 BUILD_DIR=$(mktemp -d)
 CLONE_URL="https://github.com/NextCenturyCorporation/dig.git"
 BUMP_VER=dev
