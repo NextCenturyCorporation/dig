@@ -8,7 +8,7 @@ BUILD_DIR=$(mktemp -d)
 CLONE_URL="https://github.com/NextCenturyCorporation/dig.git"
 BUMP_VER=dev
 PUSH_REQUIRED=0
-GIT_PUSH_OPTS="--dry-run"
+GIT_PUSH_OPTS=""
 
 backup() {
     #backup some values so we can rollback if necessary
@@ -58,7 +58,7 @@ cleanup 0
 
 get_options() {
     
-    while getopts ":Mmpucait" opt; do
+    while getopts ":Mmpucaitd" opt; do
 	case $opt in
 	    M)
 		BUMP_VER=maj
@@ -80,6 +80,13 @@ get_options() {
 		;;
 	    u)
 		echo "Forcing a push to docker-hub"
+		;;
+	    d)
+		GIT_PUSH_OPTS="--dry-run"	
+		echo "*************************"
+		echo "* PERFORMING A DRY-RUN! *"
+		echo "*************************"
+		sleep 2s
 		;;
 	    \?)
 		echo "INVALID OPTION: -$OPTARG" >&2
@@ -118,7 +125,7 @@ sanity_check() {
     fi
     
     #Ensure that we are using npm v2 or greater
-    if [[ -z "$(npm -v | sed -n '/^2[[:digit:]\.]\+/p')" ]]; then
+    if [[ -z "$(npm -v | sed -n '/^2/p')" ]]; then
 	echo "You have a version of npm that is too old!"
 	cleanup 4
     fi
