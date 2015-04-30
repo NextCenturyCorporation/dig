@@ -6,7 +6,7 @@
 
 # Macs don't have a proper readlink
 realpath_Darwin() {
-    [[ $1 = /* ]] && echo "$1" || echo "$PWD/$1#./}"
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
 realpath_Linux() {
