@@ -62,7 +62,7 @@ Various application parameters can be configured via environment variables - the
 | EUI_SERVER_URL | 'http://localhost' | The base URL at which [Elasticsearch] can be found |
 | EUI_SERVER_PORT | 9200 | The port on which to connect to [Elasticsearch] |
 | EUI_SEARCH_INDEX | 'dig' | The name of the [Elasticsearch] index |
-| BLUR_IMAGES | 'blur' | Determines whether images linked to the [Elasticsearch] data are blurred in the user interface |
+| BLUR_IMAGES | 'true' | Determines whether images linked to the [Elasticsearch] data are blurred in the user interface |
 | BLUR_PERCENT | 2.5 | The amount of image blurring |
 | MONGOHQ_URL | 'mongodb://localhost/dig-dev' | In development mode, this variable is ignored and the default value is used |
 

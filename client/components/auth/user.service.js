@@ -6,11 +6,17 @@ angular.module('digApp')
       id: '@_id'
     },
     {
+      update: {
+        method: 'PUT',
+        params: {
+          id:'me'
+        }
+      },
       get: {
         method: 'GET',
         params: {
           id:'me'
         }
       }
-      });
+    });
   });
