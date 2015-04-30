@@ -41,14 +41,11 @@ angular.element(document).ready(function() {
         var simHost = (config.simHost || 'localhost') + ':' + (config.simPort || 3001);
         digApp.constant('simHost', simHost);
 
-        var blurImagesEnabled = (config.blurImagesEnabled !== undefined ? config.blurImagesEnabled : 'blur');
+        var blurImagesEnabled = (config.blurImagesEnabled !== undefined ? config.blurImagesEnabled : true);
         digApp.constant('blurImagesEnabled', blurImagesEnabled);
 
         var blurImagesPercentage = config.blurImagesPercentage || 10;
         digApp.constant('blurImagesPercentage', blurImagesPercentage);
-
-        var pixelateImagesPercentage = config.pixelateImagesPercentage || 2.5;
-        digApp.constant('pixelateImagesPercentage', pixelateImagesPercentage);
 
         var appVersion = config.appVersion;
         digApp.constant('appVersion', appVersion);
