@@ -46,6 +46,10 @@ cleanup() {
     exit $exitval
 }
 
+ctrl_c() {
+    echo "Caught SIGINT/SIGTERM. Cleaning up"
+    cleanup 99
+}
 
 help() {
     cat <<EOF
@@ -191,6 +195,10 @@ build() {
 	rm -rf ${BUILD_DIR}
     fi
 }
+
+
+trap ctrl_c SIGINT
+trap ctrl_c SIGTERM
 
 
 backup
