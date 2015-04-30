@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
@@ -27,7 +27,7 @@ backup() {
 }
 
 rollback() {
-    echo "Rolling back any version changes"
+    echo "** Rolling back because something failed **"
     echo "Deleting git tag: ${GIT_TAG}"
     git tag -d ${GIT_TAG}
     echo "Rolling back to commit: ${GIT_CURRENT}"
@@ -180,7 +180,7 @@ version() {
 }
 
 build() {
-    if [[ $PUSH_TO_DOCKER == 1 ]]; then
+    if [[ "$PUSH_TO_DOCKER" -eq 1 ]]; then
 	package_opts="-d"
     fi
     cd ${BUILD_DIR}
