@@ -15,7 +15,7 @@ realpath_Linux() {
 
 #call the proper version based on your kernel type
 CURRENT_DIR=$(realpath_$(uname) $(dirname ${BASH_SOURCE[0]}) )
-BUILD_DIR=$(mktemp -d -t dig_release)
+BUILD_DIR=$(mktemp -d ${TMPDIR-/tmp}/dig_release.XXXXXXXX)
 CLONE_URL="https://github.com/NextCenturyCorporation/dig.git"
 BUMP_VER=dev
 PUSH_REQUIRED=0

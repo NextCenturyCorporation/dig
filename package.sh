@@ -16,7 +16,7 @@ DISTFILES=dist/
 DOCKER_COMPOSE_FILE=docker-compose.yml
 
 
-TEMP_DIR=$(mktemp -d /tmp/tmp.XXXXXXXXXX)
+TEMP_DIR=$(mktemp -d ${TMPDIR-/tmp}/dig_package.XXXXXXXXXX)
 DEST_DIR=${TEMP_DIR}/dig
 
 cleanup() {
