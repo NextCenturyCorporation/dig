@@ -88,6 +88,27 @@ var all = {
                     count: 10
                 }]
             },
+            sort: {
+                field: 'date',
+                defaultOption: {
+                    order: 'rank', title: 'Best Match'
+                },
+                options: [
+                    {
+                        order: 'rank',
+                        title: 'Best Match'
+                    },{
+                        order: 'desc',
+                        title: 'Newest First'
+                    },{
+                        order: 'asc',
+                        title: 'Oldest First'
+                    }
+                ]
+            },
+            lastUpdateQuery: {
+                field: 'date'
+            },
             highlight: {
                 fields: [
                 'title'
@@ -102,7 +123,7 @@ var all = {
                 }],
                 short: [{
                     title: 'Date',
-                    field: "doc._source.date",
+                    field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
                     title: 'City',
@@ -155,7 +176,7 @@ var all = {
                             featureValue: 'email'
                         },{
                             title: 'Created',
-                            field: "doc._source.date"
+                            field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'"
                         }]
                     },
                     "2": {
@@ -197,7 +218,7 @@ var all = {
                     classes: 'listing-details',
                     fields: [{
                         title: 'Created',
-                        field: "doc._source.date"
+                        field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'"
                     },{
                         title: 'City',
                         field: 'doc._source.city',
@@ -226,7 +247,7 @@ var all = {
                         title: 'Name(s)',
                         field: 'doc._source.full_name',
                     },{
-                    title: 'Username',
+                        title: 'Username',
                         field: 'doc._source.username',
                         featureArray: 'doc._source.username',
                         featureValue: 'username'
