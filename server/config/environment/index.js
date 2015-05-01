@@ -56,6 +56,225 @@ var all = {
     blurPercentage: process.env.BLUR_PERCENT || 2.5,
 
     euiConfigs: {
+        'mockads': {
+            facets: {
+                aggFilters: [{
+                    title: 'State',
+                    type: 'eui-aggregation',
+                    field: 'state_agg',
+                    terms: 'state',
+                    termsType: 'string',
+                    count: 15
+                },{
+                    title: 'Ethnicity',
+                    type: 'eui-aggregation',
+                    field: 'etn_agg',
+                    terms: 'ethnicity',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Hair Color',
+                    type: 'eui-aggregation',
+                    field: 'hc_agg',
+                    terms: 'hair_color',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Age',
+                    type: 'eui-aggregation',
+                    field: 'age_agg',
+                    terms: 'age',
+                    termsType: 'number',
+                    count: 10
+                }]
+            },
+            highlight: {
+                fields: [
+                'title'
+                ]
+            },
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["title"][0] || doc._source.title',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.date",
+                    classes: 'date'
+                },{
+                    title: 'City',
+                    field: 'doc._source.city',
+                    classes: 'location'
+                },{
+                    title: 'State',
+                    field: 'doc._source.state',
+                    classes: 'location'
+                },{
+                    title: 'Phone',
+                    field: 'doc._source.phone',
+                    classes: 'phone'
+                },{
+                    title: 'Name',
+                    field: 'doc._source.full_name',
+                    classes: 'name'
+                },{
+                    title: 'Age',
+                    field: 'doc._source.age',
+                    classes: 'age'
+                }],
+                full: {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Name(s)',
+                            field: 'doc._source.full_name',
+                            featureArray: 'doc._source.full_name',
+                            featureValue: 'full_name'
+                        },{
+                            title: 'City',
+                            field: 'doc._source.city',
+                            featureArray: 'doc._source.city',
+                            featureValue: 'city'
+                        },{
+                            title: 'State',
+                            field: 'doc._source.state',
+                            featureArray: 'doc._source.state',
+                            featureValue: 'state'
+                        },{                         
+                            title: 'Phone Number',
+                            field: 'doc._source.phone',
+                            featureArray: 'doc._source.phone',
+                            featureValue: 'phone'
+                        },{
+                            title: 'Email',
+                            field: 'doc._source.email',
+                            featureArray: 'doc._source.email',
+                            featureValue: 'email'
+                        },{
+                            title: 'Created',
+                            field: "doc._source.date"
+                        }]
+                    },
+                    "2": {
+                        classes: 'person-details',
+                        fields: [{
+                            title: 'Age',
+                            field: 'doc._source.age',
+                            featureArray: 'doc._source.age',
+                            featureValue: 'age'
+                        },{
+                            title: 'Ethnicity',
+                            field: 'doc._source.ethnicity',
+                            featureArray: 'doc._source.ethnicity',
+                            featureValue: 'ethnicity'
+                        },{
+                            title: 'Hair Color',
+                            field: 'doc._source.hair_color',
+                            featureArray: 'doc._source.hair_color',
+                            featureValue: 'hair_color'
+                        },{
+                            title: 'Height',
+                            field: 'doc._source.height',
+                            featureArray: 'doc._source.height',
+                            featureValue: 'height'
+                        },{
+                            title: 'Weight',
+                            field: 'doc._source.weight',
+                            featureArray: 'doc._source.weight',
+                            featureValue: 'weight'
+                        }]
+                    }
+                }
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            detailFields: {
+                "1": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Created',
+                        field: "doc._source.date"
+                    },{
+                        title: 'City',
+                        field: 'doc._source.city',
+                        featureArray: 'doc._source.city',
+                        featureValue: 'city'
+                    },{
+                        title: 'State',
+                        field: 'doc._source.state',
+                        featureArray: 'doc._source.state',
+                        featureValue: 'state'
+                    },{  
+                        title: 'Phone Number',
+                        field: 'doc._source.phone',
+                        featureArray: 'doc._source.phone',
+                        featureValue: 'phone'
+                    },{
+                        title: 'Email',
+                        field: 'doc._source.email',
+                        featureArray: 'doc._source.email',
+                        featureValue: 'email'
+                    }]
+                },
+                "2": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Name(s)',
+                        field: 'doc._source.full_name',
+                    },{
+                    title: 'Username',
+                        field: 'doc._source.username',
+                        featureArray: 'doc._source.username',
+                        featureValue: 'username'
+                    },{
+                        title: 'Age',
+                        field: 'doc._source.age',
+                        featureArray: 'doc._source.age',
+                        featureValue: 'age'
+                    },{
+                        title: 'Ethnicity',
+                        field: 'doc._source.ethnicity',
+                        featureArray: 'doc._source.ethnicity',
+                        featureValue: 'ethnicity'
+                    },{
+                        title: 'Hair Color',
+                        field: 'doc._source.hair_color',
+                        featureArray: 'doc._source.hair_color',
+                        featureValue: 'hair_color'
+                    },{
+                        title: 'Height',
+                        field: 'doc._source.height',
+                        featureArray: 'doc._source.height',
+                        featureValue: 'height'
+                    },{
+                        title: 'Weight',
+                        field: 'doc._source.weight',
+                        featureArray: 'doc._source.weight',
+                        featureValue: 'weight'
+                    },{
+                        title: 'Eye Color',
+                        field: 'doc._source.eye_color',
+                        hideIfMissing: true
+                    },{
+                        title: 'Smokes',
+                        field: 'doc._source.smokes',
+                        featureArray: 'doc._source.smokes',
+                        featureValue: 'smokes',
+                        hideIfMissing: true
+                    },{
+                        title: 'IP Address',
+                        field: 'doc._source.ip_address',
+                        featureArray: 'doc._source.ip_address',
+                        featureValue: 'ip_address',
+                        hideIfMissing: true
+                    }]
+                }
+            }
+        },
         'dig-latest': {
             facets: {
                 simFilter: {
