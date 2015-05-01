@@ -42,16 +42,6 @@ var all = {
         }
     },
 
-    // Sequelize ORM options relevant to all deployment env
-    sequelize: {
-        username: 'digapp',
-        password: null,
-        options: {
-            host: process.env.DB_HOSTNAME || 'localhost',
-            dialect: 'postgres'
-        }
-    },
-
     appVersion: pjson.version,
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',

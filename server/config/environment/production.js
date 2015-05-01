@@ -23,7 +23,14 @@ module.exports = {
 
   // Sequelize ORM options specific to production env
   sequelize: {
-    database: 'digappprod'
+    username: 'digapp',
+    password: process.env.DB_PASS || null,
+    database: 'digapp_production',
+    hostname: process.env.DB_HOST || null,
+    options: {
+      dialect: 'mysql',
+      storage: './db.digappdev.sqlite'
+    }
   },
 
   seedDB: false

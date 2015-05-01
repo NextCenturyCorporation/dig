@@ -9,17 +9,11 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
 var mongoose = require('mongoose');
-var Sequelize = require('sequelize');
 var config = require('./config/environment');
+var models = require('./models');
 
 // Connect to database     
 mongoose.connect(config.mongo.uri, config.mongo.options);
-// Connect to postgreSQL database
-var sequelize = new Sequelize(
-    config.sequelize.database, 
-    config.sequelize.username,
-    config.sequelize.password, 
-    config.sequelize.options);
        
 // Populate DB with sample data        
 if(config.seedDB) { require('./config/seed'); }

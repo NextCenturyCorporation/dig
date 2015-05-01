@@ -8,9 +8,16 @@ module.exports = {
     uri: 'mongodb://localhost/dig-test'
   },
 
-  // Sequelize ORM options specific to production env
+  // Sequelize ORM options specific to test env
   sequelize: {
-    database: 'digapptest'
+    username: 'digapp',
+    password: process.env.DB_PASS || null,
+    database: 'digapp_production',
+    hostname: process.env.DB_HOST || null,
+    options: {
+      dialect: 'mysql',
+      storage: './db.digappdev.sqlite'
+    }
   },
 
   seedDB: false
