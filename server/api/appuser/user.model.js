@@ -3,7 +3,14 @@
 module.exports = function(sequelize, DataTypes) {
     var User = sequelize.define('User', 
     {
-        username: DataTypes.STRING
+        username: {
+            type: DataTypes.STRING, 
+            primaryKey: true
+        },
+        role: {
+            type: DataTypes.ENUM('user', 'admin', 'disabled', 'guest'),
+            defaultValue: 'user'
+        }
     }, 
     {
         classMethods: {

@@ -1,29 +1,42 @@
 /**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
+* Using Rails-like standard naming convention for endpoints.
+* GET     /things              ->  index
+* POST    /things              ->  create
+* GET     /things/:id          ->  show
+* PUT     /things/:id          ->  update
+* DELETE  /things/:id          ->  destroy
+*/
 
 'use strict';
 
 var models = require('../../models');
+
 exports.index = function (req, res) {
-  return res.json(200, ['dflynt', 'memex']);
+    models.User.findAll(
+    //{
+    //     include: [ models.Query ]
+    // }
+    ).then(function(users) {
+        res.json(200, users);
+    });
 };
 
 exports.show = function (req, res) {
-  // body...
+    models.User.find({
+        where: {username: req.param('username')}
+    }).then(function(user){
+        res.json(200, user);
+    });
 }
 
 exports.create = function (req, res) {
-  models.User.create({
-    username: req.param('username')
-  }).then(function(newuser) {
-    res.json(201, newuser);
-  });
+    models.User.create({
+        username: req.param('username')
+    }).then(function(newuser) {
+        res.json(201, newuser);
+    }).catch(function(error) {
+        res.json(404, error);
+    });
 }
 
 // var _ = require('lodash');
