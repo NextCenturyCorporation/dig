@@ -2,7 +2,7 @@
 
 angular.module('digApp')
   .factory('User', function ($resource) {
-    return $resource('/api/users/:id/:controller', {
+    return $resource('/api/appusers/:id', {
       id: '@_id'
     },
     {
