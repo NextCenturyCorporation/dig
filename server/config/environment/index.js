@@ -152,27 +152,22 @@ var all = {
                         fields: [{
                             title: 'Name(s)',
                             field: 'doc._source.full_name',
-                            featureArray: 'doc._source.full_name',
                             featureValue: 'full_name'
                         },{
                             title: 'City',
                             field: 'doc._source.city',
-                            featureArray: 'doc._source.city',
                             featureValue: 'city'
                         },{
                             title: 'State',
                             field: 'doc._source.state',
-                            featureArray: 'doc._source.state',
                             featureValue: 'state'
                         },{                         
                             title: 'Phone Number',
                             field: 'doc._source.phone',
-                            featureArray: 'doc._source.phone',
                             featureValue: 'phone'
                         },{
                             title: 'Email',
                             field: 'doc._source.email',
-                            featureArray: 'doc._source.email',
                             featureValue: 'email'
                         },{
                             title: 'Created',
@@ -184,27 +179,22 @@ var all = {
                         fields: [{
                             title: 'Age',
                             field: 'doc._source.age',
-                            featureArray: 'doc._source.age',
                             featureValue: 'age'
                         },{
                             title: 'Ethnicity',
                             field: 'doc._source.ethnicity',
-                            featureArray: 'doc._source.ethnicity',
                             featureValue: 'ethnicity'
                         },{
                             title: 'Hair Color',
                             field: 'doc._source.hair_color',
-                            featureArray: 'doc._source.hair_color',
                             featureValue: 'hair_color'
                         },{
                             title: 'Height',
                             field: 'doc._source.height',
-                            featureArray: 'doc._source.height',
                             featureValue: 'height'
                         },{
                             title: 'Weight',
                             field: 'doc._source.weight',
-                            featureArray: 'doc._source.weight',
                             featureValue: 'weight'
                         }]
                     }
@@ -222,22 +212,18 @@ var all = {
                     },{
                         title: 'City',
                         field: 'doc._source.city',
-                        featureArray: 'doc._source.city',
                         featureValue: 'city'
                     },{
                         title: 'State',
                         field: 'doc._source.state',
-                        featureArray: 'doc._source.state',
                         featureValue: 'state'
                     },{  
                         title: 'Phone Number',
                         field: 'doc._source.phone',
-                        featureArray: 'doc._source.phone',
                         featureValue: 'phone'
                     },{
                         title: 'Email',
                         field: 'doc._source.email',
-                        featureArray: 'doc._source.email',
                         featureValue: 'email'
                     }]
                 },
@@ -249,32 +235,26 @@ var all = {
                     },{
                         title: 'Username',
                         field: 'doc._source.username',
-                        featureArray: 'doc._source.username',
                         featureValue: 'username'
                     },{
                         title: 'Age',
                         field: 'doc._source.age',
-                        featureArray: 'doc._source.age',
                         featureValue: 'age'
                     },{
                         title: 'Ethnicity',
                         field: 'doc._source.ethnicity',
-                        featureArray: 'doc._source.ethnicity',
                         featureValue: 'ethnicity'
                     },{
                         title: 'Hair Color',
                         field: 'doc._source.hair_color',
-                        featureArray: 'doc._source.hair_color',
                         featureValue: 'hair_color'
                     },{
                         title: 'Height',
                         field: 'doc._source.height',
-                        featureArray: 'doc._source.height',
                         featureValue: 'height'
                     },{
                         title: 'Weight',
                         field: 'doc._source.weight',
-                        featureArray: 'doc._source.weight',
                         featureValue: 'weight'
                     },{
                         title: 'Eye Color',
@@ -283,13 +263,11 @@ var all = {
                     },{
                         title: 'Smokes',
                         field: 'doc._source.smokes',
-                        featureArray: 'doc._source.smokes',
                         featureValue: 'smokes',
                         hideIfMissing: true
                     },{
                         title: 'IP Address',
                         field: 'doc._source.ip_address',
-                        featureArray: 'doc._source.ip_address',
                         featureValue: 'ip_address',
                         hideIfMissing: true
                     }]
