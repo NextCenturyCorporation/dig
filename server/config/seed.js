@@ -37,7 +37,8 @@ Query.find({}).remove(function() {
     username: 'test',
     frequency: 'never',
     createDate: new Date(),
-    lastRunDate: new Date()
+    lastRunDate: new Date(),
+    hasNotification: true
   }, {
     name: 'Query #2',
     digState: {

@@ -21,22 +21,42 @@ describe('Directive: sort', function () {
         scope.filters = {};
         scope.euiConfigs = {
                 sort: {
-                    field: 'dateCreated',
-                    defaultOption: {order: 'rank', title: 'Best Match'}, 
+                    defaultOption: {
+                        field: '_score', order: 'desc', title: 'Best Match'
+                    },
+                    notificationOption: {
+                        field: '_timestamp', order: 'desc', title: 'Timestamp',
+                    },
                     options: [
-                        {order: 'rank', title: 'Best Match'},
-                        {order: 'desc', title: 'Newest First'},
-                        {order: 'asc', title: 'Oldest First'}
+                        {
+                            field: '_score',
+                            order: 'desc',
+                            title: 'Best Match'
+                        },{
+                            field: 'dateCreated',
+                            order: 'desc',
+                            title: 'Newest First'
+                        },{
+                            field: 'dateCreated',
+                            order: 'asc',
+                            title: 'Oldest First'
+                        }, {
+                            field: '_timestamp',
+                            order: 'desc',
+                            title: 'Timestamp'
+                        }
                     ]
                 }
             };
+        scope.hasNotification = false;
     }));
 
     it('should initialize all fields to the appropriate values', function () {
 
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'has-notification="hasNotification"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -46,17 +66,19 @@ describe('Directive: sort', function () {
         expect(element.isolateScope().euiConfigs).toBe(scope.euiConfigs);
         expect(element.isolateScope().title).toBe(scope.euiConfigs.sort.defaultOption.title);
         expect(element.isolateScope().order).toBe(scope.euiConfigs.sort.defaultOption.order);
+        expect(element.isolateScope().field).toBe(scope.euiConfigs.sort.defaultOption.field);
         expect(element.isolateScope().euiSortOrder).toBe('desc');
         expect(element.isolateScope().sortOptions).toBe(scope.euiConfigs.sort.options);
     });
 
-    it('should initialize title and order if already present', function () {
+    it('should initialize title, order, and field if already present', function () {
 
-        scope.selectedSort = {order: 'asc', title: 'Oldest First'};
+        scope.selectedSort = {field: 'dateCreated', order: 'asc', title: 'Oldest First'};
 
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'has-notification="hasNotification"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -64,6 +86,7 @@ describe('Directive: sort', function () {
 
         expect(element.isolateScope().title).toBe(scope.selectedSort.title);
         expect(element.isolateScope().order).toBe(scope.selectedSort.order);
+        expect(element.isolateScope().field).toBe(scope.selectedSort.field);
         expect(element.isolateScope().euiSortOrder).toEqual('asc');
     });
 
@@ -74,7 +97,8 @@ describe('Directive: sort', function () {
         inject(function ($compile) {
 
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'has-notification="hasNotification"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -90,7 +114,8 @@ describe('Directive: sort', function () {
 
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'has-notification="hasNotification"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -106,7 +131,8 @@ describe('Directive: sort', function () {
 
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'has-notification="hasNotification"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -117,23 +143,6 @@ describe('Directive: sort', function () {
 
         expect(scope.selectedSort).toEqual(scope.euiConfigs.sort.options[2]);
         expect(element.isolateScope().euiSortOrder).toEqual(scope.euiConfigs.sort.options[2].order);
-    });
-
-    it('should switch selectedSort but not euiSortOrder to new value', function() {
-
-        inject(function ($compile) {
-            element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
-                'title="selectedSort.title" order="selectedSort.order"></sort>');
-
-            $compile(element)(scope);
-            element.scope().$digest();
-        });
-
-        element.isolateScope().switchSort(0);
-        element.scope().$digest();
-
-        expect(scope.selectedSort).toEqual(scope.euiConfigs.sort.options[0]);
-        expect(element.isolateScope().euiSortOrder).toNotEqual(scope.euiConfigs.sort.options[0].order);
     });
 
 });

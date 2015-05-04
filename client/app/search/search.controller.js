@@ -14,6 +14,7 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
+    $scope.hasNotification = false; // TODO: placeholder for real schema changes
 
     $scope.saveQuery = function() {
         $modal.open({
@@ -55,33 +56,38 @@ angular.module('digApp')
 
         $scope.selectedSort = {};
 
-        if($state.params && $state.params.query) {
+        if($state.params && $state.params.query && $state.params.query.digState) {
 
             if($state.params.query.digState.searchTerms) {
                 $scope.queryString.live = $state.params.query.digState.searchTerms;
             }
 
-            if($state.params.query.digState.filters.aggFilters) {
-                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.digState.filters.aggFilters);
-            }
-            if($state.params.query.digState.filters.textFilters) {
-                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.digState.filters.textFilters);
-            }
+            if($state.params.query.digState.filters) {
+                if($state.params.query.digState.filters.aggFilters) {
+                    $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.digState.filters.aggFilters);
+                }
 
-            if($state.params.query.digState.filters.dateFilters) {
-                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
+                if($state.params.query.digState.filters.textFilters) {
+                    $scope.filterStates.textFilters = _.cloneDeep($state.params.query.digState.filters.textFilters);
+                }
+
+                if($state.params.query.digState.filters.dateFilters) {
+                    $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
+                }
+
+                if($state.params.query.digState.filters.withImagesOnly) {
+                    $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
+                }
             }
             
             if($state.params.query.digState.includeMissing) {
                 $scope.includeMissing = _.cloneDeep($state.params.query.digState.includeMissing);
             }
 
-            if($state.params.query.digState.selectedSort) {
+            if($state.params.query.hasNotification) {
+                $scope.hasNotification = $state.params.query.hasNotification;
+            } else if($state.params.query.digState.selectedSort) {
                 $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
-            }   
-
-            if($state.params.query.digState.filters.withImagesOnly) {
-                $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
             }
 
             $scope.$on('$locationChangeSuccess', function() {

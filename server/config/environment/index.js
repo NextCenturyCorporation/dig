@@ -89,20 +89,29 @@ var all = {
                 }]
             },
             sort: {
-                field: 'date',
                 defaultOption: {
-                    order: 'rank', title: 'Best Match'
+                    field: '_score', order: 'desc', title: 'Best Match'
+                },
+                notificationOption: {
+                    field: '_timestamp', order: 'desc', title: 'Timestamp',
                 },
                 options: [
                     {
-                        order: 'rank',
+                        field: '_score',
+                        order: 'desc',
                         title: 'Best Match'
                     },{
+                        field: 'date',
                         order: 'desc',
                         title: 'Newest First'
                     },{
+                        field: 'date',
                         order: 'asc',
                         title: 'Oldest First'
+                    }, {
+                        field: '_timestamp',
+                        order: 'desc',
+                        title: 'Timestamp'
                     }
                 ]
             },
@@ -330,20 +339,29 @@ var all = {
                 ]
             },
             sort: {
-                field: 'dateCreated',
                 defaultOption: {
-                    order: 'rank', title: 'Best Match'
+                    field: '_score', order: 'desc', title: 'Best Match'
+                },
+                notificationOption: {
+                    field: '_timestamp', order: 'desc', title: 'Timestamp',
                 },
                 options: [
                     {
-                        order: 'rank',
+                        field: '_score',
+                        order: 'desc',
                         title: 'Best Match'
                     },{
+                        field: 'dateCreated',
                         order: 'desc',
                         title: 'Newest First'
                     },{
+                        field: 'dateCreated',
                         order: 'asc',
                         title: 'Oldest First'
+                    }, {
+                        field: '_timestamp',
+                        order: 'desc',
+                        title: 'Timestamp'
                     }
                 ]
             },

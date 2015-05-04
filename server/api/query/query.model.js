@@ -10,7 +10,8 @@ var QuerySchema = new Schema({
   username: { type: String, index: true, required: true },
   createDate: Date,
   lastRunDate: Date,
-  frequency: { type: String, default: 'never' }
+  frequency: { type: String, default: 'never' },
+  hasNotification: { type: Boolean, index: true, default: false } // TODO: replace with real schema changes
 });
 
 module.exports = mongoose.model('Query', QuerySchema);

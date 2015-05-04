@@ -66,7 +66,7 @@
       <button class="btn btn-default" ng-click="switchView('gallery')">
         <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
       </button>
-      <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order">
+      <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" has-notification="hasNotification">
       </sort>
     </div>
 

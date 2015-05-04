@@ -27,6 +27,7 @@
                 {{query.name}}
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
+                    <li><span ng-if="query.hasNotification"><i class="fa fa-asterisk"></i></span></li>
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
@@ -46,6 +47,7 @@
                 <h4>Name: {{query.name}}</h4>
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
+                    <li><span ng-if="query.hasNotification"><i class="fa fa-asterisk"></i></span></li>
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
                     <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
