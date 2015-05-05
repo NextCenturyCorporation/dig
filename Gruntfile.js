@@ -607,8 +607,10 @@ module.exports = function (grunt) {
   grunt.registerTask('test', function(target) {
     if (target === 'server') {
       return grunt.task.run([
-        'env:all',
-        'env:test',
+        // env:all and env:test require mysql to be configured
+        // see server/config/mysql_setup_notes.txt
+        // 'env:all',
+        // 'env:test',
         'mochaTest'
       ]);
     }

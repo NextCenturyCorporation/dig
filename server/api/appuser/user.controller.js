@@ -1,5 +1,5 @@
 /**
-* Using Rails-like standard naming convention for endpoints.
+* Using standard naming convention for endpoints.
 * GET     /things              ->  index
 * POST    /things              ->  create
 * GET     /things/:id          ->  show
@@ -22,8 +22,9 @@ exports.index = function (req, res) {
 };
 
 exports.show = function (req, res) {
+
     models.User.find({
-        where: {username: req.param('username')}
+        where: {username: req.params.username}
     }).then(function(user){
         res.json(200, user);
     });
@@ -31,7 +32,7 @@ exports.show = function (req, res) {
 
 exports.create = function (req, res) {
     models.User.create({
-        username: req.param('username')
+        username: req.params.username
     }).then(function(newuser) {
         res.json(201, newuser);
     }).catch(function(error) {
@@ -39,13 +40,28 @@ exports.create = function (req, res) {
     });
 }
 
-/**
-* Legacy function from yeoman fullstack generated passport authentication
-* architecture.
-* TODO: re-design this functionality when SSO solution is achieved.
-*/
-exports.me = function(req, res, next) {
+exports.update = function (req, res) {
+    modes.User.update(
+        {role: req.query.role},
+        {where: {username: req.params.username}}
+    ).then(function(user) {
+            res.json(204);
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
 
+exports.delete = function (req, res) {
+    models.User.destroy({
+        where: {username: req.params.username}
+    }).then(function(user) {
+        res.json(204);
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+exports.me = function(req, res, next) {
     models.User.findOrCreate({
         where: {username: req.headers.user}
     }).spread(function(user, created) {
