@@ -31,9 +31,8 @@ exports.show = function (req, res) {
 }
 
 exports.create = function (req, res) {
-    models.User.create({
-        username: req.params.username
-    }).then(function(newuser) {
+    models.User.create(req.body)
+    .then(function(newuser) {
         res.json(201, newuser);
     }).catch(function(error) {
         res.json(404, error);
@@ -41,11 +40,11 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
-    modes.User.update(
-        {role: req.query.role},
+    models.User.update(
+        req.body,
         {where: {username: req.params.username}}
     ).then(function(user) {
-            res.json(204);
+        res.status(204).end();
     }).catch(function(error) {
         res.json(404, error);
     });
@@ -54,9 +53,16 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
     models.User.destroy({
         where: {username: req.params.username}
-    }).then(function(user) {
-        res.json(204);
-    }).catch(function(error) {
+    })
+    .then(function(user) {
+        if (user) {
+            res.status(204).end();
+        }
+        else {
+            res.status(404).end();
+        }
+    })
+    .catch(function(error) {
         res.json(404, error);
     });
 }

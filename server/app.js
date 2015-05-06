@@ -33,6 +33,7 @@ models.sequelize.sync().then(function () {
     });
 })
 
+app.models = models;
 
 // Expose app
 exports = module.exports = app;

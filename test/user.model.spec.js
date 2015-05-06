@@ -2,7 +2,7 @@
 
 var should = require('should');
 var app = require('../../app');
-var models = require('../../models');
+var models = app.models; //require('../../models');
 
 
 describe('User Model', function() {
@@ -24,6 +24,7 @@ describe('User Model', function() {
     };
 
     before(findAndRemoveBob);
+    afterEach(findAndRemoveBob);
 
     it('should assign default role --user--', function(done) {
         models.User.create({
@@ -53,7 +54,5 @@ describe('User Model', function() {
                 done();
             });
         });        
-    });
-
-    afterEach(findAndRemoveBob);
+    });   
 });

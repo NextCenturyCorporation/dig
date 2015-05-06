@@ -23,8 +23,9 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 Query.belongsTo(models.User);
+                Query.hasMany(models.Notification);
             }
-        }
+        },
     });
 
     return Query;

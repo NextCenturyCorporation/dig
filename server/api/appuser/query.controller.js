@@ -59,7 +59,7 @@ exports.create = function (req, res) {
             name: req.params.name,
             elasticUIState: JSON.stringify(req.params.elasticUIState),
             digState: JSON.stringify(req.params.digState),
-            frequency: frequency
+            frequency: req.params.frequency
         }).then(function(query) {
             query.setUser(user).then(function() {
                 res.json(201, query);
@@ -70,23 +70,10 @@ exports.create = function (req, res) {
     });
 }
 
-// exports.update = function (req, res) {
-//     modes.User.update(
-//         {role: req.query.role},
-//         {where: {username: req.param('username')}}
-//     ).then(function(user) {
-//             res.json(204);
-//     }).catch(function(error) {
-//         res.json(404, error);
-//     });
-// }
+exports.update = function (req, res) {
+    res.json(204);
+}
 
-// exports.delete = function (req, res) {
-//     models.User.destroy({
-//         where: {username: req.param('username')}
-//     }).then(function(user) {
-//         res.json(204);
-//     }).catch(function(error) {
-//         res.json(404, error);
-//     });
-// }
+exports.delete = function (req, res) {
+    res.json(204);
+}

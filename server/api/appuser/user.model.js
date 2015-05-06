@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     {
         username: {
             type: DataTypes.STRING, 
-            primaryKey: true
+            primaryKey: true,
+            allowNull: false
         },
         role: {
             type: DataTypes.ENUM('user', 'admin', 'disabled', 'guest'),
