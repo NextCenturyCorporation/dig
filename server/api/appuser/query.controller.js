@@ -20,6 +20,15 @@ var deserialize = function (query) {
     return desQuery;
 }
 
+var serialize = function (query) {
+    var serQuery = {};
+    serQuery.name = query.name;
+    serQuery.frequency = query.frequency;
+    serQuery.digState = JSON.stringify(query.digState);
+    serQuery.elasticUIState = JSON.stringify(query.elasticUIState);
+    return serQuery;
+}
+
 exports.index = function (req, res) {
     if (req.params.username === 'me') {
         req.params.username = req.headers.user;
@@ -39,7 +48,7 @@ exports.index = function (req, res) {
 }
 
 exports.show = function (req, res) {
-    models.Queries.find({
+    models.Query.find({
         where: {id: req.params.queryid}
     }).then(function(query){
         res.json(200, deserialize(query));
@@ -52,18 +61,17 @@ exports.create = function (req, res) {
     if (req.params.username === 'me') {
         req.params.username = req.headers.user;
     }
+
     models.User.find({
         username: req.params.username
     }).then(function(user) {
-        models.Query.create({
-            name: req.params.name,
-            elasticUIState: JSON.stringify(req.params.elasticUIState),
-            digState: JSON.stringify(req.params.digState),
-            frequency: req.params.frequency
-        }).then(function(query) {
+        models.Query.create(serialize(req.body))
+        .then(function(query) {
             query.setUser(user).then(function() {
                 res.json(201, query);
             });
+        }).catch(function (error) {
+            res.json(404, error);
         });
     }).catch(function (error) {
         res.json(404, error);
@@ -71,9 +79,29 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
-    res.json(204);
+    models.Query.update(
+        req.body,
+        {where: {id: req.params.queryid}}
+    ).then(function(user) {
+        res.status(204).end();
+    }).catch(function(error) {
+        res.json(404, error);
+    });
 }
 
 exports.delete = function (req, res) {
-    res.json(204);
+    models.Query.destroy({
+        where: {id: req.params.queryid}
+    })
+    .then(function(user) {
+        if (user) {
+            res.status(204).end();
+        }
+        else {
+            res.status(404).end();
+        }
+    })
+    .catch(function(error) {
+        res.json(404, error);
+    });
 }

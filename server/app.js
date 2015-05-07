@@ -31,7 +31,7 @@ models.sequelize.sync().then(function () {
         console.log('Express server listening on %d, in %s mode', 
             config.port, app.get('env'));
     });
-})
+});
 
 app.models = models;
 

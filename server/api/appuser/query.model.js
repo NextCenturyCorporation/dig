@@ -22,8 +22,8 @@ module.exports = function(sequelize, DataTypes) {
     {
         classMethods: {
             associate: function(models) {
-                Query.belongsTo(models.User);
-                Query.hasMany(models.Notification);
+                Query.belongsTo(models.User, {onDelete: 'CASCADE'});
+                Query.hasMany(models.Notification, {onDelete: 'CASCADE'});
             }
         },
     });

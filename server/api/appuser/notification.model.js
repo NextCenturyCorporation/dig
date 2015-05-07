@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     {
         classMethods: {
             associate: function(models) {
-                Notification.belongsTo(models.Query);
+                Notification.belongsTo(models.Query, {onDelete: 'CASCADE'});
             }
         }
     });

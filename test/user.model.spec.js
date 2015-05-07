@@ -1,8 +1,8 @@
 'use strict';
 
 var should = require('should');
-var app = require('../../app');
-var models = app.models; //require('../../models');
+var app = require('../server/app');
+var models = app.models;
 
 
 describe('User Model', function() {
