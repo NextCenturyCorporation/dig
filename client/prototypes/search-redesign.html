@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link type="image/png" rel="shortcut icon" href="images/favicon.png">
+  <title>Search-Redesign</title>
+
+  <!-- Bootstrap -->
+  <!-- <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+  <script src="http://cdn.jsdelivr.net/holder/2.4.0/holder.js"></script>
+
+  <!-- Temporary CDN -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/search-redesign.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+  <div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+    <div class="container">
+      <div class="navbar-header">
+        <div class="navbar-brand">
+          <img src="./images/dig-logo-40pxh.png" alt="">
+        </div>
+      </div>
+      <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main" style="height: 0px;">
+        <ul class="nav navbar-nav">
+          <li class="ng-scope active">
+              <a target="_self" class="ng-binding ng-scope" href="">
+                  Home <span class="glyphicon glyphicon-home"></span>
+              </a>
+          </li>
+          <li class="ng-scope">
+              <a target="_self" class="ng-binding ng-scope" href="">
+                  Search Queries <span class=""></span>
+              </a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><p class="navbar-text ng-binding">Hello test</p> </li>
+          <li>
+            <a href="#" class="dropdown-toggle" id="settingsMenu" data-toggle="dropdown" aria-expanded="false">
+              <span class="glyphicon glyphicon-cog">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="left-column hidden-xs col-sm-3 col-lg-2">
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active">
+            <a href="#filter" role="tab" aria-controls="filter" data-toggle="tab" class="column-header"><h4>Filter</h4></a>
+          </li>
+          <li role="presentation">
+            <a href="#folders" role="tab" aria-controls="folders" data-toggle="tab" class="column-header"><h4>Folders</h4></a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+
+          <div role="tabpanel" class="tab-pane active" id="filter">
+            <div class="row">
+              <div class="col-xs-12">
+                <label>From</label>
+                <p class="input-group">
+                  <input type="button" class="form-control text-left"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                  </span> 
+                </p>
+                <label>To</label>
+                <p class="input-group">
+                  <input type="button" class="form-control text-left"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                  </span> 
+                </p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="filter-header">
+                <h5><i class="fa fa-chevron-down fa-fw"></i>City/Region</h5>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option1"> Option 1
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option2"> Option 2
+                </label>
+                <span class="badge pull-right">42</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option3"> Option 3
+                </label>
+                <span class="badge pull-right">23</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option4"> Option 4
+                </label>
+                <span class="badge pull-right">17</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option5"> Option 5
+                </label>
+                <span class="badge pull-right">9</span>
+              </div>
+              <div class="clearfix">
+                <div class="pull-right more-less-buttons">
+                  <a href="" title="Show More" class="disabled">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                   /
+                  <a href="" title="Show Less" class="disabled">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="filter-header">
+                <h5><i class="fa fa-chevron-down fa-fw"></i>Ethnicity</h5>
+              </div>
+              <div class="checkbox include-missing-checkbox">
+                <label class="include-missing-filter">
+                  <input type="checkbox"> Not Specified
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option1"> Option 1
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option2"> Option 2
+                </label>
+                <span class="badge pull-right">42</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option3"> Option 3
+                </label>
+                <span class="badge pull-right">23</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option4"> Option 4
+                </label>
+                <span class="badge pull-right">17</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option5"> Option 5
+                </label>
+                <span class="badge pull-right">9</span>
+              </div>
+              <div class="clearfix">
+                <div class="pull-right more-less-buttons">
+                  <a href="" title="Show More" class="disabled">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                   /
+                  <a href="" title="Show Less" class="disabled">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="filter-header">
+                <h5><i class="fa fa-chevron-down fa-fw"></i>Hair Color</h5>
+              </div>
+              <div class="checkbox include-missing-checkbox">
+                <label class="include-missing-filter">
+                  <input type="checkbox"> Not Specified
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option1"> Option 1
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option2"> Option 2
+                </label>
+                <span class="badge pull-right">42</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option3"> Option 3
+                </label>
+                <span class="badge pull-right">23</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option4"> Option 4
+                </label>
+                <span class="badge pull-right">17</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="option5"> Option 5
+                </label>
+                <span class="badge pull-right">9</span>
+              </div>
+              <div class="clearfix">
+                <div class="pull-right more-less-buttons">
+                  <a href="" title="Show More" class="disabled">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                   /
+                  <a href="" title="Show Less" class="disabled">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="filter-header">
+                <h5><i class="fa fa-chevron-down fa-fw"></i>Age</h5>
+              </div>
+              <div class="checkbox include-missing-checkbox">
+                <label class="include-missing-filter">
+                  <input type="checkbox"> Not Specified
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Option 1
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="inlineCheckbox2" value="option2"> Option 2
+                </label>
+                <span class="badge pull-right">42</span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="inlineCheckbox3" value="option3"> Option 3
+                </label>
+                <span class="badge pull-right">9</span>
+              </div>
+              <div class="clearfix">
+                <div class="pull-right more-less-buttons">
+                  <a href="" title="Show More" class="disabled">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                   /
+                  <a href="" title="Show Less" class="disabled">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="filter-header">
+                <h5><i class="fa fa-chevron-down fa-fw"></i>Provider</h5>
+              </div>
+              <div class="checkbox include-missing-checkbox">
+                <label class="include-missing-filter">
+                  <input type="checkbox"> Not Specified
+                </label>
+                <span class="badge pull-right">108</span>
+              </div>
+              <div class="clearfix">
+                <div class="pull-right more-less-buttons">
+                  <a href="" title="Show More" class="disabled">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                   /
+                  <a href="" title="Show Less" class="disabled">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group images-only-filter">
+              <div class="filter-header filter-header-selected">
+                <h5><input type="checkbox" class="images-only-checkbox"> With Images Only</h5>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="folders">
+
+            <div class="folder-header row">
+              <button class="btn btn-default">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu" data-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-folder"></i>
+                  <i class="caret"></i>
+                </button>
+                <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROOT</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 1</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 2</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 3</a></li>
+                  <li role="presentation" id="create-new-folder">
+                    <label>Create New</label>
+                    <input role="menuitem" tabindex="-1" type="text">
+                  </li>
+                </ul>
+              </div>
+              <button class="btn btn-default" data-toggle="modal" data-target="#deleteModal">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+
+            <div class="folder-tree">
+              <ul class="folder-tree-list list-unstyled">
+                <li class="folder-tree-item">
+                  <i class="fa fa-folder-open"></i> Folder 1</a>
+                  <ul class="folder-tree-list">
+                    <li class="folder-tree-item"><i class="fa fa-folder-open"></i> Folder 2</li>
+                  </ul>
+                </li>
+                <li class="folder-tree-item"><i class="fa fa-folder-open"></i> Folder 3</li>
+              </ul>
+            </div>
+
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Delete Folder?</h4>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to delete the selected folder and all of its contents?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="right-column col-sm-9">
+        <div class="row">
+          <div class="col-sm-12 list-group-item">
+            <div class="row search-header">
+              <div class="col-sm-12 search-container-div">
+                <div class="row">
+                  <div class="col-xs-10 controls controls-search">
+                      <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search ..." value="diane garner 703-345-8528 &quot;lorem ipsum&quot;"/>
+                        <span class="input-group-btn">
+                          <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search">
+                            <i class="glyphicon glyphicon-remove clear-search-icon"></i>
+                          </button>
+                          <button class="btn btn-primary search-btn" type="submit">Search</button>
+                          <a class="btn btn-danger clear-all-btn">Clear All</a>
+                        </span>
+                      </div>
+                  </div>
+                  <div class="col-xs-2 controls controls-search">
+                    <div class="input-group input-group-lg">
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary search-btn">Save</button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row breadcrumb-box">
+                  <span>
+                    <span>
+                      <span class="search-facet">
+                        City/Region: New York
+                        <i class="fa fa-times-circle"></i>
+                      </span>
+                    </span>
+                    <span>
+                      <span class="search-facet">
+                        Hair Color: brown
+                        <i class="fa fa-times-circle"></i>
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-header-div row">
+          <button class="btn btn-default">
+            <i class="glyphicon glyphicon-th-list results-list-button"></i>
+          </button>
+          <button class="btn btn-default">
+            <i class="glyphicon glyphicon-th gallery-list-button"></i>
+          </button>
+          <div class="btn-group select-folder">
+            <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu" data-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-folder"></i>
+              <i class="caret"></i>
+            </button>
+            <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">ROOT</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 1</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 2</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Folder 3</a></li>
+              <li role="presentation" id="create-new-folder">
+                <label>Create New</label>
+                <input role="menuitem" tabindex="-1" type="text">
+              </li>
+            </ul>
+          </div>
+          <div class="btn-group pull-right">
+            <label>Sort by</label>
+            <a href="#" class="dropdown-toggle" id="sortMenu" data-toggle="dropdown" aria-expanded="false">
+              Best Match
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="sortMenu" aria-labelledby="sortMenu">
+              <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">Best match</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Newest first</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Oldest first</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="column-header row">
+            <div class="col-sm-3">
+              <div>
+                <input type="checkbox">
+                <a href="#" class="dropdown-toggle" id="selectItemsMenu" data-toggle="dropdown" aria-expanded="false">
+                  <span class="fa fa-caret-down"></span>
+                </a>
+                <ul class="dropdown-menu" role="selectItemsMenu" aria-labelledby="selectItemsMenu">
+                  <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#">All</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">All pages</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">None</a></li>
+                </ul>
+                <span class="selected-results">3 item(s) selected</span>
+              </div>
+            </div>
+            <h4 class="pull-right">
+              <strong>256</strong> results
+            </h4>
+          </div>
+
+          <ul id="results" class="list-group">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse1" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse1" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox" checked></div>
+                <div class="col-xs-11">
+                  <a href="#collapse2" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse2" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse3" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse3" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox" checked></div>
+                <div class="col-xs-11">
+                  <a href="#collapse4" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse4" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox" checked></div>
+                <div class="col-xs-11">
+                  <a href="#collapse5" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse5" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse6" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse6" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse7" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse7" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse8" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse8" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse9" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse9" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-1 selected-item-checkbox"><input type="checkbox"></div>
+                <div class="col-xs-11">
+                  <a href="#collapse10" class="list-group-item-heading collapsed" data-toggle="collapse" data-parent="#results">
+                    <div class="row">
+                      <div class="col-xs-3 col-sm-2 col-lg-1">
+                        <img class="image-thumb center-block" src="holder.js/60x60/sky">
+                      </div>
+                      <div class="col-xs-9 col-sm-10 col-lg-11">            
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium accusantium excepturi dolore id officiis blanditiis molestiae pariatur beatae, possimus sint iste vero labore...
+                        <div class="list-group-item-meta">
+                          <span>
+                            <strong><span>date:</span></strong>
+                            <span class="date">09/08/2013 02:28:00 UTC</span>
+                          </span>
+                          <span>
+                            <strong><span>location:</span></strong>
+                            <span class="location">place</span>
+                          </span>
+                          <span>
+                            <strong><span>phone:</span></strong>
+                            <span class="phone">111-222-3333</span>
+                          </span>
+                          <span>
+                            <strong><span>name:</span></strong>
+                            <span class="name">name(s)</span>
+                          </span>
+                          <span>
+                            <strong><span>age:</span></strong>
+                            <span class="age">30</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div id="collapse10" class="list-group-item-text collapse col-xs-12">
+                  <div class="row">
+                    <!-- ngIf: doc._source.hasImagePart -->
+                    <div class="col-md-5 col-lg-4 text-center">
+                      <span>
+                        <div class="image-with-caption">
+                          <img class="image-expanded center-block" src="holder.js/300x300/sky">
+                          <div class="caption image-search-caption">
+                            <div class="caption-background"></div>
+                            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8">
+
+                      <h4>URL</h4>
+                      <a href="#" target="_blank">http://www.website.com/full-url</a>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <dl class="listing-details">
+
+                            <dt>NAME(S)</dt>
+                            <dd>name</dd>
+
+                            <dt>CITY</dt>
+                            <dd>place</dd>
+
+                            <dt>PHONE NUMBER</dt>
+                            <dd>111-222-3333</dd>
+                            <dd>222-3333-4444</dd>
+
+                            <dt>EMAIL</dt>
+                            <dd>fake@email.com</dd>
+
+                            <dt>WEB SITE</dt>
+                            <dd>www.fakewebsite.com</dd>
+
+                            <dt>PROVIDER</dt>
+                            <dd>provider</dd>
+
+                            <dt>CREATED</dt>
+                            <dd>09/30/2013 07:00:00 UTC</dd>
+
+                          </dl>
+                        </div>
+                        <div class="col-sm-6">
+                          <dl class="person-details">
+
+                            <dt>AGE</dt>
+                            <dd>999</dd>
+
+                            <dt>ETHNICITY</dt>
+                            <dd>white</dd>
+
+                            <dt>HAIR COLOR</dt>
+                            <dd>brunette</dd>
+
+                            <dt>HEIGHT</dt>
+                            <dd>999</dd>
+
+                            <dt>WEIGHT</dt>
+                            <dd>999</dd>
+
+                          </dl>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" target="_self">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div class="text-center">
+            <ul class="list-unstyled">
+              <li>
+                <ul class="pagination pagination-sm">
+                  <li class="disabled"><a href="#">Previous</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">Next</a></li>
+                </ul>
+              </li>
+              <li>Displaying page 1 of 4</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- END PAGE CONTENT -->
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
+
+  <!-- Temporary CDN -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
