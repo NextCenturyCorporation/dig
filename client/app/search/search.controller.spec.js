@@ -9,6 +9,78 @@ describe('Controller: SearchCtrl', function () {
     var imageSearchService;
     var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock;
 
+    var sampleQuery = { 
+        _id: 1,
+        name: 'Query #1',
+         /* jshint camelcase:false */
+        digState: {
+            searchTerms: 'bob smith',
+            filters: {
+                aggFilters: {
+                    city_agg: {
+                      'LittleRock': true,
+                      'FortSmith': true
+                    }
+                },
+                textFilters: {
+                    phonenumber: {
+                      live: '',
+                      submitted: ''
+                    }
+                },
+                dateFilters: {
+                    dateCreated: {
+                      beginDate: null,
+                      endDate: null
+                    }
+                }
+
+            },
+            selectedSort: {
+                title:'Best Match',
+                order:'rank'
+            },  
+            includeMissing: {
+                allIncludeMissing : false, 
+                aggregations : { 
+                    city_agg : { 
+                        active : true 
+                    } 
+                } 
+            }
+        }, 
+        elasticUIState: {
+            queryState: {
+                query_string: {
+                    fields:['_all'],
+                    query:'bob smith'
+                }
+            },
+            filterState: {
+                bool: {
+                    should: [
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['LittleRock']
+                            }
+                        },
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['FortSmith']
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+         /* jshint camelcase:true*/
+        username: 'test',
+        frequency: 'daily',
+        createDate: '2015-04-01T20:13:11.093Z',
+        lastRunDate: '2015-04-01T20:13:11.093Z',
+        hasNotification: true    
+    };
+
     var sampleDoc = {
         "_index": "dig",
         "_type": "WebPage",
@@ -410,78 +482,36 @@ describe('Controller: SearchCtrl', function () {
 
     });
 
+    it('should initialize variables based on state params and set appropriate settings when notification exists', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+        });
+
+        expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
+        expect(scope.queryString.submitted).toBe(state.params.query.digState.searchTerms);
+        expect(scope.filterStates).toEqual(state.params.query.digState.filters);
+        expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
+        expect(scope.selectedSort).toEqual({});
+        expect(scope.hasNotification).toBe(true);
+        expect(scope.notificationLastRun).toEqual(new Date(scope.stringDate));
+    });
+
     it('should initialize variables based on state params', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
-            state.params = {
-                query: { 
-                    _id: 1,
-                    name: 'Query #1',
-                    digState: {
-                        searchTerms: 'bob smith',
-                        filters: {
-                            aggFilters: {
-                                city_agg: {
-                                  'LittleRock': true,
-                                  'FortSmith': true
-                                }
-                            },
-                            textFilters: {
-                                phonenumber: {
-                                  live: '',
-                                  submitted: ''
-                                }
-                            },
-                            dateFilters: {
-                                dateCreated: {
-                                  beginDate: null,
-                                  endDate: null
-                                }
-                            }
-                        },
-                        selectedSort: {
-                            title:'Best Match',
-                            order:'rank'
-                        },  
-                        includeMissing: {
-                            allIncludeMissing : false, 
-                            aggregations : { 
-                                city_agg : { 
-                                    active : true 
-                                } 
-                            } 
-                        }
-                    }, 
-                    elasticUIState: {
-                        queryState: {
-                            query_string: {
-                                fields:['_all'],
-                                query:'bob smith'
-                            }
-                        },
-                        filterState: {
-                            bool: {
-                                should: [
-                                    {
-                                        terms: {
-                                            'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['LittleRock']
-                                        }
-                                    },
-                                    {
-                                        terms: {
-                                            'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['FortSmith']
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    username: 'test',
-                    frequency: 'daily',
-                    createDate: '2015-04-01T20:13:11.093Z',
-                    lastRunDate: '2015-04-01T20:13:11.093Z'
-                }    
-            };
+            state.params = {query: sampleQuery};
+            state.params.query.hasNotification = false;
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
@@ -499,7 +529,8 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
-
+        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationLastRun).toBe(undefined);
     });
 
     it('should not initialize query state if query params blank', function() {
@@ -523,6 +554,26 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
         expect(scope.selectedSort).toEqual({});
 
+    });
+
+    it('should clear notifications', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+                
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+        });
+        scope.clearNotification();
+        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationLastRun).toBe(null);
     });
 
     it('should call state.go with reload set to true', function () {
