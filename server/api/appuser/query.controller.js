@@ -58,12 +58,13 @@ exports.show = function (req, res) {
 }
 
 exports.create = function (req, res) {
+    console.log('REQ.PARARMS %s', req.params.username);
     if (req.params.username === 'me') {
         req.params.username = req.headers.user;
     }
 
     models.User.find({
-        username: req.params.username
+        where: {username: req.params.username}
     }).then(function(user) {
         models.Query.create(serialize(req.body))
         .then(function(query) {

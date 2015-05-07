@@ -7,22 +7,12 @@ var User = app.models.User;
 var Query = app.models.Query;
 
 describe('saved queries', function() {
-
-    // create a test user
-    before(function (done) {
-        User.create({
-            username: 'testuserbob'
-        }).then(function (user) {
-            done();
-        }).catch(function (error) {
-            done(error);
-        });
-    });
+    var testUser = 'testuserbob';
 
     // remove the test user and all queries (cascade delete)
     after(function(done){
         User.destroy({
-            where: {username: 'testuserbob'}
+            where: {username: testUser}
         })
         .then(function() {
             done();
@@ -32,11 +22,24 @@ describe('saved queries', function() {
         });
     });
 
+    describe('POST /api/appusers', function() {
+        it('should return created user', function(done) {
+            request(app)
+            .post('/api/appusers')
+            .send({username: testUser})
+            .expect(201)
+            .end(function(err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });        
+    });
+
     // create a query for this user
-    describe('POST /api/appusers/testuserbob/queries', function() {
+    describe('POST /api/appusers/:username/queries', function() {
         it('should return created query', function(done) {
             request(app)
-            .post('/api/appusers/testuserbob/queries')
+            .post('/api/appusers/' + testUser + '/queries')
             .send(
             {
                 name: "query 1",
@@ -57,7 +60,7 @@ describe('saved queries', function() {
     describe('GET /api/appusers/:username/queries', function() {
         it('should respond with JSON array', function(done) {
             request(app)
-            .get('/api/appusers/testuserbob/queries')
+            .get('/api/appusers/' + testUser + '/queries')
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function(err, res) {
