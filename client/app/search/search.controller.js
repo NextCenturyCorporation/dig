@@ -14,7 +14,8 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.hasNotification = false; // TODO: placeholder for real schema changes
+    $scope.hasNotification = false; // TODO: placeholder for real schema change
+    $scope.stringDate = '2015-05-02';// TODO: placeholder date for lastRunDate
 
     $scope.saveQuery = function() {
         $modal.open({
@@ -98,6 +99,14 @@ angular.module('digApp')
         }
     };
 
+    $scope.clearNotification = function() {
+        if($state.params.query && $scope.hasNotification && $scope.notificationLastRun) {
+            $scope.notificationLastRun = null;
+            $scope.hasNotification = false;
+            $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
+        }
+    };
+
     $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
     };
@@ -123,6 +132,16 @@ angular.module('digApp')
     };
 
     $scope.submit = function() {
+        if($state.params.query && $scope.hasNotification) {
+            if(!$scope.notificationLastRun) {
+                $scope.notificationLastRun = new Date($scope.stringDate);//new Date($state.params.query.lastRunDate);  
+            } else {
+                $scope.notificationLastRun = null;
+                $scope.hasNotification = false;
+                $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
+            }
+        }
+
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
             $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -210,6 +229,14 @@ angular.module('digApp')
         return ($scope.opened[index]) ? true : false;
     };
 
+    $scope.highlightResult = function(doc) {
+        if($scope.hasNotification && $scope.notificationLastRun && $scope.indexVM.sort) {
+            return $scope.indexVM.sort.field() === '_timestamp' && doc.sort[0] > $scope.notificationLastRun.getTime();
+        } else {
+            return false;
+        }
+    };
+
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
@@ -240,9 +267,20 @@ angular.module('digApp')
                 if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted && !$scope.indexVM.error) {
                     $scope.showresults = true;
                 }
+
+
+                if($scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
+                    $scope.clearNotification();
+                }
             }
         }
     );
+
+    $scope.$watch('indexVM.filters', function(newVal) {
+        if(newVal) {
+            $scope.clearNotification();
+        } 
+    }, true);
 
     $scope.$watch('indexVM.error', function() {
         if($scope.indexVM.error) {
@@ -256,6 +294,8 @@ angular.module('digApp')
     if($state.current.name === 'search') {
         $scope.viewList();
     }
+
+
 
     $scope.init();
 }]);

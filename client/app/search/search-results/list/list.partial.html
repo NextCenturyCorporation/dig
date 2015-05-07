@@ -4,14 +4,13 @@
       <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
       <strong>{{indexVM.results.hits.total | number:0}}</strong> results
     </h4>
-
   </div>
-
   <ul id="results" class="list-group">
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
     <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
       <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
     </span>
+    <span ng-class="{'new-results' : highlightResult(doc)}">
       <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
@@ -33,6 +32,8 @@
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
       </div>
+
+    </span>
     </li>
   </ul>
 
