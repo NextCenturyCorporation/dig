@@ -132,16 +132,10 @@ angular.module('digApp')
     };
 
     $scope.submit = function() {
-        if($state.params.query && $scope.hasNotification) {
-            if(!$scope.notificationLastRun) {
-                $scope.notificationLastRun = new Date($scope.stringDate);//new Date($state.params.query.lastRunDate);  
-            } else {
-                $scope.notificationLastRun = null;
-                $scope.hasNotification = false;
-                $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
-            }
+        if($state.params.query && $scope.queryString.live !== $state.params.query.digState.searchTerms) {
+            $scope.clearNotification();
         }
-
+        
         $scope.queryString.submitted = $scope.queryString.live;
         if(!$scope.searchConfig.euiSearchIndex) {
             $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -229,14 +223,6 @@ angular.module('digApp')
         return ($scope.opened[index]) ? true : false;
     };
 
-    $scope.highlightResult = function(doc) {
-        if($scope.hasNotification && $scope.notificationLastRun && $scope.indexVM.sort) {
-            return $scope.indexVM.sort.field() === '_timestamp' && doc.sort[0] > $scope.notificationLastRun.getTime();
-        } else {
-            return false;
-        }
-    };
-
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
         }, function(newVal) {
@@ -268,7 +254,6 @@ angular.module('digApp')
                     $scope.showresults = true;
                 }
 
-
                 if($scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
                     $scope.clearNotification();
                 }
@@ -276,10 +261,17 @@ angular.module('digApp')
         }
     );
 
-    $scope.$watch('indexVM.filters', function(newVal) {
-        if(newVal) {
-            $scope.clearNotification();
-        } 
+    // need to initialize notificationLastRun here when a saved query is loaded
+    $scope.$watch('indexVM.filters', function(newValue, oldValue) {
+        if (newValue !== oldValue && $state.params.query && $scope.hasNotification) {
+            if(!$scope.notificationLastRun) {
+                $scope.notificationLastRun = new Date($scope.stringDate);//new Date($state.params.query.lastRunDate);  
+            } else {
+                $scope.notificationLastRun = null;
+                $scope.hasNotification = false;
+                $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
+            }       
+        }
     }, true);
 
     $scope.$watch('indexVM.error', function() {

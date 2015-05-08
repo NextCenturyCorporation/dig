@@ -7,7 +7,7 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock;
+    var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock, $httpBackend;
 
     var sampleQuery = { 
         _id: 1,
@@ -412,7 +412,6 @@ describe('Controller: SearchCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(function() {
         var simHost = 'http://localhost';
-        var $httpBackend;
         var searchQuery;
 
         module(function($provide) {
@@ -474,7 +473,13 @@ describe('Controller: SearchCtrl', function () {
                 },
                 loading: true,
                 page: 1,
-                query: 'someValue'
+                query: 'someValue',
+                sort: {
+                    testSort: '_timestamp',
+                    field: function() {
+                        return this.testSort;
+                    }
+                }
             };
 
             scope.$digest();
@@ -495,7 +500,6 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
         });
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
@@ -504,7 +508,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
         expect(scope.hasNotification).toBe(true);
-        expect(scope.notificationLastRun).toEqual(new Date(scope.stringDate));
+        expect(scope.notificationLastRun).toBe(undefined);
     });
 
     it('should initialize variables based on state params', function() {
@@ -560,7 +564,7 @@ describe('Controller: SearchCtrl', function () {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
-                
+
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
                 $state: state,
@@ -569,11 +573,203 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1', {hasNotification: false}).respond(200, {});
 
         });
+
+        scope.hasNotification = true;
+        scope.notificationLastRun = new Date();
+
         scope.clearNotification();
+
         expect(scope.hasNotification).toBe(false);
-        expect(scope.notificationLastRun).toBe(null);
+        expect(scope.notificationLastRun).toBe(null);              
+        $httpBackend.flush();
+    });
+
+    it('should not clear notifications', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+
+        });
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+
+        scope.clearNotification();
+
+        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationLastRun).toBe(lastRunDate);       
+    });
+
+    it('should initialize notificationLastRun', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.hasNotification = true;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.indexVM.filters = {'filter': 'changed'};
+            scope.$digest();
+        });
+
+        expect(scope.notificationLastRun).toEqual(new Date(scope.stringDate));
+    });
+
+    it('should clear notifications on filter state change if notificationLastRun exists', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.hasNotification = true;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1', {hasNotification: false}).respond(200, {});
+            scope.notificationLastRun = new Date(scope.stringDate);
+            scope.indexVM.filters = {'filter': 'changed'};
+            scope.$digest();
+        });
+        
+        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationLastRun).toBe(null); 
+        $httpBackend.flush();
+    });
+
+    it('should not clear notification on submit', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+
+        });
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+        scope.hasNotification = true;
+        spyOn(scope, 'clearNotification');
+
+        scope.submit();
+
+        expect(scope.clearNotification).not.toHaveBeenCalled();
+    });
+
+    it('should clear notification on submit', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+
+        });
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+        scope.hasNotification = true;
+        scope.queryString.live = 'new';
+        spyOn(scope, 'clearNotification');
+
+        scope.submit();
+
+        expect(scope.clearNotification).toHaveBeenCalled();
+    });
+
+    it('should clear notification when loading value changes and sort is something other than _timestamp', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            scope.indexVM.sort.testSort = '_score';
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+        });
+
+        spyOn(scope, 'clearNotification');
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+        scope.hasNotification = true;
+        scope.indexVM.loading = !scope.indexVM.loading;
+
+        scope.$digest();
+
+        expect(scope.clearNotification).toHaveBeenCalled();
+    });
+
+    it('should not clear notification when loading value changes but sort is still _timestamp', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            scope.indexVM.sort.testSort = '_timestamp';
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+        });
+
+        spyOn(scope, 'clearNotification');
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+        scope.hasNotification = true;
+        scope.indexVM.loading = !scope.indexVM.loading;
+
+        scope.$digest();
+
+        expect(scope.clearNotification).not.toHaveBeenCalled();
     });
 
     it('should call state.go with reload set to true', function () {
