@@ -82,7 +82,13 @@ angular.module('digApp')
             }
             
             if($state.params.query.digState.includeMissing) {
-                $scope.includeMissing = _.cloneDeep($state.params.query.digState.includeMissing);
+                if($state.params.query.digState.includeMissing.allIncludeMissing) {
+                    $scope.includeMissing.allIncludeMissing = $state.params.query.digState.includeMissing.allIncludeMissing;
+                }
+                
+                if($state.params.query.digState.includeMissing.aggregations) {
+                    $scope.includeMissing.aggregations = _.cloneDeep($state.params.query.digState.includeMissing.aggregations);
+                }
             }
 
             if($state.params.query.hasNotification) {
@@ -254,15 +260,21 @@ angular.module('digApp')
                     $scope.showresults = true;
                 }
 
-                if($scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
+                if($scope.showresults && $scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
                     $scope.clearNotification();
                 }
             }
         }
     );
 
+    $scope.$watch('includeMissing', function(newValue, oldValue) {
+        if (newValue !== oldValue) {
+            $scope.clearNotification();
+        }
+    }, true);
+
     // need to initialize notificationLastRun here when a saved query is loaded
-    $scope.$watch('indexVM.filters', function(newValue, oldValue) {
+    $scope.$watch('filterStates', function(newValue, oldValue) {
         if (newValue !== oldValue && $state.params.query && $scope.hasNotification) {
             if(!$scope.notificationLastRun) {
                 $scope.notificationLastRun = new Date($scope.stringDate);//new Date($state.params.query.lastRunDate);  
@@ -270,7 +282,7 @@ angular.module('digApp')
                 $scope.notificationLastRun = null;
                 $scope.hasNotification = false;
                 $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
-            }       
+            }    
         }
     }, true);
 
@@ -287,7 +299,6 @@ angular.module('digApp')
         $scope.viewList();
     }
 
-
-
     $scope.init();
+
 }]);

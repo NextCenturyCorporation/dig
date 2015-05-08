@@ -627,7 +627,7 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-            scope.indexVM.filters = {'filter': 'changed'};
+            scope.filterStates.aggFilters = {'filter': 'changed'};
             scope.$digest();
         });
 
@@ -650,7 +650,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             $httpBackend.expectPUT('api/queries/1', {hasNotification: false}).respond(200, {});
             scope.notificationLastRun = new Date(scope.stringDate);
-            scope.indexVM.filters = {'filter': 'changed'};
+            scope.filterStates.aggFilters = {'filter': 'changed'};
             scope.$digest();
         });
         
