@@ -15,7 +15,6 @@ angular.module('digApp')
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
     $scope.hasNotification = false; // TODO: placeholder for real schema change
-    $scope.stringDate = '2015-05-02';// TODO: placeholder date for lastRunDate
 
     $scope.saveQuery = function() {
         $modal.open({
@@ -109,7 +108,6 @@ angular.module('digApp')
         if($state.params.query && $scope.hasNotification && $scope.notificationLastRun) {
             $scope.notificationLastRun = null;
             $scope.hasNotification = false;
-            $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
         }
     };
 
@@ -277,11 +275,11 @@ angular.module('digApp')
     $scope.$watch('filterStates', function(newValue, oldValue) {
         if (newValue !== oldValue && $state.params.query && $scope.hasNotification) {
             if(!$scope.notificationLastRun) {
-                $scope.notificationLastRun = new Date($scope.stringDate);//new Date($state.params.query.lastRunDate);  
+                $scope.notificationLastRun = new Date($state.params.query.lastRunDate);  
+                $http.put('api/queries/' + $state.params.query._id, {lastRunDate: new Date(), hasNotification: false});
             } else {
                 $scope.notificationLastRun = null;
                 $scope.hasNotification = false;
-                $http.put('api/queries/' + $state.params.query._id, {hasNotification: false});
             }    
         }
     }, true);
