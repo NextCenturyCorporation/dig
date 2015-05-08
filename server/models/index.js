@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('./config/environment');
+var config = require('../config/environment');
 var fs = require('fs');
 var path = require('path');
 var Sequelize = require('sequelize');
@@ -18,7 +18,7 @@ var db = {};
 
 // search for files like something.model.js
 var re = /\w+[.]model[.]js/;
-var modeldir = path.join(__dirname, '/api/appuser/');
+var modeldir = __dirname;
 
 // import each model in api/appuser directory
 fs
