@@ -10,28 +10,30 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var config = require('./environment');
 var models = require('../models');
-var async = require('async');
 
 models.sequelize.sync().then(function () {
     console.log('running seedsql.js ...')
 
-    // remove test user and the associated queries/notifications
+    // remove user 'test' and the associated queries/notifications
     models.User.destroy({
     	where:{username: 'test'}
-    }).then(function (users) {
+    })
+    // create user test
+    .then(function () {
     	models.User.create({username: 'test'})
+        // create each query
     	.then(function(user) {
-    		models.Query.bulkCreate(serQueries)
-    		.then(function() {
-	    		models.Query.findAll()
-	    		.then(function(queries) {
-	    			queries.forEach(function(query) {
-	    				query.setUser(user);
-	    			})
-	    			console.log('adding queries to user test');
-	    		});
-    		});
+            console.log('adding queries to user test');
+            queries.forEach(function(query) {
+                models.Query.create(serialize(query))
+                // update foreign key UserUserName for this query to 'test'
+                .then(function(queryInstance) {
+                    queryInstance.setUser(user);
+                });
+            });
     	});
+    }).catch(function(error) {
+        console.log(error);
     });
 });
 
@@ -85,15 +87,7 @@ var queries =
 ];
 
 var serialize = function (query) {
-    var serQuery = {};
-    serQuery.name = query.name;
-    serQuery.frequency = query.frequency;
-    serQuery.digState = JSON.stringify(query.digState);
-    serQuery.elasticUIState = JSON.stringify(query.elasticUIState);
-    return serQuery;
+    query.digState = JSON.stringify(query.digState);
+    query.elasticUIState = JSON.stringify(query.elasticUIState);
+    return query;
 }
-
-var serQueries = []
-queries.forEach(function (query) {
-	serQueries.push(serialize(query));
-});

@@ -10,7 +10,7 @@ describe('saved queries', function() {
     var testUser = 'testuserbob';
 
     // remove the test user and all queries (cascade delete)
-    after(function(done){
+    after(function (done){
         User.destroy({
             where: {username: testUser}
         })
@@ -22,8 +22,8 @@ describe('saved queries', function() {
         });
     });
 
-    describe('POST /api/appusers', function() {
-        it('should return created user', function(done) {
+    describe('POST /api/appusers', function (done) {
+        it('should return created user', function (done) {
             request(app)
             .post('/api/appusers')
             .send({username: testUser})
@@ -37,7 +37,7 @@ describe('saved queries', function() {
 
     // create a query for this user
     describe('POST /api/appusers/:username/queries', function() {
-        it('should return created query', function(done) {
+        it('should return created query', function (done) {
             request(app)
             .post('/api/appusers/' + testUser + '/queries')
             .send(
@@ -58,7 +58,7 @@ describe('saved queries', function() {
     });
     
     describe('GET /api/appusers/:username/queries', function() {
-        it('should respond with JSON array', function(done) {
+        it('should respond with JSON array', function (done) {
             request(app)
             .get('/api/appusers/' + testUser + '/queries')
             .expect(200)
@@ -73,7 +73,7 @@ describe('saved queries', function() {
     });
 
     describe.skip('GET /api/appusers/queries/:queryid', function() {
-        it('should find and return the query', function(done) {
+        it('should find and return the query', function (done) {
             request(app)
             .get('/api/appusers/queries/1')
             .expect(200)
@@ -88,7 +88,7 @@ describe('saved queries', function() {
     });
 
     describe('PUT /api/appusers/queries/:queryid', function() {
-        it('should find and update the query', function(done) {
+        it('should find and update the query', function (done) {
             request(app)
             .put('/api/appusers/queries/1')
             .send({frequency: "never"})
@@ -101,7 +101,7 @@ describe('saved queries', function() {
     });
 
     describe.skip('DELETE /api/appusers/queries/:queryid', function() {
-        it('should find and delete the query', function(done) {
+        it('should find and delete the query', function (done) {
             request(app)
             .delete('/api/appusers/queries/1')
             .expect(204)

@@ -17,13 +17,20 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.ENUM('never', 'hourly', 'daily', 'weekly'),
             defaultValue: 'never',
             allowNull: false
+        },
+        notificationDateTime: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        notificationHasRun: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
         }
     }, 
     {
         classMethods: {
             associate: function(models) {
                 Query.belongsTo(models.User, {onDelete: 'CASCADE'});
-                Query.hasMany(models.Notification, {onDelete: 'CASCADE'});
             }
         },
     });

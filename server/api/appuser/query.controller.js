@@ -12,21 +12,15 @@
 var models = require('../../models');
 
 var deserialize = function (query) {
-    var desQuery = {};
-    desQuery.name = query.name;
-    desQuery.frequency = query.frequency;
-    desQuery.digState = JSON.parse(query.digState);
-    desQuery.elasticUIState = JSON.parse(query.elasticUIState);
-    return desQuery;
+    query.digState = JSON.parse(query.digState);
+    query.elasticUIState = JSON.parse(query.elasticUIState);
+    return query;
 }
 
 var serialize = function (query) {
-    var serQuery = {};
-    serQuery.name = query.name;
-    serQuery.frequency = query.frequency;
-    serQuery.digState = JSON.stringify(query.digState);
-    serQuery.elasticUIState = JSON.stringify(query.elasticUIState);
-    return serQuery;
+    query.digState = JSON.stringify(query.digState);
+    query.elasticUIState = JSON.stringify(query.elasticUIState);
+    return query;
 }
 
 exports.index = function (req, res) {

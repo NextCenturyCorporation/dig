@@ -1,12 +1,3 @@
-/**
-* Using standard naming convention for endpoints.
-* GET     /things              ->  index
-* POST    /things              ->  create
-* GET     /things/:id          ->  show
-* PUT     /things/:id          ->  update
-* DELETE  /things/:id          ->  destroy
-*/
-
 'use strict';
 
 var models = require('../../models');
@@ -67,7 +58,7 @@ exports.delete = function (req, res) {
     });
 }
 
-exports.me = function(req, res, next) {
+exports.me = function(req, res) {
     models.User.findOrCreate({
         where: {username: req.headers.user}
     }).spread(function(user, created) {
@@ -77,3 +68,7 @@ exports.me = function(req, res, next) {
         res.json(400, error);
     });
 };
+
+exports.notificationCount = function (req, res) {
+    res.json(200, {notRunCount: 2, hasRunCount: 9});
+}

@@ -6,28 +6,13 @@ var request = require('supertest');
 var User = app.models.User;
 
 describe('/api/appusers', function() {
-
-    before(function (done) {
-        User.find({
-            where: {username: 'testuserbob'}
-        }).then(function(user) {
-            if (user) {
-                user.destroy()
-                .then(function(){
-                    done();
-                });
-            }
-            else {
-                done();
-            }
-        });
-    });
+    var testUser = 'testuserernest';
 
     describe('POST /api/appusers', function() {
-        it('should return created user', function(done) {
+        it('should return created user', function (done) {
             request(app)
             .post('/api/appusers')
-            .send({username: "testuserbob"})
+            .send({username: testUser})
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -37,7 +22,7 @@ describe('/api/appusers', function() {
     });
     
     describe('GET /api/appusers', function() {
-        it('should respond with JSON array', function(done) {
+        it('should respond with JSON array', function (done) {
             request(app)
             .get('/api/appusers')
             .expect(200)
@@ -52,14 +37,14 @@ describe('/api/appusers', function() {
     });
 
     describe('GET /api/appusers/:username', function() {
-        it('should find and return the user', function(done) {
+        it('should find and return the user', function (done) {
             request(app)
-            .get('/api/appusers/testuserbob')
+            .get('/api/appusers/' + testUser)
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.username.should.be.exactly('testuserbob');
+                res.body.username.should.be.exactly(testUser);
                 res.body.role.should.be.exactly('user');
                 done();
             });
@@ -69,7 +54,7 @@ describe('/api/appusers', function() {
     describe('PUT /api/appusers/:username', function() {
         it('should find and update the user role', function(done) {
             request(app)
-            .put('/api/appusers/testuserbob')
+            .put('/api/appusers/' + testUser)
             .send({role: "disabled"})
             .expect(204)
             .end(function(err, res) {
@@ -80,9 +65,9 @@ describe('/api/appusers', function() {
     });
 
     describe('DELETE /api/appusers/:username', function() {
-        it('should find and delete the user', function(done) {
+        it('should find and delete the user', function (done) {
             request(app)
-            .delete('/api/appusers/testuserbob')
+            .delete('/api/appusers/' + testUser)
             .expect(204)
             .end(function(err, res) {
                 if (err) return done(err);
@@ -92,7 +77,7 @@ describe('/api/appusers', function() {
     });
 
     describe('DELETE /api/appusers/:username', function() {
-        it('should NOT find and delete the user', function(done) {
+        it('should NOT find and delete the user', function (done) {
             request(app)
             .delete('/api/appusers/xxxxxxxxxxxxxx')
             .expect(404)
