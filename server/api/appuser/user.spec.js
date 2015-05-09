@@ -14,7 +14,7 @@ describe('/api/appusers', function() {
             .post('/api/appusers')
             .send({username: testUser})
             .expect(201)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 done();
             });
@@ -27,7 +27,7 @@ describe('/api/appusers', function() {
             .get('/api/appusers')
             .expect(200)
             .expect('Content-Type', /json/)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 res.body.should.be.instanceof(Array);
                 res.body.length.should.be.above(0);
@@ -42,7 +42,7 @@ describe('/api/appusers', function() {
             .get('/api/appusers/' + testUser)
             .expect(200)
             .expect('Content-Type', /json/)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 res.body.username.should.be.exactly(testUser);
                 res.body.role.should.be.exactly('user');
@@ -57,7 +57,7 @@ describe('/api/appusers', function() {
             .put('/api/appusers/' + testUser)
             .send({role: "disabled"})
             .expect(204)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 done();
             });
@@ -69,7 +69,7 @@ describe('/api/appusers', function() {
             request(app)
             .delete('/api/appusers/' + testUser)
             .expect(204)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 done();
             });
@@ -81,10 +81,23 @@ describe('/api/appusers', function() {
             request(app)
             .delete('/api/appusers/xxxxxxxxxxxxxx')
             .expect(404)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) return done(err);
                 done();
             });
         });
     });
+
+    describe('GET /api/appusers/:username/notifications/count', function() {
+        it ('should return number of notifications (0)', function (done) {
+            request(app)
+            .get('/api/appusers/' + testUser + '/notifications/count')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) return done(err);
+                res.body.notRunCount.should.be.exactly(0);
+                done();
+            })
+        })
+    })
 });

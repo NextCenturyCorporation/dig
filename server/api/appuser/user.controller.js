@@ -1,6 +1,7 @@
 'use strict';
 
 var models = require('../../models');
+var sequelize = models.sequelize;
 
 exports.index = function (req, res) {
     models.User.findAll(
@@ -58,6 +59,7 @@ exports.delete = function (req, res) {
     });
 }
 
+// get the user using the username in http header
 exports.me = function(req, res) {
     models.User.findOrCreate({
         where: {username: req.headers.user}
@@ -69,6 +71,19 @@ exports.me = function(req, res) {
     });
 };
 
+// return active (hasrun=false) notifications for specified user
 exports.notificationCount = function (req, res) {
-    res.json(200, {notRunCount: 2, hasRunCount: 9});
+    sequelize.query(
+        "select count(*) as notrun from users inner join queries on " +
+        "users.username = queries.userusername where " +
+        "queries.notificationhasrun='false' and users.username = :username",
+        { replacements: { username: req.params.username }, 
+        type: sequelize.QueryTypes.SELECT })
+    .then(function(results) {
+        console.log(results);
+        var count = results[0].notrun;
+        res.json(200, {notRunCount: count});
+    }).catch(function(error) {
+        res.json(400, error);
+    });    
 }
