@@ -19,8 +19,6 @@ module.exports = function(app) {
     });
 
     // Insert routes below
-    // app.use('/api/queries', require('./api/query'));
-    // app.use('/api/users', require('./api/user'));
     app.use('/api/users', require('./api/appuser'));
     app.use('/api', require('./api/appquery'));
 
