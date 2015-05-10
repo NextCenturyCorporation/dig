@@ -22,10 +22,10 @@ describe('saved queries', function() {
         });
     });
 
-    describe('POST /api/appusers', function (done) {
+    describe('POST /api/users', function (done) {
         it('should return created user', function (done) {
             request(app)
-            .post('/api/appusers')
+            .post('/api/users')
             .send({username: testUser})
             .expect(201)
             .end(function(err, res) {
@@ -36,10 +36,10 @@ describe('saved queries', function() {
     });
 
     // create a query for this user
-    describe('POST /api/appusers/:username/queries', function() {
+    describe('POST /api/users/:username/queries', function() {
         it('should return created query', function (done) {
             request(app)
-            .post('/api/appusers/' + testUser + '/queries')
+            .post('/api/users/' + testUser + '/queries')
             .send(
             {
                 name: "query 1",
@@ -57,10 +57,10 @@ describe('saved queries', function() {
         });        
     });
     
-    describe('GET /api/appusers/:username/queries', function() {
+    describe('GET /api/users/:username/queries', function() {
         it('should respond with JSON array', function (done) {
             request(app)
-            .get('/api/appusers/' + testUser + '/queries')
+            .get('/api/users/' + testUser + '/queries')
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function(err, res) {
@@ -72,10 +72,10 @@ describe('saved queries', function() {
         });
     });
 
-    describe.skip('GET /api/appusers/queries/:queryid', function() {
+    describe.skip('GET /api/queries/:queryid', function() {
         it('should find and return the query', function (done) {
             request(app)
-            .get('/api/appusers/queries/1')
+            .get('/api/queries/1')
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function(err, res) {
@@ -87,10 +87,10 @@ describe('saved queries', function() {
         });
     });
 
-    describe('PUT /api/appusers/queries/:queryid', function() {
+    describe('PUT /api/queries/:queryid', function() {
         it('should find and update the query', function (done) {
             request(app)
-            .put('/api/appusers/queries/1')
+            .put('/api/queries/1')
             .send({frequency: "never"})
             .expect(204)
             .end(function(err, res) {
@@ -100,10 +100,10 @@ describe('saved queries', function() {
         });
     });
 
-    describe.skip('DELETE /api/appusers/queries/:queryid', function() {
+    describe.skip('DELETE /api/queries/:queryid', function() {
         it('should find and delete the query', function (done) {
             request(app)
-            .delete('/api/appusers/queries/1')
+            .delete('/api/queries/1')
             .expect(204)
             .end(function(err, res) {
                 if (err) return done(err);

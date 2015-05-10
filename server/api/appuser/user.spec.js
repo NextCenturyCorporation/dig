@@ -5,13 +5,14 @@ var app = require('../../app');
 var request = require('supertest');
 var User = app.models.User;
 
-describe('/api/appusers', function() {
+
+describe('/api/users', function() {
     var testUser = 'testuserernest';
 
-    describe('POST /api/appusers', function() {
+    describe('POST /api/users', function() {
         it('should return created user', function (done) {
             request(app)
-            .post('/api/appusers')
+            .post('/api/users')
             .send({username: testUser})
             .expect(201)
             .end(function (err, res) {
@@ -21,10 +22,10 @@ describe('/api/appusers', function() {
         });        
     });
     
-    describe('GET /api/appusers', function() {
+    describe('GET /api/users', function() {
         it('should respond with JSON array', function (done) {
             request(app)
-            .get('/api/appusers')
+            .get('/api/users')
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function (err, res) {
@@ -36,10 +37,10 @@ describe('/api/appusers', function() {
         });
     });
 
-    describe('GET /api/appusers/:username', function() {
+    describe('GET /api/users/:username', function() {
         it('should find and return the user', function (done) {
             request(app)
-            .get('/api/appusers/' + testUser)
+            .get('/api/users/' + testUser)
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function (err, res) {
@@ -51,10 +52,10 @@ describe('/api/appusers', function() {
         });
     });
 
-    describe('PUT /api/appusers/:username', function() {
+    describe('PUT /api/users/:username', function() {
         it('should find and update the user role', function(done) {
             request(app)
-            .put('/api/appusers/' + testUser)
+            .put('/api/users/' + testUser)
             .send({role: "disabled"})
             .expect(204)
             .end(function (err, res) {
@@ -64,10 +65,10 @@ describe('/api/appusers', function() {
         });
     });
 
-    describe('DELETE /api/appusers/:username', function() {
+    describe('DELETE /api/users/:username', function() {
         it('should find and delete the user', function (done) {
             request(app)
-            .delete('/api/appusers/' + testUser)
+            .delete('/api/users/' + testUser)
             .expect(204)
             .end(function (err, res) {
                 if (err) return done(err);
@@ -76,10 +77,10 @@ describe('/api/appusers', function() {
         });
     });
 
-    describe('DELETE /api/appusers/:username', function() {
+    describe('DELETE /api/users/:username', function() {
         it('should NOT find and delete the user', function (done) {
             request(app)
-            .delete('/api/appusers/xxxxxxxxxxxxxx')
+            .delete('/api/users/xxxxxxxxxxxxxx')
             .expect(404)
             .end(function (err, res) {
                 if (err) return done(err);
@@ -88,10 +89,10 @@ describe('/api/appusers', function() {
         });
     });
 
-    describe('GET /api/appusers/:username/notifications/count', function() {
+    describe('GET /api/users/:username/notifications/count', function() {
         it ('should return number of notifications (0)', function (done) {
             request(app)
-            .get('/api/appusers/' + testUser + '/notifications/count')
+            .get('/api/users/' + testUser + '/notifications/count')
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);

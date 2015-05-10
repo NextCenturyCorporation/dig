@@ -71,6 +71,13 @@ exports.me = function(req, res) {
     });
 };
 
+/**
+ * Update my info
+ */
+exports.updateMe = function(req, res, next) {
+    exports.update(req, res, next);
+};
+
 // return active (hasrun=false) notifications for specified user
 exports.notificationCount = function (req, res) {
     sequelize.query(

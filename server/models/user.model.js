@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
         role: {
             type: DataTypes.ENUM('user', 'admin', 'disabled', 'guest'),
             defaultValue: 'user'
+        },
+        blurConfig: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: 'true'
         }
     }, 
     {

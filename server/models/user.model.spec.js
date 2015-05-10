@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('should');
-var models = require('../models');
+var models = require('./index');
 
 describe('User Model', function() {
     models.sequelize.sync().then(function() {
