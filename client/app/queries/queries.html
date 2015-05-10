@@ -35,7 +35,7 @@
 
                 <div class="list-group-item-meta">
                   <span>Search Terms: {{query.digState.searchTerms | limitTo: 20}}{{query.digState.searchTerms.length > 20 ? '...' : ''}}</span>
-                  <span>Created: {{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
+                  <span>Created: {{query.createdAt | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                   <span>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                 </div>
               </div>
@@ -94,7 +94,7 @@
                   <div class="col-sm-3 query-details">
                     <dl>
                       <dt>Created</dt>
-                      <dd>{{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
+                      <dd>{{query.createdAt | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
                     </dl>
                   </div>
                   <div class="col-sm-3 query-details">

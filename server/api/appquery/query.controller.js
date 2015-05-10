@@ -24,7 +24,7 @@ var serialize = function (query) {
 }
 
 exports.index = function (req, res) {
-    if (req.params.username === 'reqHeaders') {
+    if (req.params.username === 'reqHeader') {
         req.params.username = req.headers.user;
     }
 
@@ -52,7 +52,7 @@ exports.show = function (req, res) {
 }
 
 exports.create = function (req, res) {
-    if (req.params.username === 'reqHeaders') {
+    if (req.params.username === 'reqHeader') {
         req.params.username = req.headers.user;
     }
 
