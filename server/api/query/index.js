@@ -8,7 +8,7 @@ var router = express.Router();
 /*
  * query routes
  *
- * e.g. GET http://host/api/appusers/eugene/queries -- list all
+ * e.g. GET http://host/api/users/eugene/queries -- list all
  *      queries for user eugene
  */
 

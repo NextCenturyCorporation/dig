@@ -20,7 +20,7 @@ var db = {};
 var re = /\w+[.]model[.]js/;
 var modeldir = __dirname;
 
-// import each model in api/appuser directory
+// import each model in api/user directory
 fs
     .readdirSync(modeldir)
     .filter(function(file) {

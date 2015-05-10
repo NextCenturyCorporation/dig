@@ -21,7 +21,7 @@ var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
-// Start server
+// Sync models with db and then start server
 models.sequelize.sync().then(function () {
     server.listen(config.port, config.ip, function () {
         console.log('Express server listening on %d, in %s mode', 
