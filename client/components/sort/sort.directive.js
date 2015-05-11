@@ -11,7 +11,7 @@ angular.module('digApp')
             title: '=',
             order: '=',
             field: '=',
-            hasNotification: '='
+            notificationHasRun: '='
         },
         templateUrl: 'components/sort/sort.partial.html',
         controller: function($scope) {            
@@ -23,7 +23,7 @@ angular.module('digApp')
                 $scope.field = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.defaultOption.field : '';
             }
 
-            if($scope.hasNotification) {
+            if($scope.notificationHasRun === false) {
                 $scope.title = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.notificationOption.title : '';
                 $scope.order = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.notificationOption.order : '';
                 $scope.field = $scope.euiConfigs.sort ? $scope.euiConfigs.sort.notificationOption.field : '';

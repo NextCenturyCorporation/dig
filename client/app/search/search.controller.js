@@ -14,7 +14,7 @@ angular.module('digApp')
     $scope.imageSearchResults = {};
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
-    $scope.hasNotification = false; // TODO: placeholder for real schema change
+    $scope.notificationHasRun = true;
 
     $scope.saveQuery = function() {
         $modal.open({
@@ -90,8 +90,8 @@ angular.module('digApp')
                 }
             }
 
-            if($state.params.query.hasNotification) {
-                $scope.hasNotification = $state.params.query.hasNotification;
+            if($state.params.query.notificationHasRun === false) {
+                $scope.notificationHasRun = $state.params.query.notificationHasRun;
             } else if($state.params.query.digState.selectedSort) {
                 $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
             }
@@ -105,9 +105,9 @@ angular.module('digApp')
     };
 
     $scope.clearNotification = function() {
-        if($state.params.query && $scope.hasNotification && $scope.notificationLastRun) {
+        if($state.params.query && $scope.notificationHasRun === false && $scope.notificationLastRun) {
             $scope.notificationLastRun = null;
-            $scope.hasNotification = false;
+            $scope.notificationHasRun = true;
         }
     };
 
@@ -273,13 +273,13 @@ angular.module('digApp')
 
     // need to initialize notificationLastRun here when a saved query is loaded
     $scope.$watch('filterStates', function(newValue, oldValue) {
-        if (newValue !== oldValue && $state.params.query && $scope.hasNotification) {
+        if (newValue !== oldValue && $state.params.query && $scope.notificationHasRun === false) {
             if(!$scope.notificationLastRun) {
                 $scope.notificationLastRun = new Date($state.params.query.lastRunDate);  
-                $http.put('api/queries/' + $state.params.query._id, {lastRunDate: new Date(), hasNotification: false});
+                $http.put('api/queries/' + $state.params.query.id, {lastRunDate: new Date(), notificationHasRun: true});
             } else {
                 $scope.notificationLastRun = null;
-                $scope.hasNotification = false;
+                $scope.notificationHasRun = true;
             }    
         }
     }, true);

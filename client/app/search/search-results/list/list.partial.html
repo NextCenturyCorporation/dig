@@ -10,7 +10,7 @@
     <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
       <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
     </span>
-    <span ng-class="{'new-results' : hasNotification && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()}">
+    <span ng-class="{'new-results' : notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()}">
       <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
