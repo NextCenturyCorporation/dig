@@ -14,7 +14,9 @@ exports.index = function (req, res) {
 };
 
 exports.show = function (req, res) {
-
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
     models.User.find({
         where: {username: req.params.username}
     }).then(function(user){
@@ -32,6 +34,9 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
     models.User.update(
         req.body,
         {where: {username: req.params.username}}
@@ -43,6 +48,9 @@ exports.update = function (req, res) {
 }
 
 exports.delete = function (req, res) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
     models.User.destroy({
         where: {username: req.params.username}
     })
