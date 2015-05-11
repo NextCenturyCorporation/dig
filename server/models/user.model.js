@@ -12,9 +12,11 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.ENUM('user', 'admin', 'disabled', 'guest'),
             defaultValue: 'user'
         },
-        blurConfig: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: 'true'
+        blurImagesEnabled: {
+            type: DataTypes.BOOLEAN
+        },
+        blurImagesPercentage: {
+            type: DataTypes.DECIMAL
         }
     }, 
     {

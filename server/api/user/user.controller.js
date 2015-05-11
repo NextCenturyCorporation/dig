@@ -61,24 +61,6 @@ exports.delete = function (req, res) {
     });
 }
 
-// get the user using the username in http header
-exports.me = function(req, res) {
-    models.User.findOrCreate({
-        where: {username: req.headers.user}
-    }).spread(function(user, created) {
-        res.json(200, user);
-    }).catch(function(error) {
-        res.json(400, error);
-    });
-};
-
-/**
- * Update my info
- */
-exports.updateMe = function(req, res, next) {
-    exports.update(req, res, next);
-};
-
 // return active (hasrun=false) notifications for specified user
 exports.notificationCount = function (req, res) {
     setUserName(req);

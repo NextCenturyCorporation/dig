@@ -12,8 +12,6 @@ var router = express.Router();
  */
 router.get('/', userController.index);
 router.post('/', userController.create);
-router.get('/me', userController.me);
-router.put('/me', userController.updateMe);
 router.get('/:username', userController.show);
 // TODO: check that user has admin privs to update and delete
 router.put('/:username', userController.update);

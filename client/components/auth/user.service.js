@@ -9,13 +9,13 @@ angular.module('digApp')
       update: {
         method: 'PUT',
         params: {
-          id:'me'
+          id:'reqHeader'
         }
       },
       get: {
         method: 'GET',
         params: {
-          id:'me'
+          id:'reqHeader'
         }
       },
       notificationCount: {
