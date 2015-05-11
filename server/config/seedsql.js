@@ -82,7 +82,8 @@ var queries =
 			queryState: {"query_string":{"fields":["_all"],"query":"another users query"}}
 		},
 		frequency: 'daily',
-		lastRunDate: new Date()
+		lastRunDate: new Date(),
+        notificationHasRun: false
 	}
 ];
 

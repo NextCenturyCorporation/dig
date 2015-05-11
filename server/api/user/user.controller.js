@@ -86,7 +86,7 @@ exports.notificationCount = function (req, res) {
     sequelize.query(
         "select count(*) as notrun from users inner join queries on " +
         "users.username = queries.userusername where " +
-        "queries.notificationhasrun='false' and users.username = :username",
+        "queries.notificationhasrun=(0) and users.username = :username",
         { replacements: { username: req.params.username }, 
         type: sequelize.QueryTypes.SELECT })
     .then(function(results) {
