@@ -11,30 +11,30 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require('./environment');
 var models = require('../models');
 
-models.sequelize.sync().then(function () {
-    console.log('running seedsql.js ...')
-
-    // remove user 'test' and the associated queries/notifications
-    models.User.destroy({
-    	where:{username: 'test'}
-    })
-    // create user test
-    .then(function () {
-    	models.User.create({username: 'test'})
-        // create each query
-    	.then(function(user) {
-            console.log('adding queries to user test');
-            queries.forEach(function(query) {
-                models.Query.create(serialize(query))
-                // update foreign key UserUserName for this query to 'test'
-                .then(function(queryInstance) {
-                    queryInstance.setUser(user);
-                });
-            });
-    	});
-    }).catch(function(error) {
-        console.log(error);
+console.log('running seedsql.js ...')
+models.sequelize.sync()
+// remove user 'test' and the associated queries/notifications
+.then(function () {
+    
+    return models.User.destroy({ where:{username: 'test'}})
+})
+// create user test
+.then(function () {
+    return models.User.create({username: 'test'})
+})
+// create each query
+.then(function(user) {
+    console.log('adding queries to user test');
+    queries.forEach(function(query) {
+        models.Query.create(serialize(query))
+        // update foreign key UserUserName for this query to 'test'
+        .then(function(queryInstance) {
+            queryInstance.setUser(user);
+        });
     });
+})
+.catch(function(error) {
+    console.log(error);
 });
 
 
