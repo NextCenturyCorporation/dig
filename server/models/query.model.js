@@ -24,7 +24,8 @@ module.exports = function(sequelize, DataTypes) {
         },
         notificationHasRun: {
             type: DataTypes.BOOLEAN,
-            allowNull: true
+            defaultValue: true,
+            allowNull: false
         }
     }, 
     {
