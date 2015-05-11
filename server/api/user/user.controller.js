@@ -14,9 +14,7 @@ exports.index = function (req, res) {
 };
 
 exports.show = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
     models.User.find({
         where: {username: req.params.username}
     }).then(function(user){
@@ -34,9 +32,7 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
     models.User.update(
         req.body,
         {where: {username: req.params.username}}
@@ -48,9 +44,7 @@ exports.update = function (req, res) {
 }
 
 exports.delete = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
     models.User.destroy({
         where: {username: req.params.username}
     })
@@ -87,9 +81,7 @@ exports.updateMe = function(req, res, next) {
 
 // return active (hasrun=false) notifications for specified user
 exports.notificationCount = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
     sequelize.query(
         "select count(*) as notrun from users inner join queries on " +
         "users.username = queries.userusername where " +
@@ -102,4 +94,10 @@ exports.notificationCount = function (req, res) {
     }).catch(function(error) {
         res.json(400, error);
     });    
+}
+
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }    
 }
