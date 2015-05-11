@@ -573,7 +573,6 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-            $httpBackend.expectPUT('api/queries/1', {hasNotification: false}).respond(200, {});
 
         });
 
@@ -627,11 +626,18 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+            // TODO: find way to check lastRunDate -- can't check exact value since that will be now, but perhaps there's a way to simply
+            // confirm a date is being sent?
+            //{lastRunDate: new Date(), hasNotification: false}
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.filterStates.aggFilters = {'filter': 'changed'};
             scope.$digest();
         });
 
-        expect(scope.notificationLastRun).toEqual(new Date(scope.stringDate));
+        expect(scope.notificationLastRun).toEqual(jasmine.any(Date));
+        expect(scope.hasNotification).toBe(true);
+        $httpBackend.flush();
     });
 
     it('should clear notifications on filter state change if notificationLastRun exists', function() {
@@ -648,7 +654,6 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-            $httpBackend.expectPUT('api/queries/1', {hasNotification: false}).respond(200, {});
             scope.notificationLastRun = new Date(scope.stringDate);
             scope.filterStates.aggFilters = {'filter': 'changed'};
             scope.$digest();
@@ -656,7 +661,6 @@ describe('Controller: SearchCtrl', function () {
         
         expect(scope.hasNotification).toBe(false);
         expect(scope.notificationLastRun).toBe(null); 
-        $httpBackend.flush();
     });
 
     it('should not clear notification on submit', function() {
@@ -672,13 +676,14 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            
+            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            var lastRunDate = new Date();
+            scope.notificationLastRun = lastRunDate;
+            scope.hasNotification = true;
             scope.$digest();
-
         });
 
-        var lastRunDate = new Date();
-        scope.notificationLastRun = lastRunDate;
-        scope.hasNotification = true;
         spyOn(scope, 'clearNotification');
 
         scope.submit();
@@ -699,13 +704,15 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            var lastRunDate = new Date();
+            scope.notificationLastRun = lastRunDate;
+            scope.hasNotification = true;
             scope.$digest();
 
         });
 
-        var lastRunDate = new Date();
-        scope.notificationLastRun = lastRunDate;
-        scope.hasNotification = true;
         scope.queryString.live = 'new';
         spyOn(scope, 'clearNotification');
 
@@ -728,14 +735,16 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            var lastRunDate = new Date();
+            scope.notificationLastRun = lastRunDate;
+            scope.hasNotification = true;
             scope.$digest();
         });
 
         spyOn(scope, 'clearNotification');
 
-        var lastRunDate = new Date();
-        scope.notificationLastRun = lastRunDate;
-        scope.hasNotification = true;
         scope.indexVM.loading = !scope.indexVM.loading;
 
         scope.$digest();
@@ -757,14 +766,16 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            
+            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            var lastRunDate = new Date();
+            scope.notificationLastRun = lastRunDate;
+            scope.hasNotification = true;
             scope.$digest();
         });
 
         spyOn(scope, 'clearNotification');
 
-        var lastRunDate = new Date();
-        scope.notificationLastRun = lastRunDate;
-        scope.hasNotification = true;
         scope.indexVM.loading = !scope.indexVM.loading;
 
         scope.$digest();
