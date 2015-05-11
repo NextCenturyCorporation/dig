@@ -10,7 +10,7 @@ describe('Controller: SearchCtrl', function () {
     var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock, $httpBackend;
 
     var sampleQuery = { 
-        _id: 1,
+        id: 1,
         name: 'Query #1',
          /* jshint camelcase:false */
         digState: {
@@ -78,7 +78,7 @@ describe('Controller: SearchCtrl', function () {
         frequency: 'daily',
         createDate: '2015-04-01T20:13:11.093Z',
         lastRunDate: '2015-04-01T20:13:11.093Z',
-        hasNotification: true    
+        notificationHasRun: false   
     };
 
     var sampleDoc = {
@@ -507,7 +507,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
-        expect(scope.hasNotification).toBe(true);
+        expect(scope.notificationHasRun).toBe(false);
         expect(scope.notificationLastRun).toBe(undefined);
     });
 
@@ -515,7 +515,7 @@ describe('Controller: SearchCtrl', function () {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
-            state.params.query.hasNotification = false;
+            state.params.query.notificationHasRun = true;
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
@@ -533,7 +533,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
-        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(undefined);
     });
 
@@ -576,12 +576,12 @@ describe('Controller: SearchCtrl', function () {
 
         });
 
-        scope.hasNotification = true;
+        scope.notificationHasRun = false;
         scope.notificationLastRun = new Date();
 
         scope.clearNotification();
 
-        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(null);              
         $httpBackend.flush();
     });
@@ -608,7 +608,7 @@ describe('Controller: SearchCtrl', function () {
 
         scope.clearNotification();
 
-        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(lastRunDate);       
     });
 
@@ -616,7 +616,7 @@ describe('Controller: SearchCtrl', function () {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
-            state.params.query.hasNotification = true;
+            state.params.query.notificationHasRun = false;
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
@@ -629,14 +629,14 @@ describe('Controller: SearchCtrl', function () {
 
             // TODO: find way to check lastRunDate -- can't check exact value since that will be now, but perhaps there's a way to simply
             // confirm a date is being sent?
-            //{lastRunDate: new Date(), hasNotification: false}
+            //{lastRunDate: new Date(), notificationHasRun: true}
             $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.filterStates.aggFilters = {'filter': 'changed'};
             scope.$digest();
         });
 
         expect(scope.notificationLastRun).toEqual(jasmine.any(Date));
-        expect(scope.hasNotification).toBe(true);
+        expect(scope.notificationHasRun).toBe(false);
         $httpBackend.flush();
     });
 
@@ -644,7 +644,7 @@ describe('Controller: SearchCtrl', function () {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
-            state.params.query.hasNotification = true;
+            state.params.query.notificationHasRun = false;
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
@@ -659,11 +659,11 @@ describe('Controller: SearchCtrl', function () {
             scope.$digest();
         });
         
-        expect(scope.hasNotification).toBe(false);
+        expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(null); 
     });
 
-    it('should not clear notification on submit', function() {
+    it('should not call clearNotification() on submit', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -677,10 +677,10 @@ describe('Controller: SearchCtrl', function () {
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             
-            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
             var lastRunDate = new Date();
             scope.notificationLastRun = lastRunDate;
-            scope.hasNotification = true;
+            scope.notificationHasRun = false;
             scope.$digest();
         });
 
@@ -691,7 +691,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.clearNotification).not.toHaveBeenCalled();
     });
 
-    it('should clear notification on submit', function() {
+    it('should call clearNotification() on submit', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -705,10 +705,10 @@ describe('Controller: SearchCtrl', function () {
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
 
-            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
             var lastRunDate = new Date();
             scope.notificationLastRun = lastRunDate;
-            scope.hasNotification = true;
+            scope.notificationHasRun = false;
             scope.$digest();
 
         });
@@ -721,7 +721,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.clearNotification).toHaveBeenCalled();
     });
 
-    it('should clear notification when loading value changes and sort is something other than _timestamp', function() {
+    it('should call clearNotification() when loading value changes and sort is something other than _timestamp', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -736,10 +736,10 @@ describe('Controller: SearchCtrl', function () {
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
 
-            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
             var lastRunDate = new Date();
             scope.notificationLastRun = lastRunDate;
-            scope.hasNotification = true;
+            scope.notificationHasRun = false;
             scope.$digest();
         });
 
@@ -767,10 +767,10 @@ describe('Controller: SearchCtrl', function () {
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             
-            // ensure notificationLastRun and hasNotification exist and are set appropriately
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
             var lastRunDate = new Date();
             scope.notificationLastRun = lastRunDate;
-            scope.hasNotification = true;
+            scope.notificationHasRun = false;
             scope.$digest();
         });
 
