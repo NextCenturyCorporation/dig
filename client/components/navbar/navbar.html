@@ -16,11 +16,11 @@
         <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
             <a ng-href="{{item.link}}" ng-if="!item.reload">
                 {{item.title}} <span class="{{item.icon}}"></span>
-                <span ng-if="item.count" class="notification-badge">{{item.count}}</span>
+                <span ng-if="item.hasNotRunCount && item.hasNotRunCount.notRunCount > 0" class="notification-badge">{{item.hasNotRunCount.notRunCount}}</span>
             </a>
             <a ng-href="{{item.link}}" target="_self" ng-if="item.reload">
                 {{item.title}} <span class="{{item.icon}}"></span>
-                <span ng-if="item.count" class="notification-badge">{{item.count}}</span>
+                <span ng-if="item.hasNotRunCount && item.hasNotRunCount.notRunCount > 0" class="notification-badge">{{item.hasNotRunCount.notRunCount}}</span>
             </a>
         </li>
       </ul>

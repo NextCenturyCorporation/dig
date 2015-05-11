@@ -11,7 +11,7 @@ angular.module('digApp')
     }, {
       'title': 'Search Queries',
       'link': '/queries',
-      'count': 1, // hard coded notification count for now
+      'hasNotRunCount': User.notificationCount(),
       'reload': true
     }];
 
