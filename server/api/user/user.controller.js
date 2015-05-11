@@ -64,7 +64,6 @@ exports.me = function(req, res) {
     models.User.findOrCreate({
         where: {username: req.headers.user}
     }).spread(function(user, created) {
-        console.log(created);
         res.json(200, user);
     }).catch(function(error) {
         res.json(400, error);
@@ -90,7 +89,6 @@ exports.notificationCount = function (req, res) {
         { replacements: { username: req.params.username }, 
         type: sequelize.QueryTypes.SELECT })
     .then(function(results) {
-        console.log(results);
         var count = results[0].notrun;
         res.json(200, {notRunCount: count});
     }).catch(function(error) {
