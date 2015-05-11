@@ -80,6 +80,9 @@ exports.updateMe = function(req, res, next) {
 
 // return active (hasrun=false) notifications for specified user
 exports.notificationCount = function (req, res) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
     sequelize.query(
         "select count(*) as notrun from users inner join queries on " +
         "users.username = queries.userusername where " +
