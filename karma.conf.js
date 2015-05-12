@@ -22,6 +22,7 @@ module.exports = function(config) {
       'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/elasticsearch/elasticsearch.angular.js',
+      'client/bower_components/angular-ui-tree/dist/angular-ui-tree.js',
       'client/app/app.js',
       'client/app/**/*.js',
       'client/components/**/*.js',

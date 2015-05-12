@@ -7,6 +7,7 @@ var digApp = angular.module('digApp', [
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
+    'ui.tree',
     'elasticui',
 
     'digApp.directives',

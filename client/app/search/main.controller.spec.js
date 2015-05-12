@@ -8,6 +8,50 @@ describe('Controller: MainCtrl', function () {
     // instantiate service
     var imageSearchService;
     var MainCtrl, scope, rootScope, state;
+    var folders = [
+      {
+        _id: 0,
+        username: "test",
+        name: "ROOT",
+        childIds: [1, 3]
+      },{
+        _id: 1,
+        username: "test",
+        name: "folder1",
+        parentId: 0,
+        childIds: [2]
+      },{
+        _id: 2,
+        username: "test",
+        name: "folder2",
+        parentId: 1,
+        childIds: []
+      },{
+        _id: 3,
+        username: "test",
+        name: "folder3",
+        parentId: 0,
+        childIds: [4]
+      },{
+        _id: 4,
+        username: "test",
+        name: "folder4",
+        parentId: 3,
+        childIds: [5, 6]
+      },{
+        _id: 5,
+        username: "test",
+        name: "folder5",
+        parentId: 4,
+        childIds: []
+      },{
+        _id: 6,
+        username: "test",
+        name: "folder6",
+        parentId: 4,
+        childIds: []
+      }
+    ];
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -34,6 +78,7 @@ describe('Controller: MainCtrl', function () {
             spyOn(state, 'go');
 
             $httpBackend = _$httpBackend_;
+            $httpBackend.expectGET('api/folders/').respond(200, folders);
             $httpBackend.when('GET', new RegExp('app/search/main.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))

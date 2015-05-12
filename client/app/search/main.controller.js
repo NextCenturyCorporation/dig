@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('MainCtrl', ['$scope', '$state', 'imageSearchService', 'euiSearchIndex', 'euiConfigs',
-    function($scope, $state, imageSearchService, euiSearchIndex, euiConfigs) {
+.controller('MainCtrl', ['$scope', '$state', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$http',
+    function($scope, $state, imageSearchService, euiSearchIndex, euiConfigs, $http) {
       $scope.searchConfig = {};
       $scope.searchConfig.filterByImage = false;
       $scope.searchConfig.euiSearchIndex = '';
@@ -13,6 +13,8 @@ angular.module('digApp')
       $scope.imagesimLoading = false;
       $scope.euiConfigs = euiConfigs;
       $scope.facets = euiConfigs.facets;
+      $scope.folders = [];
+      $scope.nestedFolders = [];
 
       $scope.init = function() {
         $scope.showresults = false;
@@ -139,6 +141,37 @@ angular.module('digApp')
       if($state.current.name === 'main') {
           $scope.viewList();
       }
+
+      $http.get('api/folders/').
+        success(function(data) {
+          $scope.folders = data;
+          var rootId = _.find($scope.folders, {name: 'ROOT'})._id;
+
+          var rootFolders = _.filter($scope.folders, {parentId: rootId});
+
+          angular.forEach(rootFolders, function(folder) {
+            $scope.nestedFolders.push({
+              name: folder.name,
+              _id: folder._id,
+              children: _getSubfolders(folder._id)
+            });
+          });
+        });
+
+        function _getSubfolders(id) {
+          var children = [];
+          var childFolders = _.filter($scope.folders, {parentId: id});
+          
+          angular.forEach(childFolders, function(folder) {
+            children.push({
+              name: folder.name,
+              _id: folder._id,
+              children: _getSubfolders(folder._id)
+            });
+          });
+
+          return children;
+        };
 
       $scope.init();
     }

@@ -1,3 +1,58 @@
 div[eui-index].container-fluid {
   border-top: 1px solid #ddd;
 }
+
+/**
+ * Tab styling
+ */
+
+.nav-tabs {
+  margin-bottom: 10px;
+}
+
+.folder-tree {
+  padding-top: 10px;
+
+  .folder-tree-item {
+    padding: 5px;
+
+    i.fa.fa-folder-open {
+      color: #E8C56F;
+    }
+
+    .folder-tree-toggle, .folder-tree-toggle:hover, .folder-tree-toggle:focus {
+      color: #000;
+      background-color: transparent;
+      opacity: .6;
+    }
+  }
+
+  .folder-tree-item-link {
+    font-weight: normal;
+  }
+
+  .folder-tree-item-link.active {
+    font-weight: bold;
+  }
+
+  .folder-tree-item-link, .folder-tree-item-link:hover, .folder-tree-item-link:focus {
+    color: #000;
+  }
+}
+
+.folder-header {
+  padding: 15px;
+  padding-top: 0px;
+
+  .dropdown-menu {
+    text-align: left;
+
+    li {
+      padding: 0px 5px;
+    }
+
+    #create-new-folder {
+      padding: 10px;
+    }
+  }
+}
