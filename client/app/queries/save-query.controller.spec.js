@@ -185,6 +185,8 @@ describe('Controller: SaveQueryCtrl', function () {
 
             $httpBackend.expectGET('api/queries/').respond(200, queryResults);
 
+            $httpBackend.when('GET', new RegExp('app/search/main.html'))
+                .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/search-results.partial.html'))

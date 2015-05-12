@@ -7,7 +7,7 @@ describe('Controller: SearchResultsCtrl', function () {
 
     var SearchResultsCtrl, scope, state, imageSearchService;
 
-        var sampleImageSearchDoc = {
+    var sampleImageSearchDoc = {
         "_index": "dig",
         "_type": "WebPage",
         "_id": "SOMEUNIQUEID",
@@ -208,10 +208,12 @@ describe('Controller: SearchResultsCtrl', function () {
         inject(function ($controller, $rootScope, $state, _$httpBackend_, _imageSearchService_) {
             scope = $rootScope.$new();
             state = $state;
-            state.current.name = 'search.results.list';
+            state.current.name = 'main.search.results.list';
             spyOn(state, 'go');
 
             $httpBackend = _$httpBackend_;
+            $httpBackend.when('GET', new RegExp('app/search/main.html'))
+                .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
@@ -290,7 +292,7 @@ describe('Controller: SearchResultsCtrl', function () {
 
         expect(scope.doc).not.toBeNull();
         expect(scope.previousState).toBe('list');
-        expect(state.go).toHaveBeenCalledWith('search.results.details');
+        expect(state.go).toHaveBeenCalledWith('main.search.results.details');
     });
 
     it('should update state from details to list view and null out scope.doc if scope.doc is set and previousState is not set', function () {
@@ -327,14 +329,14 @@ describe('Controller: SearchResultsCtrl', function () {
         scope.viewGallery();
 
         expect(scope.displayMode.mode).toBe('gallery');
-        expect(state.go).toHaveBeenCalledWith('search.results.gallery');
+        expect(state.go).toHaveBeenCalledWith('main.search.results.gallery');
     });
 
     it('should set displayMode.mode to \'list\' and make appropriate state call', function () {
         scope.viewList();
 
         expect(scope.displayMode.mode).toBe('list');
-        expect(state.go).toHaveBeenCalledWith('search.results.list');
+        expect(state.go).toHaveBeenCalledWith('main.search.results.list');
     });
 
     it('should return whether or not a list item is opened by id', function() {

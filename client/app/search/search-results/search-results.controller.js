@@ -22,7 +22,7 @@ angular.module('digApp')
     $scope.viewDetails = function(doc, previousState) {
         $scope.doc = doc;
         $scope.previousState = previousState;
-        $state.go('search.results.details');
+        $state.go('main.search.results.details');
     };
 
     $scope.backToPreviousState = function() {
@@ -40,13 +40,13 @@ angular.module('digApp')
 
     $scope.viewGallery = function() {
         $scope.displayMode.mode = 'gallery';
-        $state.go('search.results.gallery');
+        $state.go('main.search.results.gallery');
     };
 
     $scope.viewList = function() {
         $scope.clearGalleryItem();
         $scope.displayMode.mode = 'list';
-        $state.go('search.results.list');
+        $state.go('main.search.results.list');
     };
 
     $scope.toggleListItemOpened = function(index) {

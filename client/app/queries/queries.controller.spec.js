@@ -86,6 +86,8 @@ describe('Controller: QueriesCtrl', function () {
                 }
             };
 
+            $httpBackend.when('GET', new RegExp('app/search/main.html'))
+                .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search-results/search-results.partial.html'))
@@ -150,6 +152,6 @@ describe('Controller: QueriesCtrl', function () {
     it('should call state.go with correct parameters', function () {
         scope.runQuery(queryResults[0]);
 
-        expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0]}, {location: true});
+        expect(state.go).toHaveBeenCalledWith('main.search.results.list', {query: queryResults[0]}, {location: true});
     });
 });

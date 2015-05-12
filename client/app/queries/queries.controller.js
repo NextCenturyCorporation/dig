@@ -37,7 +37,7 @@ angular.module('digApp')
     };
 
     $scope.runQuery = function(query) {
-        $state.go('search.results.list', {
+        $state.go('main.search.results.list', {
             query: query
         }, {
             location: true

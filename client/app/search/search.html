@@ -1,7 +1,5 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
-<div class="container-fluid" eui-index="searchConfig.euiSearchIndex">
-  <div class="loading" ng-show="loading || imagesimLoading"></div>
+<div class="right-column col-sm-9">
+  
   <!-- query -->
   <div class="row">
     <div class="col-sm-12 list-group-item">
@@ -69,8 +67,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <ui-view></ui-view>
-  </div>
-</div>
+  <ui-view></ui-view>
 
+</div>

@@ -25,14 +25,14 @@ describe('Controller: SearchErrorCtrl', function() {
 
     describe('on initialize', function() {
         describe('without indexVM error', function() {
-            it('should redirect to search.result.list', function() {
-                expect(state.go).toHaveBeenCalledWith('search.results.list');
+            it('should redirect to main.search.result.list', function() {
+                expect(state.go).toHaveBeenCalledWith('main.search.results.list');
             });
         });
 
         describe('with indexVM error', function() {
             beforeEach(function() {
-                state.current.name = 'search.error';
+                state.current.name = 'main.search.error';
                 scope.indexVM = {
                     error: {
                         message: 'error message'
@@ -54,7 +54,7 @@ describe('Controller: SearchErrorCtrl', function() {
     describe('function calls', function() {
         describe('with indexVM error', function() {
             beforeEach(function() {
-                state.current.name = 'search.error';
+                state.current.name = 'main.search.error';
                 scope.indexVM = {
                     error: {
                         message: 'error message'
@@ -89,7 +89,7 @@ describe('Controller: SearchErrorCtrl', function() {
 
             describe('of Lucene search error type', function() {
                 beforeEach(function() {
-                    state.current.name = 'search.error';
+                    state.current.name = 'main.search.error';
                     scope.indexVM = {
                         error: {
                             message: 'Error Parse Failure',
@@ -118,7 +118,7 @@ describe('Controller: SearchErrorCtrl', function() {
 
             describe('of elastic search connect error type', function() {
                 beforeEach(function() {
-                    state.current.name = 'search.error';
+                    state.current.name = 'main.search.error';
                     scope.indexVM = {
                         error: {
                             message: 'No Living connections',
