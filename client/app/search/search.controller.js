@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('SearchCtrl', ['$scope', '$state', '$modal', 'imageSearchService', 'euiSearchIndex',
-    function($scope, $state, $modal, imageSearchService, euiSearchIndex) {
+.controller('SearchCtrl', ['$scope', '$state', '$modal', 'imageSearchService',
+    function($scope, $state, $modal, imageSearchService) {
       $scope.saveQuery = function() {
           $modal.open({
               templateUrl: 'app/queries/save-query.html',
@@ -57,10 +57,6 @@ angular.module('digApp')
               reload: true
           });
       };
-
-      /*$scope.imageSearch = function(imgUrl) {
-          imageSearchService.imageSearch(imgUrl);
-      };*/
 
       $scope.getDisplayImageSrc = function(doc) {
           var src = '';
