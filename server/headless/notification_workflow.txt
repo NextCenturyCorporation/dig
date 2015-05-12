@@ -1,0 +1,42 @@
+# offline SSQ runner workflow
+# SSQ = scheduled saved query
+for each SSQ in SSQ collection:
+    if SSQ is not due for execution: continue
+    if SSQ already has a notification: continue
+
+    read SSQ JSON
+    create query payload from SSQ JSON
+    num_results = execute query in elasticsearch
+    if num_results > 0:
+        create a and persist a new notification
+        increment user_notification_count
+
+
+# interactive workflow
+- maintain a collection of notifications which are associated with 
+  each SSQ
+- maintain a boolean field has_run on each notification indicating 
+  whether the user has interactively executed the SSQ associated 
+  with the notification
+- create an endpoint for managing (create, read, update, delete)
+  notifications
+- when a user executes an SSQ, update has_run = true and decrement
+  user_notification_count 
+
+# display logic
+- display user_notification_count in navbar unless it is 0
+- hovering on notification icon causes dropdown list of
+  notifications that are has_run == false
+  if no new notifications, display tip that says you have no new notifications
+- clicking on notifications causes saved query view to be displayed,
+  sorted by those queries that have un-executed queries first
+- users can create, read, update, delete notifications.  There should
+  be display logic to execute each of these operations.
+- note that running a notification changes the notification state
+  (last execution date is updated, and has_run = true), but
+  it does not delete the notification.
+- the user should be able to see a list of all notifications that are
+  associated with a SSQ.
+
+
+

@@ -1,0 +1,140 @@
+[
+  {
+    "name": "Query #1",
+    "dig_state": {
+      "searchTerms": "bob smith",
+      "filters": {
+        "dateFilters": {
+          "dateCreated": {
+            "endDate": null,
+            "beginDate": null
+          }
+        },
+        "textFilters": {
+          "phonenumber": {
+            "submitted": "",
+            "live": ""
+          }
+        },
+        "aggFilters": {
+          "city_agg": {
+            "FortSmith": true,
+            "LittleRock": true
+          }
+        }
+      }
+    },
+    "elastic_state": {
+      "query_state": {
+        "match": {
+          "title": {
+            "query": "whale"
+          }
+        }
+      },
+      "filter_state": {
+        "bool": {
+          "must": [
+            {
+              "terms": {
+                "username": [
+                  "agardner3d5"
+                ]
+              }
+            },
+            {
+              "terms": {
+                "city": [
+                  "Bakersfield"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "email": "test@test.com",
+    "frequency": "daily",
+    "createDate": {"$date": "2015-04-08T16:51:45.138Z"},
+    "lastRunDate": {"$date": "2015-04-08T16:51:45.138Z"},
+    "__v": 0
+  },
+  {
+    "name": "Query #2",
+    "dig_state": {
+      "searchTerms": "jane doe",
+      "filters": {
+        "dateFilters": {
+          "dateCreated": {
+            "endDate": "2015-02-03T05:00:00.000Z",
+            "beginDate": "2013-02-02T05:00:00.000Z"
+          }
+        },
+        "textFilters": {
+          "phonenumber": {
+            "submitted": "",
+            "live": ""
+          }
+        }
+      }
+    },
+    "elastic_state": {
+      "query_state": {
+        "match": {
+          "_all": {
+            "query": "whale"
+          }
+        }
+      },
+      "filter": {
+        "term": {
+          "ethnicity": "cuban"
+        }
+      }
+    },
+    "email": "test@test.com",
+    "frequency": "hourly",
+    "createDate": {"$date": "2015-04-08T16:51:45.138Z"},
+    "lastRunDate": {"$date": "2015-04-08T16:51:45.138Z"},
+    "__v": 0
+  },
+  {
+    "name": "Query #3",
+    "dig_state": {
+      "searchTerms": "another users query",
+      "filters": {
+        "dateFilters": {
+          "dateCreated": {
+            "endDate": null,
+            "beginDate": null
+          }
+        },
+        "textFilters": {
+          "phonenumber": {
+            "submitted": "",
+            "live": ""
+          }
+        }
+      }
+    },
+    "elastic_state": {
+      "query_state": {
+        "match": {
+          "_all": {
+            "query": "whale"
+          }
+        }
+      },
+      "filter": {
+        "term": {
+          "ethnicity": "cuban"
+        }
+      }
+    },
+    "email": "test2@test.com",
+    "frequency": "weekly",
+    "createDate": {"$date": "2015-04-08T16:51:45.138Z"},
+    "lastRunDate": {"$date":"2015-04-08T16:51:45.138Z"},
+    "__v": 0
+  }
+]
