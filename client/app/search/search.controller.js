@@ -97,10 +97,14 @@ angular.module('digApp')
             }
 
             $scope.$on('$locationChangeSuccess', function() {
-                if($state.current.name === 'search.results.list') {
+                if($state.current.name === 'search.results.list' && $scope.showresults === false) {
                     $scope.submit();
                 }
             });
+
+            if($state.params.callSubmit && $state.current.name === 'search.results.list' && $scope.showresults === false) {
+                $scope.submit();
+            }
         }
     };
 

@@ -41,6 +41,25 @@ exports.index = function (req, res) {
     });
 }
 
+//TODO: revisit endpoint
+exports.notifications = function (req, res) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
+
+    models.Query.findAll(
+        {where: {userusername: req.params.username, notificationHasRun: 0}}
+    ).then(function(queries) {
+        var desQueries = [];
+        queries.forEach(function(query) {
+            desQueries.push(deserialize(query));
+        });
+        res.json(200, desQueries);
+    }).catch(function(error) {
+        res.json(400, error);
+    });
+}
+
 exports.show = function (req, res) {
     models.Query.find({
         where: {id: req.params.queryid}
