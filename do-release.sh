@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
@@ -228,7 +228,3 @@ sanity_check
 version
 push_new_version
 build
-
-if [[ "$DRY_RUN" -eq 1 ]]; then
-    rollback
-fi
