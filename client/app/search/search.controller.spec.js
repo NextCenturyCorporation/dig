@@ -500,6 +500,7 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
         });
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
@@ -508,7 +509,8 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
         expect(scope.notificationHasRun).toBe(false);
-        expect(scope.notificationLastRun).toBe(undefined);
+        expect(scope.notificationLastRun).toEqual(jasmine.any(Date));
+        $httpBackend.flush();
     });
 
     it('should initialize variables based on state params', function() {
@@ -612,34 +614,6 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.notificationLastRun).toBe(lastRunDate);       
     });
 
-    it('should initialize notificationLastRun', function() {
-        inject(function($controller) {
-            state.current.name = 'search.results.list';
-            state.params = {query: sampleQuery};
-            state.params.query.notificationHasRun = false;
-
-            SearchCtrl = $controller('SearchCtrl', {
-                $scope: scope,
-                $state: state,
-                $modal: modal,
-                blurImageService: blurImageSvcMock
-            });
-
-            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
-            // TODO: find way to check lastRunDate -- can't check exact value since that will be now, but perhaps there's a way to simply
-            // confirm a date is being sent?
-            //{lastRunDate: new Date(), notificationHasRun: true}
-            $httpBackend.expectPUT('api/queries/1').respond(200, {});
-            scope.filterStates.aggFilters = {'filter': 'changed'};
-            scope.$digest();
-        });
-
-        expect(scope.notificationLastRun).toEqual(jasmine.any(Date));
-        expect(scope.notificationHasRun).toBe(false);
-        $httpBackend.flush();
-    });
-
     it('should clear notifications on filter state change if notificationLastRun exists', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
@@ -654,8 +628,7 @@ describe('Controller: SearchCtrl', function () {
             });
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-            scope.notificationLastRun = new Date(scope.stringDate);
-            scope.filterStates.aggFilters = {'filter': 'changed'};
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.$digest();
         });
         
@@ -678,8 +651,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             
             // ensure notificationLastRun and notificationHasRun exist and are set appropriately
-            var lastRunDate = new Date();
-            scope.notificationLastRun = lastRunDate;
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.notificationHasRun = false;
             scope.$digest();
         });
@@ -706,8 +678,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
 
             // ensure notificationLastRun and notificationHasRun exist and are set appropriately
-            var lastRunDate = new Date();
-            scope.notificationLastRun = lastRunDate;
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.notificationHasRun = false;
             scope.$digest();
 
@@ -737,8 +708,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
 
             // ensure notificationLastRun and notificationHasRun exist and are set appropriately
-            var lastRunDate = new Date();
-            scope.notificationLastRun = lastRunDate;
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.notificationHasRun = false;
             scope.$digest();
         });
@@ -768,8 +738,7 @@ describe('Controller: SearchCtrl', function () {
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             
             // ensure notificationLastRun and notificationHasRun exist and are set appropriately
-            var lastRunDate = new Date();
-            scope.notificationLastRun = lastRunDate;
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
             scope.notificationHasRun = false;
             scope.$digest();
         });

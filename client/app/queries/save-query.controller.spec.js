@@ -8,7 +8,7 @@ describe('Controller: SaveQueryCtrl', function () {
     var queryResults = 
     [
       {
-        '_id': 1,
+        'id': 1,
         'name': 'Query #1',
         'digState': {
             'searchTerms': 'bob smith',
@@ -75,7 +75,7 @@ describe('Controller: SaveQueryCtrl', function () {
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
       {
-        '_id': 2,
+        'id': 2,
         'name': 'Query #2',
         'digState': {
             'searchTerms': 'jane doe',
