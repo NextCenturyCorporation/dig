@@ -55,7 +55,7 @@ angular.module('digApp')
 
         if($scope.queryNameExists($scope.query.name)) {
             if($window.confirm('Are you sure you want to save over existing query \"' + $scope.query.name + '\"?')) {
-                $http.put('api/queries/' + $scope.existingQuery._id, $scope.query);
+                $http.put('api/queries/' + $scope.existingQuery.id, $scope.query);
             }
         } else {
             $http.post('api/users/test/queries', $scope.query);

@@ -92,6 +92,8 @@ angular.module('digApp')
 
             if($state.params.query.notificationHasRun === false) {
                 $scope.notificationHasRun = $state.params.query.notificationHasRun;
+                $scope.notificationLastRun = new Date($state.params.query.lastRunDate);  
+                $http.put('api/queries/' + $state.params.query.id, {lastRunDate: new Date(), notificationHasRun: true});
             } else if($state.params.query.digState.selectedSort) {
                 $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
             }
@@ -275,16 +277,9 @@ angular.module('digApp')
         }
     }, true);
 
-    // need to initialize notificationLastRun here when a saved query is loaded
     $scope.$watch('filterStates', function(newValue, oldValue) {
-        if (newValue !== oldValue && $state.params.query && $scope.notificationHasRun === false) {
-            if(!$scope.notificationLastRun) {
-                $scope.notificationLastRun = new Date($state.params.query.lastRunDate);  
-                $http.put('api/queries/' + $state.params.query.id, {lastRunDate: new Date(), notificationHasRun: true});
-            } else {
-                $scope.notificationLastRun = null;
-                $scope.notificationHasRun = true;
-            }    
+        if (oldValue !== newValue) {
+            $scope.clearNotification();
         }
     }, true);
 
