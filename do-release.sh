@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
@@ -15,11 +15,13 @@ realpath_Linux() {
 
 #call the proper version based on your kernel type
 CURRENT_DIR=$(realpath_$(uname) $(dirname ${BASH_SOURCE[0]}) )
+
 BUILD_DIR=$(mktemp -d ${TMPDIR-/tmp}/dig_release.XXXXXXXX)
 CLONE_URL="https://github.com/NextCenturyCorporation/dig.git"
 BUMP_VER=dev
 PUSH_REQUIRED=0
 GIT_PUSH_OPTS=""
+DRY_RUN=0
 
 backup() {
     #backup some values so we can rollback if necessary
@@ -28,6 +30,7 @@ backup() {
 
 rollback() {
     echo "** Rolling back because something failed **"
+    cd ${CURRENT_DIR}
     echo "Deleting git tag: ${GIT_TAG}"
     git tag -d ${GIT_TAG}
     echo "Rolling back to commit: ${GIT_CURRENT}"
@@ -64,8 +67,9 @@ The versions are tagged in git
 -i Preminor
 -t Prepatch
 
-Passing no parameters performs a development build.
-The prerelease version is bumped and tagged in git
+Passing no parameters performs a development build in which the prerelease version is bumped.
+do-release will tag the commit in git with the current version number.
+
 -u force a development build to push the resulting image to docker hub
 EOF
 cleanup 0
@@ -95,13 +99,15 @@ get_options() {
 		;;
 	    u)
 		echo "Forcing a push to docker-hub"
+		FORCE_PUSH_TO_DOCKER=1
 		;;
 	    d)
-		GIT_PUSH_OPTS="--dry-run"	
+		GIT_PUSH_OPTS="--dry-run"
+		DRY_RUN=1	
 		echo "*************************"
 		echo "* PERFORMING A DRY-RUN! *"
 		echo "*************************"
-		sleep 2s
+		sleep 1s
 		;;
 	    \?)
 		echo "INVALID OPTION: -$OPTARG" >&2
@@ -136,7 +142,7 @@ sanity_check() {
     if [[ ! -z "$(git status --porcelain --untracked-files=no)" ]]; then
 	echo "Working directory is not clean!"
 	echo "Please commit or stash your code before running do-release"
-	cleanup 1
+#	cleanup 1
     fi
     
     #Ensure that we are using npm v2 or greater
@@ -144,6 +150,12 @@ sanity_check() {
 	echo "You have a version of npm that is too old!"
 	cleanup 4
     fi
+
+    #Ensure we have makeself available
+    command -v makeself >/dev/null 2>&1 || {
+	echo "You do not have makeself installed. Cannot continue."
+	cleanup 10
+    }
 
 }
 
@@ -172,6 +184,14 @@ version() {
 	GIT_TAG=$(npm version prerelease)
     fi
 
+    if [[ "$FORCE_PUSH_TO_DOCKER" -eq 1 ]]; then
+	PUSH_TO_DOCKER=1
+    fi
+
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+	PUSH_TO_DOCKER=0
+    fi
+
     if [[ $? != 0 ]]; then
 	echo "There was an error with npm version, cannot continue"
 	rollback
@@ -188,11 +208,12 @@ build() {
     cd dig
     npm install
     grunt build
-    ./package.sh $package_opts
+    ${BUILD_DIR}/package.sh $package_opts
     cp dig_deploy.sh ${CURRENT_DIR}
     cd ${CURRENT_DIR}
     if [[ $UID != 0 ]]; then
-	rm -rf ${BUILD_DIR}
+	echo "Deleting temporary build directory"
+#	rm -rf ${BUILD_DIR}
     fi
 }
 
@@ -207,3 +228,7 @@ sanity_check
 version
 push_new_version
 build
+
+if [[ "$DRY_RUN" -eq 1 ]]; then
+    rollback
+fi
