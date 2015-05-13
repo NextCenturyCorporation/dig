@@ -19,6 +19,9 @@ var log = bunyan.createLogger({
     }]
 });
 
+
+var offlineQueryRunner = require('./headless');
+
 // create a logger instance
 // TODO: create a rolling log instance.
 models.sequelize.options.logging=function(loginfo) {
@@ -35,17 +38,19 @@ var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
-// Sync models with db and then start server
+app.models = models;
+app.log = log;
 
-models.sequelize.sync().then(function () {
+models.sequelize.sync()
+.then(function () {
+    // start saved scheduled query runner
+    offlineQueryRunner(log);
     server.listen(config.port, config.ip, function () {
         console.log('Express server listening on %d, in %s mode', 
             config.port, app.get('env'));
     });
-});
 
-app.models = models;
-app.log = log;
+});
 
 // Expose app
 exports = module.exports = app;

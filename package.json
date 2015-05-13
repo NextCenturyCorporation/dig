@@ -10,6 +10,8 @@
     "compression": "~1.0.1",
     "cookie-parser": "~1.0.1",
     "ejs": "~0.8.4",
+    "elastic.js": "^1.2.0",
+    "elasticsearch": "^4.0.2",
     "errorhandler": "~1.0.0",
     "express": "~4.0.0",
     "express-session": "~1.0.2",
@@ -18,6 +20,7 @@
     "method-override": "~1.0.0",
     "morgan": "~1.0.0",
     "mysql": "^2.6.2",
+    "node-schedule": "^0.2.6",
     "sequelize": "^2.1.0",
     "serve-favicon": "~2.0.1",
     "sqlite3": "^3.0.5"
