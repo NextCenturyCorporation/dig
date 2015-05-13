@@ -469,7 +469,16 @@ describe('Controller: SearchCtrl', function () {
 
             scope.indexVM = {
                 filters: {
-                    ejsFilters: []
+                    testFilters: sampleQuery.elasticUIState.filterState,
+                    ejsFilters: [],
+                    getAsFilter: function(){
+                        return {
+                            testFilters: this.testFilters,
+                            toJSON: function() {
+                                return this.testFilters;
+                            }
+                        }
+                    }
                 },
                 loading: true,
                 page: 1,
@@ -614,7 +623,7 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.notificationLastRun).toBe(lastRunDate);       
     });
 
-    it('should clear notifications on filter state change if notificationLastRun exists', function() {
+    it('should set filtersInitialized variable to true', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -629,9 +638,35 @@ describe('Controller: SearchCtrl', function () {
 
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.indexVM.loading = false;
             scope.$digest();
         });
-        
+
+        expect(scope.filtersInitialized).toBe(true);
+    });
+
+
+    it('should clear notifications on filter state change if notificationLastRun and filtersInitialized exist', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = false;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.filtersInitialized = true;
+            scope.indexVM.loading = false;
+            scope.indexVM.filters.testFilters = {'different': 'filter'};
+            scope.$digest();
+        });
+
         expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(null); 
     });

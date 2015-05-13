@@ -267,21 +267,24 @@ angular.module('digApp')
                 if($scope.showresults && $scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
                     $scope.clearNotification();
                 }
+
+                // First ensure filters are initialized, then check to see if user made updates
+                if($scope.showresults && $scope.loading === false && $state.params.query && $state.params.query.elasticUIState.filterState) {
+                    var currentFilters = $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {};
+                    var originalFilters = $state.params.query.elasticUIState.filterState;
+
+                    if(angular.equals(currentFilters, originalFilters)) {
+                        $scope.filtersInitialized = true;
+                    } else {
+                        if($scope.filtersInitialized) {
+                            $scope.filtersInitalized = null;
+                            $scope.clearNotification();
+                        }
+                    }
+                }
             }
         }
     );
-
-    $scope.$watch('includeMissing', function(newValue, oldValue) {
-        if (newValue !== oldValue) {
-            $scope.clearNotification();
-        }
-    }, true);
-
-    $scope.$watch('filterStates', function(newValue, oldValue) {
-        if (oldValue !== newValue) {
-            $scope.clearNotification();
-        }
-    }, true);
 
     $scope.$watch('indexVM.error', function() {
         if($scope.indexVM.error) {
