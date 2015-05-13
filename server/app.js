@@ -10,6 +10,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express');
 var config = require('./config/environment');
 var models = require('./models');
+var offlineQueryRunner = require('./headless');
 var bunyan = require('bunyan');
 var log = bunyan.createLogger({
     name: 'digapp',
@@ -19,10 +20,8 @@ var log = bunyan.createLogger({
     }]
 });
 
-
-var offlineQueryRunner = require('./headless');
-
-// create a logger instance
+// create a logger instance 
+// (see http://docs.sequelizejs.com/en/latest/api/sequelize/)
 // TODO: create a rolling log instance.
 models.sequelize.options.logging=function(loginfo) {
     log.info(loginfo);

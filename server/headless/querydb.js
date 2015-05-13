@@ -12,14 +12,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require('../config/environment');
 var models = require('../models');
 var assert = require('assert');
-var bunyan = require('bunyan');
-var log = bunyan.createLogger({
-    name: 'myapp',
-    streams: [{
-        path: 'offlinequery.log',
-        // `type: 'file'` is implied
-    }]
-});
 
 var findSSQ = function(period) {
     return models.Query.findAll({
@@ -31,8 +23,8 @@ var findSSQ = function(period) {
 }
 
 var hourlySSQ = function () { return findSSQ('hourly'); }
-var dailySSQ = function() {return findSSQ('daily');}
-var weeklySSQ = function() {return findSSQ('weekly');}
+var dailySSQ = function() { return findSSQ('daily'); }
+var weeklySSQ = function() { return findSSQ('weekly'); }
 
 models.Query.sync()
 .then(dailySSQ)
