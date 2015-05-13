@@ -16,27 +16,35 @@ div[eui-index].container-fluid {
   .folder-tree-item {
     padding: 5px;
 
+    .folder-tree-item-row {
+      background-color: transparent;
+    }
+
+    .folder-tree-item-row.active {
+      background-color: rgba(255, 255, 255, .65);
+    }
+
     i.fa.fa-folder-open {
       color: #E8C56F;
     }
 
     .folder-tree-toggle, .folder-tree-toggle:hover, .folder-tree-toggle:focus {
       color: #000;
-      background-color: transparent;
+      background-color: rgb(244, 239, 236);
       opacity: .6;
     }
-  }
 
-  .folder-tree-item-link {
-    font-weight: normal;
-  }
+    .folder-tree-item-link {
+      font-weight: normal;
+    }
 
-  .folder-tree-item-link.active {
-    font-weight: bold;
-  }
+    .folder-tree-item-link.active {
+      font-weight: bold;
+    }
 
-  .folder-tree-item-link, .folder-tree-item-link:hover, .folder-tree-item-link:focus {
-    color: #000;
+    .folder-tree-item-link, .folder-tree-item-link:hover, .folder-tree-item-link:focus {
+      color: #000;
+    }
   }
 }
 

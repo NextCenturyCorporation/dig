@@ -4,8 +4,8 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('MainCtrl', ['$scope', '$state', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$http',
-    function($scope, $state, imageSearchService, euiSearchIndex, euiConfigs, $http) {
+.controller('MainCtrl', ['$scope', '$state', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$http',
+    function($scope, $state, $modal, imageSearchService, euiSearchIndex, euiConfigs, $http) {
       $scope.searchConfig = {};
       $scope.searchConfig.filterByImage = false;
       $scope.searchConfig.euiSearchIndex = '';
@@ -15,6 +15,7 @@ angular.module('digApp')
       $scope.facets = euiConfigs.facets;
       $scope.folders = [];
       $scope.nestedFolders = [];
+      $scope.selectedFolder = {};
 
       $scope.init = function() {
         $scope.showresults = false;
@@ -32,6 +33,8 @@ angular.module('digApp')
         };
 
         $scope.selectedSort = {};
+
+        $scope.getFolders();
 
         if($state.params && $state.params.query) {
 
@@ -95,6 +98,129 @@ angular.module('digApp')
           imageSearchService.clearActiveImageSearch();
       };
 
+      $scope.retrieveValidMoveFolders = function() {
+        if($scope.selectedFolder._id) {
+          return _.reject($scope.folders, {_id: $scope.selectedFolder._id});
+        }
+
+        return [];
+      };
+
+      $scope.moveFolder = function(parentFolder) {
+        $http.put('api/folders/' + $scope.selectedFolder._id,
+          {name: $scope.selectedFolder.name, parentId: parentFolder._id}).success(function() {
+            $scope.getFolders();
+          });
+      };
+
+      $scope.select = function(folder) {
+        if(!$scope.selectedFolder._id) {
+          $scope.selectedFolder = angular.copy(folder);
+        } else if($scope.selectedFolder._id != folder._id) {
+          $scope.selectedFolder = angular.copy(folder);
+        } else {
+          $scope.selectedFolder = {};
+        }
+      };
+
+      $scope.getFolders = function() {
+        $http.get('api/folders/').
+          success(function(data) {
+            $scope.folders = data;
+            $scope.nestedFolders = [];
+
+            var rootId = _.find($scope.folders, {name: 'ROOT'})._id;
+
+            var rootFolders = _.filter($scope.folders, {parentId: rootId});
+
+            angular.forEach(rootFolders, function(folder) {
+              $scope.nestedFolders.push({
+                name: folder.name,
+                _id: folder._id,
+                parentId: folder.parentId,
+                children: _getSubfolders(folder._id)
+              });
+            });
+
+            if($scope.selectedFolder._id) {
+              $scope.selectedFolder = _.find($scope.folders, {_id: $scope.selectedFolder._id});
+              if(!$scope.selectedFolder) {
+                $scope.selectedFolder = {};
+              }
+            }
+          });
+      };
+
+      $scope.editFolder = function() {
+          var modalInstance = $modal.open({
+              templateUrl: 'components/folder/edit-modal.html',
+              controller: 'EditModalCtrl',
+              resolve: {
+                  folder: function() {
+                      return $scope.selectedFolder;
+                  }
+              },
+              size: 'sm'
+          });
+
+          modalInstance.result.then(function () {
+            $scope.getFolders();
+          });
+      };
+
+      $scope.deleteFolder = function() {
+          var modalInstance = $modal.open({
+              templateUrl: 'components/folder/delete-modal.html',
+              controller: 'EditModalCtrl',
+              resolve: {
+                  folder: function() {
+                      return $scope.selectedFolder;
+                  }
+              },
+              size: 'sm'
+          });
+
+          modalInstance.result.then(function () {
+            $scope.getFolders();
+          });
+      };
+
+      $scope.createFolder = function() {
+          var modalInstance = $modal.open({
+              templateUrl: 'components/folder/create-modal.html',
+              controller: 'CreateModalCtrl',
+              resolve: {
+                  folders: function() {
+                      return $scope.folders;
+                  },
+                  currentFolder: function() {
+                      return $scope.selectedFolder;
+                  }
+              },
+              size: 'sm'
+          });
+
+          modalInstance.result.then(function () {
+            $scope.getFolders();
+          });
+      };
+
+      function _getSubfolders(id) {
+        var children = [];
+        var childFolders = _.filter($scope.folders, {parentId: id});
+        
+        angular.forEach(childFolders, function(folder) {
+          children.push({
+            name: folder.name,
+            _id: folder._id,
+            parentId: folder.parentId,
+            children: _getSubfolders(folder._id)
+          });
+        });
+
+        return children;
+      };
+
       $scope.$watch(function() {
               return imageSearchService.getActiveImageSearch();
           }, function(newVal) {
@@ -141,37 +267,6 @@ angular.module('digApp')
       if($state.current.name === 'main') {
           $scope.viewList();
       }
-
-      $http.get('api/folders/').
-        success(function(data) {
-          $scope.folders = data;
-          var rootId = _.find($scope.folders, {name: 'ROOT'})._id;
-
-          var rootFolders = _.filter($scope.folders, {parentId: rootId});
-
-          angular.forEach(rootFolders, function(folder) {
-            $scope.nestedFolders.push({
-              name: folder.name,
-              _id: folder._id,
-              children: _getSubfolders(folder._id)
-            });
-          });
-        });
-
-        function _getSubfolders(id) {
-          var children = [];
-          var childFolders = _.filter($scope.folders, {parentId: id});
-          
-          angular.forEach(childFolders, function(folder) {
-            children.push({
-              name: folder.name,
-              _id: folder._id,
-              children: _getSubfolders(folder._id)
-            });
-          });
-
-          return children;
-        };
 
       $scope.init();
     }

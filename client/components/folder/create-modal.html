@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h3 class="modal-title" id="editModalLabel">Create New Folder</h3>
+</div>
+<div class="modal-body">
+  <label>Create Folder In:</label>
+  <select ng-options="folder.name for folder in folders" size="10" ng-model="parentFolder">
+    <option value="">--- select folder ---</option>
+  </select>
+  <br/><br/>
+  <label>Name:</label>
+  <input type="text" ng-model="folderName">
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
+  <button type="button" class="btn btn-primary" ng-click="create()" ng-disabled="isDisabled()">
+    Create
+  </button>
+</div>

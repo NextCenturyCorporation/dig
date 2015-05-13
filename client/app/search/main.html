@@ -64,25 +64,25 @@
 
       <div role="tabpanel" class="tab-pane" id="folders">
         <div class="folder-header row text-right">
-          <button class="btn btn-default" data-toggle="modal" data-target="#editModal">
+          <button class="btn btn-default" ng-click="editFolder()" ng-class="{disabled: !selectedFolder._id}">
             <i class="fa fa-pencil"></i>
           </button>
           <div class="btn-group">
-            <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu" data-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu"
+                    data-toggle="dropdown" aria-expanded="false">
               <i class="fa fa-folder"></i>
               <i class="caret"></i>
             </button>
             <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
-              <li role="presentation" ng-repeat="folder in folders">
-                <a role="menuitem" tabindex="-1" href="#">{{ folder.name }}</a>
+              <li role="presentation" ng-repeat="folder in retrieveValidMoveFolders()">
+                <a role="menuitem" tabindex="-1" href="#" ng-click="moveFolder(folder)">{{ folder.name }}</a>
               </li>
               <li role="presentation" id="create-new-folder">
-                <label>Create New</label>
-                <input role="menuitem" tabindex="-1" type="text">
+                <button class="btn btn-default" ng-click="createFolder()">Create New</button>
               </li>
             </ul>
           </div>
-          <button class="btn btn-default" data-toggle="modal" data-target="#deleteModal">
+          <button class="btn btn-default" ng-click="deleteFolder()" ng-class="{disabled: !selectedFolder._id}">
             <i class="fa fa-trash"></i>
           </button>
         </div>
@@ -90,47 +90,11 @@
         <div class="folder-tree" ui-tree data-nodrag>
           <ul class="folder-tree-list list-unstyled" ui-tree-nodes="" ng-model="nestedFolders">
             <li class="folder-tree-item" ng-repeat="folder in nestedFolders"
-                ui-tree-node ng-include="'components/folder-tree/folder-tree.html'">
+                ui-tree-node ng-include="'components/folder/folder-tree.html'">
             </li>
           </ul>
         </div>
 
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="deleteModalLabel">Delete Folder?</h4>
-              </div>
-              <div class="modal-body">
-                Are you sure you want to delete the selected folder and all of its contents?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="editModalLabel">Edit Folder 1</h4>
-              </div>
-              <div class="modal-body">
-                <label>New name:</label>
-                <input type="text" value="Folder 1">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 

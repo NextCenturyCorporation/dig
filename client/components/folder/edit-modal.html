@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3 class="modal-title" id="editModalLabel">Edit Folder Name</h3>
+</div>
+<div class="modal-body">
+  <label>New name:</label>
+  <input type="text" ng-model="folderName">
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" ng-click="cancel()">Cancel</button>
+  <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="folderName.length === 0">Save</button>
+</div>
