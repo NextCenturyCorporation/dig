@@ -93,7 +93,7 @@ describe('Controller: QueriesCtrl', function () {
             $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
 
-            $httpBackend.expectGET('api/users/test/queries').respond(200, queryResults);
+            $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
 
             QueriesCtrl = $controller('QueriesCtrl', {
                 $scope: scope,
@@ -134,7 +134,7 @@ describe('Controller: QueriesCtrl', function () {
 
     it('should make delete request with correct id and update queryResults', function () {
         $httpBackend.expectDELETE('api/queries/1').respond(200, {});
-        $httpBackend.expectGET('api/users/test/queries').respond(200, queryResults);
+        $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
 
         scope.deleteQuery(1);
         $httpBackend.flush();

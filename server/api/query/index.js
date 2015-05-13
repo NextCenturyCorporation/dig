@@ -13,6 +13,7 @@ var router = express.Router();
  */
 
 router.get('/users/:username/queries', queryController.index);
+router.get('/users/:username/queries/notifications', queryController.notifications); //TODO: revisit endpoint
 router.post('/users/:username/queries', queryController.create);
 router.get('/queries/:queryid', queryController.show);
 router.put('/queries/:queryid', queryController.update);

@@ -16,15 +16,52 @@
         <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
             <a ng-href="{{item.link}}" ng-if="!item.reload">
                 {{item.title}} <span class="{{item.icon}}"></span>
-                <span ng-if="item.hasNotRunCount && item.hasNotRunCount.notRunCount > 0" class="notification-badge">{{item.hasNotRunCount.notRunCount}}</span>
             </a>
             <a ng-href="{{item.link}}" target="_self" ng-if="item.reload">
-                {{item.title}} <span class="{{item.icon}}"></span>
-                <span ng-if="item.hasNotRunCount && item.hasNotRunCount.notRunCount > 0" class="notification-badge">{{item.hasNotRunCount.notRunCount}}</span>
+                {{item.title}} <span class="{{item.icon}}"></span> 
             </a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a ng-href="#" class="dropdown-toggle" id="newNotifications" data-toggle="dropdown" aria-expanded="false"> 
+            Notifications <i class="fa fa-inbox lg"></i>
+            <span ng-if="notificationCount.notRunCount > 0" class="navbar-notification">
+              {{notificationCount.notRunCount}}
+            </span>
+          </a>
+          <ul class="dropdown-menu" role="newNotifications" aria-labelledby="newNotifications">
+            <li ng-if="notificationCount.notRunCount > 0">
+              <span class="notifications-menu-item">New Notifications</span>
+            </li>
+            <li ng-show="notificationCount.notRunCount === 0" role="no-new-notifications">
+              <span class="notifications-menu-item">There are no new notifications</span>
+            </li>
+            <li ng-show="notificationCount.notRunCount > 0" class="divider"></li>
+            <li ng-repeat-start="query in queriesWithNotifications">
+              <span class="notifications-menu-item">
+                <div class="row">       
+                  <div class="col-xs-9 col-sm-10 col-lg-11">
+                    {{query.name}}
+                    <span class="pull-right">
+                      <ul class="list-unstyled horizontal-list">
+                        <li><a ng-href="#" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</a></li>
+                      </ul>
+                    </span>
+                    <div class="list-group-item-meta">
+                      <ul class="list-unstyled">
+                        <li>Search Terms: {{query.digState.searchTerms | limitTo: 20}}{{query.digState.searchTerms.length > 20 ? '...' : ''}}</li>
+                        <li>Created: {{query.createdAt | date:'MM/dd/yyyy HH:mm:ss'}}</li>
+                        <li>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </li>
+            <li ng-show="notificationCount.notRunCount > 1" class="divider" ng-repeat-end></li>
+          </ul>
+        </li>
         <li><p class="navbar-text">Hello {{ getCurrentUser.username }}</p> </li>
         <li>
           <a href="#" class="dropdown-toggle" id="settingsMenu" data-toggle="dropdown" aria-expanded="false">

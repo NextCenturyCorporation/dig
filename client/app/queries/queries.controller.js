@@ -11,7 +11,7 @@ angular.module('digApp')
 
 
     $scope.getQueries = function() {
-        $http.get('api/users/test/queries').
+        $http.get('api/users/reqHeader/queries').
             success(function(data) {
                 $scope.queryResults = data;
             });
