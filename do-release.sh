@@ -208,7 +208,7 @@ build() {
     cd dig
     npm install
     grunt build
-    ${BUILD_DIR}/package.sh $package_opts
+    ${BUILD_DIR}/dig/package.sh $package_opts
     cp dig_deploy.sh ${CURRENT_DIR}
     cd ${CURRENT_DIR}
     if [[ $UID != 0 ]]; then
