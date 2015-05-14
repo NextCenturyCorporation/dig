@@ -20,17 +20,18 @@ angular.module('digApp')
             templateUrl: 'app/queries/save-query.html',
             controller: 'SaveQueryCtrl',
             resolve: {
-                queryString: function() {
-                    return $scope.queryString.submitted;
-                },
-                filterStates: function() {
-                    return $scope.filterStates;
-                },
-                includeMissing: function() {
-                    return $scope.includeMissing;
-                }, 
-                selectedSort: function() {
-                    return $scope.selectedSort;
+                digState: function() {
+                    return {
+                        searchTerms: $scope.queryString.submitted,
+                        filters: $scope.filterStates,
+                        includeMissing: $scope.includeMissing,
+                        selectedSort: $scope.selectedSort
+                    };
+                }, elasticUIState: function() {
+                    return {
+                        queryState: $scope.indexVM.query.toJSON(),
+                        filterState: $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {}
+                    };
                 }
             },
             size: 'sm'
@@ -56,28 +57,32 @@ angular.module('digApp')
 
         if($state.params && $state.params.query) {
 
-            if($state.params.query.searchTerms) {
-                $scope.queryString.live = $state.params.query.searchTerms;
+            if($state.params.query.digState.searchTerms) {
+                $scope.queryString.live = $state.params.query.digState.searchTerms;
             }
 
-            if($state.params.query.filters.aggFilters) {
-                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.filters.aggFilters);
+            if($state.params.query.digState.filters.aggFilters) {
+                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.digState.filters.aggFilters);
             }
-            if($state.params.query.filters.textFilters) {
-                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.filters.textFilters);
+            if($state.params.query.digState.filters.textFilters) {
+                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.digState.filters.textFilters);
             }
 
-            if($state.params.query.filters.dateFilters) {
-                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.filters.dateFilters);
+            if($state.params.query.digState.filters.dateFilters) {
+                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
             }
             
-            if($state.params.query.includeMissing) {
-                $scope.includeMissing = _.cloneDeep($state.params.query.includeMissing);
+            if($state.params.query.digState.includeMissing) {
+                $scope.includeMissing = _.cloneDeep($state.params.query.digState.includeMissing);
             }
 
-            if($state.params.query.selectedSort) {
-                $scope.selectedSort = _.cloneDeep($state.params.query.selectedSort);
+            if($state.params.query.digState.selectedSort) {
+                $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
             }   
+
+            if($state.params.query.digState.filters.withImagesOnly) {
+                $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
+            }
 
             $scope.$on('$locationChangeSuccess', function() {
                 if($state.current.name === 'search.results.list') {

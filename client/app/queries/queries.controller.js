@@ -6,7 +6,7 @@ angular.module('digApp')
 
     $scope.currentUser = User.get();
     $scope.opened = [];
-    $scope.frequencyOptions = ['daily', 'weekly', 'monthly'];
+    $scope.frequencyOptions = ['never', 'hourly', 'daily', 'weekly'];
     $scope.facets = euiConfigs.facets;
 
 

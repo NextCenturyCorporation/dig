@@ -8,6 +8,16 @@ var errors = require('./components/errors');
 var config = require('./config/environment');
 
 module.exports = function(app) {
+
+    app.route('*')
+    .get(function(req, res, next) {
+        if(req.headers.user) {
+            next();
+        } else {
+            res.status(401).send('no username present');
+        }
+    });
+
     // Insert routes below
     app.use('/api/queries', require('./api/query'));
     app.use('/api/things', require('./api/thing'));
@@ -27,7 +37,6 @@ module.exports = function(app) {
             simPort: config.imageSimPort,
             blurImagesEnabled: config.blurImages,
             blurImagesPercentage: config.blurPercentage,
-            pixelateImagesPercentage: config.pixelatePercentage,
             includeMissingDefault: config.includeMissingAggregationsDefault,
             appVersion: config.appVersion
         };

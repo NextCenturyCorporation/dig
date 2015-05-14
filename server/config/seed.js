@@ -24,32 +24,49 @@ User.find({}).remove(function() {
 Query.find({}).remove(function() {
   Query.create({
     name: 'Query #1',
-    searchTerms: 'bob smith',
-    filters: {"aggFilters":{"city_agg":{"LittleRock":true,"FortSmith":true}},"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
+    digState: {
+      searchTerms: 'bob smith',
+      filters: {"aggFilters":{"city_agg":{"LittleRock":true,"FortSmith":true}},"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
+      selectedSort: {"title":"Best Match","order":"rank"},
+      includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+    },
+    elasticUIState: {
+      queryState:{"query_string":{"fields":["_all"],"query":"bob smith"}}},
+      filterState:{"bool":{"should":[{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["LittleRock"]}},{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["FortSmith"]}}]}
+    },
     username: 'test',
-    frequency: 'weekly',
-    selectedSort: {"title":"Best Match","order":"rank"},
-    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
     name: 'Query #2',
-    searchTerms: 'jane doe',
-    filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":"2013-02-02T05:00:00.000Z","endDate":"2015-02-03T05:00:00.000Z"}}},
+    digState: {
+      searchTerms: 'jane doe',
+      filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":"2013-02-02T05:00:00.000Z","endDate":"2015-02-03T05:00:00.000Z"}}},
+      selectedSort: {"title":"Best Match","order":"rank"},
+      includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+    },
+    elasticUIState: {
+      queryState: {"query_string":{"query":"jane doe","fields":["_all"]}},
+      filterState:{"bool":{"must":[{"range":{"dateCreated":{"from":"2013-02-02"}}},{"range":{"dateCreated":{"to":"2015-02-03"}}}]}}
+    },
     username: 'test',
-    frequency: 'daily',
-    selectedSort: {"title":"Best Match","order":"rank"},
-    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, {
     name: 'Query #3',
-    searchTerms: 'another users query',
-    filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
+    digState: {
+      searchTerms: 'another users query',
+      filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
+      selectedSort: {"title":"Best Match","order":"rank"},
+      includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+    },
+    elasticUIState: {
+      queryState: {"query_string":{"fields":["_all"],"query":"another users query"}}
+    },
     username: 'test2',
-    frequency: 'weekly',
-    selectedSort: {"title":"Best Match","order":"rank"},
-    includeMissing: {'aggregations': {}, 'allIncludeMissing': false},
+    frequency: 'never',
     createDate: new Date(),
     lastRunDate: new Date()
   }, function() {
