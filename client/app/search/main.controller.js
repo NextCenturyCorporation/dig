@@ -4,8 +4,14 @@
 // by two $watch handlers.
 
 angular.module('digApp')
-.controller('MainCtrl', ['$scope', '$state', '$modal', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', '$http',
-    function($scope, $state, $modal, imageSearchService, euiSearchIndex, euiConfigs, $http) {
+.constant('MainConstants', {
+  "FILTER_TAB": '#filter',
+  "FOLDERS_TAB": '#folders'
+})
+.controller('MainCtrl', ['$scope', '$state', '$modal', '$location', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'MainConstants', '$http',
+    function($scope, $state, $modal, $location, imageSearchService, euiSearchIndex, euiConfigs, MainConstants, $http) {
+      $scope.FILTER_TAB = MainConstants.FILTER_TAB;
+      $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB
       $scope.searchConfig = {};
       $scope.searchConfig.filterByImage = false;
       $scope.searchConfig.euiSearchIndex = '';
@@ -16,6 +22,15 @@ angular.module('digApp')
       $scope.folders = [];
       $scope.nestedFolders = [];
       $scope.selectedFolder = {};
+      $scope.activeTab = '';
+      $scope.tabs = [
+      {
+        'title': 'Filter',
+        'link': $scope.FILTER_TAB
+      }, {
+        'title': 'Folders',
+        'link': $scope.FOLDERS_TAB
+      }];
 
       $scope.init = function() {
         $scope.showresults = false;
@@ -35,6 +50,7 @@ angular.module('digApp')
         $scope.selectedSort = {};
 
         $scope.getFolders();
+        $scope.isActive();
 
         if($state.params && $state.params.query) {
 
@@ -82,6 +98,7 @@ angular.module('digApp')
       };
 
       $scope.viewList = function() {
+          $scope.activeTab = $scope.FILTER_TAB;
           $state.go('main.search.results.list');
       };
 
@@ -96,6 +113,29 @@ angular.module('digApp')
       $scope.clearActiveImageSearch = function() {
           $scope.searchConfig.filterByImage = false;
           imageSearchService.clearActiveImageSearch();
+      };
+
+      $scope.isActive = function() {
+        var path = $location.path();
+        
+        if(path == '/gallery' || path == '/list') {
+          $scope.activeTab = $scope.FILTER_TAB;
+          return true;
+        } else if(path == '/folder') {
+          $scope.activeTab = $scope.FOLDERS_TAB;
+          return true;
+        }
+
+        return false;
+      }
+
+      $scope.changeTab = function(link) {
+        if(link == $scope.FILTER_TAB) {
+          $scope.viewList();
+        } else {
+          $scope.activeTab = $scope.FOLDERS_TAB;
+          $scope.selectedFolder = {};
+        }
       };
 
       $scope.retrieveValidMoveFolders = function() {
@@ -114,6 +154,9 @@ angular.module('digApp')
       };
 
       $scope.select = function(folder) {
+        $scope.activeTab = $scope.FOLDERS_TAB;
+        $state.go('main.folder');
+
         if(!$scope.selectedFolder._id) {
           $scope.selectedFolder = angular.copy(folder);
         } else if($scope.selectedFolder._id != folder._id) {

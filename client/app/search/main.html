@@ -6,16 +6,13 @@
   <div class="left-column hidden-xs col-sm-3 col-lg-2">
 
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active">
-        <a href="#filter" role="tab" aria-controls="filter" data-toggle="tab" class="column-header"><h4>Filter</h4></a>
-      </li>
-      <li role="presentation">
-        <a href="#folders" role="tab" aria-controls="folders" data-toggle="tab" class="column-header"><h4>Folders</h4></a>
+      <li role="presentation" ng-repeat="tab in tabs"  ng-class="{active: tab.link == activeTab}">
+        <a ng-href="{{ tab.link }}" role="tab" data-toggle="tab" class="column-header" ng-click="changeTab(tab.link)"><h4>{{ tab.title }}</h4></a>
       </li>
     </ul>
 
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="filter">
+      <div role="tabpanel" class="tab-pane" id="filter" ng-class="{active: activeTab == FILTER_TAB}">
         <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName"
             indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
         </date-filter>
@@ -62,7 +59,7 @@
         </div>
       </div>
 
-      <div role="tabpanel" class="tab-pane" id="folders">
+      <div role="tabpanel" class="tab-pane" id="folders" ng-class="{active: activeTab == FOLDERS_TAB}">
         <div class="folder-header row text-right">
           <button class="btn btn-default" ng-click="editFolder()" ng-class="{disabled: !selectedFolder._id}">
             <i class="fa fa-pencil"></i>

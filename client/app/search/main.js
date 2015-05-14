@@ -13,6 +13,10 @@ angular.module('digApp')
           query: null
         }
       })
+    .state('main.folder', {
+        url: '^/folder',
+        templateUrl: 'app/search/folder.html'
+      })
     .state('main.search', {
         abstract: true,
         templateUrl: 'app/search/search.html',
