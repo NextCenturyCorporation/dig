@@ -21,7 +21,7 @@
       <div class="col-sm-6" ng-repeat="section in euiConfigs.listFields['full']">
         <dl class="{{section.classes}}">
            <dt ng-repeat-start="field in section.fields">{{field.title}}</dt>
-           <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
+           <dd ng-if="$eval(field.field)" ng-bind-html="stripHtml($eval(field.field))"></dd>
            <dd ng-if="$eval(field.featureArray + '.length')"
              ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
            <span ng-repeat-end></span>

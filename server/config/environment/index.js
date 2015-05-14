@@ -560,12 +560,17 @@ var all = {
                     field: 'dateCreated'
                 }]
             },
-
+            highlight: {
+                fields: [
+                'hasBodyPart.text',
+                'hasTitlePart.text'
+                ]
+            },
             listFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.hasTitlePart.text',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
                     section: 'title'
                 }],
                 short: [{
@@ -606,7 +611,7 @@ var all = {
                             featureValue: 'weaponsMentioned'
                         },{
                             title: 'Post',
-                            field: "doc['_source']['hasBodyPart']['text']"
+                            field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
                         },{
                             title: 'Date',
                             field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
