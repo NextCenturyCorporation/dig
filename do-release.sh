@@ -226,5 +226,10 @@ backup
 get_options $@
 sanity_check
 version
-push_new_version
 build
+if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "DRY RUN COMPLETE\nNot pushing changes"
+    rollback
+else
+    push_new_version
+fi     
