@@ -1,6 +1,6 @@
 {
   "name": "dig",
-  "version": "1.0.4-0",
+  "version": "1.0.4",
   "dependencies": {
     "body-parser": {
       "version": "1.5.2",
