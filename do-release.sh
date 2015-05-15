@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
@@ -68,7 +68,10 @@ The versions are tagged in git
 -t Prepatch
 
 Passing no parameters performs a development build in which the prerelease version is bumped.
+All builds after a pre{major,minor,patch} build has been launched, until the release is finalized (major,minor,patch} should be pre-release builds.
 do-release will tag the commit in git with the current version number.
+
+-d will trigger a dry-run in which changes will not be persisted to git or docker-hub
 
 -u force a development build to push the resulting image to docker hub
 EOF
@@ -228,7 +231,7 @@ sanity_check
 version
 build
 if [[ "$DRY_RUN" -eq 1 ]]; then
-    echo "DRY RUN COMPLETE\nNot pushing changes"
+    echo -e "DRY RUN COMPLETE\nNot pushing changes"
     rollback
 else
     push_new_version
