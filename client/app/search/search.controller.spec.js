@@ -678,6 +678,29 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filtersInitialized).toBe(true);
     });
 
+    it('should not clear notifications on filter state change if filtersInitialized does not exist', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = false;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.indexVM.loading = false;
+            scope.indexVM.filters.testFilters = {'filters': 'still initializing'};
+            scope.$digest();
+        });
+
+        expect(scope.notificationHasRun).toBe(false);
+        expect(scope.notificationLastRun).toEqual(jasmine.any(Date)); 
+    });
 
     it('should clear notifications on filter state change if notificationLastRun and filtersInitialized exist', function() {
         inject(function($controller) {
