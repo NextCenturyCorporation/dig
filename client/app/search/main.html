@@ -71,7 +71,7 @@
               <i class="caret"></i>
             </button>
             <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
-              <li role="presentation" ng-repeat="folder in retrieveValidMoveFolders()">
+              <li role="presentation" ng-repeat="folder in validMoveFolders">
                 <a role="menuitem" tabindex="-1" href="#" ng-click="moveFolder(folder)">{{ folder.name }}</a>
               </li>
               <li role="presentation" id="create-new-folder">
@@ -90,6 +90,9 @@
                 ui-tree-node ng-include="'components/folder/folder-tree.html'">
             </li>
           </ul>
+          <div class="folder-tree-empty text-center" ng-show="nestedFolders.length === 0">
+            No Folders Created
+          </div>
         </div>
 
       </div>

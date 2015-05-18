@@ -19,9 +19,9 @@ angular.module('digApp')
       $scope.imagesimLoading = false;
       $scope.euiConfigs = euiConfigs;
       $scope.facets = euiConfigs.facets;
-      $scope.folders = [];
       $scope.nestedFolders = [];
       $scope.selectedFolder = {};
+      $scope.validMoveFolders = [];
       $scope.activeTab = '';
       $scope.tabs = [
       {
@@ -115,6 +115,7 @@ angular.module('digApp')
           imageSearchService.clearActiveImageSearch();
       };
 
+      // Updates which tab is active
       $scope.isActive = function() {
         var path = $location.path();
         
@@ -138,14 +139,25 @@ angular.module('digApp')
         }
       };
 
+      // Returns array of valid folders the selected folder (if any) can move to.
+      // A folder can move to to anything but itself and any children (recursively)
       $scope.retrieveValidMoveFolders = function() {
         if($scope.selectedFolder._id) {
-          return _.reject($scope.folders, {_id: $scope.selectedFolder._id});
+          var validFolders = [];
+
+          // Push ROOT on first since a folder can always move to it
+          validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+
+          // Take out itself and all children from the list of valid folders
+          validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
+
+          return validFolders;
         }
 
         return [];
       };
 
+      // Moves selected folder to given folder
       $scope.moveFolder = function(parentFolder) {
         $http.put('api/folders/' + $scope.selectedFolder._id,
           {name: $scope.selectedFolder.name, parentId: parentFolder._id}).success(function() {
@@ -153,40 +165,50 @@ angular.module('digApp')
           });
       };
 
+      // Selects/Deselects folder and changes to folder view
       $scope.select = function(folder) {
+        // Change active tab so folder view shows
         $scope.activeTab = $scope.FOLDERS_TAB;
         $state.go('main.folder');
 
+        // Select/Deselect folder and update folders able to move to
         if(!$scope.selectedFolder._id) {
           $scope.selectedFolder = angular.copy(folder);
+          $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else if($scope.selectedFolder._id != folder._id) {
           $scope.selectedFolder = angular.copy(folder);
+          $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else {
           $scope.selectedFolder = {};
+          $scope.validMoveFolders = [];
         }
       };
 
+      // Updates folders
       $scope.getFolders = function() {
         $http.get('api/folders/').
           success(function(data) {
-            $scope.folders = data;
             $scope.nestedFolders = [];
+            $scope.rootFolder = _.find(data, {name: 'ROOT'});
 
-            var rootId = _.find($scope.folders, {name: 'ROOT'})._id;
+            var rootId = $scope.rootFolder._id;
 
-            var rootFolders = _.filter($scope.folders, {parentId: rootId});
+            var rootFolders = _.filter(data, {parentId: rootId});
 
+            // Put children into root folders (recursively) instead of having a flat list with all folders
             angular.forEach(rootFolders, function(folder) {
               $scope.nestedFolders.push({
                 name: folder.name,
                 _id: folder._id,
                 parentId: folder.parentId,
-                children: _getSubfolders(folder._id)
+                children: _getSubfolders(folder._id, data)
               });
             });
 
+            // Update the selectedFolder details (if any)
             if($scope.selectedFolder._id) {
-              $scope.selectedFolder = _.find($scope.folders, {_id: $scope.selectedFolder._id});
+              $scope.selectedFolder = _getUpdatedSelected($scope.selectedFolder._id, $scope.nestedFolders, {});
+              $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
               if(!$scope.selectedFolder) {
                 $scope.selectedFolder = {};
               }
@@ -194,6 +216,7 @@ angular.module('digApp')
           });
       };
 
+      // Opens edit modal
       $scope.editFolder = function() {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/edit-modal.html',
@@ -211,6 +234,7 @@ angular.module('digApp')
           });
       };
 
+      // Opens delete modal
       $scope.deleteFolder = function() {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/delete-modal.html',
@@ -228,13 +252,18 @@ angular.module('digApp')
           });
       };
 
+      // Opens create folder modal
       $scope.createFolder = function() {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/create-modal.html',
               controller: 'CreateModalCtrl',
               resolve: {
                   folders: function() {
-                      return $scope.folders;
+                    // Get valid folders to move folder to
+                    var validFolders = [];
+                    validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+                    validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
+                    return validFolders;
                   },
                   currentFolder: function() {
                       return $scope.selectedFolder;
@@ -248,20 +277,48 @@ angular.module('digApp')
           });
       };
 
-      function _getSubfolders(id) {
+      // Returns array of folders with children nested (recursively)
+      function _getSubfolders(id, folders) {
         var children = [];
-        var childFolders = _.filter($scope.folders, {parentId: id});
+        var childFolders = _.filter(folders, {parentId: id});
         
         angular.forEach(childFolders, function(folder) {
           children.push({
             name: folder.name,
             _id: folder._id,
             parentId: folder.parentId,
-            children: _getSubfolders(folder._id)
+            children: _getSubfolders(folder._id, folders)
           });
         });
 
         return children;
+      };
+
+      // Find selectedFolder in given folders array
+      function _getUpdatedSelected(id, folders, selected) {
+        angular.forEach(folders, function(folder) {
+          if(folder._id == id) {
+            selected = folder;
+          }
+
+          selected = _getUpdatedSelected(id, folder.children, selected);
+        });
+
+        return selected;
+      };
+
+      // Add folders without id (and children of id) to names array
+      function _filterOutChildren(folders, id, names) {
+        _.forEach(folders, function(child, index) {
+          // Return if found id because we don't want it or any of its children
+          if(child._id == id) {
+            return;
+          }
+          names.push({name: child.name, _id: child._id});
+          names = _filterOutChildren(child.children, id, names);
+        });
+
+        return names;
       };
 
       $scope.$watch(function() {

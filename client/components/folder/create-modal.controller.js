@@ -5,7 +5,7 @@ angular.module('digApp')
     function($scope, $modalInstance, $http, User, folders, currentFolder) {
     $scope.currentUser = User.get();
     $scope.currentFolder = currentFolder;
-    $scope.folders = _.reject(folders, {_id: $scope.currentFolder._id});
+    $scope.folders = folders;
     $scope.folderName = "";
 
     $scope.isDisabled = function() {
@@ -27,6 +27,5 @@ angular.module('digApp')
     $scope.cancel = function () {
       $modalInstance.close();
     };
-
 
 }]);
