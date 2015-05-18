@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: QueriesCtrl', function () {
+describe('Controller: NotificationsCtrl', function () {
 
     // load the controller's module
     beforeEach(module('digApp'));
@@ -31,8 +31,7 @@ describe('Controller: QueriesCtrl', function () {
             }
           }
         },
-        'username': 'test',
-        'frequency': 'never',
+        'frequency': 'daily',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z',
         'notificationHasRun': false
@@ -55,24 +54,17 @@ describe('Controller: QueriesCtrl', function () {
             }
           }
         },
-        'username': 'test',
-        'frequency': 'never',
+        'frequency': 'daily',
         'createDate': '2015-04-01T20:13:11.093Z',
         'lastRunDate': '2015-04-01T20:13:11.093Z',
         'notificationHasRun': false
       }
     ];
 
-    var QueriesCtrl, scope, state, $httpBackend, http, mockUser;
+    var NotificationsCtrl, scope, state, $httpBackend, http, mockUser;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
-
-        module(function($provide) {
-            $provide.constant('euiConfigs', {
-                facets: []
-            });
-        });
 
         inject(function ($controller, $rootScope, $state, _$httpBackend_, $http) {
             scope = $rootScope.$new();
@@ -83,8 +75,8 @@ describe('Controller: QueriesCtrl', function () {
             spyOn(state, 'go');
 
             mockUser = {
-                get: function() {
-                    return {'username': 'test'};
+                notificationCount: function() {
+                    return queryResults.length;
                 }
             };
 
@@ -95,9 +87,9 @@ describe('Controller: QueriesCtrl', function () {
             $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
                 .respond(200, 'some text');
 
-            $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
+            $httpBackend.expectGET('api/users/reqHeader/queries/notifications').respond(200, queryResults);
 
-            QueriesCtrl = $controller('QueriesCtrl', {
+            NotificationsCtrl = $controller('NotificationsCtrl', {
                 $scope: scope,
                 $state: state,
                 $http: http,
@@ -108,50 +100,30 @@ describe('Controller: QueriesCtrl', function () {
         });
     });
 
-    it('should initalize scope.opened', function () {
-        expect(scope.opened).toEqual([]);
+    it('should initalize notificationCount', function () {
+        expect(scope.notificationCount).toEqual(queryResults.length);
     });
 
-    it('should initialize user', function () {
-        expect(scope.currentUser).toEqual({'username': 'test'});
+    it('should initalize queriesWithNotifications', function () {
+        expect(scope.queriesWithNotifications).toEqual(queryResults);
     });
 
-    it('should initialize scope.frequencyOptions', function () {
-        expect(scope.frequencyOptions).toEqual(['never', 'hourly', 'daily', 'weekly']);
+    it('should initalize queriesWithNotifications', function () {
+        expect(scope.queriesWithNotifications).toEqual(queryResults);
     });
 
-    it('should initalize scope.queryResults', function () {
-        expect(scope.queryResults).toEqual(queryResults);
-    });
-
-    it('should return whether or not a list item is opened by id', function() {
-        expect(scope.isListItemOpened('foo')).toBe(false);
-
-        scope.toggleListItemOpened('foo');
-        expect(scope.isListItemOpened('foo')).toBe(true);
-
-        scope.toggleListItemOpened('foo');
-        expect(scope.isListItemOpened('foo')).toBe(false);
-    });
-
-    it('should make delete request with correct id and update queryResults', function () {
-        $httpBackend.expectDELETE('api/queries/1').respond(200, {});
-        $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
-
-        scope.deleteQuery(1);
-        $httpBackend.flush();
-    });
-
-    it('should make put request with correct id and parameter', function () {
-        $httpBackend.expectPUT('api/queries/2', {frequency: 'hourly'}).respond(200, {});
-
-        scope.toggleFrequency(2, 'hourly');
-        $httpBackend.flush();
-    });
-
-    it('should call state.go with correct parameters', function () {
+    it('should call runQuery with query param', function() {
+        state.current = {name: 'queries'};
         scope.runQuery(queryResults[0]);
 
         expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0]}, {location: true});
+
+    });
+
+    it('should call runQuery with query param and callSubmit set to true', function() {
+        state.current = {name: 'search.results.list'};
+        scope.runQuery(queryResults[0]);
+
+        expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0], callSubmit: true}, {location: true});
     });
 });

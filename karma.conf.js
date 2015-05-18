@@ -36,7 +36,7 @@ module.exports = function(config) {
       '**/*.html': 'html2js',
       '**/*.coffee': 'coffee',
       'client/app/!(lib)/**/!(*spec).js': 'coverage',
-      'client/components/!(modal|navbar)/**/!(*spec).js':'coverage'
+      'client/components/!(modal)/**/!(*spec).js':'coverage'
     },
 
     coverageReporter: {
