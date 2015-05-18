@@ -30,7 +30,7 @@ angular.module('digApp')
                     };
                 }, elasticUIState: function() {
                     return {
-                        queryState: $scope.indexVM.query.toJSON(),
+                        queryState: $scope.indexVM.query ? $scope.indexVM.query.toJSON() : {},
                         filterState: $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {}
                     };
                 }
@@ -260,7 +260,7 @@ angular.module('digApp')
             if(newValue !== oldValue) {
                 $scope.loading = newValue;
 
-                if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted && !$scope.indexVM.error) {
+                if($scope.loading === false && $scope.showresults === false && !$scope.indexVM.error) {
                     $scope.showresults = true;
                 }
 
