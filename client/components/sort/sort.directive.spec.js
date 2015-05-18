@@ -48,7 +48,7 @@ describe('Directive: sort', function () {
                     ]
                 }
             };
-        scope.hasNotification = false;
+        scope.notificationHasRun = true;
     }));
 
     it('should initialize all fields to the appropriate values', function () {
@@ -56,7 +56,7 @@ describe('Directive: sort', function () {
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
                 'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
-                'has-notification="hasNotification"></sort>');
+                'notification-has-run="notificationHasRun"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -78,7 +78,7 @@ describe('Directive: sort', function () {
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
                 'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
-                'has-notification="hasNotification"></sort>');
+                'notification-has-run="notificationHasRun"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -90,6 +90,24 @@ describe('Directive: sort', function () {
         expect(element.isolateScope().euiSortOrder).toEqual('asc');
     });
 
+    it('should initialize appropriately if notificationHasRun is false', function () {
+
+        scope.notificationHasRun = false;
+
+        inject(function ($compile) {
+            element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'notification-has-run="notificationHasRun"></sort>');
+
+            $compile(element)(scope);
+            element.scope().$digest();
+        });
+
+        expect(element.isolateScope().title).toBe(scope.euiConfigs.sort.notificationOption.title);
+        expect(element.isolateScope().order).toBe(scope.euiConfigs.sort.notificationOption.order);
+        expect(element.isolateScope().field).toBe(scope.euiConfigs.sort.notificationOption.field);
+    });
+
     it('should initialize sort variables to appropriate values if config not present', function () {
         
         scope.euiConfigs = {};
@@ -98,7 +116,28 @@ describe('Directive: sort', function () {
 
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
                 'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
-                'has-notification="hasNotification"></sort>');
+                'notification-has-run="notificationHasRun"></sort>');
+
+            $compile(element)(scope);
+            element.scope().$digest();
+        });
+
+        expect(element.isolateScope().sortOptions).toEqual([]);
+        expect(element.isolateScope().title).toEqual('');
+        expect(element.isolateScope().order).toEqual('');
+        expect(element.isolateScope().euiSortOrder).toEqual('desc');
+    });
+
+    it('should initialize sort variables to appropriate values if config not present', function () {
+        
+        scope.euiConfigs = {};
+        scope.notificationHasRun = false;
+        
+        inject(function ($compile) {
+
+            element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
+                'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
+                'notification-has-run="notificationHasRun"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -115,7 +154,7 @@ describe('Directive: sort', function () {
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
                 'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
-                'has-notification="hasNotification"></sort>');
+                'notification-has-run="notificationHasRun"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
@@ -126,13 +165,12 @@ describe('Directive: sort', function () {
         expect(element.isolateScope().validSortOrder('rank')).toBe(false);
     });
 
-
     it('should switch selectedSort and euiSortOrder to new value', function() {
 
         inject(function ($compile) {
             element = angular.element('<sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" ' +
                 'title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" ' + 
-                'has-notification="hasNotification"></sort>');
+                'notification-has-run="notificationHasRun"></sort>');
 
             $compile(element)(scope);
             element.scope().$digest();
