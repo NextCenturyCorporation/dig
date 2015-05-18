@@ -496,7 +496,7 @@ describe('Controller: SearchCtrl', function () {
 
     });
 
-    it('should initialize variables based on state params and set appropriate settings when notification exists', function() {
+    it('should initialize variables based on state params, call submit, and set appropriate settings when notification exists', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -508,12 +508,14 @@ describe('Controller: SearchCtrl', function () {
                 blurImageService: blurImageSvcMock
             });
 
+            spyOn(scope, 'submit');
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
             $httpBackend.expectPUT('api/queries/1').respond(200, {});
         });
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
-        expect(scope.queryString.submitted).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
@@ -522,7 +524,36 @@ describe('Controller: SearchCtrl', function () {
         $httpBackend.flush();
     });
 
-    it('should initialize variables based on state params', function() {
+
+    it('should initialize variables based on state params and call submit based on callSubmit param', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery, callSubmit: true};
+            state.params.query.notificationHasRun = true;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            spyOn(scope, 'submit');
+
+        });
+
+        scope.init();
+        expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
+        expect(scope.filterStates).toEqual(state.params.query.digState.filters);
+        expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
+        expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(undefined);
+    });
+
+    it('should initialize variables based on state params and call submit based on locationChangeSuccess', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
             state.params = {query: sampleQuery};
@@ -535,18 +566,20 @@ describe('Controller: SearchCtrl', function () {
                 blurImageService: blurImageSvcMock
             });
 
+            spyOn(scope, 'submit');
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
         });
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
-        expect(scope.queryString.submitted).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
         expect(scope.notificationHasRun).toBe(true);
         expect(scope.notificationLastRun).toBe(undefined);
     });
+
 
     it('should not initialize query state if query params blank', function() {
         inject(function($controller) {
@@ -559,12 +592,12 @@ describe('Controller: SearchCtrl', function () {
                 blurImageService: blurImageSvcMock
             });
 
+            spyOn(scope, 'submit');
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
         });
     
         expect(scope.queryString.live).toBe('');
-        expect(scope.queryString.submitted).toBe('');
+        expect(scope.submit).not.toHaveBeenCalled();
         expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}});
         expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
         expect(scope.selectedSort).toEqual({});
