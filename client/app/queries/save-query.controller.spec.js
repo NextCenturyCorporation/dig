@@ -248,20 +248,17 @@ describe('Controller: SaveQueryCtrl', function () {
 
     it('should save, post, and call close() function', function () {
         $httpBackend.expectPOST('api/users/test/queries').respond(200, {});
-        spyOn(scope, 'replacePeriods');
 
         scope.save();
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should save, update, and call close() function', function () {
         spyOn(window, 'confirm').andCallFake(function () {
             return true;
         });
-        spyOn(scope, 'replacePeriods');
 
         scope.existingQuery = queryResults[0];
         scope.query.name = 'Query #1';
@@ -271,7 +268,6 @@ describe('Controller: SaveQueryCtrl', function () {
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should not update if user cancels existing query overwrite', function() {
@@ -295,9 +291,4 @@ describe('Controller: SaveQueryCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-    it('should strip out invalid character', function() {
-        var obj = {'string.with.dots': true};
-
-        expect(scope.replacePeriods(obj)).toEqual({'string\uff0ewith\uff0edots': true});
-    });
 });

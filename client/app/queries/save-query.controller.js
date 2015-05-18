@@ -36,15 +36,9 @@ angular.module('digApp')
         return false;
     };
 
-    $scope.replacePeriods = function(obj) {
-        var tempStr = JSON.stringify(obj);
-        tempStr = tempStr.replace(/\./g, '\\uff0e'); 
-        return JSON.parse(tempStr);
-    };
-
     $scope.saveQuery = function() {
         $scope.query.elasticUIState.queryState = $scope.euiQuery;
-        $scope.query.elasticUIState.filterState = $scope.replacePeriods($scope.euiFilters);
+        $scope.query.elasticUIState.filterState = $scope.euiFilters;
         $scope.query.digState.searchTerms = $scope.searchTerms;
         $scope.query.digState.filters = $scope.filters;
         $scope.query.digState.includeMissing = $scope.includeMissing;
