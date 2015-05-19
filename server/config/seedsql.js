@@ -85,7 +85,7 @@ var queries =
             filterState: {}
 		},
 		frequency: 'daily',
-		lastRunDate: new Date(),
+		lastRunDate: new Date("May 2, 2015 00:00:00"),
         notificationHasRun: false
 	}
 ];
