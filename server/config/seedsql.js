@@ -43,43 +43,46 @@ var queries =
 	{
 		name: 'Query #1',
 		digState: {
-			searchTerms: 'bob smith',
-			filters: {"aggFilters":{"city_agg":{"LittleRock":true,"FortSmith":true}},"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
-			selectedSort: {"title":"Best Match","order":"rank"},
-			includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+			searchTerms: 'did sail',
+			filters: {"aggFilters":{"state_agg":{"ga":true,"tx":true,"co":true,"ca":true},"etn_agg":{},"hc_agg":{},"age_agg":{}},"textFilters":{},"dateFilters":{"date":{"beginDate":null,"endDate":null}}},
+			selectedSort: {"title":"Best Match","order":"desc","field":"_score"},
+			includeMissing: {"aggregations":{},"allIncludeMissing":false}
 		},
 		elasticUIState: {
-			queryState:{"query_string":{"fields":["_all"],"query":"bob smith"}}},
-			filterState:{"bool":{"should":[{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["LittleRock"]}},{"terms":{"hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality":["FortSmith"]}}]}
+			queryState:{"query_string":{"query":"did sail","fields":["_all"]}},
+			filterState:{"bool":{"should":[{"terms":{"state":["ga"]}},{"terms":{"state":["tx"]}},{"terms":{"state":["co"]}},{"terms":{"state":["ca"]}}]}}
 		},
 		frequency: 'never',
-		lastRunDate: new Date()
+		lastRunDate: new Date(),
+        notificationHasRun: true
 	},
 	{
 		name: 'Query #2',
 		digState: {
-			searchTerms: 'jane doe',
-			filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":"2013-02-02T05:00:00.000Z","endDate":"2015-02-03T05:00:00.000Z"}}},
-			selectedSort: {"title":"Best Match","order":"rank"},
-			includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+			searchTerms: 'ship',
+			filters: {"aggFilters":{"state_agg":{},"etn_agg":{},"hc_agg":{},"age_agg":{}},"textFilters":{},"dateFilters":{"date":{"beginDate":"2013-12-01T05:00:00.000Z","endDate":"2013-12-31T05:00:00.000Z"}}},
+			selectedSort: {"title":"Best Match","order":"desc","field":"_score"},
+			includeMissing: {"aggregations":{},"allIncludeMissing":false}
 		},
 		elasticUIState: {
-			queryState: {"query_string":{"query":"jane doe","fields":["_all"]}},
-			filterState:{"bool":{"must":[{"range":{"dateCreated":{"from":"2013-02-02"}}},{"range":{"dateCreated":{"to":"2015-02-03"}}}]}}
+			queryState: {"query_string":{"query":"ship","fields":["_all"]}},
+			filterState:{"bool":{"must":[{"range":{"date":{"from":"2013-12-01"}}},{"range":{"date":{"to":"2013-12-31"}}}]}}
 		},
 		frequency: 'hourly',
-		lastRunDate: new Date()
+		lastRunDate: new Date(),
+        notificationHasRun: true
 	},
 	{
 		name: 'Query #3',
 		digState: {
-			searchTerms: 'another users query',
-			filters: {"textFilters":{"phonenumber":{"live":"","submitted":""}},"dateFilters":{"dateCreated":{"beginDate":null,"endDate":null}}},
-			selectedSort: {"title":"Best Match","order":"rank"},
-			includeMissing: {'aggregations': {}, 'allIncludeMissing': false}
+			searchTerms: 'another saved query',
+			filters: {"aggFilters":{"state_agg":{},"etn_agg":{},"hc_agg":{},"age_agg":{}},"textFilters":{},"dateFilters":{"date":{"beginDate":null,"endDate":null}}},
+			selectedSort: {"title":"Best Match","order":"desc","field":"_score"},
+			includeMissing: {"aggregations":{},"allIncludeMissing":false}
 		},
 		elasticUIState: {
-			queryState: {"query_string":{"fields":["_all"],"query":"another users query"}}
+			queryState: {"query_string":{"query":"another users query","fields":["_all"]}},
+            filterState: {}
 		},
 		frequency: 'daily',
 		lastRunDate: new Date(),

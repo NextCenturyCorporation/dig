@@ -86,6 +86,11 @@ var all = {
                     terms: 'age',
                     termsType: 'number',
                     count: 10
+                }],
+                dateFilters: [{
+                    title: 'Date',
+                    aggName: 'date_agg',
+                    field: 'date'
                 }]
             },
             sort: {
