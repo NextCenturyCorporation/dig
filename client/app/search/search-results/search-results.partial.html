@@ -12,6 +12,22 @@
     <button class="btn btn-default" ng-click="switchView('gallery')">
       <i class="glyphicon glyphicon-th gallery-list-button" ng-class="{selected: displayMode.mode === 'gallery'}"></i>
     </button>
+    <div class="btn-group select-folder">
+      <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu"
+              data-toggle="dropdown" aria-expanded="false" ng-class="{disabled: getNumberSelected() == 0}">
+        <i class="fa fa-folder"></i>
+        <i class="caret"></i>
+      </button>
+      <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
+        <li role="presentation" class="folder-menu-label">Move Selected To:</li>
+        <li role="presentation" ng-repeat="folder in folders">
+          <a role="menuitem" tabindex="-1" href="#" ng-click="">{{ folder.name }}</a>
+        </li>
+        <li role="presentation" id="create-new-folder">
+          <button class="btn btn-primary" ng-click="createFolder()">New</button>
+        </li>
+      </ul>
+    </div>
     <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order">
     </sort>
   </div>

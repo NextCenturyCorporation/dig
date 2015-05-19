@@ -1,8 +1,14 @@
 <div ui-view>
-  <div class="column-header">
-    <h4>
+  <div class="column-header row">
+    <div class="col-sm-1 select-global-checkbox text-center">
+      <input type="checkbox" ng-click="selectAll($event)" ng-checked="isSelectedAll()">
+    </div>
+    <span class="col-sm-3 selected-results">{{ getNumberSelected() }} item(s) selected</span>
+    <h4 class="pull-right">
+      <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
       <strong>{{indexVM.results.hits.total | number:0}}</strong> results
     </h4>
+
   </div>
 
   <image-gallery></image-gallery>

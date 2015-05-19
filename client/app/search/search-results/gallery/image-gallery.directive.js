@@ -64,6 +64,24 @@ angular.module('digApp.directives')
                 });
             };
 
+            $scope.selectImage = function(doc) {
+              if($scope.selectedItems[doc._id]) {
+                // Deselect
+                $scope.updateSelection(false, doc);
+              } else {
+                // Select
+                $scope.updateSelection(true, doc);
+              }
+            };
+
+            $scope.selectCaption = function(doc) {
+              if($scope.selectedItems[doc._id]) {
+                return "Deselect";
+              }
+              
+              return "Select";
+            };
+
             var getParentEl = function(selectedElem) {
                 var parentDiv = $(selectedElem).parent().closest('div.image-gallery-container');
                 return parentDiv;

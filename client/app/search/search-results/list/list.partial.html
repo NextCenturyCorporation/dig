@@ -1,6 +1,10 @@
 <div ui-view>
-  <div class="column-header">
-    <h4>
+  <div class="column-header row">
+    <div class="col-sm-1 select-global-checkbox text-center">
+      <input type="checkbox" ng-click="selectAll($event)" ng-checked="isSelectedAll()">
+    </div>
+    <span class="col-sm-3 selected-results">{{ getNumberSelected() }} item(s) selected</span>
+    <h4 class="pull-right">
       <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
       <strong>{{indexVM.results.hits.total | number:0}}</strong> results
     </h4>
@@ -9,27 +13,32 @@
 
   <ul id="results" class="list-group">
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
-    <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
-      <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
-    </span>
-      <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
-        <div class="row">
-          <div class="col-xs-3 col-sm-2 col-lg-1">
-            <span ng-if="doc._source.hasImagePart">
-              <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
-            </span> 
-          </div>
-          <div class="col-xs-9 col-sm-10 col-lg-11">
-            <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
-            <div class="list-group-item-meta">
-              <span ng-repeat="field in euiConfigs.listFields['short']">
-                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
-              </span>
+      <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
+        <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
+      </span>
+      <div class="row list-group-item-heading ">
+        <div class="col-xs-1 select-item-checkbox text-center">
+          <input type="checkbox" class="list-group-item-checkbox" ng-click="updateSelectionList($event, doc)" ng-checked="isSelected(doc._id)">
+        </div>
+        <a href="" ng-click="toggleListItemOpened(doc._id)" class="col-xs-11 collapsed" target="_self">
+          <div class="row">
+            <div class="col-xs-3 col-sm-2 col-lg-1">
+              <span ng-if="doc._source.hasImagePart">
+                <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
+              </span> 
+            </div>
+            <div class="col-xs-9 col-sm-10 col-lg-11">
+              <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
+              <div class="list-group-item-meta">
+                <span ng-repeat="field in euiConfigs.listFields['short']">
+                  <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                  <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
       </div>

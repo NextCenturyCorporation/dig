@@ -2,6 +2,44 @@ div[eui-index].container-fluid {
   border-top: 1px solid #ddd;
 }
 
+.results-header-div, .folder-header {
+  .dropdown-menu {
+    text-align: left;
+
+    li {
+      padding: 0px 5px;
+    }
+
+    #create-new-folder {
+      padding: 10px;
+    }
+  }
+}
+
+.results-header-div {
+
+  padding: 10px;
+
+  .select-folder {
+    margin-left: 40px;
+  }
+}
+
+.folder-menu-label {
+  font-weight: bold;
+  margin-left: 5px;
+  margin-top: 5px;
+  font-size: 15px;
+  color: #777777;
+  font-style: italic;
+}
+
+#create-new-folder button {
+  margin-left: 15px;
+  min-width: 100px;
+}
+
+
 /**
  * Tab styling
  */
@@ -61,16 +99,26 @@ div[eui-index].container-fluid {
 .folder-header {
   padding: 15px;
   padding-top: 0px;
+}
 
-  .dropdown-menu {
-    text-align: left;
 
-    li {
-      padding: 0px 5px;
-    }
 
-    #create-new-folder {
-      padding: 10px;
-    }
-  }
+/**
+ * Checkbox styling
+ */
+
+.select-item-checkbox {
+  width: 5%;
+  padding-top: 15px;
+}
+
+.select-global-checkbox {
+  padding-left: 30px;
+  padding-right: 0px;
+  width: 5%;
+}
+
+.selected-results {
+  font-style: italic;
+  padding-left: 20px;
 }

@@ -71,11 +71,13 @@
               <i class="caret"></i>
             </button>
             <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
+              <li role="presentation" class="folder-menu-label" ng-if="validMoveFolders.length">Move Selected To:</li>
               <li role="presentation" ng-repeat="folder in validMoveFolders">
                 <a role="menuitem" tabindex="-1" href="#" ng-click="moveFolder(folder)">{{ folder.name }}</a>
               </li>
               <li role="presentation" id="create-new-folder">
-                <button class="btn btn-default" ng-click="createFolder()">Create New</button>
+                <button class="btn btn-primary" ng-click="createFolder()" ng-if="validMoveFolders.length">New</button>
+                <button class="btn btn-primary" ng-click="createFolder()" ng-if="!validMoveFolders.length">Create New</button>
               </li>
             </ul>
           </div>

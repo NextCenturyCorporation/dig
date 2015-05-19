@@ -136,6 +136,7 @@ angular.module('digApp')
         } else {
           $scope.activeTab = $scope.FOLDERS_TAB;
           $scope.selectedFolder = {};
+          $scope.validMoveFolders = [];
         }
       };
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchResultsCtrl', ['$scope', '$state', '$sce', 'imageSearchService', 
-    function($scope, $state, $sce, imageSearchService) {
+.controller('SearchResultsCtrl', ['$scope', '$state', '$sce', '$http', 'imageSearchService', 
+    function($scope, $state, $sce, $http, imageSearchService) {
     $scope.opened = [];
     $scope.displayMode = {
         mode: 'list'
@@ -10,6 +10,8 @@ angular.module('digApp')
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
     $scope.galleryItem = {};
+    $scope.selectedItems = {};
+    $scope.folders= [];
 
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
@@ -119,7 +121,60 @@ angular.module('digApp')
         $scope.selectedImage = ($scope.selectedImage >= 0) ? $scope.selectedImage : 0;
     };
 
-    
+    $scope.updateSelectionList = function($event, doc) {
+      $scope.updateSelection($event.target.checked, doc);
+    };
+
+    $scope.updateSelection = function(doSelect, doc) {
+      if (doSelect) {
+        $scope.selectedItems[doc._id] = doc;
+      } else {
+        delete $scope.selectedItems[doc._id];
+      }
+    };
+
+    $scope.selectAll = function($event) {
+      _.forEach($scope.indexVM.results.hits.hits, function(doc) {
+        $scope.updateSelection($event.target.checked, doc);
+      });
+    };
+
+    $scope.selectNone = function() {
+      $scope.selectedItems = {};
+    };
+
+    $scope.isSelected = function(id) {
+      return $scope.selectedItems[id];
+    };
+
+    $scope.isSelectedAll = function() {
+      if($scope.indexVM.results) {
+        var allSelected = true;
+
+        _.forEach($scope.indexVM.results.hits.hits, function(doc) {
+          if(!$scope.selectedItems[doc._id]) {
+           allSelected = false;
+          }
+        });
+
+        return allSelected;
+      }
+
+      return false;
+    };
+
+    $scope.getNumberSelected = function() {
+      return _.size($scope.selectedItems);
+    };
+
+    $scope.getAllFolders = function() {
+      $http.get('api/folders/').
+          success(function(data) {
+            $scope.folders = _.map(data, function(folder) {
+                return {name: folder.name, _id: folder._id};
+              });
+          });
+    };
 
     $scope.$watch('indexVM.query', function(){
         // Reset our opened document state and page on a new query.
@@ -135,5 +190,7 @@ angular.module('digApp')
                 $scope.setImageSearchMatchIndices();
             }
         }, true);
+
+    $scope.getAllFolders();
 
 }]);
