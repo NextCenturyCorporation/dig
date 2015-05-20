@@ -18,29 +18,34 @@ var folders = [
       username: "test",
       name: "folderChild",
       parentId: 0,
-      childIds: []
+      childIds: [],
+      items: ["123", "456"]
     },{
       username: "test",
       name: "folderParent",
       parentId: 0,
-      childIds: [1]
+      childIds: [1],
+      items: ["123"]
     },{
       username: "test",
       name: "folderGrandparent",
       parentId: 0,
-      childIds: [2]
+      childIds: [2],
+      items: ["214321"]
     },
     {
       username: "test",
       name: "folderSibling",
       parentId: 2,
-      childIds: []
+      childIds: [],
+      items: ["153", "412", "231"]
     },
     {
       username: "test",
       name: "folderGreatGP",
       parentId: 0,
-      childIds: []
+      childIds: [],
+      items: ["1341", "211", "134", "24ed1"]
     }
 ];
 
@@ -337,8 +342,7 @@ describe('PUT /api/folders/:id', function() {
       .send({
         _id: 0,
         username: "test",
-        name: "ROOT2",
-        childIds: []
+        name: "ROOT2"
       })
       .expect(404, done);
   });
@@ -360,44 +364,33 @@ describe('PUT /api/folders/:id', function() {
       .send({
         name: "ROOT",
         parentId: 0,
-        childIds: []
+        items: ["123", "456"]
       })
       .expect(404, done);
   });
 
   it('should not be able to change self as its parent', function(done) {
+    var folder = folders[3];
+    folder.parentId = 4;
+
     request(app)
-      .put('/api/folders')
+      .put('/api/folders/4')
       .set('user', 'test')
       .set('Content-Type','application/json')
-      .send(folders[3])
+      .send(folder)
       .expect(404, done);
   });
 
   it('should not be able to change to unknown parent', function(done) {
     request(app)
-      .put('/api/folders')
+      .put('/api/folders/4')
       .set('user', 'test')
       .set('Content-Type','application/json')
       .send({
         username: "test",
         name: "folderSibling",
         parentId: 4,
-        childIds: []
-      })
-      .expect(404, done);
-  });
-
-  it('should not be able to change self as its child', function(done) {
-    request(app)
-      .put('/api/folders')
-      .set('user', 'test')
-      .set('Content-Type','application/json')
-      .send({
-        username: "test",
-        name: "folderSibling",
-        parentId: 2,
-        childIds: [4]
+        items: ["153", "412", "231"]
       })
       .expect(404, done);
   });
@@ -447,6 +440,7 @@ describe('PUT /api/folders/:id', function() {
         if (err) return done(err);
         res.body.name.should.eql(folder.name);
         res.body.parentId.should.eql(folder.parentId);
+        res.body.items.should.eql(folder.items);
       });
 
     // Check new parent for child folder reference
@@ -502,6 +496,7 @@ describe('PUT /api/folders/:id', function() {
         res.body.parentId.should.eql(5);
         res.body.childIds.should.eql([2, 4]);
         res.body.name.should.eql(newName);
+        res.body.items.should.eql(folders[2].items)
       });
 
     // Check ROOT for change of childIds
@@ -561,17 +556,104 @@ describe('PUT /api/folders/:id', function() {
   
   it('should not be able to move a folder within its contents', function(done) {
     request(app)
-      .put('/api/folders')
+      .put('/api/folders/5')
       .set('user', 'test')
       .set('Content-Type','application/json')
       .send({
         username: "test",
         name: "folderGreatGP",
         parentId: 4,
-        childIds: [3]
+        items: ["1341", "211", "134", "24ed1"]
       })
       .expect(404, done);
   });
+  
+  it('should add items to folder', function(done) {
+    request(app)
+      .put('/api/folders/5')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        username: folders[4].username,
+        name: folders[4].name,
+        parentId: folders[4].parentId,
+        items: ["123", "576"]
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders[4].name);
+        res.body.parentId.should.eql(folders[4].parentId);
+        res.body.childIds.should.eql([3]);
+        res.body.items.should.eql(["1341", "211", "134", "24ed1", "123", "576"]);
+        done();
+      });
+  });
+  
+  it('should not add duplicate items to folder', function(done) {
+    request(app)
+      .put('/api/folders/5')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        username: folders[4].username,
+        name: folders[4].name,
+        parentId: folders[4].parentId,
+        items: ["123", "576"]
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders[4].name);
+        res.body.parentId.should.eql(folders[4].parentId);
+        res.body.childIds.should.eql([3]);
+        res.body.items.should.eql(["1341", "211", "134", "24ed1", "123", "576"]);
+        done();
+      });
+  });
+  
+  it('should be able to change folder without new items being added', function(done) {
+    // Check with no items array being sent
+    request(app)
+      .put('/api/folders/5')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        username: folders[4].username,
+        name: "folderGreatGP1",
+        parentId: folders[4].parentId
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql("folderGreatGP1");
+        res.body.parentId.should.eql(folders[4].parentId);
+        res.body.childIds.should.eql([3]);
+        res.body.items.should.eql(["1341", "211", "134", "24ed1", "123", "576"]);
+      });
+
+    // Check with empty items array being sent
+    request(app)
+      .put('/api/folders/5')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        username: folders[4].username,
+        name: folders[4].name,
+        parentId: folders[4].parentId,
+        items: []
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders[4].name);
+        res.body.parentId.should.eql(folders[4].parentId);
+        res.body.childIds.should.eql([3]);
+        res.body.items.should.eql(["1341", "211", "134", "24ed1", "123", "576"]);
+        done();
+      });
+  });
+
 });
 
 describe('DELETE /api/folders/:id', function() {

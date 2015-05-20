@@ -99,13 +99,11 @@ exports.update = function(req, res) {
   //    - updating non-existant folder
   //    - changing ROOT folder
   //    - adding itself as its parent
-  //    - adding itself as its child
   //    - moving itself to one of its subfolders
   if(index == -1) {
     return res.send(404);
   } else if(folders[index].name == "ROOT" ||
-      folders[index].parentId == id || folders[index].childIds.indexOf(id) != -1 ||
-      findIDInChildren(folders[index].parentId, folders[index].childIds)) {
+      req.body.parentId == id || findIDInChildren(req.body.parentId, folders[index].childIds)) {
     return res.send(404);
   }
 
@@ -116,6 +114,16 @@ exports.update = function(req, res) {
   // Update its name and parentID
   folders[index].name = req.body.name;
   folders[index].parentId = req.body.parentId;
+
+  // Add new items (if any) to existing folder items
+  if(req.body.items) {
+    for(var i = 0; i < req.body.items.length; i++) {
+      // Only add items that aren't already in the folder
+      if(_.indexOf(folders[index].items, req.body.items[i]) == -1) {
+        folders[index].items.push(req.body.items[i]);
+      }
+    }
+  }
 
   // Add folder reference in its new parent folder
   var newParentIndex = findIndex(folders[index].parentId);
@@ -156,6 +164,8 @@ exports.destroy = function(req, res) {
 // Finds the id in the given children (recursively).
 // Returns 1 if the id was found or 0 if not.
 function findIDInChildren(id, children) {
+  var found = 0;
+
   for(var i = 0; i < children.length; i++) {
     // ID was found, return 1
     if(children[i] == id) {
@@ -165,12 +175,12 @@ function findIDInChildren(id, children) {
     // Find child's index in folders array to find and search its children
     var childIndex = findIndex(children[i]);
     if(childIndex != -1) {
-      return findIDInChildren(id, folders[childIndex].childIds);
+      found = findIDInChildren(id, folders[childIndex].childIds);
     }
   }
 
   // ID not found, return 0
-  return 0;
+  return found;
 };
 
 // Removes the given children from the folders array (recursively)
