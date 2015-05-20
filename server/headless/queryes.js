@@ -58,6 +58,7 @@ var req4 =
 var client = new elasticsearch.Client({
     host:'localhost:9200', log:'trace'});
 
+var results = {};
 client.search({
   index: 'mockads',
   type: 'ad',
@@ -65,6 +66,7 @@ client.search({
 }).then(function (resp) {
   console.log("HITS:");
   console.log(resp.hits.total);
+  results = resp;
   process.exit(code=0);
 }, function (err) {
   console.trace(err.message);
