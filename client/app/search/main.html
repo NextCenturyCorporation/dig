@@ -76,8 +76,8 @@
                 <a role="menuitem" tabindex="-1" href="#" ng-click="moveFolder(folder)">{{ folder.name }}</a>
               </li>
               <li role="presentation" id="create-new-folder">
-                <button class="btn btn-primary" ng-click="createFolder()" ng-if="validMoveFolders.length">New</button>
-                <button class="btn btn-primary" ng-click="createFolder()" ng-if="!validMoveFolders.length">Create New</button>
+                <button class="btn btn-primary" ng-click="createFolder(false)" ng-if="validMoveFolders.length">New</button>
+                <button class="btn btn-primary" ng-click="createFolder(false)" ng-if="!validMoveFolders.length">Create New</button>
               </li>
             </ul>
           </div>

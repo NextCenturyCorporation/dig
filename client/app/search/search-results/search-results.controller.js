@@ -10,8 +10,6 @@ angular.module('digApp')
     $scope.indexVM.pageSize = 25;
     $scope.selectedImage = 0;
     $scope.galleryItem = {};
-    $scope.selectedItems = {};
-    $scope.folders= [];
 
     $scope.selectImage = function(index) {
         $scope.selectedImage = index;
@@ -121,39 +119,40 @@ angular.module('digApp')
         $scope.selectedImage = ($scope.selectedImage >= 0) ? $scope.selectedImage : 0;
     };
 
+    // Selects or deselects a doc from the list view when a checkbox is clicked
     $scope.updateSelectionList = function($event, doc) {
       $scope.updateSelection($event.target.checked, doc);
     };
 
+    // Selects or deselects a doc based on the given doSelect boolean
     $scope.updateSelection = function(doSelect, doc) {
-      if (doSelect) {
-        $scope.selectedItems[doc._id] = doc;
-      } else {
-        delete $scope.selectedItems[doc._id];
+      if (doSelect && !$scope.isSelected(doc._id)) {
+        $scope.selectedItems.push(doc._id);
+      } else if(!doSelect) {
+        _.pull($scope.selectedItems, doc._id);
       }
     };
 
+    // Selects or deselects all docs on page when the global checkbox is clicked
     $scope.selectAll = function($event) {
       _.forEach($scope.indexVM.results.hits.hits, function(doc) {
         $scope.updateSelection($event.target.checked, doc);
       });
     };
 
-    $scope.selectNone = function() {
-      $scope.selectedItems = {};
-    };
-
+    // Returns whether the doc with the id given is selected
     $scope.isSelected = function(id) {
-      return $scope.selectedItems[id];
+      return (_.indexOf($scope.selectedItems, id) != -1);
     };
 
+    // Returns whether all docs on the current page are selected or not
     $scope.isSelectedAll = function() {
       if($scope.indexVM.results) {
         var allSelected = true;
 
         _.forEach($scope.indexVM.results.hits.hits, function(doc) {
-          if(!$scope.selectedItems[doc._id]) {
-           allSelected = false;
+          if(!$scope.isSelected(doc._id)) {
+            allSelected = false;
           }
         });
 
@@ -163,17 +162,15 @@ angular.module('digApp')
       return false;
     };
 
+    // Gets the total numbers of docs selected on all pages
     $scope.getNumberSelected = function() {
-      return _.size($scope.selectedItems);
+      return $scope.selectedItems.length;
     };
 
-    $scope.getAllFolders = function() {
-      $http.get('api/folders/').
-          success(function(data) {
-            $scope.folders = _.map(data, function(folder) {
-                return {name: folder.name, _id: folder._id};
-              });
-          });
+    // Moves selected docs to given folder
+    $scope.moveItems = function(folder) {
+      $http.put('api/folders/' + folder._id,
+        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems});
     };
 
     $scope.$watch('indexVM.query', function(){
@@ -190,7 +187,5 @@ angular.module('digApp')
                 $scope.setImageSearchMatchIndices();
             }
         }, true);
-
-    $scope.getAllFolders();
 
 }]);

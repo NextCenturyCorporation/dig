@@ -5,7 +5,7 @@ describe('Controller: CreateModalCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var CreateModalCtrl, scope, modalInstance, folders, currentFolder, user, $httpBackend;
+    var CreateModalCtrl, scope, modalInstance, folders, currentFolder, items, user, $httpBackend;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -56,12 +56,15 @@ describe('Controller: CreateModalCtrl', function () {
               ]
             };
 
+            items = ["123", "456"];
+
             CreateModalCtrl = $controller('CreateModalCtrl', {
                 $scope: scope,
                 $modalInstance: modalInstance,
                 User: user,
                 folders: folders,
-                currentFolder: currentFolder
+                currentFolder: currentFolder,
+                items: items
             });
 
         });
@@ -73,6 +76,7 @@ describe('Controller: CreateModalCtrl', function () {
         expect(scope.currentFolder).toEqual(currentFolder);
         expect(scope.folders).toEqual(folders);
         expect(scope.folderName).toEqual("");
+        expect(scope.items).toEqual(items);
     });
 
     it('should correctly enable/disable button', function () {
@@ -93,7 +97,7 @@ describe('Controller: CreateModalCtrl', function () {
     });
 
     it('should move folder on create', function () {
-        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [4]}).respond(201, {});
+        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [4], items: items}).respond(201, {});
         scope.folderName = "folderNew";
         scope.parentFolder = {_id: 1};
         scope.create();
@@ -102,10 +106,21 @@ describe('Controller: CreateModalCtrl', function () {
     });
 
     it('should create folder only on create', function () {
-        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: []}).respond(201, {});
+        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [], items: items}).respond(201, {});
         scope.currentFolder = {};
         scope.folderName = "folderNew";
         scope.parentFolder = {_id: 1};
+        scope.create();
+        $httpBackend.flush();
+        expect(modalInstance.close).toHaveBeenCalled();
+    });
+
+    it('should create folder with empty items on create', function () {
+        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [], items: []}).respond(201, {});
+        scope.currentFolder = {};
+        scope.folderName = "folderNew";
+        scope.parentFolder = {_id: 1};
+        scope.items = [];
         scope.create();
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();

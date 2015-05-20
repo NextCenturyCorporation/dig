@@ -20,8 +20,10 @@ angular.module('digApp')
       $scope.euiConfigs = euiConfigs;
       $scope.facets = euiConfigs.facets;
       $scope.nestedFolders = [];
+      $scope.folders = [];
       $scope.selectedFolder = {};
       $scope.validMoveFolders = [];
+      $scope.selectedItems = [];
       $scope.activeTab = '';
       $scope.tabs = [
       {
@@ -94,6 +96,7 @@ angular.module('digApp')
           if(!$scope.searchConfig.euiSearchIndex) {
               $scope.searchConfig.euiSearchIndex = euiSearchIndex;
           }
+          $scope.selectedItems = [];
           $scope.viewList();
       };
 
@@ -131,12 +134,13 @@ angular.module('digApp')
       }
 
       $scope.changeTab = function(link) {
+        $scope.selectedFolder = {};
+        $scope.validMoveFolders = [];
+
         if(link == $scope.FILTER_TAB) {
           $scope.viewList();
         } else {
           $scope.activeTab = $scope.FOLDERS_TAB;
-          $scope.selectedFolder = {};
-          $scope.validMoveFolders = [];
         }
       };
 
@@ -189,6 +193,15 @@ angular.module('digApp')
       $scope.getFolders = function() {
         $http.get('api/folders/').
           success(function(data) {
+            // Folders (not including ROOT) with name, _id, and parentId for use in results "Move To" dropdown
+            $scope.folders = _.map(data, function(folder) {
+                if(folder.name != "ROOT") {
+                  return {name: folder.name, _id: folder._id, parentId: folder.parentId};
+                }
+              });
+            // Take out 'undefined' that was placed for ROOT
+            $scope.folders = _.filter($scope.folders, function(folder){ return folder;});
+
             $scope.nestedFolders = [];
             $scope.rootFolder = _.find(data, {name: 'ROOT'});
 
@@ -253,8 +266,8 @@ angular.module('digApp')
           });
       };
 
-      // Opens create folder modal
-      $scope.createFolder = function() {
+      // Opens create folder modal. Moves selected items in new folder as well, if moveSelectedItems is true
+      $scope.createFolder = function(moveSelectedItems) {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/create-modal.html',
               controller: 'CreateModalCtrl',
@@ -268,6 +281,12 @@ angular.module('digApp')
                   },
                   currentFolder: function() {
                       return $scope.selectedFolder;
+                  },
+                  items: function() {
+                    if(moveSelectedItems) {
+                      return $scope.selectedItems;
+                    }
+                    return [];
                   }
               },
               size: 'sm'

@@ -1,7 +1,7 @@
 <div ng-repeat="doc in gallery.rawData track by $index" class="image-gallery-container" gallery-index="{{$index}}">
   <span ng-if="doc._source.hasImagePart" class="image-with-caption">
     <img blurred-image class="image-gallery-img center-block" ng-src="{{getDisplayImageSrc(doc)}}"
-      ng-click="renderExpander($event)" ng-class="{select: selectedItems[doc._id]}">
+      ng-click="renderExpander($event)" ng-class="{select: isSelected(doc._id)}">
     <div class="caption image-select-caption" ng-click="selectImage(doc)">
       <div class="caption-background"></div>
       <div class="caption-text">{{ selectCaption(doc) }} Item</div>

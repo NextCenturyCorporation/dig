@@ -19,37 +19,43 @@ describe('Controller: MainCtrl', function () {
         username: "test",
         name: "folder1",
         parentId: 0,
-        childIds: [2]
+        childIds: [2],
+        items: ["123", "45673", "2eqds"]
       },{
         _id: 2,
         username: "test",
         name: "folder2",
         parentId: 1,
-        childIds: []
+        childIds: [],
+        items: ["3frg"]
       },{
         _id: 3,
         username: "test",
         name: "folder3",
         parentId: 0,
-        childIds: [4]
+        childIds: [4],
+        items: ["123", "453", "2eqdaaas", "asd3d"]
       },{
         _id: 4,
         username: "test",
         name: "folder4",
         parentId: 3,
-        childIds: [5, 6]
+        childIds: [5, 6],
+        items: ["123", "45673"]
       },{
         _id: 5,
         username: "test",
         name: "folder5",
         parentId: 4,
-        childIds: []
+        childIds: [],
+        items: ["12", "4573", "2es"]
       },{
         _id: 6,
         username: "test",
         name: "folder6",
         parentId: 4,
-        childIds: []
+        childIds: [],
+        items: []
       }
     ];
 
@@ -323,6 +329,34 @@ describe('Controller: MainCtrl', function () {
       expect(scope.selectedFolder).toEqual({});
       expect(scope.validMoveFolders).toEqual([]);
       expect(scope.rootFolder).toEqual(folders[0]);
+      expect(scope.selectedItems).toEqual([]);
+      expect(scope.folders).toEqual([
+        {
+          _id: 1,
+          name: "folder1",
+          parentId: 0
+        },{
+          _id: 2,
+          name: "folder2",
+          parentId: 1
+        },{
+          _id: 3,
+          name: "folder3",
+          parentId: 0
+        },{
+          _id: 4,
+          name: "folder4",
+          parentId: 3
+        },{
+          _id: 5,
+          name: "folder5",
+          parentId: 4
+        },{
+          _id: 6,
+          name: "folder6",
+          parentId: 4
+        }
+      ]);
     });
 
     it('should initialize activeTab to filter tab', function () {
@@ -332,10 +366,12 @@ describe('Controller: MainCtrl', function () {
     it('should change activeTab on tab select', function () {
         scope.changeTab('#folders');
         expect(scope.activeTab).toBe('#folders');
-        expect(scope.selectedFolder).toEqual([]);
+        expect(scope.selectedFolder).toEqual({});
+        expect(scope.validMoveFolders).toEqual([]);
         scope.changeTab('#filter');
         expect(scope.activeTab).toBe('#filter');
-        expect(scope.selectedFolder).toEqual([]);
+        expect(scope.selectedFolder).toEqual({});
+        expect(scope.validMoveFolders).toEqual([]);
         expect(state.go).toHaveBeenCalledWith('main.search.results.list');
     });
 
@@ -344,12 +380,13 @@ describe('Controller: MainCtrl', function () {
 
         scope.changeTab('#filter');
         expect(scope.activeTab).toBe('#filter');
-        expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
+        expect(scope.selectedFolder).toEqual({});
+        expect(scope.validMoveFolders).toEqual([]);
         expect(state.go).toHaveBeenCalledWith('main.search.results.list');
-
         scope.changeTab('#folders');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.selectedFolder).toEqual({});
+        expect(scope.validMoveFolders).toEqual([]);
     });
 
     it('should select folder and have valid moveTo folders', function () {
@@ -470,20 +507,58 @@ describe('Controller: MainCtrl', function () {
       expect(modalOpts.resolve.folder()).toEqual(nestedFolders[0]);
     });
 
-    it('should open create modal', function () {
+    it('should open create modal for moving folders', function () {
       var modalParameters = {
         templateUrl: 'components/folder/create-modal.html',
         controller: 'CreateModalCtrl',
-        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function) },
+        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function) },
         size: 'sm'
       };
 
       scope.selectedFolder = nestedFolders[0];
+      scope.selectedItems = ["12ed32q", "1312e", "13es"];
 
-      scope.createFolder();
+      scope.createFolder(false);
       $httpBackend.flush();
       expect(modal.open).toHaveBeenCalledWith(modalParameters);
       expect(modalOpts.resolve.currentFolder()).toEqual(nestedFolders[0]);
+      expect(modalOpts.resolve.items()).toEqual([]);
+      expect(modalOpts.resolve.folders()).toEqual([
+          {
+            name: "ROOT",
+            _id: 0
+          },{
+            name: "folder3",
+            _id: 3
+          },{
+            name: "folder4",
+            _id: 4
+          },{
+            name: "folder5",
+            _id: 5
+          },{
+            name: "folder6",
+            _id: 6
+          }
+        ]);
+    });
+
+    it('should open create modal for moving items', function () {
+      var modalParameters = {
+        templateUrl: 'components/folder/create-modal.html',
+        controller: 'CreateModalCtrl',
+        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function) },
+        size: 'sm'
+      };
+
+      scope.selectedFolder = nestedFolders[0];
+      scope.selectedItems = ["12ed32q", "1312e", "13es"];
+
+      scope.createFolder(true);
+      $httpBackend.flush();
+      expect(modal.open).toHaveBeenCalledWith(modalParameters);
+      expect(modalOpts.resolve.currentFolder()).toEqual(nestedFolders[0]);
+      expect(modalOpts.resolve.items()).toEqual(["12ed32q", "1312e", "13es"]);
       expect(modalOpts.resolve.folders()).toEqual([
           {
             name: "ROOT",
@@ -785,6 +860,66 @@ describe('Controller: MainCtrl', function () {
           },{
             name: "folder6",
             _id: 6
+          }
+        ]);
+    });
+
+    it('should clear selected items on submit', function () {
+      scope.selectedItems = ["2e432e", "2ew"];
+      scope.submit();
+      expect(scope.selectedItems).toEqual([]);
+    });
+
+    it('should update scope.folders on folder request', function () {
+      scope.folders = [
+          {
+            _id: 1,
+            name: "folder1",
+            parentId: 0
+          },{
+            _id: 2,
+            name: "folder2",
+            parentId: 1
+          },{
+            _id: 3,
+            name: "folder3",
+            parentId: 0
+          },{
+            _id: 4,
+            name: "folder4",
+            parentId: 3
+          },{
+            _id: 5,
+            name: "folder5",
+            parentId: 4
+          }];
+      
+      $httpBackend.flush();
+      expect(scope.folders).toEqual([
+          {
+            _id: 1,
+            name: "folder1",
+            parentId: 0
+          },{
+            _id: 2,
+            name: "folder2",
+            parentId: 1
+          },{
+            _id: 3,
+            name: "folder3",
+            parentId: 0
+          },{
+            _id: 4,
+            name: "folder4",
+            parentId: 3
+          },{
+            _id: 5,
+            name: "folder5",
+            parentId: 4
+          },{
+            _id: 6,
+            name: "folder6",
+            parentId: 4
           }
         ]);
     });

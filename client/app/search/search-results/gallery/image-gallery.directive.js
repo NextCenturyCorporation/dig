@@ -64,8 +64,9 @@ angular.module('digApp.directives')
                 });
             };
 
+            // Selects image
             $scope.selectImage = function(doc) {
-              if($scope.selectedItems[doc._id]) {
+              if($scope.isSelected(doc._id)) {
                 // Deselect
                 $scope.updateSelection(false, doc);
               } else {
@@ -74,8 +75,9 @@ angular.module('digApp.directives')
               }
             };
 
+            // Returns image select/deselect caption
             $scope.selectCaption = function(doc) {
-              if($scope.selectedItems[doc._id]) {
+              if($scope.isSelected(doc._id)) {
                 return "Deselect";
               }
               
