@@ -12,4 +12,4 @@ var applog = bunyan.createLogger({
 
 var offlineQueryRunner = require('./index');
 
-offlineQueryRunner(applog);
+var runners = offlineQueryRunner(applog);

@@ -1,12 +1,14 @@
 'use strict';
 
-var querydb = require('./querydb2');
-var schedule = require('node-schedule');
+var QueryDB = require('./querydb'),
+    schedule = require('node-schedule');
+    
 
 // when importing this module, call the function with an instance
 // of an application logger such as bunyan.
 var savedScheduledQueryRunner = function (applog) {
-    console.log('Started Saved Scheduled Query Runner');
+    applog.info('Started Saved Scheduled Query Runner');
+    var querydb = QueryDB(applog);
 
     return {
         // every hour on the hour
