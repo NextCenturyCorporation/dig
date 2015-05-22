@@ -11,6 +11,12 @@
 
 var models = require('../../models');
 
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }    
+}
+
 var deserialize = function (query) {
     query.digState = JSON.parse(query.digState);
     query.elasticUIState = JSON.parse(query.elasticUIState);
@@ -24,12 +30,10 @@ var serialize = function (query) {
 }
 
 exports.index = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
 
     models.Query.findAll(
-        {where: {userusername: req.params.username}}
+        {where: {UserUsername: req.params.username}}
     ).then(function(queries) {
         var desQueries = [];
         queries.forEach(function(query) {
@@ -43,12 +47,10 @@ exports.index = function (req, res) {
 
 //TODO: revisit endpoint
 exports.notifications = function (req, res) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
+    setUserName(req);
 
     models.Query.findAll(
-        {where: {userusername: req.params.username, notificationHasRun: 0}}
+        {where: {UserUsername: req.params.username, notificationHasRun: 0}}
     ).then(function(queries) {
         var desQueries = [];
         queries.forEach(function(query) {

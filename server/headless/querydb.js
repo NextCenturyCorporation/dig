@@ -8,7 +8,13 @@ var elasticsearch = require('elasticsearch');
 var ejs = require('elastic.js');
 var _ = require('lodash');
 var client = new elasticsearch.Client({
-    host: config.euiServerUrl + ':' + config.euiServerPort, log:'info'});
+    host: {
+        host: config.euiServer,
+        port: config.euiServerPort,
+        auth: config.euiServerUser + ':' + config.euiServerPass
+    },
+    log:'info'
+});
 
 // TODO: direct elasticsearch logging to injected logger
 // TODO: unit test
@@ -64,9 +70,10 @@ exports = module.exports = function(logger) {
                     var results = {};
 
                     // query elasticsearch for new records since the last run date
+                    // TODO: use configurable index and type
                     client.search({
-                        index: 'mockads',
-                        type: 'ad',
+                        index: config.euiSearchIndex,
+                        type: config.euiSearchType,
                         body: getEsQuery(query)
                     })
                     .then(function (resp) {

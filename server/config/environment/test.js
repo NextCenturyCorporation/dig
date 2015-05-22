@@ -12,11 +12,10 @@ module.exports = {
   sequelize: {
     username: 'digapp',
     password: process.env.DB_PASS || null,
-    database: 'digapp_production',
+    database: 'digapp_test',
     hostname: process.env.DB_HOST || null,
     options: {
-      dialect: 'mysql',
-      storage: './db.digappdev.sqlite'
+      dialect: 'mysql'
     }
   },
 

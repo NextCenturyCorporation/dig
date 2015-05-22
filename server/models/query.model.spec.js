@@ -1,7 +1,13 @@
 'use strict';
 
 // Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+if (process.env.NODE_ENV === 'test') {
+    process.env.DB_PASS='digdig';
+    process.env.DB_HOST='localhost';
+}
+else {
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+}
 var config = require('../config/environment');
 var should = require('should');
 var models = require('./index');
@@ -32,24 +38,40 @@ describe('Query Model', function() {
 
 
     before(function (done) {
-        models.Query.sync()
+        return models.User.sync()
+        .then(function() {
+            return models.Query.sync()
+        })
         .then(function () {
+            return models.User.destroy( {
+                where: {username: testUser}
+            })
+        })
+        .then(function () {
+            return models.User.create({
+                username: testUser
+            })
+        })
+        .then(function (user) {
             done();
-        }).catch (function(err) {
+        })
+        .catch (function(err) {
             done(err);
         })
     });
 
 
     it('should create a query', function (done) {
-        models.Query.create(testquery)
+        return models.Query.create(testquery)
         .then(function (query) {
             query.notificationHasRun.should.be.true;
-            query.destroy().then(function(){
-                done();
-            }).catch(function(err) {
-                done(err);
-            });
+            return query.setUser(testUser);
+        })
+        .then(function() {
+            done();
+        })
+        .catch(function(err) {
+            done(err);
         });
     });
 

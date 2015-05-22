@@ -12,7 +12,7 @@ var savedScheduledQueryRunner = function (applog) {
 
     return {
         // every hour on the hour
-        hourlyJob: schedule.scheduleJob('0 * * * *', querydb.runHourlySSQ),
+        hourlyJob: schedule.scheduleJob('* * * * *', querydb.runHourlySSQ),
 
         // midnight every day
         dailyJob: schedule.scheduleJob('0 0 * * *', querydb.rundailySSQ),    

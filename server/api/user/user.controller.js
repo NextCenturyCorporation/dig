@@ -3,6 +3,12 @@
 var models = require('../../models');
 var sequelize = models.sequelize;
 
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }    
+}
+
 exports.index = function (req, res) {
     models.User.findAll(
     //{
@@ -15,10 +21,12 @@ exports.index = function (req, res) {
 
 exports.show = function (req, res) {
     setUserName(req);
-    models.User.find({
+    models.User.findOrCreate({
         where: {username: req.params.username}
-    }).then(function(user){
+    }).spread(function(user, created) {
         res.json(200, user);
+    }).catch(function(error) {
+        res.json(400, error);
     });
 }
 
@@ -65,9 +73,9 @@ exports.delete = function (req, res) {
 exports.notificationCount = function (req, res) {
     setUserName(req);
     sequelize.query(
-        "select count(*) as notrun from users inner join queries on " +
-        "users.username = queries.userusername where " +
-        "queries.notificationhasrun=(0) and users.username = :username",
+        "select count(*) as notrun from Users inner join Queries on " +
+        "Users.username = Queries.UserUsername where " +
+        "Queries.notificationHasRun=(0) and Users.username = :username",
         { replacements: { username: req.params.username }, 
         type: sequelize.QueryTypes.SELECT })
     .then(function(results) {
@@ -78,8 +86,3 @@ exports.notificationCount = function (req, res) {
     });    
 }
 
-var setUserName = function (req) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }    
-}

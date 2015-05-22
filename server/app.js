@@ -20,6 +20,8 @@ var log = bunyan.createLogger({
     }]
 });
 
+console.log(config.sequelize);
+
 // create a logger instance 
 // (see http://docs.sequelizejs.com/en/latest/api/sequelize/)
 // TODO: create a rolling log instance.

@@ -28,8 +28,7 @@ module.exports = {
     database: 'digapp_production',
     hostname: process.env.DB_HOST || null,
     options: {
-      dialect: 'mysql',
-      storage: './db.digappdev.sqlite'
+      dialect: 'mysql'
     }
   },
 

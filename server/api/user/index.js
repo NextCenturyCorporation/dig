@@ -8,7 +8,7 @@ var router = express.Router();
 /*
  * user routes
  * 
- * /me is special id that means to look in req.headers for user name
+ * /reqHeader is special id that means to look in req.headers for user name
  */
 router.get('/', userController.index);
 router.post('/', userController.create);
@@ -17,7 +17,5 @@ router.get('/:username', userController.show);
 router.put('/:username', userController.update);
 router.delete('/:username', userController.delete);
 router.get('/:username/notifications/count', userController.notificationCount);
-
-
 
 module.exports = router;

@@ -13,7 +13,7 @@ angular.module('digApp')
     $scope.query = {name: '', frequency: 'never', digState: {}, elasticUIState: {}};
     $scope.currentUser = User.get();
 
-    $http.get('api/users/test/queries').
+    $http.get('api/users/reqHeader/queries').
         success(function(data) {
             $scope.queryResults = data;
     });
@@ -52,7 +52,7 @@ angular.module('digApp')
                 $http.put('api/queries/' + $scope.existingQuery.id, $scope.query);
             }
         } else {
-            $http.post('api/users/test/queries', $scope.query);
+            $http.post('api/users/reqHeader/queries', $scope.query);
         }
     };
 
