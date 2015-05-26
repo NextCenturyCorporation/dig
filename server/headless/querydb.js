@@ -73,13 +73,12 @@ exports = module.exports = function(logger, config, esClient, Query) {
                             })
                         }
                     }, function (err) {
-                        logger.info(err.message);
+                        logger.error(err.message);
                     });
                 });   
             })
             .catch(function (err) {
-                
-                logger.info (err);
+                logger.error (err);
             });         
         }
     }
