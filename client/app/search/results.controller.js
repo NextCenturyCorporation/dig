@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchResultsCtrl', ['$scope', '$state', '$sce', '$http', 'imageSearchService', 
+.controller('ResultsCtrl', ['$scope', '$state', '$sce', '$http', 'imageSearchService', 
     function($scope, $state, $sce, $http, imageSearchService) {
     $scope.opened = [];
     $scope.displayMode = {
@@ -22,7 +22,11 @@ angular.module('digApp')
     $scope.viewDetails = function(doc, previousState) {
         $scope.doc = doc;
         $scope.previousState = previousState;
-        $state.go('main.search.results.details');
+        if($scope.activeTab == $scope.FILTER_TAB) {
+          $state.go('main.search.results.details');
+        } else {
+          $state.go('main.folder.results.details');
+        }
     };
 
     $scope.backToPreviousState = function() {
@@ -46,7 +50,11 @@ angular.module('digApp')
     $scope.viewList = function() {
         $scope.clearGalleryItem();
         $scope.displayMode.mode = 'list';
-        $state.go('main.search.results.list');
+        if($scope.activeTab == $scope.FILTER_TAB) {
+          $state.go('main.search.results.list');
+        } else {
+          $state.go('main.folder.results.list');
+        }
     };
 
     $scope.toggleListItemOpened = function(index) {
@@ -174,10 +182,14 @@ angular.module('digApp')
     };
 
     $scope.$watch('indexVM.query', function(){
+      if(!$scope.tabChange) {
         // Reset our opened document state and page on a new query.
         $scope.opened = [];
         $scope.galleryItem = {};
         $scope.indexVM.page = 1;
+        $scope.selectedItems = [];
+      }
+      $scope.tabChange = false;
     });
 
     $scope.$watch(function() {

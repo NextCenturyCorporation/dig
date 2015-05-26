@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-.controller('SearchErrorCtrl', function($scope, $state) {
+.controller('ErrorCtrl', function($scope, $state) {
     if(!$scope.indexVM.error) {
         $state.go('main.search.results.list');
     }

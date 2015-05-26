@@ -15,7 +15,7 @@ var digApp = angular.module('digApp', [
 ])
 .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
-      .otherwise('/list');
+      .otherwise('/search');
 
     $locationProvider.html5Mode(true);
 });

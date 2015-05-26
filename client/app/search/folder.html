@@ -1,3 +1,13 @@
-<div>
-{{ selectedFolder.name }}
+<div class="right-column col-sm-9" eui-index="searchConfig.euiSearchIndex">
+  <div ng-show="searchConfig.euiSearchIndex.length && indexVM.loaded" class="folder-view-selected">
+    {{ selectedFolder.name }}
+
+    <div eui-filter="ejs.TermsFilter('_id', items)" eui-enabled="filterFolder.enabled" ng-model="filterFolder.enabled">
+    </div>
+
+    <ui-view></ui-view>
+  </div>
+  <div ng-show="!searchConfig.euiSearchIndex.length" class="folder-view-deselected text-center">
+    No Folder Selected
+  </div>
 </div>

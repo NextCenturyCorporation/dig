@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Controller: SearchErrorCtrl', function() {
+describe('Controller: ErrorCtrl', function() {
     beforeEach(module('digApp'));
 
-    var SearchErrorCtrl;
+    var ErrorCtrl;
     var scope;
     var state;
     var controller;
@@ -16,7 +16,7 @@ describe('Controller: SearchErrorCtrl', function() {
 
             scope.indexVM = {};
 
-            SearchErrorCtrl = $controller('SearchErrorCtrl', {
+            ErrorCtrl = $controller('ErrorCtrl', {
                 $scope: scope,
                 $state: state
             });
@@ -39,7 +39,7 @@ describe('Controller: SearchErrorCtrl', function() {
                     }
                 };
 
-                SearchErrorCtrl = controller('SearchErrorCtrl', {
+                ErrorCtrl = controller('ErrorCtrl', {
                     $scope: scope,
                     $state: state
                 });
@@ -61,7 +61,7 @@ describe('Controller: SearchErrorCtrl', function() {
                     }
                 };
 
-                SearchErrorCtrl = controller('SearchErrorCtrl', {
+                ErrorCtrl = controller('ErrorCtrl', {
                     $scope: scope,
                     $state: state
                 });
@@ -99,7 +99,7 @@ describe('Controller: SearchErrorCtrl', function() {
                         }
                     };
 
-                    SearchErrorCtrl = controller('SearchErrorCtrl', {
+                    ErrorCtrl = controller('ErrorCtrl', {
                         $scope: scope,
                         $state: state
                     });
@@ -125,7 +125,7 @@ describe('Controller: SearchErrorCtrl', function() {
                         }
                     };
 
-                    SearchErrorCtrl = controller('SearchErrorCtrl', {
+                    ErrorCtrl = controller('ErrorCtrl', {
                         $scope: scope,
                         $state: state
                     });

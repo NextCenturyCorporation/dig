@@ -1,11 +1,11 @@
 'use strict';
 
-describe('Controller: SearchResultsCtrl', function () {
+describe('Controller: ResultsCtrl', function () {
 
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var SearchResultsCtrl, scope, state, imageSearchService;
+    var ResultsCtrl, scope, state, imageSearchService;
 
     var sampleImageSearchDoc = {
         "_index": "dig",
@@ -216,11 +216,11 @@ describe('Controller: SearchResultsCtrl', function () {
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/list/list.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/gallery/gallery.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/gallery/gallery.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
+            $httpBackend.when('GET', new RegExp('app/search/details/details.html'))
                 .respond(200, 'some text');
             imageSearchService = _imageSearchService_;
 
@@ -236,7 +236,7 @@ describe('Controller: SearchResultsCtrl', function () {
 
             scope.selectedItems = [];
 
-            SearchResultsCtrl = $controller('SearchResultsCtrl', {
+            ResultsCtrl = $controller('ResultsCtrl', {
                 $scope: scope,
                 $state: state
             });

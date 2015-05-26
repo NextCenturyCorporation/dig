@@ -90,9 +90,9 @@ describe('Controller: QueriesCtrl', function () {
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/search-results.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/results.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/list/list.partial.html'))
                 .respond(200, 'some text');
 
             $httpBackend.expectGET('api/queries/').respond(200, queryResults);

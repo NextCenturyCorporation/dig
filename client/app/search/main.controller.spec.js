@@ -135,11 +135,11 @@ describe('Controller: MainCtrl', function () {
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/search-results.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/results.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/list/list.partial.html'))
+            $httpBackend.when('GET', new RegExp('app/search/list/list.partial.html'))
                 .respond(200, 'some text');
-            $httpBackend.when('GET', new RegExp('app/search/search-results/details/details.html'))
+            $httpBackend.when('GET', new RegExp('app/search/details/details.html'))
                 .respond(200, 'some text');
             imageSearchService = _imageSearchService_;
 
@@ -423,14 +423,14 @@ describe('Controller: MainCtrl', function () {
 
         // Select a folder initially
         scope.select(nestedFolders[1].children[0]);
-        expect(state.go).toHaveBeenCalledWith('main.folder');
+        expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual(validFolders1);
         expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
 
         // Select a different folder to test folder change
         scope.select(nestedFolders[1]);
-        expect(state.go).toHaveBeenCalledWith('main.folder');
+        expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual(validFolders2);
         expect(scope.selectedFolder).toEqual(nestedFolders[1]);
@@ -442,7 +442,7 @@ describe('Controller: MainCtrl', function () {
         scope.selectedFolder = nestedFolders[1].children[0];
 
         scope.select(nestedFolders[1].children[0]);
-        expect(state.go).toHaveBeenCalledWith('main.folder');
+        expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual([]);
         expect(scope.selectedFolder).toEqual({});
@@ -456,14 +456,14 @@ describe('Controller: MainCtrl', function () {
     });
 
     it('should change active tab on /gallery load', function () {
-      spyOn(location, 'path').andReturn('/gallery');
+      spyOn(location, 'path').andReturn('/search');
 
       expect(scope.isActive()).toBe(true);
       expect(scope.activeTab).toBe("#filter");
     });
 
     it('should change active tab on /list load', function () {
-      spyOn(location, 'path').andReturn('/list');
+      spyOn(location, 'path').andReturn('/search');
 
       expect(scope.isActive()).toBe(true);
       expect(scope.activeTab).toBe("#filter");

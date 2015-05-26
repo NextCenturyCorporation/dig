@@ -23,8 +23,8 @@ angular.module('digApp')
       $scope.folders = [];
       $scope.selectedFolder = {};
       $scope.validMoveFolders = [];
-      $scope.selectedItems = [];
       $scope.activeTab = '';
+      $scope.tabChange = false;
       $scope.tabs = [
       {
         'title': 'Filter',
@@ -96,7 +96,6 @@ angular.module('digApp')
           if(!$scope.searchConfig.euiSearchIndex) {
               $scope.searchConfig.euiSearchIndex = euiSearchIndex;
           }
-          $scope.selectedItems = [];
           $scope.viewList();
       };
 
@@ -122,7 +121,7 @@ angular.module('digApp')
       $scope.isActive = function() {
         var path = $location.path();
         
-        if(path == '/gallery' || path == '/list') {
+        if(path == '/search') {
           $scope.activeTab = $scope.FILTER_TAB;
           return true;
         } else if(path == '/folder') {
@@ -136,6 +135,7 @@ angular.module('digApp')
       $scope.changeTab = function(link) {
         $scope.selectedFolder = {};
         $scope.validMoveFolders = [];
+        $scope.tabChange = true;
 
         if(link == $scope.FILTER_TAB) {
           $scope.viewList();
@@ -174,7 +174,7 @@ angular.module('digApp')
       $scope.select = function(folder) {
         // Change active tab so folder view shows
         $scope.activeTab = $scope.FOLDERS_TAB;
-        $state.go('main.folder');
+        $state.go('main.folder.results.list');
 
         // Select/Deselect folder and update folders able to move to
         if(!$scope.selectedFolder._id) {
@@ -267,7 +267,7 @@ angular.module('digApp')
       };
 
       // Opens create folder modal. Moves selected items in new folder as well, if moveSelectedItems is true
-      $scope.createFolder = function(moveSelectedItems) {
+      $scope.createFolder = function(selectedResults) {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/create-modal.html',
               controller: 'CreateModalCtrl',
@@ -283,8 +283,8 @@ angular.module('digApp')
                       return $scope.selectedFolder;
                   },
                   items: function() {
-                    if(moveSelectedItems) {
-                      return $scope.selectedItems;
+                    if(selectedResults) {
+                      return selectedResults;
                     }
                     return [];
                   }
@@ -379,8 +379,11 @@ angular.module('digApp')
           if($scope.indexVM.error) {
               $scope.loading = false;
               $scope.showresults = false;
-
-              $state.go('main.search.error');
+              if($scope.activeTab == $scope.FILTER_TAB) {
+                $state.go('main.search.error');
+              } else {
+                $state.go('main.folder.error');
+              }
           }
       }, true);
 
