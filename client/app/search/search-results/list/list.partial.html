@@ -7,10 +7,9 @@
   </div>
   <ul id="results" class="list-group">
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
-    <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
-      <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
-    </span>
-    <span ng-class="{'new-results' : notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()}">
+      <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
+        <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
+      </span>
       <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
@@ -18,7 +17,7 @@
               <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
             </span> 
           </div>
-          <div class="col-xs-9 col-sm-10 col-lg-11">
+          <div class="col-xs-7 col-sm-8 col-lg-9">
             <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
             <div class="list-group-item-meta">
               <span ng-repeat="field in euiConfigs.listFields['short']">
@@ -27,13 +26,15 @@
               </span>
             </div>
           </div>
+          <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
+              ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
+            <span class="label label-default">NEW <i class="fa fa-inbox"></i></span>
+          </h3>
         </div>
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
       </div>
-
-    </span>
     </li>
   </ul>
 
