@@ -1,30 +1,10 @@
 'use strict';
-// Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-var config = require('../config/environment');
-var models = require('../models');
-var assert = require('assert');
-var elasticsearch = require('elasticsearch');
-var ejs = require('elastic.js');
-var _ = require('lodash');
-var client = new elasticsearch.Client({
-    host: {
-        host: config.euiServer,
-        port: config.euiServerPort,
-        auth: config.euiServerUser + ':' + config.euiServerPass
-    },
-    log:'info'
-});
 
-// TODO: direct elasticsearch logging to injected logger
-// TODO: unit test
-
-
-exports = module.exports = function(logger) {
+exports = module.exports = function(logger, config, esClient, Query) {
     // get a collection of all SSQs given the frequency
     // Only SSQs that do not already have a notification are returned
-    var findSSQ = function(period) {
-        return models.Query.findAll({
+    function findSSQ (period) {
+        return Query.findAll({
             where: {
                 notificationHasRun: true,
                 frequency: period
@@ -32,7 +12,7 @@ exports = module.exports = function(logger) {
         })
     }
 
-    var getEsQuery = function(ssq) {
+    function getEsQuery (ssq) {
         var esQuery = {};
 
         var elasticUIState = JSON.parse(ssq.elasticUIState);
@@ -61,17 +41,16 @@ exports = module.exports = function(logger) {
     // 1. run the ES query on the elasticsearch index sorted newest first
     // 3. compare most recent result with last run date
     // 4. if new results are available, add a notification
-    var runSSQ = function(findSSQ) {
+    function runSSQ (periodicSSQfn) {
         return function() {
-            models.Query.sync()
-            .then (findSSQ)
+            return periodicSSQfn()
             .then (function (queries) {
                 queries.forEach(function(query) {
                     var results = {};
 
                     // query elasticsearch for new records since the last run date
                     // TODO: use configurable index and type
-                    client.search({
+                    esClient.search({
                         index: config.euiSearchIndex,
                         type: config.euiSearchType,
                         body: getEsQuery(query)
@@ -110,6 +89,9 @@ exports = module.exports = function(logger) {
     var weeklySSQ = function() { return findSSQ('weekly'); }
 
     return {
+        findSSQ: findSSQ,
+        getEsQuery: getEsQuery,
+        runSSQ: runSSQ,
         runHourlySSQ: runSSQ (hourlySSQ),
         runDailySSQ: runSSQ (dailySSQ),
         runWeeklySSQ: runSSQ (weeklySSQ),

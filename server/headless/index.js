@@ -2,13 +2,12 @@
 
 var QueryDB = require('./querydb'),
     schedule = require('node-schedule');
-    
 
 // when importing this module, call the function with an instance
 // of an application logger such as bunyan.
-var savedScheduledQueryRunner = function (applog) {
+var savedScheduledQueryRunner = function (applog, config, esClient, QueryModel) {
     applog.info('Started Saved Scheduled Query Runner');
-    var querydb = QueryDB(applog);
+    var querydb = QueryDB(applog, config, esClient, QueryModel);
 
     return {
         // every hour on the hour

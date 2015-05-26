@@ -10,7 +10,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express');
 var config = require('./config/environment');
 var models = require('./models');
-var offlineQueryRunner = require('./headless');
 var bunyan = require('bunyan');
 var log = bunyan.createLogger({
     name: 'digapp',
@@ -42,10 +41,9 @@ require('./routes')(app);
 app.models = models;
 app.log = log;
 
+
 models.sequelize.sync()
 .then(function () {
-    // start saved scheduled query runner
-    offlineQueryRunner(log);
     server.listen(config.port, config.ip, function () {
         console.log('Express server listening on %d, in %s mode', 
             config.port, app.get('env'));
