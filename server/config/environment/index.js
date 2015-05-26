@@ -47,8 +47,8 @@ var all = {
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
     euiServer: process.env.EUI_SERVER || 'localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
-    euiServerUser: process.env.EUI_SERVER_USER,
-    euiServerPass: process.env.EUI_SERVER_PASS,
+    dbServerUser: process.env.DB_SERVER_USER,
+    dbServerPass: process.env.DB_SERVER_PASS,
     euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig-latest',
     euiSearchType: process.env.EUI_SEARCH_TYPE || 'WebPage',
 

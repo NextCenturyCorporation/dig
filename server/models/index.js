@@ -1,10 +1,10 @@
 'use strict';
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require('../config/environment');
 var fs = require('fs');
 var path = require('path');
 var Sequelize = require('sequelize');
-var env = process.env.NODE_ENV || 'development';
 
 // connect to db, just once per application
 var sequelize = new Sequelize(
