@@ -75,4 +75,20 @@ describe('Query Model', function() {
         });
     });
 
+    it('should find no queries', function (done) {
+        return models.Query.findAll({
+            where: {
+                notificationHasRun: true,
+                frequency: 'weekly'
+            }
+        })
+        .then(function(queries) {
+            queries.length.should.be.within(0,4);
+            done()
+        })
+        .catch(function(err) {
+            done(err);
+        });
+    });
+
 });
