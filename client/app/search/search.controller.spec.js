@@ -7,7 +7,79 @@ describe('Controller: SearchCtrl', function () {
 
     // instantiate service
     var imageSearchService;
-    var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock;
+    var SearchCtrl, scope, rootScope, state, modal, blurImageSvcMock, $httpBackend;
+
+    var sampleQuery = { 
+        id: 1,
+        name: 'Query #1',
+         /* jshint camelcase:false */
+        digState: {
+            searchTerms: 'bob smith',
+            filters: {
+                aggFilters: {
+                    city_agg: {
+                      'LittleRock': true,
+                      'FortSmith': true
+                    }
+                },
+                textFilters: {
+                    phonenumber: {
+                      live: '',
+                      submitted: ''
+                    }
+                },
+                dateFilters: {
+                    dateCreated: {
+                      beginDate: null,
+                      endDate: null
+                    }
+                }
+
+            },
+            selectedSort: {
+                title:'Best Match',
+                order:'rank'
+            },  
+            includeMissing: {
+                allIncludeMissing : false, 
+                aggregations : { 
+                    city_agg : { 
+                        active : true 
+                    } 
+                } 
+            }
+        }, 
+        elasticUIState: {
+            queryState: {
+                query_string: {
+                    fields:['_all'],
+                    query:'bob smith'
+                }
+            },
+            filterState: {
+                bool: {
+                    should: [
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['LittleRock']
+                            }
+                        },
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['FortSmith']
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+         /* jshint camelcase:true*/
+        username: 'test',
+        frequency: 'daily',
+        createDate: '2015-04-01T20:13:11.093Z',
+        lastRunDate: '2015-04-01T20:13:11.093Z',
+        notificationHasRun: false   
+    };
 
     var sampleDoc = {
         "_index": "dig",
@@ -340,7 +412,6 @@ describe('Controller: SearchCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(function() {
         var simHost = 'http://localhost';
-        var $httpBackend;
         var searchQuery;
 
         module(function($provide) {
@@ -398,11 +469,26 @@ describe('Controller: SearchCtrl', function () {
 
             scope.indexVM = {
                 filters: {
-                    ejsFilters: []
+                    testFilters: sampleQuery.elasticUIState.filterState,
+                    ejsFilters: [],
+                    getAsFilter: function(){
+                        return {
+                            testFilters: this.testFilters,
+                            toJSON: function() {
+                                return this.testFilters;
+                            }
+                        }
+                    }
                 },
                 loading: true,
                 page: 1,
-                query: 'someValue'
+                query: 'someValue',
+                sort: {
+                    testSort: '_timestamp',
+                    field: function() {
+                        return this.testSort;
+                    }
+                }
             };
 
             scope.$digest();
@@ -410,78 +496,10 @@ describe('Controller: SearchCtrl', function () {
 
     });
 
-    it('should initialize variables based on state params', function() {
+    it('should initialize variables based on state params, call submit, and set appropriate settings when notification exists', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
-            state.params = {
-                query: { 
-                    _id: 1,
-                    name: 'Query #1',
-                    digState: {
-                        searchTerms: 'bob smith',
-                        filters: {
-                            aggFilters: {
-                                city_agg: {
-                                  'LittleRock': true,
-                                  'FortSmith': true
-                                }
-                            },
-                            textFilters: {
-                                phonenumber: {
-                                  live: '',
-                                  submitted: ''
-                                }
-                            },
-                            dateFilters: {
-                                dateCreated: {
-                                  beginDate: null,
-                                  endDate: null
-                                }
-                            }
-                        },
-                        selectedSort: {
-                            title:'Best Match',
-                            order:'rank'
-                        },  
-                        includeMissing: {
-                            allIncludeMissing : false, 
-                            aggregations : { 
-                                city_agg : { 
-                                    active : true 
-                                } 
-                            } 
-                        }
-                    }, 
-                    elasticUIState: {
-                        queryState: {
-                            query_string: {
-                                fields:['_all'],
-                                query:'bob smith'
-                            }
-                        },
-                        filterState: {
-                            bool: {
-                                should: [
-                                    {
-                                        terms: {
-                                            'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['LittleRock']
-                                        }
-                                    },
-                                    {
-                                        terms: {
-                                            'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['FortSmith']
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    username: 'test',
-                    frequency: 'daily',
-                    createDate: '2015-04-01T20:13:11.093Z',
-                    lastRunDate: '2015-04-01T20:13:11.093Z'
-                }    
-            };
+            state.params = {query: sampleQuery};
 
             SearchCtrl = $controller('SearchCtrl', {
                 $scope: scope,
@@ -490,17 +508,78 @@ describe('Controller: SearchCtrl', function () {
                 blurImageService: blurImageSvcMock
             });
 
+            spyOn(scope, 'submit');
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
         });
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
-        expect(scope.queryString.submitted).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
+        expect(scope.filterStates).toEqual(state.params.query.digState.filters);
+        expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
+        expect(scope.selectedSort).toEqual({});
+        expect(scope.notificationHasRun).toBe(false);
+        expect(scope.notificationLastRun).toEqual(jasmine.any(Date));
+        $httpBackend.flush();
+    });
+
+
+    it('should initialize variables based on state params and call submit based on callSubmit param', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery, callSubmit: true};
+            state.params.query.notificationHasRun = true;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            spyOn(scope, 'submit');
+
+        });
+
+        scope.init();
+        expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
-
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(undefined);
     });
+
+    it('should initialize variables based on state params and call submit based on locationChangeSuccess', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = true;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            spyOn(scope, 'submit');
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+        });
+
+        expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.callCount).toBe(1);
+        expect(scope.filterStates).toEqual(state.params.query.digState.filters);
+        expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
+        expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(undefined);
+    });
+
 
     it('should not initialize query state if query params blank', function() {
         inject(function($controller) {
@@ -513,16 +592,255 @@ describe('Controller: SearchCtrl', function () {
                 blurImageService: blurImageSvcMock
             });
 
+            spyOn(scope, 'submit');
             rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
-
         });
     
         expect(scope.queryString.live).toBe('');
-        expect(scope.queryString.submitted).toBe('');
+        expect(scope.submit).not.toHaveBeenCalled();
         expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}});
         expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
         expect(scope.selectedSort).toEqual({});
 
+    });
+
+    it('should clear notifications', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+        });
+
+        scope.notificationHasRun = false;
+        scope.notificationLastRun = new Date();
+
+        scope.clearNotification();
+
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(null);              
+        $httpBackend.flush();
+    });
+
+    it('should not clear notifications', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            scope.$digest();
+
+        });
+
+        var lastRunDate = new Date();
+        scope.notificationLastRun = lastRunDate;
+
+        scope.clearNotification();
+
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(lastRunDate);       
+    });
+
+    it('should set filtersInitialized variable to true', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = false;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.indexVM.loading = false;
+            scope.$digest();
+        });
+
+        expect(scope.filtersInitialized).toBe(true);
+    });
+
+    it('should not clear notifications on filter state change if filtersInitialized does not exist', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = false;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.indexVM.loading = false;
+            scope.indexVM.filters.testFilters = {'filters': 'still initializing'};
+            scope.$digest();
+        });
+
+        expect(scope.notificationHasRun).toBe(false);
+        expect(scope.notificationLastRun).toEqual(jasmine.any(Date)); 
+    });
+
+    it('should clear notifications on filter state change if notificationLastRun and filtersInitialized exist', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            state.params.query.notificationHasRun = false;
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.filtersInitialized = true;
+            scope.indexVM.loading = false;
+            scope.indexVM.filters.testFilters = {'different': 'filter'};
+            scope.$digest();
+        });
+
+        expect(scope.notificationHasRun).toBe(true);
+        expect(scope.notificationLastRun).toBe(null); 
+    });
+
+    it('should not call clearNotification() on submit', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.notificationHasRun = false;
+            scope.$digest();
+        });
+
+        spyOn(scope, 'clearNotification');
+
+        scope.submit();
+
+        expect(scope.clearNotification).not.toHaveBeenCalled();
+    });
+
+    it('should call clearNotification() on submit', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.notificationHasRun = false;
+            scope.$digest();
+
+        });
+
+        scope.queryString.live = 'new';
+        spyOn(scope, 'clearNotification');
+
+        scope.submit();
+
+        expect(scope.clearNotification).toHaveBeenCalled();
+    });
+
+    it('should call clearNotification() when loading value changes and sort is something other than _timestamp', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            scope.indexVM.sort.testSort = '_score';
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.notificationHasRun = false;
+            scope.$digest();
+        });
+
+        spyOn(scope, 'clearNotification');
+
+        scope.indexVM.loading = !scope.indexVM.loading;
+
+        scope.$digest();
+
+        expect(scope.clearNotification).toHaveBeenCalled();
+    });
+
+    it('should not clear notification when loading value changes but sort is still _timestamp', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {query: sampleQuery};
+            scope.indexVM.sort.testSort = '_timestamp';
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            rootScope.$broadcast('$locationChangeSuccess', '/list', '/queries');
+            
+            // ensure notificationLastRun and notificationHasRun exist and are set appropriately
+            $httpBackend.expectPUT('api/queries/1').respond(200, {});
+            scope.notificationHasRun = false;
+            scope.$digest();
+        });
+
+        spyOn(scope, 'clearNotification');
+
+        scope.indexVM.loading = !scope.indexVM.loading;
+
+        scope.$digest();
+
+        expect(scope.clearNotification).not.toHaveBeenCalled();
     });
 
     it('should call state.go with reload set to true', function () {

@@ -1,79 +1,122 @@
+/**
+* Using standard naming convention for endpoints.
+* GET     /things              ->  index
+* POST    /things              ->  create
+* GET     /things/:id          ->  show
+* PUT     /things/:id          ->  update
+* DELETE  /things/:id          ->  destroy
+*/
+
 'use strict';
 
-var _ = require('lodash');
-var Query = require('./query.model');
+var models = require('../../models');
 
-// Get list of querys based on user
-exports.index = function(req, res) {
-  Query.find({username: req.headers.user}, function (err, query) {
-    if(err) { return handleError(res, err); }
-    if(!query) { return res.send(404); }
-    return res.json(query);
-  });
-};
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }    
+}
 
-// Get a single query
-exports.show = function(req, res) {
-  Query.findById(req.params.id, function (err, query) {
-    if(err) { return handleError(res, err); }
-    if(!query) { return res.send(404); }
-    if(query.username !== req.headers.user) { return res.send(401); }
-    return res.json(query);
-  });
-};
+var deserialize = function (query) {
+    query.digState = JSON.parse(query.digState);
+    query.elasticUIState = JSON.parse(query.elasticUIState);
+    return query;
+}
 
-// Creates a new query in the DB.
-exports.create = function(req, res) {
-  if(req.body.username !== req.headers.user) { return res.send(401); }
-  Query.create(req.body, function(err, query) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, query);
-  });
-};
+var serialize = function (query) {
+    query.digState = JSON.stringify(query.digState);
+    query.elasticUIState = JSON.stringify(query.elasticUIState);
+    return query;
+}
 
-// Updates an existing query in the DB.
-exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Query.findById(req.params.id, function (err, query) {
-    if (err) { return handleError(res, err); }
-    if(!query) { return res.send(404); }
-    // clear out old object fields if user wants to save over old query, otherwise old states
-    // will be merged with new ones. 
-    if(req.body.digState) { 
-      query.digState = {}; 
-    }
-    if(req.body.elasticUIState) 
-      { query.elasticUIState = {}; 
-    }
-    var updated = _.merge(query, req.body);
-    if(updated.username !== req.headers.user) { return res.send(401); }
-    // for Mixed types, need to tell Mongoose to save over existing fields 
-    if(req.body.digState) { 
-      updated.markModified('digState'); 
-    }
-    if(req.body.elasticUIState) { 
-      updated.markModified('elasticUIState'); 
-    }
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, query);
+exports.index = function (req, res) {
+    setUserName(req);
+
+    models.Query.findAll(
+        {where: {UserUsername: req.params.username}}
+    ).then(function(queries) {
+        var desQueries = [];
+        queries.forEach(function(query) {
+            desQueries.push(deserialize(query));
+        });
+        res.json(200, desQueries);
+    }).catch(function(error) {
+        res.json(400, error);
     });
-  });
-};
+}
 
-// Deletes a query from the DB.
-exports.destroy = function(req, res) {
-  Query.findById(req.params.id, function (err, query) {
-    if(err) { return handleError(res, err); }
-    if(!query) { return res.send(404); }
-    if(query.username !== req.headers.user) { return res.send(401); }
-    query.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
+//TODO: revisit endpoint
+exports.notifications = function (req, res) {
+    setUserName(req);
+
+    models.Query.findAll(
+        {where: {UserUsername: req.params.username, notificationHasRun: 0}}
+    ).then(function(queries) {
+        var desQueries = [];
+        queries.forEach(function(query) {
+            desQueries.push(deserialize(query));
+        });
+        res.json(200, desQueries);
+    }).catch(function(error) {
+        res.json(400, error);
     });
-  });
-};
+}
 
-function handleError(res, err) {
-  return res.send(500, err);
+exports.show = function (req, res) {
+    models.Query.find({
+        where: {id: req.params.queryid}
+    }).then(function(query){
+        res.json(200, deserialize(query));
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+exports.create = function (req, res) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
+
+    models.User.find({
+        where: {username: req.params.username}
+    }).then(function(user) {
+        models.Query.create(serialize(req.body))
+        .then(function(query) {
+            query.setUser(user).then(function() {
+                res.json(201, query);
+            });
+        }).catch(function (error) {
+            res.json(404, error);
+        });
+    }).catch(function (error) {
+        res.json(404, error);
+    });
+}
+
+exports.update = function (req, res) {
+    models.Query.update(
+        req.body,
+        {where: {id: req.params.queryid}}
+    ).then(function(user) {
+        res.status(204).end();
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+exports.delete = function (req, res) {
+    models.Query.destroy({
+        where: {id: req.params.queryid}
+    })
+    .then(function(user) {
+        if (user) {
+            res.status(204).end();
+        }
+        else {
+            res.status(404).end();
+        }
+    })
+    .catch(function(error) {
+        res.json(404, error);
+    });
 }

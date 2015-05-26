@@ -10,7 +10,8 @@ angular.module('digApp')
         abstract: true,
         controller: 'SearchCtrl',
         params: {
-          query: null
+          query: null,
+          callSubmit: null
         }
       })
     .state('search.results', {
@@ -21,7 +22,7 @@ angular.module('digApp')
     .state('search.results.list', {
         url: '^/list',
         templateUrl: 'app/search/search-results/list/list.partial.html',
-		    preserveScrollPos: true
+		preserveScrollPos: true
       })
       .state('search.results.gallery', {
         url: '^/gallery',

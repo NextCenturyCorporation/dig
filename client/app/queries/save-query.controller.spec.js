@@ -8,7 +8,7 @@ describe('Controller: SaveQueryCtrl', function () {
     var queryResults = 
     [
       {
-        '_id': 1,
+        'id': 1,
         'name': 'Query #1',
         'digState': {
             'searchTerms': 'bob smith',
@@ -75,7 +75,7 @@ describe('Controller: SaveQueryCtrl', function () {
         'lastRunDate': '2015-04-01T20:13:11.093Z'
       },
       {
-        '_id': 2,
+        'id': 2,
         'name': 'Query #2',
         'digState': {
             'searchTerms': 'jane doe',
@@ -183,7 +183,7 @@ describe('Controller: SaveQueryCtrl', function () {
                 }
             };
 
-            $httpBackend.expectGET('api/queries/').respond(200, queryResults);
+            $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
 
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
                 .respond(200, 'some text');
@@ -247,21 +247,18 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should save, post, and call close() function', function () {
-        $httpBackend.expectPOST('api/queries').respond(200, {});
-        spyOn(scope, 'replacePeriods');
+        $httpBackend.expectPOST('api/users/reqHeader/queries').respond(200, {});
 
         scope.save();
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should save, update, and call close() function', function () {
         spyOn(window, 'confirm').andCallFake(function () {
             return true;
         });
-        spyOn(scope, 'replacePeriods');
 
         scope.existingQuery = queryResults[0];
         scope.query.name = 'Query #1';
@@ -271,7 +268,6 @@ describe('Controller: SaveQueryCtrl', function () {
         
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(scope.replacePeriods).toHaveBeenCalled();
     });
 
     it('should not update if user cancels existing query overwrite', function() {
@@ -295,9 +291,4 @@ describe('Controller: SaveQueryCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-    it('should strip out invalid character', function() {
-        var obj = {'string.with.dots': true};
-
-        expect(scope.replacePeriods(obj)).toEqual({'string\uff0ewith\uff0edots': true});
-    });
 });

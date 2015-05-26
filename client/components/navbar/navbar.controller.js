@@ -9,7 +9,7 @@ angular.module('digApp')
       'icon':'glyphicon glyphicon-home',
       'reload': true
     }, {
-      'title': 'Search Queries',
+      'title': 'Saved Queries',
       'link': '/queries',
       'reload': true
     }];
@@ -36,6 +36,5 @@ angular.module('digApp')
           size: 'sm'
         });
     };
-
 
   });

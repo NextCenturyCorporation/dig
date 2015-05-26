@@ -4,11 +4,9 @@ var digApp = angular.module('digApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
     'elasticui',
-
     'digApp.directives',
     'digApp.services'
 ])

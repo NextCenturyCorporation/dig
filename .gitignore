@@ -10,3 +10,9 @@ dist
 /*.sublime-project
 npm-debug*
 coverage
+*.sqlite
+.DS_Store
+.DS_Store?
+*.log
+*.tar
+*.tar.gz
