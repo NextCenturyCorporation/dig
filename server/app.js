@@ -14,10 +14,14 @@ var bunyan = require('bunyan');
 var log = bunyan.createLogger({
     name: 'digapp',
     streams: [{
+        type: 'rotating-file',
         path: 'digapp.log',
+        period: '1d',
+        count: 10
         // `type: 'file'` is implied
     }]
 });
+
 
 console.log(config.sequelize);
 
