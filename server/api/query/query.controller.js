@@ -95,11 +95,12 @@ exports.create = function (req, res) {
 
 exports.update = function (req, res) {
     models.Query.update(
-        req.body,
+        serialize(req.body),
         {where: {id: req.params.queryid}}
     ).then(function(user) {
         res.status(204).end();
     }).catch(function(error) {
+        console.log(error);
         res.json(404, error);
     });
 }
