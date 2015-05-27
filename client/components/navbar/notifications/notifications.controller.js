@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-  .controller('NotificationsCtrl', function ($scope, $state, $http, User) {
+  .controller('NotificationsCtrl', function ($scope, $state, $http, $interval, User) {
 
     $scope.notificationCount = User.notificationCount();
 
@@ -9,6 +9,7 @@ angular.module('digApp')
         $http.get('api/users/reqHeader/queries/notifications').
           success(function(data) {
               $scope.queriesWithNotifications = data;
+              $scope.notificationCount = User.notificationCount();
           });
     };
 
@@ -27,6 +28,14 @@ angular.module('digApp')
             });
         }
     };
+
+    var refreshNotifications = $interval(function() {
+        $scope.getQueriesWithNotifications();
+    }, 300000);
+
+    $scope.$on('destroy', function() {
+      $interval.cancel(refreshNotifications);
+    });
 
     $scope.getQueriesWithNotifications();
 

@@ -61,16 +61,17 @@ describe('Controller: NotificationsCtrl', function () {
       }
     ];
 
-    var NotificationsCtrl, scope, state, $httpBackend, http, mockUser;
+    var NotificationsCtrl, scope, state, $httpBackend, http, mockUser, $interval;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
 
-        inject(function ($controller, $rootScope, $state, _$httpBackend_, $http) {
+        inject(function ($controller, $rootScope, $state, _$httpBackend_, $http, _$interval_) {
             scope = $rootScope.$new();
             state = $state;
             http = $http;
             $httpBackend = _$httpBackend_;
+            $interval = _$interval_;
 
             spyOn(state, 'go');
 
@@ -108,10 +109,6 @@ describe('Controller: NotificationsCtrl', function () {
         expect(scope.queriesWithNotifications).toEqual(queryResults);
     });
 
-    it('should initalize queriesWithNotifications', function () {
-        expect(scope.queriesWithNotifications).toEqual(queryResults);
-    });
-
     it('should call runQuery with query param', function() {
         state.current = {name: 'queries'};
         scope.runQuery(queryResults[0]);
@@ -125,5 +122,18 @@ describe('Controller: NotificationsCtrl', function () {
         scope.runQuery(queryResults[0]);
 
         expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0], callSubmit: true}, {location: true});
+    });
+
+    it('should refresh queriesWithNotifications and notificationCount', function() {
+        scope.notificationCount = 0;
+        scope.queriesWithNotifications = [];
+
+        $httpBackend.expectGET('api/users/reqHeader/queries/notifications').respond(200, queryResults);
+
+        $interval.flush(300000);
+        $httpBackend.flush();
+
+        expect(scope.notificationCount).toEqual(queryResults.length);
+        expect(scope.queriesWithNotifications).toEqual(queryResults);
     });
 });
