@@ -28,7 +28,7 @@ exports = module.exports = function(logger, config, esClient, Query) {
         esQuery.size = 1;
 
         if (elasticUIState.filterState && Object.keys(elasticUIState.filterState).length > 0) {
-            esQuery.filter = ssq.filterState;
+            esQuery.filter = elasticUIState.filterState;
         }
 
         logger.info(esQuery);
