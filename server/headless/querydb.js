@@ -18,7 +18,7 @@ exports = module.exports = function(logger, config, esClient, Query) {
         var elasticUIState = JSON.parse(ssq.elasticUIState);
         logger.info(elasticUIState);
 
-        if (Object.keys(elasticUIState.queryState).length > 0) {
+        if (elasticUIState.queryState && Object.keys(elasticUIState.queryState).length > 0) {
             esQuery.query = {};
             esQuery.query.query_string = elasticUIState.queryState.query_string;        
         }
@@ -27,7 +27,7 @@ exports = module.exports = function(logger, config, esClient, Query) {
         esQuery.sort = {'_timestamp': {'order': 'desc'}};
         esQuery.size = 1;
 
-        if (Object.keys(elasticUIState.filterState).length > 0) {
+        if (elasticUIState.filterState && Object.keys(elasticUIState.filterState).length > 0) {
             esQuery.filter = ssq.filterState;
         }
 
@@ -63,6 +63,7 @@ exports = module.exports = function(logger, config, esClient, Query) {
                         var diff = latestResultDate - query.lastRunDate;
                         
                         logger.info('lastRunDate: %s', query.lastRunDate);
+
                         if (diff > 0) {
                             query.notificationDateTime = new Date();
                             query.notificationHasRun = false;
