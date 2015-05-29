@@ -134,10 +134,11 @@ angular.module('digApp')
 
     // Selects or deselects a doc based on the given doSelect boolean
     $scope.updateSelection = function(doSelect, doc) {
+      // Select or deselect the doc
       if (doSelect && !$scope.isSelected(doc._id)) {
-        $scope.selectedItems.push(doc._id);
+        $scope.selectedItems[$scope.selectedItemsKey].push(doc._id);
       } else if(!doSelect) {
-        _.pull($scope.selectedItems, doc._id);
+        _.pull($scope.selectedItems[$scope.selectedItemsKey], doc._id);
       }
     };
 
@@ -150,7 +151,7 @@ angular.module('digApp')
 
     // Returns whether the doc with the id given is selected
     $scope.isSelected = function(id) {
-      return (_.indexOf($scope.selectedItems, id) != -1);
+      return (_.indexOf($scope.selectedItems[$scope.selectedItemsKey], id) != -1);
     };
 
     // Returns whether all docs on the current page are selected or not
@@ -172,13 +173,13 @@ angular.module('digApp')
 
     // Gets the total numbers of docs selected on all pages
     $scope.getNumberSelected = function() {
-      return $scope.selectedItems.length;
+      return ($scope.selectedItems[$scope.selectedItemsKey]) ? $scope.selectedItems[$scope.selectedItemsKey].length : 0;
     };
 
     // Moves selected docs to given folder
     $scope.moveItems = function(folder) {
       $http.put('api/folders/' + folder._id,
-        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems});
+        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey]});
     };
 
     $scope.$watch('indexVM.query', function(){
@@ -187,7 +188,7 @@ angular.module('digApp')
         $scope.opened = [];
         $scope.galleryItem = {};
         $scope.indexVM.page = 1;
-        $scope.selectedItems = [];
+        $scope.selectedItems[$scope.selectedItemsKey] = [];
       }
       $scope.tabChange = false;
     });

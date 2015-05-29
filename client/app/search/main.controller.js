@@ -10,6 +10,7 @@ angular.module('digApp')
 })
 .controller('MainCtrl', ['$scope', '$state', '$modal', '$location', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'MainConstants', '$http',
     function($scope, $state, $modal, $location, imageSearchService, euiSearchIndex, euiConfigs, MainConstants, $http) {
+
       $scope.FILTER_TAB = MainConstants.FILTER_TAB;
       $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB
       $scope.searchConfig = {};
@@ -19,12 +20,27 @@ angular.module('digApp')
       $scope.imagesimLoading = false;
       $scope.euiConfigs = euiConfigs;
       $scope.facets = euiConfigs.facets;
+
+      // All the folders created with child folders within their parents.
+      // Each folder only has the name, _id, parentId, and an array of children
       $scope.nestedFolders = [];
+
+      // All the folders created in a flat list
       $scope.folders = [];
+
       $scope.selectedFolder = {};
+
+      // Each key is the _id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
+      // Each value contains an array of _ids of items that are selected in the folder (or search results)
+      $scope.selectedItems = {};
+      $scope.selectedItemsKey = $scope.FILTER_TAB;
+
+      // Valid folders that items can be moved to (contains objects of names and _ids)
       $scope.validMoveFolders = [];
+
       $scope.activeTab = '';
       $scope.tabChange = false;
+
       $scope.tabs = [
       {
         'title': 'Filter',
@@ -33,6 +49,8 @@ angular.module('digApp')
         'title': 'Folders',
         'link': $scope.FOLDERS_TAB
       }];
+
+
 
       $scope.init = function() {
         $scope.showresults = false;
@@ -50,6 +68,7 @@ angular.module('digApp')
         };
 
         $scope.selectedSort = {};
+        $scope.selectedItems[$scope.FILTER_TAB] = [];
 
         $scope.getFolders();
         $scope.isActive();
@@ -92,6 +111,7 @@ angular.module('digApp')
       };
 
       $scope.submit = function() {
+          $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.queryString.submitted = $scope.queryString.live;
           if(!$scope.searchConfig.euiSearchIndex) {
               $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -138,6 +158,7 @@ angular.module('digApp')
         $scope.tabChange = true;
 
         if(link == $scope.FILTER_TAB) {
+          $scope.selectedItemsKey = $scope.FILTER_TAB;
           $scope.viewList();
         } else {
           $scope.activeTab = $scope.FOLDERS_TAB;
@@ -179,11 +200,16 @@ angular.module('digApp')
         // Select/Deselect folder and update folders able to move to
         if(!$scope.selectedFolder._id) {
           $scope.selectedFolder = angular.copy(folder);
+          $scope.selectedItemsKey = $scope.selectedFolder._id;
+          $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else if($scope.selectedFolder._id != folder._id) {
           $scope.selectedFolder = angular.copy(folder);
+          $scope.selectedItemsKey = $scope.selectedFolder._id;
+          $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else {
+          delete $scope.selectedItems[$scope.selectedItemsKey];
           $scope.selectedFolder = {};
           $scope.validMoveFolders = [];
         }
@@ -262,12 +288,13 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
+            delete $scope.selectedItems[$scope.selectedFolder._id];
             $scope.getFolders();
           });
       };
 
       // Opens create folder modal. Moves selected items in new folder as well, if moveSelectedItems is true
-      $scope.createFolder = function(selectedResults) {
+      $scope.createFolder = function(moveSelectedItems) {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/create-modal.html',
               controller: 'CreateModalCtrl',
@@ -283,8 +310,8 @@ angular.module('digApp')
                       return $scope.selectedFolder;
                   },
                   items: function() {
-                    if(selectedResults) {
-                      return selectedResults;
+                    if(moveSelectedItems) {
+                      return $scope.selectedItems[$scope.selectedItemsKey];
                     }
                     return [];
                   }

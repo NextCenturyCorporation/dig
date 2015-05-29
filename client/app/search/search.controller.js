@@ -6,8 +6,7 @@
 angular.module('digApp')
 .controller('SearchCtrl', ['$scope', '$state', '$modal', 'imageSearchService',
     function($scope, $state, $modal, imageSearchService) {
-      $scope.selectedItems = [];
-
+      
       $scope.saveQuery = function() {
           $modal.open({
               templateUrl: 'app/queries/save-query.html',

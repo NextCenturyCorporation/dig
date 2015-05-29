@@ -234,7 +234,8 @@ describe('Controller: ResultsCtrl', function () {
                 pageSize: 10
             };
 
-            scope.selectedItems = [];
+            scope.selectedItems = {"#filter": []};
+            scope.selectedItemsKey = "#filter";
 
             ResultsCtrl = $controller('ResultsCtrl', {
                 $scope: scope,
@@ -446,41 +447,41 @@ describe('Controller: ResultsCtrl', function () {
 
      it('should update selected', function() {
         scope.updateSelection(true, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["1"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1"]);
         expect(scope.getNumberSelected()).toEqual(1);
 
         scope.updateSelection(true, {_id: "2"});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
 
         // Shouldn't add a duplicate
         scope.updateSelection(true, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
 
         // Shouldn't add a duplicate
         scope.updateSelection(false, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["2"]);
         expect(scope.getNumberSelected()).toEqual(1);
      });
 
      it('should update selected with $event', function() {
         scope.updateSelectionList({target: {checked: true}}, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["1"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1"]);
         expect(scope.getNumberSelected()).toEqual(1);
 
         scope.updateSelectionList({target: {checked: true}}, {_id: "2"});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
 
         // Shouldn't add a duplicate
         scope.updateSelectionList({target: {checked: true}}, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
 
         // Shouldn't add a duplicate
         scope.updateSelectionList({target: {checked: false}}, {_id: "1"});
-        expect(scope.selectedItems).toEqual(["2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["2"]);
         expect(scope.getNumberSelected()).toEqual(1);
         expect(scope.isSelected("1")).toBe(false);
         expect(scope.isSelected("2")).toBe(true);
@@ -490,7 +491,7 @@ describe('Controller: ResultsCtrl', function () {
         expect(scope.isSelectedAll()).toBe(false);
 
         // Start with a few selected from a previous page
-        scope.selectedItems = ["1", "2"];
+        scope.selectedItems["#filter"] = ["1", "2"];
 
         scope.indexVM.results = {
           hits: {
@@ -512,13 +513,13 @@ describe('Controller: ResultsCtrl', function () {
 
         // Select all - should include previously selected and all in indexVM
         scope.selectAll({target: {checked: true}});
-        expect(scope.selectedItems).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
         expect(scope.getNumberSelected()).toEqual(7);
         expect(scope.isSelectedAll()).toBe(true);
 
         // Deelect all - selected should now include only previously selected
         scope.selectAll({target: {checked: false}});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
         expect(scope.isSelectedAll()).toBe(false);
 
@@ -530,14 +531,14 @@ describe('Controller: ResultsCtrl', function () {
         expect(scope.isSelectedAll()).toBe(false);
         expect(scope.getNumberSelected()).toEqual(5);
         scope.selectAll({target: {checked: true}});
-        expect(scope.selectedItems).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
         expect(scope.getNumberSelected()).toEqual(7);
         expect(scope.isSelectedAll()).toBe(true);
 
         // Deselect all - selected should now include only
         // previously selected and NOT ANY from indexVM
         scope.selectAll({target: {checked: false}});
-        expect(scope.selectedItems).toEqual(["1", "2"]);
+        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
         expect(scope.getNumberSelected()).toEqual(2);
         expect(scope.isSelectedAll()).toBe(false);
      });

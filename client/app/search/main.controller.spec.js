@@ -329,7 +329,7 @@ describe('Controller: MainCtrl', function () {
       expect(scope.selectedFolder).toEqual({});
       expect(scope.validMoveFolders).toEqual([]);
       expect(scope.rootFolder).toEqual(folders[0]);
-      expect(scope.selectedItems).toEqual([]);
+      expect(scope.selectedItems).toEqual({"#filter": []});
       expect(scope.folders).toEqual([
         {
           _id: 1,
@@ -372,6 +372,7 @@ describe('Controller: MainCtrl', function () {
         expect(scope.activeTab).toBe('#filter');
         expect(scope.selectedFolder).toEqual({});
         expect(scope.validMoveFolders).toEqual([]);
+        expect(scope.selectedItemsKey).toEqual('#filter');
         expect(state.go).toHaveBeenCalledWith('main.search.results.list');
     });
 
@@ -382,11 +383,13 @@ describe('Controller: MainCtrl', function () {
         expect(scope.activeTab).toBe('#filter');
         expect(scope.selectedFolder).toEqual({});
         expect(scope.validMoveFolders).toEqual([]);
+        expect(scope.selectedItemsKey).toEqual('#filter');
         expect(state.go).toHaveBeenCalledWith('main.search.results.list');
         scope.changeTab('#folders');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.selectedFolder).toEqual({});
         expect(scope.validMoveFolders).toEqual([]);
+        expect(scope.selectedItemsKey).toEqual('#filter');
     });
 
     it('should select folder and have valid moveTo folders', function () {
@@ -422,11 +425,17 @@ describe('Controller: MainCtrl', function () {
         $httpBackend.flush();
 
         // Select a folder initially
+        expect(scope.selectedItems).toEqual({"#filter": []});
         scope.select(nestedFolders[1].children[0]);
         expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual(validFolders1);
         expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
+        expect(scope.selectedItems).toEqual({
+          "#filter": [],
+          4: []
+        });
+        expect(scope.selectedItemsKey).toEqual(4);
 
         // Select a different folder to test folder change
         scope.select(nestedFolders[1]);
@@ -434,18 +443,28 @@ describe('Controller: MainCtrl', function () {
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual(validFolders2);
         expect(scope.selectedFolder).toEqual(nestedFolders[1]);
+        expect(scope.selectedItems).toEqual({
+          "#filter": [],
+          4: [],
+          3: []
+        });
+        expect(scope.selectedItemsKey).toEqual(3);
     });
 
     it('should deselect folder and have valid moveTo folders', function () {
         $httpBackend.flush();
 
         scope.selectedFolder = nestedFolders[1].children[0];
+        scope.selectedItems[4] = [];
+        scope.selectedItemsKey = 4;
 
         scope.select(nestedFolders[1].children[0]);
         expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual([]);
         expect(scope.selectedFolder).toEqual({});
+        expect(scope.selectedItems).toEqual({"#filter": []});
+        expect(scope.selectedItemsKey).toEqual(4);
     });
 
     it('should change active tab on /folder load', function () {
@@ -516,7 +535,7 @@ describe('Controller: MainCtrl', function () {
       };
 
       scope.selectedFolder = nestedFolders[0];
-      scope.selectedItems = ["12ed32q", "1312e", "13es"];
+      scope.selectedItems[nestedFolders[0]._id] = ["12ed32q", "1312e", "13es"];
 
       scope.createFolder(false);
       $httpBackend.flush();
@@ -552,7 +571,7 @@ describe('Controller: MainCtrl', function () {
       };
 
       scope.selectedFolder = nestedFolders[0];
-      scope.selectedItems = ["12ed32q", "1312e", "13es"];
+      scope.selectedItems["#filter"] = ["12ed32q", "1312e", "13es"];
 
       scope.createFolder(true);
       $httpBackend.flush();
@@ -863,11 +882,11 @@ describe('Controller: MainCtrl', function () {
           }
         ]);
     });
-
-    it('should clear selected items on submit', function () {
-      scope.selectedItems = ["2e432e", "2ew"];
+ 
+    it('should clear searches selected items on submit', function () {
+      scope.selectedItems["#filter"] = ["2e432e", "2ew"];
       scope.submit();
-      expect(scope.selectedItems).toEqual([]);
+      expect(scope.selectedItems["#filter"]).toEqual([]);
     });
 
     it('should update scope.folders on folder request', function () {

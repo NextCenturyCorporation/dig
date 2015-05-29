@@ -3,8 +3,7 @@
 angular.module('digApp')
 .controller('FolderCtrl', ['$scope', '$http', '$state', 'euiSearchIndex', 'imageSearchService',
     function($scope, $http, $state, euiSearchIndex, imageSearchService) {
-      $scope.selectedItems = [];
-
+      
       $scope.init = function() {
         $scope.showresults = true;
         $scope.filterFolder = {
@@ -13,11 +12,15 @@ angular.module('digApp')
         $scope.retrieveFolder();
       };
 
+      // Gets the items and folders in the selected folder for viewing
       $scope.retrieveFolder = function() {
         if($scope.selectedFolder._id) {
           $http.get('api/folders/' + $scope.selectedFolder._id).
             success(function(data) {
+              // Contains the _ids of the results in the selected folder
               $scope.items = data.items;
+
+              // Contains the _ids of the folders within the selected folder
               $scope.childFolderIds = data.childIds;
 
               $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -66,6 +69,7 @@ angular.module('digApp')
           return src;
       };
 
+      // Reloads the folder view when a folder is selected/deselected
       $scope.$watch('selectedFolder._id',
           function(newValue, oldValue) {
               if(newValue && newValue !== oldValue) {
