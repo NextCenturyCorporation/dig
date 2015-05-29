@@ -101,7 +101,7 @@ var all = {
                     field: '_score', order: 'desc', title: 'Best Match'
                 },
                 notificationOption: {
-                    field: '_timestamp', order: 'desc', title: 'Timestamp',
+                    field: '_timestamp', order: 'desc', title: 'Date Added to DIG (Newest First)',
                 },
                 options: [
                     {
@@ -111,15 +111,19 @@ var all = {
                     },{
                         field: 'date',
                         order: 'desc',
-                        title: 'Newest First'
+                        title: 'Date Created (Newest First)'
                     },{
                         field: 'date',
                         order: 'asc',
-                        title: 'Oldest First'
+                        title: 'Date Created (Oldest First)'
                     }, {
                         field: '_timestamp',
                         order: 'desc',
-                        title: 'Timestamp'
+                        title: 'Date Added to DIG (Newest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'asc',
+                        title: 'Date Added to DIG (Oldest First)'
                     }
                 ]
             },
@@ -139,7 +143,7 @@ var all = {
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Date',
+                    title: 'Created',
                     field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
@@ -351,7 +355,7 @@ var all = {
                     field: '_score', order: 'desc', title: 'Best Match'
                 },
                 notificationOption: {
-                    field: '_timestamp', order: 'desc', title: 'Timestamp',
+                    field: '_timestamp', order: 'desc', title: 'Date Added to DIG (Newest First)',
                 },
                 options: [
                     {
@@ -359,17 +363,21 @@ var all = {
                         order: 'desc',
                         title: 'Best Match'
                     },{
-                        field: 'dateCreated',
+                        field: 'date',
                         order: 'desc',
-                        title: 'Newest First'
+                        title: 'Date Created (Newest First)'
                     },{
-                        field: 'dateCreated',
+                        field: 'date',
                         order: 'asc',
-                        title: 'Oldest First'
+                        title: 'Date Created (Oldest First)'
                     }, {
                         field: '_timestamp',
                         order: 'desc',
-                        title: 'Timestamp'
+                        title: 'Date Added to DIG (Newest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'asc',
+                        title: 'Date Added to DIG (Oldest First)'
                     }
                 ]
             },
@@ -384,7 +392,7 @@ var all = {
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Date',
+                    title: 'Created',
                     field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
