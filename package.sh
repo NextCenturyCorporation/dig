@@ -1,11 +1,27 @@
 #!/bin/bash
-set -x
+#set -x
 ## DEFAULTS
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
 DOCKER_PREFIX="digmemex/digapp"
 FILES_TO_COPY=(scripts/bootstrap.sh scripts/run.sh scripts/backupdb.sh docker-compose.yml)
 EXECUTABLES=(bootstrap.sh run.sh backupdb.sh)
+
+ctrl_c() {
+    echo "Caught SIGINT/SIGTERM. Cleaning up"
+    exit 99
+}
+trap ctrl_c SIGINT
+trap ctrl_c SIGTERM
+
+# Macs don't have a proper readlink
+realpath_Darwin() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+realpath_Linux() {
+    readlink -f ${1}
+}
 
 ## FLAGS
 RMDIR=1
@@ -106,9 +122,9 @@ configure_settings() {
     if [[ $INTERACTIVE -eq 1 ]]; then
 	echo "Settings have been configured interactively"
 	read -e -p "Location of config dir? [$DEFAULT_CFGDIR] " CFGDIR
-	CFGDIR=$(dirname ${CFGDIR:-$DEFAULT_CFGDIR})
+	CFGDIR=$(realpath_$(uname) ${CFGDIR:-$DEFAULT_CFGDIR})
     else
-	CFGDIR=$(dirname ${CFGDIR:-$DEFAULT_CFGDIR})
+	CFGDIR=$(realpath_$(uname) ${CFGDIR:-$DEFAULT_CFGDIR})
 	echo "Settings will be set using cmdline options"
     fi
     DIG_VERSION=$(cd dist && npm ls 2>/dev/null| sed -n 's/dig@\([^ \t]\+\).*$/\1/p')
