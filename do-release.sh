@@ -119,6 +119,9 @@ get_options() {
 	    h)
 		help
 		;;
+	    c)
+		CONFDIR=$OPTARG
+		;;
 	esac
     done
 }
@@ -159,6 +162,11 @@ sanity_check() {
 	echo "You do not have makeself installed. Cannot continue."
 	cleanup 10
     }
+    
+    if [[ -z "${OPTARG}" ]]; then
+	echo "You did not set the config directory with -c"
+	cleanup 20
+    fi
 
 }
 
@@ -209,6 +217,7 @@ build() {
     cd ${BUILD_DIR}
     git clone ${CURRENT_DIR} dig
     cd dig
+    cp -r ${CONFDIR} conf
     npm install
     grunt build
     ${BUILD_DIR}/dig/package.sh $package_opts
