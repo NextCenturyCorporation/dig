@@ -132,6 +132,68 @@ exports.update = function(req, res) {
   return res.json(200, folders[index]);
 };
 
+// Removes items in an existing folder in the DB
+exports.removeItems = function(req, res) {
+  // Prevents changing name to ROOT (or changing ROOT folder in general) and
+  // changing another user's folders
+  if(req.body.name == "ROOT" || req.headers.user !== "test") {
+    return res.send(404);
+  }
+
+  var id = parseInt(req.params.id);
+  var index = findIndex(id);
+
+  // Prevents:
+  //    - updating non-existant folder
+  //    - changing ROOT folder
+  if(index == -1) {
+    return res.send(404);
+  } else if(folders[index].name == "ROOT") {
+    return res.send(404);
+  }
+
+  // Check child folder ids are valid
+  if(req.body.childIds) {
+    var invalidChildren = false;
+    for(var i = 0; i < req.body.childIds.length; i++) {
+      if(_.indexOf(folders[index].childIds, req.body.childIds[i]) == -1) {
+        invalidChildren = true;
+      }
+    }
+    if(invalidChildren) {
+      return res.send(404);
+    }
+  }
+
+  // Remove items (if any) from an existing folder
+  if(req.body.items) {
+    for(i = 0; i < req.body.items.length; i++) {
+      // Remove item if it exists
+      var itemIndex = _.indexOf(folders[index].items, req.body.items[i]);
+      if(itemIndex != -1) {
+        folders[index].items.splice(itemIndex, 1);
+      }
+    }
+  }
+
+  // Recursively remove child folders (if any) from an existing folder
+  if(req.body.childIds) {
+
+    // Remove children reference in folder's childIds
+    var newChildIds = [];
+    for(i = 0; i < folders[index].childIds.length; i++) {
+      if(_.indexOf(req.body.childIds, folders[index].childIds[i]) == -1) {
+        newChildIds.push(folders[index].childIds[i]);
+      }
+    }
+    folders[index].childIds = newChildIds;
+
+    removeChildren(req.body.childIds);
+  }
+
+  return res.json(200, folders[findIndex(id)]);
+};
+
 // Deletes a folder from the DB
 exports.destroy = function(req, res) {
   if(req.headers.user !== "test") {

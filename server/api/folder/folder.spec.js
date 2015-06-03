@@ -726,3 +726,232 @@ describe('DELETE /api/folders/:id', function() {
       });
   });
 });
+
+describe('PUT /api/folders/removeItems/:id', function() {
+  /* NOTES: Resetting folders variable to start fresh. Also, the next index will be 6. */
+
+  var folders2 = [
+      {
+        username: "test",
+        name: "folderChild",
+        parentId: 0,
+        childIds: [],
+        items: ["123", "456", "789"]
+      },{
+        username: "test",
+        name: "folderParent",
+        parentId: 0,
+        childIds: [6],
+        items: ["123"]
+      },{
+        username: "test",
+        name: "folderAunt",
+        parentId: 0,
+        childIds: [],
+        items: ["214321"]
+      },
+      {
+        username: "test",
+        name: "folderSibling",
+        parentId: 7,
+        childIds: [],
+        items: ["153", "412", "231"]
+      },
+      {
+        username: "test",
+        name: "folderGrandparent",
+        parentId: 0,
+        childIds: [7, 9],
+        items: ["1341", "211", "134", "24ed1"]
+      }
+  ];
+
+  it('should not be able to change another user\'s folders', function(done) {
+    request(app)
+      .put('/api/folders/removeItems/0')
+      .set('user', 'test1')
+      .set('Content-Type','application/json')
+      .send(rootFolderInitial)
+      .expect(404, done);
+  });
+
+  it('should not be able to change ROOT folder', function(done) {
+    request(app)
+      .put('/api/folders/removeItems/0')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(rootFolderInitial)
+      .expect(404, done);
+  });
+
+  it('should not be able to change a folder to name ROOT', function(done) {
+    // Add new folder
+    request(app)
+      .post('/api/folders')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[0])
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.containEql(folders2[0]);
+      });
+
+    // Try to change the new folder's name to ROOT
+    request(app)
+      .put('/api/folders/removeItems/6')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        name: "ROOT",
+        childIds: [],
+        items: ["123", "456"]
+      })
+      .expect(404, done);
+  });
+
+  it('should return error on unknown id', function(done) {
+    request(app)
+      .put('/api/folders/removeItems/10')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[0])
+      .expect(404, done);
+  });
+
+  it('should not be able to remove unknown child folder', function(done) {
+    request(app)
+      .put('/api/folders/removeItems/6')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        childIds: [2]
+      })
+      .expect(404, done);
+  });
+
+  it('should remove one item', function(done) {
+    request(app)
+      .put('/api/folders/removeItems/6')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        items: ["123", "789"]
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders2[0].name);
+        res.body.parentId.should.eql(folders2[0].parentId);
+        res.body.childIds.should.eql(folders2[0].childIds);
+        res.body.items.should.eql(["456"]);
+        done();
+      });
+  });
+
+  it('should remove child folder', function(done) {
+    // Create new folder folderParent
+    request(app)
+      .post('/api/folders')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[1])
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.containEql(folders2[1]);
+      });
+
+    // Create new folder folderSibling
+    request(app)
+      .post('/api/folders')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[3])
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.containEql(folders2[3]);
+      });
+
+    // Delete folderChild
+    request(app)
+      .put('/api/folders/removeItems/7')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        childIds: [6]
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders2[1].name);
+        res.body.parentId.should.eql(folders2[1].parentId);
+        res.body.childIds.should.eql([8]);
+        res.body.items.should.eql(folders2[1].items);
+      });
+
+    // Check folderChild doesn't exist
+    request(app)
+      .get('/api/folders/6')
+      .set('user', 'test')
+      .expect(404, done);
+  });
+  
+  it('should remove child folders and items', function(done) {
+    // Create new folder folderAunt
+    request(app)
+      .post('/api/folders')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[2])
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.containEql(folders2[2]);
+      });
+
+    // Create new folder folderGrandparent
+    request(app)
+      .post('/api/folders')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send(folders2[4])
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.containEql(folders2[4]);
+      });
+
+    // Delete folderParent and items
+    request(app)
+      .put('/api/folders/removeItems/10')
+      .set('user', 'test')
+      .set('Content-Type','application/json')
+      .send({
+        childIds: [7],
+        items: ["211", "134"]
+      })
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.name.should.eql(folders2[4].name);
+        res.body.parentId.should.eql(folders2[4].parentId);
+        res.body.childIds.should.eql([9]);
+        res.body.items.should.eql(["1341", "24ed1"]);
+      });
+
+    // Check folderParent and folderSibling doen't exist
+    request(app)
+      .get('/api/folders/7')
+      .set('user', 'test')
+      .expect(404);
+
+    // Check folderParent and folderSibling doen't exist
+    request(app)
+      .get('/api/folders/8')
+      .set('user', 'test')
+      .expect(404, done);
+  });
+
+});
