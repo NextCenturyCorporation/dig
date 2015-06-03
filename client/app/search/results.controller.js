@@ -179,7 +179,22 @@ angular.module('digApp')
     // Moves selected docs to given folder
     $scope.moveItems = function(folder) {
       $http.put('api/folders/' + folder._id,
-        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey]});
+        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey]}).
+        success(function(data) {
+          if($scope.selectedItemsKey != $scope.FILTER_TAB) {
+            $scope.removeItems();
+          }
+        });
+    };
+
+    $scope.isDeleteDisabled = function() {
+      if($scope.selectedItemsKey == $scope.FILTER_TAB) {
+        return true;
+      } else if($scope.selectedItems[$scope.selectedItemsKey]) {
+        return !$scope.selectedItems[$scope.selectedItemsKey].length;
+      } else {
+        return true;
+      }
     };
 
     $scope.$watch('indexVM.query', function(){

@@ -25,7 +25,8 @@ angular.module('digApp')
       // Each folder only has the name, _id, parentId, and an array of children
       $scope.nestedFolders = [];
 
-      // All the folders created in a flat list
+      // All the folders created in a flat list.
+      // Each folder only has the name, _id, and parentId
       $scope.folders = [];
 
       $scope.selectedFolder = {};
@@ -307,7 +308,10 @@ angular.module('digApp')
                     return validFolders;
                   },
                   currentFolder: function() {
-                      return $scope.selectedFolder;
+                    if(moveSelectedItems) {
+                      return [];
+                    }
+                    return $scope.selectedFolder;
                   },
                   items: function() {
                     if(moveSelectedItems) {
@@ -320,9 +324,22 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
-            $scope.getFolders();
+            if ($scope.selectedFolder._id && moveSelectedItems) {
+              $scope.removeItems($scope.getFolders);
+            } else {
+              $scope.getFolders();
+            }
           });
       };
+
+      $scope.removeItems = function(cb) {
+        $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
+          success(function(data) {
+            if(cb) {
+              cb();
+            }
+          });
+      }
 
       // Returns array of folders with children nested (recursively)
       function _getSubfolders(id, folders) {

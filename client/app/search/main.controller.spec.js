@@ -576,7 +576,7 @@ describe('Controller: MainCtrl', function () {
       scope.createFolder(true);
       $httpBackend.flush();
       expect(modal.open).toHaveBeenCalledWith(modalParameters);
-      expect(modalOpts.resolve.currentFolder()).toEqual(nestedFolders[0]);
+      expect(modalOpts.resolve.currentFolder()).toEqual([]);
       expect(modalOpts.resolve.items()).toEqual(["12ed32q", "1312e", "13es"]);
       expect(modalOpts.resolve.folders()).toEqual([
           {
