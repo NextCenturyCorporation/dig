@@ -13,7 +13,7 @@ angular.module('digApp')
     $scope.query = {name: '', frequency: 'never', digState: {}, elasticUIState: {}};
     $scope.currentUser = User.get();
 
-    $http.get('api/queries/').
+    $http.get('api/users/reqHeader/queries').
         success(function(data) {
             $scope.queryResults = data;
     });
@@ -36,15 +36,9 @@ angular.module('digApp')
         return false;
     };
 
-    $scope.replacePeriods = function(obj) {
-        var tempStr = JSON.stringify(obj);
-        tempStr = tempStr.replace(/\./g, '\\uff0e'); 
-        return JSON.parse(tempStr);
-    };
-
     $scope.saveQuery = function() {
         $scope.query.elasticUIState.queryState = $scope.euiQuery;
-        $scope.query.elasticUIState.filterState = $scope.replacePeriods($scope.euiFilters);
+        $scope.query.elasticUIState.filterState = $scope.euiFilters;
         $scope.query.digState.searchTerms = $scope.searchTerms;
         $scope.query.digState.filters = $scope.filters;
         $scope.query.digState.includeMissing = $scope.includeMissing;
@@ -55,10 +49,10 @@ angular.module('digApp')
 
         if($scope.queryNameExists($scope.query.name)) {
             if($window.confirm('Are you sure you want to save over existing query \"' + $scope.query.name + '\"?')) {
-                $http.put('api/queries/' + $scope.existingQuery._id, $scope.query);
+                $http.put('api/queries/' + $scope.existingQuery.id, $scope.query);
             }
         } else {
-            $http.post('api/queries', $scope.query);
+            $http.post('api/users/reqHeader/queries', $scope.query);
         }
     };
 

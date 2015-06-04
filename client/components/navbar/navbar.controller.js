@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-  .controller('NavbarCtrl', function ($scope, $location, $modal, User, blurImageService) {
+  .controller('NavbarCtrl', function ($scope, $location, $modal, $state, User, blurImageService) {
     $scope.menu = [
     {
       'title': 'Home',
@@ -9,7 +9,7 @@ angular.module('digApp')
       'icon':'glyphicon glyphicon-home',
       'reload': true
     }, {
-      'title': 'Search Queries',
+      'title': 'Saved Queries',
       'link': '/queries',
       'reload': true
     }];
@@ -37,5 +37,12 @@ angular.module('digApp')
         });
     };
 
+    $scope.changeTab = function (link) {
+      if(link == '/list') {
+        $state.go('search.results.list');
+      } else if(link == '/queries') {
+        $state.go('queries');
+      }
+    };
 
   });

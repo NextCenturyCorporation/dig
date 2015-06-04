@@ -1,57 +1,88 @@
 'use strict';
 
-var User = require('./user.model');
-var config = require('../../config/environment');
-var _ = require('lodash');
+var models = require('../../models');
+var sequelize = models.sequelize;
 
-var validationError = function(res, err) {
-  return res.json(422, err);
-};
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }    
+}
 
-/**
- * Get my info
- */
-exports.me = function(req, res, next) {
-  var userId = req.headers.user;
-  User.findOne({
-    username: userId
-  }, function(err, user) {
-    if (err) return next(err);
-    if (!user) {
-      user = new User({username: req.headers.user});
-      user.save(function(createErr) {
-        if(createErr) return next(createErr);
-      });
-    }
-    res.json(user);
-  });
-};
-
-/**
- * Update my info
- */
-exports.updateMe = function(req, res, next) {
-  var userId = req.headers.user;
-  User.findOne({
-    username: userId
-  }, function(err, user) {
-    if (err) return next(err);
-    if (!user) { return res.send(404); }
-    var updated = _.merge(user, req.body);
-    // for Mixed types, need to tell Mongoose to save over existing fields 
-    if(req.body.blurConfig) { 
-      updated.markModified('blurConfig'); 
-    }
-    updated.save(function (saveErr) {
-      if (saveErr) { return next(saveErr); }
-      return res.json(200, updated);
+exports.index = function (req, res) {
+    models.User.findAll(
+    //{
+    //     include: [ models.Query ]
+    // }
+    ).then(function(users) {
+        res.json(200, users);
     });
-  });
 };
 
-/**
- * Authentication callback
- */
-exports.authCallback = function(req, res, next) {
-  res.redirect('/');
-};
+exports.show = function (req, res) {
+    setUserName(req);
+    models.User.findOrCreate({
+        where: {username: req.params.username}
+    }).spread(function(user, created) {
+        res.json(200, user);
+    }).catch(function(error) {
+        res.json(400, error);
+    });
+}
+
+exports.create = function (req, res) {
+    models.User.create(req.body)
+    .then(function(newuser) {
+        res.json(201, newuser);
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+exports.update = function (req, res) {
+    setUserName(req);
+    models.User.update(
+        req.body,
+        {where: {username: req.params.username}}
+    ).then(function(user) {
+        res.status(204).end();
+    }).catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+exports.delete = function (req, res) {
+    setUserName(req);
+    models.User.destroy({
+        where: {username: req.params.username}
+    })
+    .then(function(user) {
+        if (user) {
+            res.status(204).end();
+        }
+        else {
+            res.status(404).end();
+        }
+    })
+    .catch(function(error) {
+        res.json(404, error);
+    });
+}
+
+// return active (hasrun=false) notifications for specified user
+exports.notificationCount = function (req, res) {
+    setUserName(req);
+    sequelize.query(
+        "select count(*) as notrun from Users inner join Queries on " +
+        "Users.username = Queries.UserUsername where " +
+        "Queries.notificationHasRun=(0) and Users.username = :username",
+        { replacements: { username: req.params.username }, 
+        type: sequelize.QueryTypes.SELECT })
+    .then(function(results) {
+        var count = results[0].notrun;
+        res.json(200, {notRunCount: count});
+    }).catch(function(error) {
+        res.json(400, error);
+    });    
+}
+

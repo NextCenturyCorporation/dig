@@ -31,7 +31,7 @@ var all = {
     },
 
     // List of user roles
-    userRoles: ['guest', 'user', 'admin'],
+    userRoles: ['guest', 'user', 'admin', 'disabled'],
 
     // MongoDB connection options
     mongo: {
@@ -41,20 +41,260 @@ var all = {
             }
         }
     },
+
     appVersion: pjson.version,
 
     euiServerUrl: process.env.EUI_SERVER_URL || 'http://localhost',
+    euiServer: process.env.EUI_SERVER || 'localhost',
     euiServerPort: process.env.EUI_SERVER_PORT || 9200,
-    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig',
+    dbServerUser: process.env.DB_SERVER_USER,
+    dbServerPass: process.env.DB_SERVER_PASS,
+    euiSearchIndex: process.env.EUI_SEARCH_INDEX || 'dig-latest',
+    euiSearchType: process.env.EUI_SEARCH_TYPE || 'WebPage',
 
     imageSimUrl: process.env.IMAGE_SIM_URL || 'http://localhost',
     imageSimPort: process.env.IMAGE_SIM_PORT || 3001,
 
     blurImages: ((!!process.env.BLUR_IMAGES && process.env.BLUR_IMAGES === 'false') ? false : true),
-
     blurPercentage: process.env.BLUR_PERCENT || 2.5,
 
     euiConfigs: {
+        'mockads': {
+            facets: {
+                aggFilters: [{
+                    title: 'State',
+                    type: 'eui-aggregation',
+                    field: 'state_agg',
+                    terms: 'state',
+                    termsType: 'string',
+                    count: 15
+                },{
+                    title: 'Ethnicity',
+                    type: 'eui-aggregation',
+                    field: 'etn_agg',
+                    terms: 'ethnicity',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Hair Color',
+                    type: 'eui-aggregation',
+                    field: 'hc_agg',
+                    terms: 'hair_color',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Age',
+                    type: 'eui-aggregation',
+                    field: 'age_agg',
+                    terms: 'age',
+                    termsType: 'number',
+                    count: 10
+                }],
+                dateFilters: [{
+                    title: 'Date',
+                    aggName: 'date_agg',
+                    field: 'date'
+                }]
+            },
+            sort: {
+                defaultOption: {
+                    field: '_score', order: 'desc', title: 'Best Match'
+                },
+                notificationOption: {
+                    field: '_timestamp', order: 'desc', title: 'Date Added to DIG (Newest First)',
+                },
+                options: [
+                    {
+                        field: '_score',
+                        order: 'desc',
+                        title: 'Best Match'
+                    },{
+                        field: 'date',
+                        order: 'desc',
+                        title: 'Date Created (Newest First)'
+                    },{
+                        field: 'date',
+                        order: 'asc',
+                        title: 'Date Created (Oldest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'desc',
+                        title: 'Date Added to DIG (Newest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'asc',
+                        title: 'Date Added to DIG (Oldest First)'
+                    }
+                ]
+            },
+            lastUpdateQuery: {
+                field: 'date'
+            },
+            highlight: {
+                fields: [
+                'title'
+                ]
+            },
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["title"][0] || doc._source.title',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Created',
+                    field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'City',
+                    field: 'doc._source.city',
+                    classes: 'location'
+                },{
+                    title: 'State',
+                    field: 'doc._source.state',
+                    classes: 'location'
+                },{
+                    title: 'Phone',
+                    field: 'doc._source.phone',
+                    classes: 'phone'
+                },{
+                    title: 'Name',
+                    field: 'doc._source.full_name',
+                    classes: 'name'
+                },{
+                    title: 'Age',
+                    field: 'doc._source.age',
+                    classes: 'age'
+                }],
+                full: {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'Name(s)',
+                            field: 'doc._source.full_name',
+                            featureValue: 'full_name'
+                        },{
+                            title: 'City',
+                            field: 'doc._source.city',
+                            featureValue: 'city'
+                        },{
+                            title: 'State',
+                            field: 'doc._source.state',
+                            featureValue: 'state'
+                        },{                         
+                            title: 'Phone Number',
+                            field: 'doc._source.phone',
+                            featureValue: 'phone'
+                        },{
+                            title: 'Email',
+                            field: 'doc._source.email',
+                            featureValue: 'email'
+                        },{
+                            title: 'Created',
+                            field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        }]
+                    },
+                    "2": {
+                        classes: 'person-details',
+                        fields: [{
+                            title: 'Age',
+                            field: 'doc._source.age',
+                            featureValue: 'age'
+                        },{
+                            title: 'Ethnicity',
+                            field: 'doc._source.ethnicity',
+                            featureValue: 'ethnicity'
+                        },{
+                            title: 'Hair Color',
+                            field: 'doc._source.hair_color',
+                            featureValue: 'hair_color'
+                        },{
+                            title: 'Height',
+                            field: 'doc._source.height',
+                            featureValue: 'height'
+                        },{
+                            title: 'Weight',
+                            field: 'doc._source.weight',
+                            featureValue: 'weight'
+                        }]
+                    }
+                }
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            detailFields: {
+                "1": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Created',
+                        field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                    },{
+                        title: 'City',
+                        field: 'doc._source.city',
+                        featureValue: 'city'
+                    },{
+                        title: 'State',
+                        field: 'doc._source.state',
+                        featureValue: 'state'
+                    },{  
+                        title: 'Phone Number',
+                        field: 'doc._source.phone',
+                        featureValue: 'phone'
+                    },{
+                        title: 'Email',
+                        field: 'doc._source.email',
+                        featureValue: 'email'
+                    }]
+                },
+                "2": {
+                    classes: 'listing-details',
+                    fields: [{
+                        title: 'Name(s)',
+                        field: 'doc._source.full_name',
+                    },{
+                        title: 'Username',
+                        field: 'doc._source.username',
+                        featureValue: 'username'
+                    },{
+                        title: 'Age',
+                        field: 'doc._source.age',
+                        featureValue: 'age'
+                    },{
+                        title: 'Ethnicity',
+                        field: 'doc._source.ethnicity',
+                        featureValue: 'ethnicity'
+                    },{
+                        title: 'Hair Color',
+                        field: 'doc._source.hair_color',
+                        featureValue: 'hair_color'
+                    },{
+                        title: 'Height',
+                        field: 'doc._source.height',
+                        featureValue: 'height'
+                    },{
+                        title: 'Weight',
+                        field: 'doc._source.weight',
+                        featureValue: 'weight'
+                    },{
+                        title: 'Eye Color',
+                        field: 'doc._source.eye_color',
+                        hideIfMissing: true
+                    },{
+                        title: 'Smokes',
+                        field: 'doc._source.smokes',
+                        featureValue: 'smokes',
+                        hideIfMissing: true
+                    },{
+                        title: 'IP Address',
+                        field: 'doc._source.ip_address',
+                        featureValue: 'ip_address',
+                        hideIfMissing: true
+                    }]
+                }
+            }
+        },
         'dig-latest': {
             facets: {
                 simFilter: {
@@ -111,20 +351,33 @@ var all = {
                 ]
             },
             sort: {
-                field: 'dateCreated',
                 defaultOption: {
-                    order: 'rank', title: 'Best Match'
+                    field: '_score', order: 'desc', title: 'Best Match'
+                },
+                notificationOption: {
+                    field: '_timestamp', order: 'desc', title: 'Date Added to DIG (Newest First)',
                 },
                 options: [
                     {
-                        order: 'rank',
+                        field: '_score',
+                        order: 'desc',
                         title: 'Best Match'
                     },{
+                        field: 'date',
                         order: 'desc',
-                        title: 'Newest First'
+                        title: 'Date Created (Newest First)'
                     },{
+                        field: 'date',
                         order: 'asc',
-                        title: 'Oldest First'
+                        title: 'Date Created (Oldest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'desc',
+                        title: 'Date Added to DIG (Newest First)'
+                    }, {
+                        field: '_timestamp',
+                        order: 'asc',
+                        title: 'Date Added to DIG (Oldest First)'
                     }
                 ]
             },
@@ -139,7 +392,7 @@ var all = {
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Date',
+                    title: 'Created',
                     field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
