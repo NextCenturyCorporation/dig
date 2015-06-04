@@ -1,14 +1,5 @@
 'use strict';
 
-// Set default node environment to development
-if (process.env.NODE_ENV === 'test') {
-    process.env.DB_PASS='digdig';
-    process.env.DB_HOST='localhost';
-}
-else {
-    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-}
-var config = require('../config/environment');
 var should = require('should');
 var models = require('./index');
 

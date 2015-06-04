@@ -1,7 +1,6 @@
 'use strict';
 var elasticsearch = require('elasticsearch'),
-    schedule = require('node-schedule'),
-    models = require('../models');
+    models = require('./models');
 
 // get a logger
 var bunyan = require('bunyan');
@@ -54,7 +53,7 @@ var esClient = new elasticsearch.Client({
 // route sequelize output to log
 models.sequelize.options.logging=function(loginfo) {
     applog.info(loginfo);
-}
+};
 
 // initialize configuration for elasticsearch queries
 var config = {};

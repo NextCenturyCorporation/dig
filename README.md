@@ -6,17 +6,9 @@ DIG is a visual analysis tool based on a faceted search engine that enables rapi
 - [Node.js]
 - [grunt-cli] installed globally (npm i -g grunt-cli)
 - [Bower] installed globally (npm i -g bower)
-- [MongoDB]
+- [MySQL]
 - [Elasticsearch]
 
-### MongoDB Notes
-
-MongoDB is used to store relevant data for users.
-
-When running in development mode:
-The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in `server/config/seed.js`. 
-
-Similarly, in a production environment a user would be supplied in the request header, but in development, the header will be auto populated with the mock user specified in the seed.js file. 
 
 ### Elasticsearch Setup
 
