@@ -125,6 +125,27 @@ exports.update = function(req, res) {
     }
   }
 
+  // Add new children (if any) to existing folder children
+  if(req.body.childIds) {
+    for(var i = 0; i < req.body.childIds.length; i++) {
+      // If child's id not in folder, add it and change the child's parent
+      if(_.indexOf(folders[index].childIds, req.body.childIds[i]) == -1) {
+        folders[index].childIds.push(req.body.childIds[i]);
+
+        // Get child's index in folder area
+        var childIndex = findIndex(req.body.childIds[i]);
+        if(childIndex != -1) {
+          // Remove this child's reference in its old parent
+          var childOldParentIndex = findIndex(folders[childIndex].parentId);
+          folders[childOldParentIndex].childIds.splice(folders[childOldParentIndex].childIds.indexOf(req.body.childIds[i]), 1);
+
+          // Change parent reference in this child for good
+          folders[childIndex].parentId = id;
+        }
+      }
+    }
+  }
+
   // Add folder reference in its new parent folder
   var newParentIndex = findIndex(folders[index].parentId);
   folders[newParentIndex].childIds.push(id);
