@@ -12,21 +12,31 @@ angular.module('digApp')
         $scope.retrieveFolder();
       };
 
-      // Gets the items and folders in the selected folder for viewing
+      // Gets the items and sub-folders in the selected folder for viewing
       $scope.retrieveFolder = function() {
         if($scope.selectedFolder._id) {
-          $http.get('api/folders/' + $scope.selectedFolder._id).
-            success(function(data) {
-              // Contains the _ids of the results in the selected folder
-              $scope.items = data.items;
+          var fldr = _.find($scope.folders, {_id: $scope.selectedFolder._id});
 
-              // Contains the _ids of the folders within the selected folder
-              $scope.childFolderIds = data.childIds;
+          $scope.items = fldr.items;
+          
+          $scope.childFolders = [];
+           _.forEach(fldr.childIds, function(id) {
+            var fldr = _.find($scope.folders, {_id: id});
+            $scope.childFolders.push({name: fldr.name, _id: fldr._id});
+          });
 
-              $scope.searchConfig.euiSearchIndex = euiSearchIndex;
-              $scope.filterFolder.enabled = true;
-            });
+          $scope.selectedItems[$scope.selectedItemsKey] = [];
+          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
+
+          $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+          $scope.filterFolder.enabled = true;
         }
+      };
+
+      // Opens a subfolder on click event
+      $scope.openFolder = function(folderId) {
+        var selected = $scope.getUpdatedSelected(folderId, $scope.nestedFolders, {});
+        $scope.select(selected);
       };
 
       $scope.getDisplayImageSrc = function(doc) {
@@ -72,8 +82,8 @@ angular.module('digApp')
       // Reloads the folder view when a folder is selected/deselected
       $scope.$watch('selectedFolder._id',
           function(newValue, oldValue) {
-              if(newValue && newValue !== oldValue) {
-                $scope.retrieveFolder();
+              if(newValue) {
+                $scope.getFolders($scope.retrieveFolder);
               } else {
                 $scope.items = [];
                 $scope.searchConfig.euiSearchIndex = '';

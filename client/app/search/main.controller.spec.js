@@ -330,31 +330,51 @@ describe('Controller: MainCtrl', function () {
       expect(scope.validMoveFolders).toEqual([]);
       expect(scope.rootFolder).toEqual(folders[0]);
       expect(scope.selectedItems).toEqual({"#filter": []});
+      expect(scope.selectedChildFolders).toEqual({"#filter": []});
+      expect(scope.selectedItemsKey).toEqual("#filter");
       expect(scope.folders).toEqual([
         {
           _id: 1,
+          username: "test",
           name: "folder1",
-          parentId: 0
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
         },{
           _id: 2,
+          username: "test",
           name: "folder2",
-          parentId: 1
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
         },{
           _id: 3,
+          username: "test",
           name: "folder3",
-          parentId: 0
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
         },{
           _id: 4,
+          username: "test",
           name: "folder4",
-          parentId: 3
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
         },{
           _id: 5,
+          username: "test",
           name: "folder5",
-          parentId: 4
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
         },{
           _id: 6,
+          username: "test",
           name: "folder6",
-          parentId: 4
+          parentId: 4,
+          childIds: [],
+          items: []
         }
       ]);
     });
@@ -396,16 +416,19 @@ describe('Controller: MainCtrl', function () {
         var validFolders1 = [
           {
             name: "ROOT",
-            _id: 0
+            _id: 0 
           },{
             name: "folder1",
-            _id: 1
+            _id: 1,
+            parentId: 0
           },{
             name: "folder2",
-            _id: 2
+            _id: 2,
+            parentId: 1
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           }
         ];
 
@@ -415,10 +438,12 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder1",
-            _id: 1
+            _id: 1,
+            parentId: 0
           },{
             name: "folder2",
-            _id: 2
+            _id: 2,
+            parentId: 1
           }
         ];
 
@@ -426,12 +451,17 @@ describe('Controller: MainCtrl', function () {
 
         // Select a folder initially
         expect(scope.selectedItems).toEqual({"#filter": []});
+        expect(scope.selectedChildFolders).toEqual({"#filter": []});
         scope.select(nestedFolders[1].children[0]);
         expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
         expect(scope.validMoveFolders).toEqual(validFolders1);
         expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
         expect(scope.selectedItems).toEqual({
+          "#filter": [],
+          4: []
+        });
+        expect(scope.selectedChildFolders).toEqual({
           "#filter": [],
           4: []
         });
@@ -448,6 +478,11 @@ describe('Controller: MainCtrl', function () {
           4: [],
           3: []
         });
+        expect(scope.selectedChildFolders).toEqual({
+          "#filter": [],
+          4: [],
+          3: []
+        });
         expect(scope.selectedItemsKey).toEqual(3);
     });
 
@@ -456,6 +491,7 @@ describe('Controller: MainCtrl', function () {
 
         scope.selectedFolder = nestedFolders[1].children[0];
         scope.selectedItems[4] = [];
+        scope.selectedChildFolders[4] = [];
         scope.selectedItemsKey = 4;
 
         scope.select(nestedFolders[1].children[0]);
@@ -464,6 +500,7 @@ describe('Controller: MainCtrl', function () {
         expect(scope.validMoveFolders).toEqual([]);
         expect(scope.selectedFolder).toEqual({});
         expect(scope.selectedItems).toEqual({"#filter": []});
+        expect(scope.selectedChildFolders).toEqual({"#filter": []});
         expect(scope.selectedItemsKey).toEqual(4);
     });
 
@@ -512,7 +549,7 @@ describe('Controller: MainCtrl', function () {
 
     it('should open delete modal', function () {
       var modalParameters = {
-        templateUrl: 'components/folder/delete-modal.html',
+        templateUrl: 'components/folder/delete-folder-modal.html',
         controller: 'EditModalCtrl',
         resolve: { folder: jasmine.any(Function) },
         size: 'sm'
@@ -526,7 +563,7 @@ describe('Controller: MainCtrl', function () {
       expect(modalOpts.resolve.folder()).toEqual(nestedFolders[0]);
     });
 
-    it('should open create modal for moving folders', function () {
+    /*it('should open create modal for moving folders', function () {
       var modalParameters = {
         templateUrl: 'components/folder/create-modal.html',
         controller: 'CreateModalCtrl',
@@ -654,7 +691,7 @@ describe('Controller: MainCtrl', function () {
             _id: 6
           }
         ]);
-    });
+    });*/
 
     it('should deselect selected', function () {
       scope.selectedFolder = {
@@ -698,7 +735,7 @@ describe('Controller: MainCtrl', function () {
       expect(scope.validMoveFolders).toEqual([]);
     });
 
-    it('should update nestedFolders', function () {
+    /*it('should update nestedFolders', function () {
       scope.nestedFolders = [
         {
           _id: 3,
@@ -881,7 +918,7 @@ describe('Controller: MainCtrl', function () {
             _id: 6
           }
         ]);
-    });
+    });*/
  
     it('should clear searches selected items on submit', function () {
       scope.selectedItems["#filter"] = ["2e432e", "2ew"];
@@ -889,7 +926,7 @@ describe('Controller: MainCtrl', function () {
       expect(scope.selectedItems["#filter"]).toEqual([]);
     });
 
-    it('should update scope.folders on folder request', function () {
+    /*it('should update scope.folders on folder request', function () {
       scope.folders = [
           {
             _id: 1,
@@ -941,6 +978,6 @@ describe('Controller: MainCtrl', function () {
             parentId: 4
           }
         ]);
-    });
+    });*/
 
 });

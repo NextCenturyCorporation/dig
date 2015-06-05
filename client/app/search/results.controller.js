@@ -127,71 +127,109 @@ angular.module('digApp')
         $scope.selectedImage = ($scope.selectedImage >= 0) ? $scope.selectedImage : 0;
     };
 
-    // Selects or deselects a doc from the list view when a checkbox is clicked
-    $scope.updateSelectionList = function($event, doc) {
-      $scope.updateSelection($event.target.checked, doc);
+    // Selects or deselects a doc or folder from the list view when a checkbox is clicked
+    $scope.updateSelectionList = function($event, item, isFolder) {
+      $scope.updateSelection($event.target.checked, item, isFolder);
     };
 
-    // Selects or deselects a doc based on the given doSelect boolean
-    $scope.updateSelection = function(doSelect, doc) {
-      // Select or deselect the doc
-      if (doSelect && !$scope.isSelected(doc._id)) {
-        $scope.selectedItems[$scope.selectedItemsKey].push(doc._id);
+    // Selects or deselects a doc or folder based on the given doSelect boolean
+    $scope.updateSelection = function(doSelect, item, isFolder) {
+      // Select or deselect the item
+      if (doSelect && !$scope.isSelected(item._id, isFolder)) {
+        if(isFolder) {
+          $scope.selectedChildFolders[$scope.selectedItemsKey].push(item._id);
+        } else {
+          $scope.selectedItems[$scope.selectedItemsKey].push(item._id);
+        }
       } else if(!doSelect) {
-        _.pull($scope.selectedItems[$scope.selectedItemsKey], doc._id);
+        if(isFolder) {
+          _.pull($scope.selectedChildFolders[$scope.selectedItemsKey], item._id);
+        } else {
+          _.pull($scope.selectedItems[$scope.selectedItemsKey], item._id);
+        }
       }
     };
 
-    // Selects or deselects all docs on page when the global checkbox is clicked
+    // Selects or deselects all docs and folders on page when the global checkbox is clicked
     $scope.selectAll = function($event) {
       _.forEach($scope.indexVM.results.hits.hits, function(doc) {
-        $scope.updateSelection($event.target.checked, doc);
+        $scope.updateSelection($event.target.checked, doc, false);
+      });
+
+      _.forEach($scope.childFolders, function(folder) {
+        $scope.updateSelection($event.target.checked, folder, true);
       });
     };
 
-    // Returns whether the doc with the id given is selected
-    $scope.isSelected = function(id) {
+    // Clears all checkboxes from selected folder or search results
+    $scope.clearAll = function() {
+      $scope.selectedItems[$scope.selectedItemsKey] = [];
+      $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
+    };
+
+    // Returns whether the doc or folder with the id given is selected
+    $scope.isSelected = function(id, isFolder) {
+      if(isFolder) {
+        return (_.indexOf($scope.selectedChildFolders[$scope.selectedItemsKey], id) != -1);
+      }
+
       return (_.indexOf($scope.selectedItems[$scope.selectedItemsKey], id) != -1);
     };
 
-    // Returns whether all docs on the current page are selected or not
+    // Returns whether all docs and folders on the current page are selected or not
     $scope.isSelectedAll = function() {
       if($scope.indexVM.results) {
         var allSelected = true;
 
         _.forEach($scope.indexVM.results.hits.hits, function(doc) {
-          if(!$scope.isSelected(doc._id)) {
+          if(!$scope.isSelected(doc._id, false)) {
             allSelected = false;
           }
         });
 
-        return allSelected;
+        _.forEach($scope.childFolders, function(folder) {
+          if(!$scope.isSelected(folder._id, true)) {
+            allSelected = false;
+          }
+        });
+
+        return allSelected && $scope.indexVM.results.hits.hits.length;
       }
 
       return false;
     };
 
-    // Gets the total numbers of docs selected on all pages
+    // Gets the total numbers of docs and folders selected on all pages
     $scope.getNumberSelected = function() {
-      return ($scope.selectedItems[$scope.selectedItemsKey]) ? $scope.selectedItems[$scope.selectedItemsKey].length : 0;
+      var total = ($scope.selectedItems[$scope.selectedItemsKey]) ? $scope.selectedItems[$scope.selectedItemsKey].length : 0;
+      total += ($scope.selectedChildFolders[$scope.selectedItemsKey]) ? $scope.selectedChildFolders[$scope.selectedItemsKey].length : 0;
+
+      return total;
     };
 
     // Moves selected docs to given folder
     $scope.moveItems = function(folder) {
       $http.put('api/folders/' + folder._id,
-        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey]}).
+        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey],
+          childIds: $scope.selectedChildFolders[$scope.selectedItemsKey]}).
         success(function(data) {
           if($scope.selectedItemsKey != $scope.FILTER_TAB) {
-            $scope.removeItems();
+            $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
+                success(function(data) {
+                  $scope.getFolders($scope.retrieveFolder);
+                });
           }
         });
     };
 
+    // Returns true if the delete button is disabled, false otherwise
+    // The delete button is always disabled on the search view
     $scope.isDeleteDisabled = function() {
       if($scope.selectedItemsKey == $scope.FILTER_TAB) {
         return true;
-      } else if($scope.selectedItems[$scope.selectedItemsKey]) {
-        return !$scope.selectedItems[$scope.selectedItemsKey].length;
+      } else if($scope.selectedItems[$scope.selectedItemsKey] || $scope.selectedChildFolders[$scope.selectedItemsKey]) {
+        return !(($scope.selectedItems[$scope.selectedItemsKey] && $scope.selectedItems[$scope.selectedItemsKey].length) || 
+          ($scope.selectedChildFolders[$scope.selectedItemsKey] && $scope.selectedChildFolders[$scope.selectedItemsKey].length));
       } else {
         return true;
       }

@@ -3,22 +3,46 @@
     <div class="col-sm-1 select-global-checkbox text-center">
       <input type="checkbox" ng-click="selectAll($event)" ng-checked="isSelectedAll()">
     </div>
-    <span class="col-sm-3 selected-results">{{ getNumberSelected() }} item(s) selected</span>
+    <span class="col-sm-4 selected-results">
+      {{ getNumberSelected() }} item(s) selected
+      <button class="clear-checkboxes-all" ng-click="clearAll()" title="Clear all checkboxes">
+        <i class="glyphicon glyphicon-remove clear-checkboxes-all"></i>
+      </button>
+    </span>
     <h4 class="pull-right">
       <!-- <a href="#" class="header-icon visible-xs-inline-block" title="Open filter panel"><i class="fa fa-filter"></i></a> -->
-      <strong>{{indexVM.results.hits.total | number:0}}</strong> results
+      <strong>{{indexVM.results.hits.total + childFolders.length | number:0}}</strong> results
     </h4>
 
   </div>
 
   <ul id="results" class="list-group">
+    <li class="list-group-item" ng-repeat="folder in childFolders track by $index">
+      <div class="row list-group-item-heading ">
+        <div class="col-xs-1 select-item-checkbox text-center">
+          <input type="checkbox" class="list-group-item-checkbox"
+            ng-click="updateSelectionList($event, folder, true)" ng-checked="isSelected(folder._id, true)">
+        </div>
+        <a href="" ng-click="openFolder(folder._id)" class="col-xs-11" target="_self">
+          <div class="row">
+            <div class="col-xs-3 col-sm-2 col-lg-1">
+              <i class="fa fa-folder-open fa-4x"></i>
+            </div>
+            <div class="col-xs-9 col-sm-10 col-lg-11">            
+              <h3>{{ folder.name }}</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+    </li>
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
       <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
         <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
       </span>
       <div class="row list-group-item-heading ">
         <div class="col-xs-1 select-item-checkbox text-center">
-          <input type="checkbox" class="list-group-item-checkbox" ng-click="updateSelectionList($event, doc)" ng-checked="isSelected(doc._id)">
+          <input type="checkbox" class="list-group-item-checkbox"
+            ng-click="updateSelectionList($event, doc, false)" ng-checked="isSelected(doc._id, false)">
         </div>
         <a href="" ng-click="toggleListItemOpened(doc._id)" class="col-xs-11 collapsed" target="_self">
           <div class="row">

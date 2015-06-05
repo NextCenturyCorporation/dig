@@ -20,11 +20,14 @@
       </button>
       <ul class="dropdown-menu" role="folderMenu" aria-labelledby="folderMenu">
         <li role="presentation" class="folder-menu-label">Move Selected To:</li>
-        <li role="presentation" ng-repeat="folder in folders">
-          <a role="menuitem" tabindex="-1" href="#" ng-click="moveItems(folder)">{{ folder.name }}</a>
+        <li role="presentation" ng-repeat="folder in folders" ng-if="!selectedChildFolders[selectedItemsKey].length">
+          <a role="menuitem" tabindex="-1" href="#" ng-click="moveItems(folder)" ng-hide="folder._id == selectedItemsKey">{{ folder.name }}</a>
+        </li>
+        <li role="presentation" ng-repeat="folder in validMoveFolders" ng-if="selectedChildFolders[selectedItemsKey].length">
+          <a role="menuitem" tabindex="-1" href="#" ng-click="moveItems(folder)" ng-hide="folder.name == 'ROOT'">{{ folder.name }}</a>
         </li>
         <li role="presentation" id="create-new-folder">
-          <button class="btn btn-primary" ng-click="createFolder(true)">New</button>
+          <button class="btn btn-primary" ng-click="createFolder(true, retrieveFolder)">New</button>
         </li>
       </ul>
     </div>

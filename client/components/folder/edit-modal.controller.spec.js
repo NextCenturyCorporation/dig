@@ -15,8 +15,10 @@ describe('Controller: EditModalCtrl', function () {
             $httpBackend = _$httpBackend_;
 
             modalInstance = {
-              close: jasmine.createSpy('modalInstance.close')
+              close: jasmine.createSpy('modalInstance.close'),
+              dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
+            
             user = {
               get: jasmine.createSpy('user.get').andReturn({username: 'test'})
             };
@@ -56,9 +58,9 @@ describe('Controller: EditModalCtrl', function () {
         expect(scope.folderName).toEqual(folder.name);
     });
 
-    it('should make call to close modal', function () {
+    it('should make call to dismiss modal', function () {
         scope.cancel();
-        expect(modalInstance.close).toHaveBeenCalled();
+        expect(modalInstance.dismiss).toHaveBeenCalled();
     });
 
     it('should change folder name', function () {

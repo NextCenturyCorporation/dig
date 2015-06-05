@@ -17,7 +17,7 @@ angular.module('digApp')
     };
 
     $scope.cancel = function () {
-      $modalInstance.close();
+      $modalInstance.dismiss();
     };
 
 

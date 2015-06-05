@@ -5,7 +5,7 @@ describe('Controller: CreateModalCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var CreateModalCtrl, scope, modalInstance, folders, currentFolder, items, user, $httpBackend;
+    var CreateModalCtrl, scope, modalInstance, folders, currentFolder, items, user, childIds, $httpBackend;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
@@ -15,7 +15,8 @@ describe('Controller: CreateModalCtrl', function () {
             $httpBackend = _$httpBackend_;
 
             modalInstance = {
-              close: jasmine.createSpy('modalInstance.close')
+              close: jasmine.createSpy('modalInstance.close'),
+              dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
             user = {
               get: jasmine.createSpy('user.get').andReturn({username: 'test'})
@@ -56,7 +57,9 @@ describe('Controller: CreateModalCtrl', function () {
               ]
             };
 
-            items = ["123", "456"];
+            items = [];
+
+            childIds = [];
 
             CreateModalCtrl = $controller('CreateModalCtrl', {
                 $scope: scope,
@@ -64,7 +67,8 @@ describe('Controller: CreateModalCtrl', function () {
                 User: user,
                 folders: folders,
                 currentFolder: currentFolder,
-                items: items
+                items: items,
+                childIds: childIds
             });
 
         });
@@ -77,6 +81,7 @@ describe('Controller: CreateModalCtrl', function () {
         expect(scope.folders).toEqual(folders);
         expect(scope.folderName).toEqual("");
         expect(scope.items).toEqual(items);
+        expect(scope.childIds).toEqual(childIds);
     });
 
     it('should correctly enable/disable button', function () {
@@ -91,13 +96,13 @@ describe('Controller: CreateModalCtrl', function () {
       expect(scope.isDisabled()).toBe(false);
     });
 
-    it('should make call to close modal', function () {
+    it('should make call to dismiss modal', function () {
         scope.cancel();
-        expect(modalInstance.close).toHaveBeenCalled();
+        expect(modalInstance.dismiss).toHaveBeenCalled();
     });
 
-    it('should move folder on create', function () {
-        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [4], items: items}).respond(201, {});
+    it('should move folder', function () {
+        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [4], items: []}).respond(201, {});
         scope.folderName = "folderNew";
         scope.parentFolder = {_id: 1};
         scope.create();
@@ -105,22 +110,23 @@ describe('Controller: CreateModalCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-    it('should create folder only on create', function () {
-        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [], items: items}).respond(201, {});
-        scope.currentFolder = {};
-        scope.folderName = "folderNew";
-        scope.parentFolder = {_id: 1};
-        scope.create();
-        $httpBackend.flush();
-        expect(modalInstance.close).toHaveBeenCalled();
-    });
-
-    it('should create folder with empty items on create', function () {
+    it('should create folder only', function () {
         $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [], items: []}).respond(201, {});
         scope.currentFolder = {};
         scope.folderName = "folderNew";
         scope.parentFolder = {_id: 1};
-        scope.items = [];
+        scope.create();
+        $httpBackend.flush();
+        expect(modalInstance.close).toHaveBeenCalled();
+    });
+
+    it('should create folder with empty items and multiple subfolders', function () {
+        $httpBackend.expectPOST('api/folders', {name: 'folderNew', username: 'test', parentId: 1, childIds: [5, 6], items: ["123", "4567"]}).respond(201, {});
+        scope.currentFolder = {};
+        scope.childIds = [5, 6];
+        scope.items = ["123", "4567"];
+        scope.folderName = "folderNew";
+        scope.parentFolder = {_id: 1};
         scope.create();
         $httpBackend.flush();
         expect(modalInstance.close).toHaveBeenCalled();

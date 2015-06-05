@@ -5,7 +5,7 @@ describe('Controller: ResultsCtrl', function () {
     // load the controller's module
     beforeEach(module('digApp'));
 
-    var ResultsCtrl, scope, state, imageSearchService;
+    var ResultsCtrl, scope, state, imageSearchService, $httpBackend;
 
     var sampleImageSearchDoc = {
         "_index": "dig",
@@ -198,7 +198,6 @@ describe('Controller: ResultsCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(function() {
         var simHost = 'http://localhost';
-        var $httpBackend;
 
         module(function($provide) {
             $provide.constant('simHost', simHost);
@@ -215,6 +214,8 @@ describe('Controller: ResultsCtrl', function () {
             $httpBackend.when('GET', new RegExp('app/search/main.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
+                .respond(200, 'some text');
+            $httpBackend.when('GET', new RegExp('app/search/results.partial.html'))
                 .respond(200, 'some text');
             $httpBackend.when('GET', new RegExp('app/search/list/list.partial.html'))
                 .respond(200, 'some text');
@@ -235,6 +236,7 @@ describe('Controller: ResultsCtrl', function () {
             };
 
             scope.selectedItems = {"#filter": []};
+            scope.selectedChildFolders = {};
             scope.selectedItemsKey = "#filter";
 
             ResultsCtrl = $controller('ResultsCtrl', {
@@ -445,102 +447,275 @@ describe('Controller: ResultsCtrl', function () {
         expect(scope.selectedImage).toBe(0);
     });
 
-     it('should update selected', function() {
-        scope.updateSelection(true, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1"]);
-        expect(scope.getNumberSelected()).toEqual(1);
+    it('should update selected', function() {
+      /** Update items **/
 
-        scope.updateSelection(true, {_id: "2"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
+      scope.updateSelection(true, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1"]);
+      expect(scope.getNumberSelected()).toEqual(1);
 
-        // Shouldn't add a duplicate
-        scope.updateSelection(true, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
+      scope.updateSelection(true, {_id: "2"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
+      expect(scope.getNumberSelected()).toEqual(2);
 
-        // Shouldn't add a duplicate
-        scope.updateSelection(false, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["2"]);
-        expect(scope.getNumberSelected()).toEqual(1);
-     });
+      // Shouldn't add a duplicate
+      scope.updateSelection(true, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
+      expect(scope.getNumberSelected()).toEqual(2);
 
-     it('should update selected with $event', function() {
-        scope.updateSelectionList({target: {checked: true}}, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1"]);
-        expect(scope.getNumberSelected()).toEqual(1);
+      // Shouldn't add a duplicate
+      scope.updateSelection(false, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["2"]);
+      expect(scope.getNumberSelected()).toEqual(1);
 
-        scope.updateSelectionList({target: {checked: true}}, {_id: "2"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
 
-        // Shouldn't add a duplicate
-        scope.updateSelectionList({target: {checked: true}}, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
 
-        // Shouldn't add a duplicate
-        scope.updateSelectionList({target: {checked: false}}, {_id: "1"});
-        expect(scope.selectedItems["#filter"]).toEqual(["2"]);
-        expect(scope.getNumberSelected()).toEqual(1);
-        expect(scope.isSelected("1")).toBe(false);
-        expect(scope.isSelected("2")).toBe(true);
-     });
+      /** Update folders **/
 
-      it('should select/deselect all items on page', function() {
-        expect(scope.isSelectedAll()).toBe(false);
+      scope.selectedItemsKey = 1;
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
 
-        // Start with a few selected from a previous page
-        scope.selectedItems["#filter"] = ["1", "2"];
+      scope.updateSelection(true, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a"]);
+      expect(scope.getNumberSelected()).toEqual(1);
 
-        scope.indexVM.results = {
-          hits: {
-            hits: [{
-              _id: "3"
-            },{
-              _id: "4"
-            },{
-              _id: "5"
-            },{
-              _id: "6"
-            },{
-              _id: "7"
-            }]
-          }
-        };
+      scope.updateSelection(true, {_id: "b"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a", "b"]);
+      expect(scope.getNumberSelected()).toEqual(2);
 
-        expect(scope.isSelectedAll()).toBe(false);
+      // Shouldn't add a duplicate
+      scope.updateSelection(true, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a", "b"]);
+      expect(scope.getNumberSelected()).toEqual(2);
 
-        // Select all - should include previously selected and all in indexVM
-        scope.selectAll({target: {checked: true}});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
-        expect(scope.getNumberSelected()).toEqual(7);
-        expect(scope.isSelectedAll()).toBe(true);
+      // Shouldn't add a duplicate
+      scope.updateSelection(false, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["b"]);
+      expect(scope.getNumberSelected()).toEqual(1);
+    });
 
-        // Deelect all - selected should now include only previously selected
-        scope.selectAll({target: {checked: false}});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
-        expect(scope.isSelectedAll()).toBe(false);
+    it('should update selected with $event', function() {
+      /** Update items **/
 
-        // Select a few in indexVM, then select all - should include
-        // previously selected and all in indexVM (with no dupes)
-        scope.updateSelection(true, {_id: "3"});
-        scope.updateSelection(true, {_id: "4"});
-        scope.updateSelection(true, {_id: "5"});
-        expect(scope.isSelectedAll()).toBe(false);
-        expect(scope.getNumberSelected()).toEqual(5);
-        scope.selectAll({target: {checked: true}});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
-        expect(scope.getNumberSelected()).toEqual(7);
-        expect(scope.isSelectedAll()).toBe(true);
+      scope.updateSelectionList({target: {checked: true}}, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1"]);
+      expect(scope.getNumberSelected()).toEqual(1);
 
-        // Deselect all - selected should now include only
-        // previously selected and NOT ANY from indexVM
-        scope.selectAll({target: {checked: false}});
-        expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
-        expect(scope.getNumberSelected()).toEqual(2);
-        expect(scope.isSelectedAll()).toBe(false);
-     });
+      scope.updateSelectionList({target: {checked: true}}, {_id: "2"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
+      expect(scope.getNumberSelected()).toEqual(2);
+
+      // Shouldn't add a duplicate
+      scope.updateSelectionList({target: {checked: true}}, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["1", "2"]);
+      expect(scope.getNumberSelected()).toEqual(2);
+
+      // Shouldn't add a duplicate
+      scope.updateSelectionList({target: {checked: false}}, {_id: "1"}, false);
+      expect(scope.selectedItems["#filter"]).toEqual(["2"]);
+      expect(scope.getNumberSelected()).toEqual(1);
+      expect(scope.isSelected("1", false)).toBe(false);
+      expect(scope.isSelected("2", false)).toBe(true);
+
+
+
+      /** Update folders **/
+
+      scope.selectedItemsKey = 1;
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+
+      scope.updateSelectionList({target: {checked: true}}, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a"]);
+      expect(scope.getNumberSelected()).toEqual(1);
+
+      scope.updateSelectionList({target: {checked: true}}, {_id: "b"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a", "b"]);
+      expect(scope.getNumberSelected()).toEqual(2);
+
+      // Shouldn't add a duplicate
+      scope.updateSelectionList({target: {checked: true}}, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a", "b"]);
+      expect(scope.getNumberSelected()).toEqual(2);
+
+      // Shouldn't add a duplicate
+      scope.updateSelectionList({target: {checked: false}}, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["b"]);
+      expect(scope.getNumberSelected()).toEqual(1);
+      expect(scope.isSelected("a", true)).toBe(false);
+      expect(scope.isSelected("b", true)).toBe(true);
+    });
+
+    it('should select/deselect everything on page', function() {
+      scope.selectedItemsKey = 1;
+      scope.selectedItems[scope.selectedItemsKey] = [];
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+
+      expect(scope.isSelectedAll()).toBe(false);
+
+      // Start with a few selected from a previous page
+      scope.selectedItems[scope.selectedItemsKey] = ["1", "2"];
+
+      scope.indexVM.results = {
+        hits: {
+          hits: [{
+            _id: "3"
+          },{
+            _id: "4"
+          },{
+            _id: "5"
+          },{
+            _id: "6"
+          },{
+            _id: "7"
+          }]
+        }
+      };
+      scope.childFolders = [{
+            _id: "a"
+          }, {
+            _id: "b"
+          }, {
+            _id: "c"
+          }];
+
+      expect(scope.isSelectedAll()).toBeFalsy();
+
+      // Select all - should include previously selected and all in indexVM
+      scope.selectAll({target: {checked: true}});
+      expect(scope.selectedItems[scope.selectedItemsKey]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("a");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("b");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("c");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey].length).toEqual(3);
+      expect(scope.getNumberSelected()).toEqual(10);
+      expect(scope.isSelectedAll()).toBeTruthy();
+
+      // Deelect all - selected should now include only previously selected
+      scope.selectAll({target: {checked: false}});
+      expect(scope.selectedItems[scope.selectedItemsKey]).toEqual(["1", "2"]);
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toEqual([]);
+      expect(scope.getNumberSelected()).toEqual(2);
+      expect(scope.isSelectedAll()).toBeFalsy();
+
+      // Select a few in indexVM, then select all - should include
+      // previously selected and all in indexVM (with no dupes)
+      scope.updateSelection(true, {_id: "3"}, false);
+      scope.updateSelection(true, {_id: "4"}, false);
+      scope.updateSelection(true, {_id: "5"}, false);
+      scope.updateSelection(true, {_id: "b"}, true);
+      expect(scope.isSelectedAll()).toBeFalsy();
+      expect(scope.getNumberSelected()).toEqual(6);
+      scope.selectAll({target: {checked: true}});
+      expect(scope.selectedItems[scope.selectedItemsKey]).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("a");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("b");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toContain("c");
+      expect(scope.selectedChildFolders[scope.selectedItemsKey].length).toEqual(3);
+      expect(scope.getNumberSelected()).toEqual(10);
+      expect(scope.isSelectedAll()).toBeTruthy();
+
+      // Deselect all - selected should now include only
+      // previously selected and NOT ANY from indexVM
+      scope.selectAll({target: {checked: false}});
+      expect(scope.selectedItems[scope.selectedItemsKey]).toEqual(["1", "2"]);
+      expect(scope.selectedChildFolders[scope.selectedItemsKey]).toEqual([]);
+      expect(scope.getNumberSelected()).toEqual(2);
+      expect(scope.isSelectedAll()).toBeFalsy();
+    });
+
+    it('should update selected count', function() {
+      scope.selectedItemsKey = 1;
+      scope.selectedItems[scope.selectedItemsKey] = [];
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+
+      // Select folder
+      scope.updateSelection(true, {_id: "a"}, true);
+      expect(scope.selectedChildFolders[1]).toEqual(["a"]);
+      expect(scope.selectedItems[1]).toEqual([]);
+      expect(scope.getNumberSelected()).toEqual(1);
+
+      // Select item
+      scope.updateSelection(true, {_id: "1"}, false);
+      expect(scope.selectedItems[1]).toEqual(["1"]);
+      expect(scope.selectedChildFolders[1]).toEqual(["a"]);
+      expect(scope.getNumberSelected()).toEqual(2);
+
+      // Deselect item
+      scope.updateSelection(false, {_id: "1"}, false);
+      expect(scope.selectedItems[1]).toEqual([]);
+      expect(scope.selectedChildFolders[1]).toEqual(["a"]);
+      expect(scope.getNumberSelected()).toEqual(1);
+    });
+
+    it('should clear all checkboxes', function() {
+      scope.selectedItemsKey = 1;
+      scope.selectedChildFolders[scope.selectedItemsKey] = ["a", "b"];
+      scope.selectedItemsKey = 1;
+      scope.selectedItems[scope.selectedItemsKey] = ["1"];
+
+      expect(scope.getNumberSelected()).toEqual(3);
+      scope.clearAll();
+      expect(scope.getNumberSelected()).toEqual(0);
+      scope.clearAll();
+      expect(scope.getNumberSelected()).toEqual(0);
+    });
+
+    it('should move items', function() {
+      $httpBackend.flush();
+      var fldr = {_id: 1, name: "folder1", parentId: 0};
+      var selected = ["1", "2", "3", "4", "5"];
+      var children = ["ab"];
+
+      /** Check moving folders and items **/
+
+      $httpBackend.expectPUT('api/folders/' + fldr._id, {name: fldr.name, parentId: fldr.parentId, items: selected, childIds: children}).respond(200, {});
+      $httpBackend.expectPUT('api/folders/removeItems/6', {items: selected}).respond(200, {});
+
+      scope.selectedItemsKey = "a";
+      scope.selectedItems[scope.selectedItemsKey] = selected;
+      scope.selectedChildFolders[scope.selectedItemsKey] = children;
+      scope.selectedFolder = {_id: 6};
+      scope.getFolders = function(cb){};
+      scope.retrieveFolder = function(){};
+
+      scope.moveItems(fldr);
+      $httpBackend.flush();
+
+
+      /** Checking moving just items on search view **/
+
+      $httpBackend.expectPUT('api/folders/' + fldr._id, {name: fldr.name, parentId: fldr.parentId, items: selected, childIds: []}).respond(200, {});
+
+      scope.FILTER_TAB = '#filter';
+      scope.selectedItemsKey = scope.FILTER_TAB;
+      scope.selectedItems[scope.selectedItemsKey] = selected;
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+
+      scope.moveItems(fldr);
+      $httpBackend.flush();
+    });
+
+    it('should enable/disable delete button', function() {
+      expect(scope.isDeleteDisabled()).toBeTruthy();
+
+      scope.selectedItemsKey = "a";
+      expect(scope.isDeleteDisabled()).toBeTruthy();
+
+      scope.selectedItems[scope.selectedItemsKey] = [];
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+      expect(scope.isDeleteDisabled()).toBeTruthy();
+      
+      scope.selectedItems[scope.selectedItemsKey] = ["1", "2"];
+      scope.selectedChildFolders[scope.selectedItemsKey] = [];
+      expect(scope.isDeleteDisabled()).toBeFalsy();
+      
+      scope.selectedItems[scope.selectedItemsKey] = [];
+      scope.selectedChildFolders[scope.selectedItemsKey] = ["1", "2"];
+      expect(scope.isDeleteDisabled()).toBeFalsy();
+      
+      scope.selectedItems[scope.selectedItemsKey] = ["1", "2"];
+      scope.selectedChildFolders[scope.selectedItemsKey] = ["1", "2"];
+      expect(scope.isDeleteDisabled()).toBeFalsy();
+    });
 
 });

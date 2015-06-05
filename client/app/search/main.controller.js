@@ -34,6 +34,11 @@ angular.module('digApp')
       // Each key is the _id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
       // Each value contains an array of _ids of items that are selected in the folder (or search results)
       $scope.selectedItems = {};
+
+      // Each key is the _id of a folder that was selected
+      // Each value contains an array of _ids of sub-folders that are selected in the folder
+      $scope.selectedChildFolders = {};
+
       $scope.selectedItemsKey = $scope.FILTER_TAB;
 
       // Valid folders that items can be moved to (contains objects of names and _ids)
@@ -69,7 +74,8 @@ angular.module('digApp')
         };
 
         $scope.selectedSort = {};
-        $scope.selectedItems[$scope.FILTER_TAB] = [];
+        $scope.selectedItems[$scope.selectedItemsKey] = [];
+        $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
 
         $scope.getFolders();
         $scope.isActive();
@@ -113,6 +119,7 @@ angular.module('digApp')
 
       $scope.submit = function() {
           $scope.selectedItems[$scope.selectedItemsKey] = [];
+          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.queryString.submitted = $scope.queryString.live;
           if(!$scope.searchConfig.euiSearchIndex) {
               $scope.searchConfig.euiSearchIndex = euiSearchIndex;
@@ -203,27 +210,30 @@ angular.module('digApp')
           $scope.selectedFolder = angular.copy(folder);
           $scope.selectedItemsKey = $scope.selectedFolder._id;
           $scope.selectedItems[$scope.selectedItemsKey] = [];
+          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else if($scope.selectedFolder._id != folder._id) {
           $scope.selectedFolder = angular.copy(folder);
           $scope.selectedItemsKey = $scope.selectedFolder._id;
           $scope.selectedItems[$scope.selectedItemsKey] = [];
+          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else {
           delete $scope.selectedItems[$scope.selectedItemsKey];
+          delete $scope.selectedChildFolders[$scope.selectedItemsKey];
           $scope.selectedFolder = {};
           $scope.validMoveFolders = [];
         }
       };
 
       // Updates folders
-      $scope.getFolders = function() {
+      $scope.getFolders = function(cb) {
         $http.get('api/folders/').
           success(function(data) {
             // Folders (not including ROOT) with name, _id, and parentId for use in results "Move To" dropdown
             $scope.folders = _.map(data, function(folder) {
                 if(folder.name != "ROOT") {
-                  return {name: folder.name, _id: folder._id, parentId: folder.parentId};
+                  return folder;
                 }
               });
             // Take out 'undefined' that was placed for ROOT
@@ -248,11 +258,15 @@ angular.module('digApp')
 
             // Update the selectedFolder details (if any)
             if($scope.selectedFolder._id) {
-              $scope.selectedFolder = _getUpdatedSelected($scope.selectedFolder._id, $scope.nestedFolders, {});
+              $scope.selectedFolder = $scope.getUpdatedSelected($scope.selectedFolder._id, $scope.nestedFolders, {});
               $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
               if(!$scope.selectedFolder) {
                 $scope.selectedFolder = {};
               }
+            }
+
+            if(cb) {
+              cb();
             }
           });
       };
@@ -278,7 +292,7 @@ angular.module('digApp')
       // Opens delete modal
       $scope.deleteFolder = function() {
           var modalInstance = $modal.open({
-              templateUrl: 'components/folder/delete-modal.html',
+              templateUrl: 'components/folder/delete-folder-modal.html',
               controller: 'EditModalCtrl',
               resolve: {
                   folder: function() {
@@ -295,27 +309,46 @@ angular.module('digApp')
       };
 
       // Opens create folder modal. Moves selected items in new folder as well, if moveSelectedItems is true
-      $scope.createFolder = function(moveSelectedItems) {
+      $scope.createFolder = function(moveSelectedItems, cb) {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/create-modal.html',
               controller: 'CreateModalCtrl',
               resolve: {
                   folders: function() {
+                    if(moveSelectedItems && $scope.selectedItemsKey != $scope.FILTER_TAB) {
+                      if($scope.selectedChildFolders[$scope.selectedItemsKey].length) {
+                        // Get valid folders to move folder to
+                        var validFolders = [];
+                        validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+                        validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders);
+                        validFolders.push({_id: $scope.selectedFolder._id, name: $scope.selectedFolder.name, parentId: $scope.selectedFolder.parentId});
+                        return validFolders;
+                      } else {
+                        return $scope.folders;
+                      }
+                    }
+
                     // Get valid folders to move folder to
                     var validFolders = [];
                     validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
-                    validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
+                    validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders);
                     return validFolders;
                   },
                   currentFolder: function() {
                     if(moveSelectedItems) {
-                      return [];
+                      return {};
                     }
                     return $scope.selectedFolder;
                   },
                   items: function() {
                     if(moveSelectedItems) {
                       return $scope.selectedItems[$scope.selectedItemsKey];
+                    }
+                    return [];
+                  },
+                  childIds: function() {
+                    if($scope.selectedChildFolders[$scope.selectedItemsKey]) {
+                      return $scope.selectedChildFolders[$scope.selectedItemsKey];
                     }
                     return [];
                   }
@@ -325,7 +358,10 @@ angular.module('digApp')
 
           modalInstance.result.then(function () {
             if ($scope.selectedFolder._id && moveSelectedItems) {
-              $scope.removeItems($scope.getFolders);
+              $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
+                  success(function(data) {
+                    $scope.getFolders(cb);
+                  });
             } else {
               $scope.getFolders();
             }
@@ -333,13 +369,40 @@ angular.module('digApp')
       };
 
       $scope.removeItems = function(cb) {
-        $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
-          success(function(data) {
-            if(cb) {
-              cb();
-            }
-          });
+        var modalInstance = $modal.open({
+            templateUrl: 'components/folder/delete-items-modal.html',
+            controller: 'DeleteItemsModalCtrl',
+            resolve: {
+                items: function() {
+                    return $scope.selectedItems[$scope.selectedItemsKey];
+                },
+                childIds: function() {
+                    return $scope.selectedChildFolders[$scope.selectedItemsKey];
+                },
+                id: function() {
+                  return $scope.selectedFolder._id
+                }
+            },
+            size: 'sm'
+        });
+
+        modalInstance.result.then(function () {
+          $scope.getFolders(cb);
+        });
       }
+
+      // Find selectedFolder in given folders array
+      $scope.getUpdatedSelected = function(id, folders, selected) {
+        angular.forEach(folders, function(folder) {
+          if(folder._id == id) {
+            selected = folder;
+          }
+
+          selected = $scope.getUpdatedSelected(id, folder.children, selected);
+        });
+
+        return selected;
+      };
 
       // Returns array of folders with children nested (recursively)
       function _getSubfolders(id, folders) {
@@ -358,19 +421,6 @@ angular.module('digApp')
         return children;
       };
 
-      // Find selectedFolder in given folders array
-      function _getUpdatedSelected(id, folders, selected) {
-        angular.forEach(folders, function(folder) {
-          if(folder._id == id) {
-            selected = folder;
-          }
-
-          selected = _getUpdatedSelected(id, folder.children, selected);
-        });
-
-        return selected;
-      };
-
       // Add folders without id (and children of id) to names array
       function _filterOutChildren(folders, id, names) {
         _.forEach(folders, function(child, index) {
@@ -378,7 +428,7 @@ angular.module('digApp')
           if(child._id == id) {
             return;
           }
-          names.push({name: child.name, _id: child._id});
+          names.push({name: child.name, _id: child._id, parentId: child.parentId});
           names = _filterOutChildren(child.children, id, names);
         });
 
@@ -412,7 +462,7 @@ angular.module('digApp')
               if(newValue !== oldValue) {
                   $scope.loading = newValue;
 
-                  if($scope.loading === false && $scope.showresults === false && $scope.queryString.submitted && !$scope.indexVM.error) {
+                  if($scope.loading === false && $scope.showresults === false && !$scope.indexVM.error) {
                       $scope.showresults = true;
                   }
               }
