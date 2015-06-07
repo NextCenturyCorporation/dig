@@ -14,6 +14,38 @@ digapp:
     MONGOHQ_URL: 'mongodb://mongo/dig'
     NODE_ENV: 'production'
 
+notifyapp:
+  build: distnotify
+  links:
+    - mysql
+  environment:
+    NODE_ENV: 'production'
+    DB_USER: 'digapp'
+    DB_PASS: 'changeme'
+    DB_HOST: 'mysql'
+    DB_PORT: 3306
+    ES_USER: 'memex'
+    ES_PASS: 'changeme'
+    EUI_SERVER: 'changeme'
+    EUI_SERVER_PORT: 'changeme'
+    EUI_SEARCH_INDEX: 'dig-latest'
+    EUI_SEARCH_TYPE: 'WebPage'
+
+mysql:
+  image: mysql
+  volumes_from:
+    - mysqldata
+  environment:
+    MYSQL_ROOT_PASSWORD: 'changeme'
+    MYSQL_DATABASE: 'digapp_production'
+    MYSQL_USER: 'digapp'
+    MYSQL_PASSWORD: 'changeme'
+
+mysqldata:
+  image: busybox
+  volumes: 
+    - /var/lib/mysql
+
 nginx:
   image: nginx
   links:
