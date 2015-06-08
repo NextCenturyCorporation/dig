@@ -156,9 +156,11 @@ angular.module('digApp')
         $scope.updateSelection($event.target.checked, doc, false);
       });
 
-      _.forEach($scope.childFolders, function(folder) {
-        $scope.updateSelection($event.target.checked, folder, true);
-      });
+      if($scope.indexVM.page == 1) {
+        _.forEach($scope.childFolders, function(folder) {
+          $scope.updateSelection($event.target.checked, folder, true);
+        });
+      }
     };
 
     // Clears all checkboxes from selected folder or search results
@@ -187,11 +189,13 @@ angular.module('digApp')
           }
         });
 
-        _.forEach($scope.childFolders, function(folder) {
-          if(!$scope.isSelected(folder._id, true)) {
-            allSelected = false;
-          }
-        });
+        if($scope.indexVM.page == 1) {
+          _.forEach($scope.childFolders, function(folder) {
+            if(!$scope.isSelected(folder._id, true)) {
+              allSelected = false;
+            }
+          });
+        }
 
         return allSelected && $scope.indexVM.results.hits.hits.length;
       }

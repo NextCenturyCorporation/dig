@@ -17,7 +17,7 @@
   </div>
 
   <ul id="results" class="list-group">
-    <li class="list-group-item" ng-repeat="folder in childFolders track by $index">
+    <li class="list-group-item" ng-repeat="folder in childFolders track by $index" ng-if="indexVM.page == 1">
       <div class="row list-group-item-heading ">
         <div class="col-xs-1 select-item-checkbox text-center">
           <input type="checkbox" class="list-group-item-checkbox"
