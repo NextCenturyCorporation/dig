@@ -31,7 +31,8 @@
         </li>
       </ul>
     </div>
-    <button class="btn btn-default" ng-click="removeItems(retrieveFolder)" ng-class="{disabled: isDeleteDisabled()}">
+    <button class="btn btn-default" ng-click="removeItems(retrieveFolder)" ng-class="{disabled: isDeleteDisabled()}"
+      ng-hide="selectedItemsKey == FILTER_TAB">
       <i class="fa fa-trash"></i>
     </button>
     <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order">

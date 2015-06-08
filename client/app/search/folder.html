@@ -1,4 +1,5 @@
 <div class="right-column col-sm-9" eui-index="searchConfig.euiSearchIndex">
+  <div class="loading" ng-show="loading || imagesimLoading"></div>
   <div ng-show="searchConfig.euiSearchIndex.length && indexVM.loaded" class="folder-view-selected">
     <h1 class="folder-view-name text-center">{{ selectedFolder.name }}</h1>
 

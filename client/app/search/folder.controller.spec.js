@@ -420,6 +420,7 @@ describe('Controller: FolderCtrl', function () {
                 items: []
               }
             ];
+            scope.indexVM = {};
 
             FolderCtrl = $controller('FolderCtrl', {
                 $scope: scope,

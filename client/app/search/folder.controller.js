@@ -92,6 +92,30 @@ angular.module('digApp')
           }
       );
 
+      $scope.$watch('indexVM.loading',
+          function(newValue, oldValue) {
+              if(newValue !== oldValue) {
+                  $scope.loading = newValue;
+
+                  if($scope.loading === false && $scope.showresults === false && !$scope.indexVM.error) {
+                      $scope.showresults = true;
+                  }
+              }
+          }
+      );
+
+      $scope.$watch('indexVM.error', function() {
+          if($scope.indexVM.error) {
+              $scope.loading = false;
+              $scope.showresults = false;
+              if($scope.activeTab == $scope.FILTER_TAB) {
+                $state.go('main.search.error');
+              } else {
+                $state.go('main.folder.error');
+              }
+          }
+      }, true);
+
       $scope.init();
 
     }]);
