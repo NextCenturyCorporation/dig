@@ -547,7 +547,7 @@ describe('Controller: MainCtrl', function () {
       expect(modalOpts.resolve.folder()).toEqual(nestedFolders[0]);
     });
 
-    it('should open delete modal', function () {
+    it('should open delete folders modal', function () {
       var modalParameters = {
         templateUrl: 'components/folder/delete-folder-modal.html',
         controller: 'EditModalCtrl',
@@ -563,11 +563,11 @@ describe('Controller: MainCtrl', function () {
       expect(modalOpts.resolve.folder()).toEqual(nestedFolders[0]);
     });
 
-    /*it('should open create modal for moving folders', function () {
+    it('should open create modal for moving folders', function () {
       var modalParameters = {
         templateUrl: 'components/folder/create-modal.html',
         controller: 'CreateModalCtrl',
-        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function) },
+        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function), childIds: jasmine.any(Function) },
         size: 'sm'
       };
 
@@ -579,58 +579,75 @@ describe('Controller: MainCtrl', function () {
       expect(modal.open).toHaveBeenCalledWith(modalParameters);
       expect(modalOpts.resolve.currentFolder()).toEqual(nestedFolders[0]);
       expect(modalOpts.resolve.items()).toEqual([]);
+      expect(modalOpts.resolve.childIds()).toEqual([]);
       expect(modalOpts.resolve.folders()).toEqual([
           {
             name: "ROOT",
             _id: 0
           },{
             name: "folder3",
+            parentId: 0,
             _id: 3
           },{
             name: "folder4",
+            parentId: 3,
             _id: 4
           },{
             name: "folder5",
+            parentId: 4,
             _id: 5
           },{
             name: "folder6",
+            parentId: 4,
             _id: 6
           }
         ]);
     });
 
-    it('should open create modal for moving items', function () {
+    it('should open create modal for moving items and subfolders', function () {
+      $httpBackend.flush();
+
       var modalParameters = {
         templateUrl: 'components/folder/create-modal.html',
         controller: 'CreateModalCtrl',
-        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function) },
+        resolve: { folders: jasmine.any(Function), currentFolder: jasmine.any(Function), items: jasmine.any(Function), childIds: jasmine.any(Function) },
         size: 'sm'
       };
 
+      scope.selectedItemsKey = 1;
+      scope.selectedChildFolders[scope.selectedItemsKey] = [2];
       scope.selectedFolder = nestedFolders[0];
-      scope.selectedItems["#filter"] = ["12ed32q", "1312e", "13es"];
+      scope.selectedItems[scope.selectedItemsKey] = ["12ed32q", "1312e", "13es"];
 
       scope.createFolder(true);
-      $httpBackend.flush();
       expect(modal.open).toHaveBeenCalledWith(modalParameters);
-      expect(modalOpts.resolve.currentFolder()).toEqual([]);
+      expect(modalOpts.resolve.currentFolder()).toEqual({});
       expect(modalOpts.resolve.items()).toEqual(["12ed32q", "1312e", "13es"]);
+      expect(modalOpts.resolve.childIds()).toEqual([2]);
       expect(modalOpts.resolve.folders()).toEqual([
           {
             name: "ROOT",
             _id: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
+          },{
+            _id: 1,
+            name: "folder1",
+            parentId: 0
           }
         ]);
     });
@@ -654,16 +671,20 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ];
 
@@ -672,6 +693,53 @@ describe('Controller: MainCtrl', function () {
       // scope.selectedFolder should now have the name back to folder1, not folder1OldName
       expect(scope.selectedFolder).toEqual(nestedFolders[0]);
 
+      // scope.folders should now have the name back to folder1, not folder1OldName
+      expect(scope.folders).toEqual([
+        {
+          _id: 1,
+          username: "test",
+          name: "folder1",
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
+        },{
+          _id: 2,
+          username: "test",
+          name: "folder2",
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
+        },{
+          _id: 3,
+          username: "test",
+          name: "folder3",
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
+        },{
+          _id: 4,
+          username: "test",
+          name: "folder4",
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
+        },{
+          _id: 5,
+          username: "test",
+          name: "folder5",
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
+        },{
+          _id: 6,
+          username: "test",
+          name: "folder6",
+          parentId: 4,
+          childIds: [],
+          items: []
+        }
+      ]);
+
       // should stay the same since only the name has changed
       expect(scope.validMoveFolders).toEqual([
           {
@@ -679,19 +747,23 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ]);
-    });*/
+    });
 
     it('should deselect selected', function () {
       scope.selectedFolder = {
@@ -707,22 +779,28 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder1",
-            _id: 1
+            _id: 1,
+            parentId: 0
           },{
             name: "folder2",
-            _id: 2
+            _id: 2,
+            parentId: 1
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ];
 
@@ -735,7 +813,7 @@ describe('Controller: MainCtrl', function () {
       expect(scope.validMoveFolders).toEqual([]);
     });
 
-    /*it('should update nestedFolders', function () {
+    it('should update nestedFolders', function () {
       scope.nestedFolders = [
         {
           _id: 3,
@@ -790,16 +868,20 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ];
 
@@ -811,22 +893,73 @@ describe('Controller: MainCtrl', function () {
       //scope.nestedFolders should now have folder1 a child of root, not folder3
       expect(scope.nestedFolders).toEqual(nestedFolders);
 
+      // Should be back to its original state
+      expect(scope.folders).toEqual([
+        {
+          _id: 1,
+          username: "test",
+          name: "folder1",
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
+        },{
+          _id: 2,
+          username: "test",
+          name: "folder2",
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
+        },{
+          _id: 3,
+          username: "test",
+          name: "folder3",
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
+        },{
+          _id: 4,
+          username: "test",
+          name: "folder4",
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
+        },{
+          _id: 5,
+          username: "test",
+          name: "folder5",
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
+        },{
+          _id: 6,
+          username: "test",
+          name: "folder6",
+          parentId: 4,
+          childIds: [],
+          items: []
+        }
+      ]);
+
       expect(scope.validMoveFolders).toEqual([
           {
             name: "ROOT",
             _id: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ]);
     });
@@ -896,6 +1029,53 @@ describe('Controller: MainCtrl', function () {
       //scope.nestedFolders should now have folder2 a child of new folder folder1, not folder3
       expect(scope.nestedFolders).toEqual(nestedFolders);
 
+      // Should be back to its original state
+      expect(scope.folders).toEqual([
+        {
+          _id: 1,
+          username: "test",
+          name: "folder1",
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
+        },{
+          _id: 2,
+          username: "test",
+          name: "folder2",
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
+        },{
+          _id: 3,
+          username: "test",
+          name: "folder3",
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
+        },{
+          _id: 4,
+          username: "test",
+          name: "folder4",
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
+        },{
+          _id: 5,
+          username: "test",
+          name: "folder5",
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
+        },{
+          _id: 6,
+          username: "test",
+          name: "folder6",
+          parentId: 4,
+          childIds: [],
+          items: []
+        }
+      ]);
+
       //validMoveFolders should now include folder1
       expect(scope.validMoveFolders).toEqual([
           {
@@ -903,81 +1083,149 @@ describe('Controller: MainCtrl', function () {
             _id: 0
           },{
             name: "folder1",
-            _id: 1
+            _id: 1,
+            parentId: 0
           },{
             name: "folder3",
-            _id: 3
+            _id: 3,
+            parentId: 0
           },{
             name: "folder4",
-            _id: 4
+            _id: 4,
+            parentId: 3
           },{
             name: "folder5",
-            _id: 5
+            _id: 5,
+            parentId: 4
           },{
             name: "folder6",
-            _id: 6
+            _id: 6,
+            parentId: 4
           }
         ]);
-    });*/
+    });
  
-    it('should clear searches selected items on submit', function () {
+    it('should clear selected items on submit', function () {
       scope.selectedItems["#filter"] = ["2e432e", "2ew"];
       scope.submit();
       expect(scope.selectedItems["#filter"]).toEqual([]);
     });
 
-    /*it('should update scope.folders on folder request', function () {
+    it('should update scope.folders on folder request', function () {
       scope.folders = [
-          {
-            _id: 1,
-            name: "folder1",
-            parentId: 0
-          },{
-            _id: 2,
-            name: "folder2",
-            parentId: 1
-          },{
-            _id: 3,
-            name: "folder3",
-            parentId: 0
-          },{
-            _id: 4,
-            name: "folder4",
-            parentId: 3
-          },{
-            _id: 5,
-            name: "folder5",
-            parentId: 4
-          }];
+        {
+          _id: 1,
+          username: "test",
+          name: "folder1",
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
+        },{
+          _id: 2,
+          username: "test",
+          name: "folder2",
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
+        },{
+          _id: 3,
+          username: "test",
+          name: "folder3",
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
+        },{
+          _id: 4,
+          username: "test",
+          name: "folder4",
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
+        },{
+          _id: 5,
+          username: "test",
+          name: "folder5",
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
+        }
+      ];
       
       $httpBackend.flush();
       expect(scope.folders).toEqual([
-          {
-            _id: 1,
-            name: "folder1",
-            parentId: 0
-          },{
-            _id: 2,
-            name: "folder2",
-            parentId: 1
-          },{
-            _id: 3,
-            name: "folder3",
-            parentId: 0
-          },{
-            _id: 4,
-            name: "folder4",
-            parentId: 3
-          },{
-            _id: 5,
-            name: "folder5",
-            parentId: 4
-          },{
-            _id: 6,
-            name: "folder6",
-            parentId: 4
-          }
-        ]);
-    });*/
+        {
+          _id: 1,
+          username: "test",
+          name: "folder1",
+          parentId: 0,
+          childIds: [2],
+          items: ["123", "45673", "2eqds"]
+        },{
+          _id: 2,
+          username: "test",
+          name: "folder2",
+          parentId: 1,
+          childIds: [],
+          items: ["3frg"]
+        },{
+          _id: 3,
+          username: "test",
+          name: "folder3",
+          parentId: 0,
+          childIds: [4],
+          items: ["123", "453", "2eqdaaas", "asd3d"]
+        },{
+          _id: 4,
+          username: "test",
+          name: "folder4",
+          parentId: 3,
+          childIds: [5, 6],
+          items: ["123", "45673"]
+        },{
+          _id: 5,
+          username: "test",
+          name: "folder5",
+          parentId: 4,
+          childIds: [],
+          items: ["12", "4573", "2es"]
+        },{
+          _id: 6,
+          username: "test",
+          name: "folder6",
+          parentId: 4,
+          childIds: [],
+          items: []
+        }
+      ]);
+    });
+
+    it('should move folder', function() {
+      $httpBackend.flush();
+      $httpBackend.expectPUT('api/folders/' + nestedFolders[0]._id, {name: nestedFolders[0].name, parentId: nestedFolders[1]._id}).respond(200);
+      $httpBackend.expectGET('api/folders/').respond(200, folders);
+
+      scope.selectedFolder = nestedFolders[0];
+      scope.moveFolder(nestedFolders[1]);
+      $httpBackend.flush();
+    });
+
+    it('should open delete items modal', function () {
+      var modalParameters = {
+        templateUrl: 'components/folder/delete-items-modal.html',
+        controller: 'DeleteItemsModalCtrl',
+        resolve: { items: jasmine.any(Function), childIds: jasmine.any(Function), id: jasmine.any(Function) },
+        size: 'sm'
+      };
+
+      scope.selectedItems[scope.selectedItemsKey] = ["12", "4573", "2es"];
+      scope.selectedChildFolders[scope.selectedItemsKey] = [5];
+      scope.selectedFolder = nestedFolders[1].children[0];
+
+      scope.removeItems();
+      expect(modal.open).toHaveBeenCalledWith(modalParameters);
+      expect(modalOpts.resolve.items()).toEqual(["12", "4573", "2es"]);
+      expect(modalOpts.resolve.childIds()).toEqual([5]);
+      expect(modalOpts.resolve.id()).toEqual(nestedFolders[1].children[0]._id);
+    });
 
 });

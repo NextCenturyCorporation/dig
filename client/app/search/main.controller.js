@@ -289,7 +289,7 @@ angular.module('digApp')
           });
       };
 
-      // Opens delete modal
+      // Opens delete folders modal for deleting folder in folder tab
       $scope.deleteFolder = function() {
           var modalInstance = $modal.open({
               templateUrl: 'components/folder/delete-folder-modal.html',
@@ -368,6 +368,7 @@ angular.module('digApp')
           });
       };
 
+      // Opens delete items modal for deleting items and subfolders in folders view
       $scope.removeItems = function(cb) {
         var modalInstance = $modal.open({
             templateUrl: 'components/folder/delete-items-modal.html',
