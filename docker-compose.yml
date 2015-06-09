@@ -21,13 +21,13 @@ notifyapp:
   environment:
     NODE_ENV: 'production'
     DB_USER: 'digapp'
-    DB_PASS: 'changeme'
+    DB_PASS:
     DB_HOST: 'mysql'
     DB_PORT: 3306
     ES_USER: 'memex'
-    ES_PASS: 'changeme'
-    EUI_SERVER: 'changeme'
-    EUI_SERVER_PORT: 'changeme'
+    ES_PASS: 
+    EUI_SERVER: 
+    EUI_SERVER_PORT: 
     EUI_SEARCH_INDEX: 'dig-latest'
     EUI_SEARCH_TYPE: 'WebPage'
 
@@ -36,10 +36,10 @@ mysql:
   volumes_from:
     - mysqldata
   environment:
-    MYSQL_ROOT_PASSWORD: 'changeme'
+    MYSQL_ROOT_PASSWORD: 
     MYSQL_DATABASE: 'digapp_production'
     MYSQL_USER: 'digapp'
-    MYSQL_PASSWORD: 'changeme'
+    MYSQL_PASSWORD: 
 
 mysqldata:
   image: busybox
