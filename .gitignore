@@ -3,7 +3,7 @@ public
 .tmp
 .idea
 client/bower_components
-dist
+dist*
 /server/config/local.env.js
 .vagrant
 *.sublime-workspace
