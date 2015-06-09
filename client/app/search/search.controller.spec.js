@@ -973,12 +973,12 @@ describe('Controller: SearchCtrl', function () {
 
     it('should toggle the bool value of displayImageBreadcrumb', function() {
         scope.displayImageBreadcrumb = false;
-        scope.toggleImageSearchEnabled('https://some.server/test.jpg', true);
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg');
         expect(scope.displayImageBreadcrumb).toBe(true);
     });
 
     it('should set the bool value of imageBreadcrumb to true', function() {
-        scope.imageSearch('https://some.server/test.jpg', true);
+        scope.imageSearch('https://some.server/test.jpg');
         expect(scope.displayImageBreadcrumb).toBe(true);
     });
 

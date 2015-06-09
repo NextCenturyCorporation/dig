@@ -17,6 +17,7 @@ angular.module('digApp')
     $scope.notificationHasRun = true;
     $scope.displayImageBreadcrumb = false;
 
+
     $scope.saveQuery = function() {
         $modal.open({
             templateUrl: 'app/queries/save-query.html',
@@ -162,6 +163,7 @@ angular.module('digApp')
         imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
         $scope.displayImageBreadcrumb = !$scope.displayImageBreadcrumb;
 
+
     };
 
     $scope.clearSearch = function() {
@@ -185,7 +187,7 @@ angular.module('digApp')
     };
 
     $scope.imageSearch = function(imgUrl) {
-	$scope.displayImageBreadcrumb = true;
+	    $scope.displayImageBreadcrumb = true;
         imageSearchService.imageSearch(imgUrl);
     };
 
