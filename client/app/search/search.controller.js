@@ -255,7 +255,7 @@ angular.module('digApp')
                     $scope.searchConfig.filterByImage = false;
                 }
             } else {
-		        $scope.displayImageBreadcrumb = false;
+                $scope.displayImageBreadcrumb = false;
                 $scope.imagesimLoading = false;
                 $scope.searchConfig.filterByImage = false;
             }

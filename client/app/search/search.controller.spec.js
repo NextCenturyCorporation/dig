@@ -972,12 +972,19 @@ describe('Controller: SearchCtrl', function () {
     });
 
     it('should toggle the bool value of displayImageBreadcrumb', function() {
-        scope.displayImageBreadcrumb = false;
-        scope.toggleImageSearchEnabled('https://some.server/test.jpg');
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', true);
         expect(scope.displayImageBreadcrumb).toBe(true);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg');
+        expect(scope.displayImageBreadcrumb).toBe(false);
     });
 
-    it('should set the bool value of imageBreadcrumb to true', function() {
+    it('should set displayImageBreadcrumb to false if image sim filter is deleted or breadcrumb image is deleted', function() {
+        scope.clearActiveImageSearch();
+        expect(scope.displayImageBreadcrumb).toBe(false);
+    });
+
+    it('should set the bool value of displayImageBreadcrumb to true', function() {
         scope.imageSearch('https://some.server/test.jpg');
         expect(scope.displayImageBreadcrumb).toBe(true);
     });
@@ -986,4 +993,5 @@ describe('Controller: SearchCtrl', function () {
         expect(imageSearchService.getImageSearchStatus('http://foo')).toBe('no search available');
         expect(scope.displayImageBreadcrumb).toBe(false);
     });
+
 });
