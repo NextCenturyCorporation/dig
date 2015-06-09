@@ -34,7 +34,7 @@
           </div>
           <div class="row breadcrumb-box">
 	<span ng-if="displayImageBreadcrumb && getActiveImageSearch()">
-	          <span>
+	   <span>
               <span class="search-facet">
                 <img blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb"><i class="fa fa-times-circle" ng-click="toggleImageSearchEnabled(getActiveImageSearch().url)"></i>
               </span>
