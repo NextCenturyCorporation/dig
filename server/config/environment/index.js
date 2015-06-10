@@ -779,6 +779,99 @@ var all = {
                     }]
                 }
             }
+        },
+        'mockatf': {
+            facets: {
+                euiFilters: [],
+                //simFilter: {},
+                aggFilters: []
+            },
+            highlight: {
+                fields: [
+                'hasBodyPart.text',
+                'hasTitlePart.text'
+                ]
+            },
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'User',
+                    field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                    classes: 'name'
+                },{
+                    title: 'Post Count',
+                    field: 'doc._source.hasFeatureCollection.person_postCount_feature.person_postCount',
+                    classes: 'name'
+                },{
+                    title: 'Enrollment Date',
+                    field: 'doc._source.hasFeatureCollection.enrollment_date_feature.enrollment_date',
+                    classes: 'date'
+                }],
+                full: {
+                    "1": {
+                        classes: 'listing-details',
+                        fields: [{
+                            title: 'User',
+                            field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                        },{
+                            title: 'Price(s)',
+                            field: 'doc._source.hasFeatureCollection.pricesMentioned_feature.pricesMentioned',
+                            featureArray: 'doc._source.hasFeatureCollection.pricesMentioned_feature',
+                            featureValue: 'pricesMentioned'
+                        },{
+                            title: 'Address',
+                            field: 'doc._source.hasFeatureCollection.place_postalAddress_feature.postalAddress',
+                        },{
+                            title: 'Firearm(s)',
+                            field: 'doc._source.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
+                            featureArray: 'doc._source.hasFeatureCollection.weaponsMentioned_feature',
+                            featureValue: 'weaponsMentioned'
+                        },{
+                            title: 'Post',
+                            field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
+                        },{
+                            title: 'Date',
+                            field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'Data Provider',
+                            field: "doc._source.hasFeatureCollection.provider_name_feature.provider_name"
+                        }]
+                    }
+                }
+            },
+            postFields: {
+                title: 'Posts', 
+                field: 'doc._source.hasPost',
+                subject: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'Username',
+                    field: 'hasFeatureCollection.person_username_feature.person_username',
+                    classes: 'user'
+                },{
+                    title: 'Address',
+                    field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
+                    classes: 'location'
+                }],
+                body: 'hasBodyPart.text'
+            }
         }
     }
 };
