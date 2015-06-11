@@ -34,34 +34,7 @@
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
-        <!--TODO: make posts a seperate component like expanded-listing-view-->
-        <!--begin scroll div-->
-        <div ng-if="euiConfigs.postFields">
-          <div class="row">
-            <div class="col-xs-12">
-              <label ng-if="euiConfigs.postFields['title']" class="post-label">{{euiConfigs.postFields['title']}}</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12"> 
-              <div class="posts">
-                <ul class="post-list-group list-unstyled">
-                  <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.postFields.field)">
-                    <span class="post-title">{{$eval('item.' + euiConfigs.postFields['subject'][0].field)}}</span>
-                    <div class="list-group-item-meta">
-                      <span ng-repeat="field in euiConfigs.postFields['short']">
-                        <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                        <span class="{{field.classes}}">{{$eval('item.' + field.field) || "N/A"}}</span>
-                      </span>                
-                    </div>
-                  <span>{{item.hasBodyPart.text}}</span>
-                  </li>
-                </ul> 
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--end scroll div-->
+        <posts-view doc="doc"></posts-view>
       </div>
     </li>
   </ul>
