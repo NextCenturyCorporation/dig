@@ -11,7 +11,7 @@ var savedScheduledQueryRunner = function (applog, config, esClient, QueryModel) 
 
     return {
         // every hour on the hour
-        hourlyJob: schedule.scheduleJob('* * * * *', querydb.runHourlySSQ),
+        hourlyJob: schedule.scheduleJob('0 * * * *', querydb.runHourlySSQ),
 
         // midnight every day
         dailyJob: schedule.scheduleJob('0 0 * * *', querydb.runDailySSQ),    
