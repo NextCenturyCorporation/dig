@@ -4,6 +4,7 @@
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
 DOCKER_PREFIX="digmemex/digapp"
+NOTIFY_PREFIX="digmemex/notifyapp"
 FILES_TO_COPY=(scripts/bootstrap.sh scripts/run.sh scripts/backupdb.sh docker-compose.yml)
 EXECUTABLES=(bootstrap.sh run.sh backupdb.sh)
 
@@ -56,7 +57,12 @@ push_docker() {
     if [[ $PUSH_TO_DOCKER == 1 ]]; then
 	echo "Pushing to docker Hub"
 	TAG=${DOCKER_PREFIX}:$DIG_VERSION
+	NOTIFYTAG=${NOTIFY_PREFIX}:$NOTIFY_VERSION
 	pushd dist
+	docker build -t $TAG ./
+	docker push $TAG
+	popd
+	pushd distnotify
 	docker build -t $TAG ./
 	docker push $TAG
 	popd
@@ -107,7 +113,7 @@ copy_files() {
 	chmod +x ${DEST_DIR}/${file}
     done
 
-    cp -r dist ${DEST_DIR}
+#    cp -r dist ${DEST_DIR}
     if [[ ! -d "${CFGDIR}" ]]; then
 	echo "Could not find config dir!"
 	exit 1
@@ -128,6 +134,7 @@ configure_settings() {
 	echo "Settings will be set using cmdline options"
     fi
     DIG_VERSION=$(cd dist && npm ls 2>/dev/null| sed -n 's/dig@\([^ \t]\+\).*$/\1/p')
+    NOTIFY_VERSION=$(cd distnotify && npm ls 2>/dev/null| sed -n 's/notifyapp@\([^ \t]\+\).*$/\1/p')
 }
 
 create_package() {

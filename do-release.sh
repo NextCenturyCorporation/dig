@@ -80,7 +80,7 @@ cleanup 0
 
 get_options() {
     
-    while getopts ":Mmpucaitd" opt; do
+    while getopts ":Mmpuc:aitd" opt; do
 	case $opt in
 	    M)
 		BUMP_VER=maj
@@ -121,6 +121,7 @@ get_options() {
 		;;
 	    c)
 		CONFDIR=$OPTARG
+		echo "Using ${CONFDIR} as config dir"
 		;;
 	esac
     done
@@ -163,7 +164,7 @@ sanity_check() {
 	cleanup 10
     }
     
-    if [[ -z "${OPTARG}" ]]; then
+    if [[ -z "${CONFDIR}" ]]; then
 	echo "You did not set the config directory with -c"
 	cleanup 20
     fi
