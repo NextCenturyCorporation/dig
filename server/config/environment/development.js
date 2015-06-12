@@ -20,5 +20,7 @@ module.exports = {
     }
   },
 
+  logfile: 'digapp.log',
+
   seedDB: true
 };
