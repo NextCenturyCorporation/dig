@@ -88,7 +88,7 @@
           </button>
         </div>
 
-        <div class="folder-tree" ui-tree data-nodrag>
+        <div class="folder-tree" ng-click="deselect()" ui-tree data-nodrag>
           <ul class="folder-tree-list list-unstyled" ui-tree-nodes="" ng-model="nestedFolders">
             <li class="folder-tree-item" ng-repeat="folder in nestedFolders"
                 ui-tree-node ng-include="'components/folder/folder-tree.html'">

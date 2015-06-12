@@ -515,7 +515,7 @@ describe('Controller: MainCtrl', function () {
         expect(scope.selectedItemsKey).toEqual(3);
     });
 
-    /*it('should deselect folder and have valid moveTo folders', function () {
+    it('should not deselect folder', function () {
         $httpBackend.flush();
 
         scope.selectedFolder = nestedFolders[1].children[0];
@@ -523,15 +523,48 @@ describe('Controller: MainCtrl', function () {
         scope.selectedChildFolders[4] = [];
         scope.selectedItemsKey = 4;
 
-        scope.select(nestedFolders[1].children[0]);
+        scope.select(nestedFolders[1].children[0], {});
         expect(state.go).toHaveBeenCalledWith('main.folder.results.list');
         expect(scope.activeTab).toBe('#folders');
+        expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
+        expect(scope.selectedItems).toEqual({"#filter": [], 4: []});
+        expect(scope.selectedChildFolders).toEqual({"#filter": [], 4: []});
+        expect(scope.selectedItemsKey).toEqual(4);
+        expect(scope.isFolderSelectEvent).toEqual(true);
+    });
+
+    it('should deselect folder and have valid moveTo folders', function () {
+        $httpBackend.flush();
+
+        scope.selectedFolder = nestedFolders[1].children[0];
+        scope.selectedItems[4] = [];
+        scope.selectedChildFolders[4] = [];
+        scope.selectedItemsKey = 4;
+
+        scope.deselect(nestedFolders[1].children[0]);
         expect(scope.validMoveFolders).toEqual([]);
         expect(scope.selectedFolder).toEqual({});
         expect(scope.selectedItems).toEqual({"#filter": []});
         expect(scope.selectedChildFolders).toEqual({"#filter": []});
         expect(scope.selectedItemsKey).toEqual(4);
-    });*/
+    });
+
+    it('should not deselect folder on folder click event', function () {
+        $httpBackend.flush();
+
+        scope.selectedFolder = nestedFolders[1].children[0];
+        scope.selectedItems[4] = [];
+        scope.selectedChildFolders[4] = [];
+        scope.selectedItemsKey = 4;
+        scope.isFolderSelectEvent = true;
+
+        scope.deselect(nestedFolders[1].children[0]);
+        expect(scope.selectedFolder).toEqual(nestedFolders[1].children[0]);
+        expect(scope.selectedItems).toEqual({"#filter": [], 4: []});
+        expect(scope.selectedChildFolders).toEqual({"#filter": [], 4: []});
+        expect(scope.selectedItemsKey).toEqual(4);
+        expect(scope.isFolderSelectEvent).toEqual(false);
+    });
 
     it('should change active tab on /folder load', function () {
       spyOn(location, 'path').andReturn('/folder');

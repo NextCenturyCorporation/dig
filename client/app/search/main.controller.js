@@ -205,7 +205,7 @@ angular.module('digApp')
       };
 
       // Selects/Deselects folder and changes to folder view
-      $scope.select = function(folder) {
+      $scope.select = function(folder, event) {
         // Change active tab so folder view shows
         $scope.activeTab = $scope.FOLDERS_TAB;
         $state.go('main.folder.results.list');
@@ -224,12 +224,22 @@ angular.module('digApp')
           $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
-        }/* else {
+        }
+
+        if(event) {
+          $scope.isFolderSelectEvent = true;
+        }
+      };
+
+      $scope.deselect = function() {
+        if(!$scope.isFolderSelectEvent) {
           delete $scope.selectedItems[$scope.selectedItemsKey];
           delete $scope.selectedChildFolders[$scope.selectedItemsKey];
           $scope.selectedFolder = {};
           $scope.validMoveFolders = [];
-        }*/
+        } else {
+          $scope.isFolderSelectEvent = false;
+        }
       };
 
       // Updates folders
