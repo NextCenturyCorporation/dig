@@ -74,6 +74,10 @@ angular.module('digApp')
         };
 
         $scope.selectedSort = {};
+        $scope.selectedFolderSort = {};
+        $scope.selectedFolderSortOptions = angular.copy($scope.euiConfigs);
+        _.remove($scope.selectedFolderSortOptions.sort.options, {order: 'rank', title: 'Best Match'});
+
         $scope.selectedItems[$scope.selectedItemsKey] = [];
         $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
 
@@ -167,6 +171,7 @@ angular.module('digApp')
 
         if(link == $scope.FILTER_TAB) {
           $scope.selectedItemsKey = $scope.FILTER_TAB;
+          $scope.selectedFolderSort = {};
           $scope.viewList();
         } else {
           $scope.activeTab = $scope.FOLDERS_TAB;
@@ -204,6 +209,7 @@ angular.module('digApp')
         // Change active tab so folder view shows
         $scope.activeTab = $scope.FOLDERS_TAB;
         $state.go('main.folder.results.list');
+        $scope.selectedFolderSort = _.cloneDeep($scope.euiConfigs.sort.folderOption);
 
         // Select/Deselect folder and update folders able to move to
         if(!$scope.selectedFolder._id) {

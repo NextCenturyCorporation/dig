@@ -115,6 +115,9 @@ var all = {
                 defaultOption: {
                     order: 'rank', title: 'Best Match'
                 },
+                folderOption: {
+                    order: 'desc', title: 'Newest First'
+                },
                 options: [
                     {
                         order: 'rank',

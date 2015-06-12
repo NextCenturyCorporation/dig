@@ -106,7 +106,10 @@ describe('Controller: MainCtrl', function () {
             $provide.constant('euiConfigs', {
                 facets: [],
                 listFields: [],
-                detailsFields: []
+                detailsFields: [],
+                sort: {
+                  options: []
+                }
             });
         });
 
