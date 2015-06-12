@@ -197,7 +197,7 @@ angular.module('digApp')
           });
         }
 
-        return allSelected && $scope.indexVM.results.hits.hits.length;
+        return allSelected;
       }
 
       return false;
