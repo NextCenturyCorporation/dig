@@ -217,6 +217,9 @@ var all = {
                             title: 'Weight',
                             field: 'doc._source.weight',
                             featureValue: 'weight'
+                        },{
+                            title: 'Added to Dig',
+                            field: "doc.fields._timestamp | date:'MM/dd/yyyy HH:mm:ss UTC' : 'UTC'"
                         }]
                     }
                 }
@@ -230,6 +233,9 @@ var all = {
                     fields: [{
                         title: 'Created',
                         field: "doc._source.date | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                    },{
+                        title: 'Added to DIG',
+                        field: "doc.fields._timestamp | date:'MM/dd/yyyy HH:mm:ss UTC' : 'UTC'"
                     },{
                         title: 'City',
                         field: 'doc._source.city',
