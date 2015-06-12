@@ -8,7 +8,7 @@ var applog = bunyan.createLogger({
     name: 'Saved Scheduled Query Runner',
     streams: [{
         type: 'rotating-file',
-        path: '/var/log/dig/notifyapp.log',
+        path: '/var/log/notifyapp.log',
         period: '1d',
         count: 10
         // `type: 'file'` is implied
