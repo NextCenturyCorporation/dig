@@ -224,12 +224,12 @@ angular.module('digApp')
           $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
-        } else {
+        }/* else {
           delete $scope.selectedItems[$scope.selectedItemsKey];
           delete $scope.selectedChildFolders[$scope.selectedItemsKey];
           $scope.selectedFolder = {};
           $scope.validMoveFolders = [];
-        }
+        }*/
       };
 
       // Updates folders
@@ -371,6 +371,37 @@ angular.module('digApp')
             } else {
               $scope.getFolders();
             }
+          });
+      };
+
+      // Opens create folder modal to create a new folder with nothing in it
+      $scope.createEmptyFolder = function() {
+          var modalInstance = $modal.open({
+              templateUrl: 'components/folder/create-modal.html',
+              controller: 'CreateModalCtrl',
+              resolve: {
+                  folders: function() {
+                    // Get valid folders to move folder to
+                    var validFolders = [];
+                    validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+                    validFolders = _filterOutChildren($scope.nestedFolders, null, validFolders);
+                    return validFolders;
+                  },
+                  currentFolder: function() {
+                    return {};
+                  },
+                  items: function() {
+                    return [];
+                  },
+                  childIds: function() {
+                    return [];
+                  }
+              },
+              size: 'sm'
+          });
+
+          modalInstance.result.then(function () {
+            $scope.getFolders();
           });
       };
 

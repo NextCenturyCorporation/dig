@@ -66,7 +66,7 @@
           </button>
           <div class="btn-group">
             <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu"
-                    data-toggle="dropdown" aria-expanded="false">
+                    data-toggle="dropdown" aria-expanded="false" ng-class="{disabled: !selectedFolder._id}">
               <i class="fa fa-folder"></i>
               <i class="caret"></i>
             </button>
@@ -76,13 +76,15 @@
                 <a role="menuitem" tabindex="-1" href="#" ng-click="moveFolder(folder)">{{ folder.name }}</a>
               </li>
               <li role="presentation" id="create-new-folder">
-                <button class="btn btn-primary" ng-click="createFolder(false)" ng-if="validMoveFolders.length">New</button>
-                <button class="btn btn-primary" ng-click="createFolder(false)" ng-if="!validMoveFolders.length">Create New</button>
+                <button class="btn btn-primary" ng-click="createFolder(false)">New</button>
               </li>
             </ul>
           </div>
           <button class="btn btn-default" ng-click="deleteFolder()" ng-class="{disabled: !selectedFolder._id}">
             <i class="fa fa-trash"></i>
+          </button>
+          <button class="btn btn-default" ng-click="createEmptyFolder()">
+            <i class="fa fa-plus"></i>
           </button>
         </div>
 
