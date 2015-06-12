@@ -7,10 +7,11 @@
 var errors = require('./components/errors');
 var config = require('./config/environment');
 
-module.exports = function(app) {
-
+module.exports = function(app, logger) {
     app.route('*')
     .get(function(req, res, next) {
+	logger.info({Username: req.headers.user, Route: req.path});
+
         if(req.headers.user) {
             next();
         } else {

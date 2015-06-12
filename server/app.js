@@ -40,7 +40,7 @@ var app = express();
 var server = require('http').createServer(app);
 
 require('./config/express')(app);
-require('./routes')(app);
+require('./routes')(app, log);
 
 app.models = models;
 app.log = log;
