@@ -15,7 +15,7 @@ var log = bunyan.createLogger({
     name: 'digapp',
     streams: [{
         type: 'rotating-file',
-        path: 'digapp.log',
+        path: config.logfile,
         period: '1d',
         count: 10
         // `type: 'file'` is implied

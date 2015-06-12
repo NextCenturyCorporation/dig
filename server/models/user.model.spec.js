@@ -1,8 +1,5 @@
 'use strict';
 
-// Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-var config = require('../config/environment');
 var should = require('should');
 var models = require('./index');
 
