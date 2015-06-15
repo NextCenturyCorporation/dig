@@ -16,3 +16,4 @@ coverage
 *.log
 *.tar
 *.tar.gz
+*~
