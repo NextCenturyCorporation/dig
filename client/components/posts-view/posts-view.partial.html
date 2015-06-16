@@ -9,14 +9,20 @@
       <div class="posts">
         <ul class="post-list-group list-unstyled">
           <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.postFields.field)">
-            <span class="post-title">{{$eval('item.' + euiConfigs.postFields['subject'][0].field)}}</span>
+            <span class="post-title" 
+              ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields['subject'][0].field), 
+                euiConfigs.postFields['subject'][0].highlightArray)"></span>
             <div class="list-group-item-meta">
               <span ng-repeat="field in euiConfigs.postFields['short']">
                 <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                <span class="{{field.classes}}">{{$eval('item.' + field.field) || "N/A"}}</span>
+                <span class="{{field.classes}}" 
+                  ng-bind-html="highlightCheck($eval('item.' + field.field), $eval(field.highlightArray)) || 'N/A'">
+                </span>
               </span>                
             </div>
-          <span>{{item.hasBodyPart.text}}</span>
+             <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields.body.field), 
+                $eval(euiConfigs.postFields.body.highlightArray))">
+             </span>
           </li>
         </ul> 
       </div>
