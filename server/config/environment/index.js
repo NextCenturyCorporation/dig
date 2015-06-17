@@ -369,11 +369,11 @@ var all = {
                         order: 'desc',
                         title: 'Best Match'
                     },{
-                        field: 'date',
+                        field: 'dateCreated',
                         order: 'desc',
                         title: 'Date Created (Newest First)'
                     },{
-                        field: 'date',
+                        field: 'dateCreated',
                         order: 'asc',
                         title: 'Date Created (Oldest First)'
                     }, {
