@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('postsView', function(euiConfigs, $sce) {
+.directive('postsView', function(euiConfigs, utilService) {
     return {
         restrict: 'E',
         scope: {
@@ -12,17 +12,7 @@ angular.module('digApp.directives')
             $scope.euiConfigs = euiConfigs;
 
             $scope.highlightCheck = function(field, highlightedText) {
-
-                if(highlightedText) {
-                    for(var i = 0; i < highlightedText.length; i++) {
-                        var stripHighlightTags = String(highlightedText[i]).replace(/<[^>]+>/gm, '');
-                        if(stripHighlightTags === field) {
-                            return $sce.trustAsHtml(String(highlightedText[i]).replace(/<(?!\/?mark\s*\/?)[^>]+>/gm, ''));
-                        }
-                    }   
-                }
-
-                return field;
+                return utilService.highlightCheck(field, highlightedText);
             };
         }
     };
