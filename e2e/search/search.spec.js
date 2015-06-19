@@ -190,9 +190,78 @@ describe('Search View', function()
 
     });
     
-    iit('should be able to sort based on different parameters', function ()
+    it('should be able to sort based on different parameters', function ()
+    {   
+        var firstResult = undefined;
+        var firstDate = undefined, secondDate = undefined;
+        page.search().then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            firstResult = title;
+        }).then(function ()
+        {
+            //Date created newest first
+            page.sortBy(1);
+        }).then(function ()
+        {
+            //Although it is possible they are the same, it is extremely unlikely
+            expect(page.getTitle(0)).not.toEqual(firstResult);
+            page.getDateCreated(0).then(function (date)
+            {
+                firstDate = date;
+            });
+            page.getDateCreated(1).then(function (date)
+            {
+                secondDate = date;
+            }).then(function ()
+            {
+                expect(compareDates(firstDate, secondDate)).not.toBeLessThan(0);
+            });
+        }).then(function ()
+        {
+            //Date created oldest first
+            page.sortBy(2);
+        }).then(function ()
+        {
+            expect(page.getTitle(0)).not.toEqual(firstResult);
+            page.getDateCreated(0).then(function (date)
+            {
+                firstDate = date;
+            });
+            page.getDateCreated(1).then(function (date)
+            {
+                secondDate = date;
+            }).then(function ()
+            {
+                expect(compareDates(firstDate, secondDate)).not.toBeGreaterThan(0);
+            });
+        });
+    });
+
+    it('should sort in a repeatable nature', function ()
     {
-        
+        var firstResult = undefined, lastResult = undefined;
+        page.searchFor('').then(function ()
+        {
+            return page.getTitle(3);
+        }).then(function (title)
+        {
+            firstResult = title;
+        }).then(function ()
+        {
+            page.sortBy(3);
+        }).then(function ()
+        {
+            page.sortBy(0);
+        }).then(function ()
+        {
+            return page.getTitle(3);
+        }).then(function (title)
+        {
+            expect(title).toEqual(firstResult);
+        });
     });
 
     // Helper functions
@@ -205,6 +274,66 @@ describe('Search View', function()
     function expectFalse (bool)
     {
         expect(bool).toBeFalsy();
+    }
+
+    function compareDates (one, two)
+    {
+        if(getYear(one) === getYear(two))
+        {
+            if(getMonth(one) === getMonth(two))
+            {
+                if(getDay(one) === getDay(two))
+                {
+                    return getTimeOfDay(one) - getTimeOfDay(two);
+                }
+                else
+                {
+                    return getDay(one) - getDay(two);
+                }
+            }
+            else
+            {
+                return getMonth(one) - getMonth(two);
+            }
+        }
+        else
+        {
+            return getYear(one) - getYear(two);
+        }
+    }
+
+    //Commented out the correct way to do these, ran into a bug.
+    function getYear (date)
+    {
+        return parseInt(date.substring(6,11));
+        //return parseInt(date.substring(date.indexOf('/', date.indexOf('/')) + 1, date.indexOf(' ')));
+    }
+
+    function getMonth (date)
+    {
+        return parseInt(date.substring(0, 2));
+        //return parseInt(date.substring(0, date.indexOf('/')));
+    }
+
+    function getDay (date)
+    {
+        return parseInt(date.substring(3, 5));
+        //return parseInt(date.substring(date.indexOf('/') + 1, date.indexOf('/', date.indexOf('/'))));
+    }
+
+    //In total seconds
+    function getTimeOfDay (date)
+    {
+        var time = date.substring(12, 20);
+        var hour = time.substring(0, 2);
+        var minute = time.substring(3, 5);
+        var second = time.substring(6,8);
+        // var time = date.substring(date.indexOf(' ') + 1, date.indexOf(' ', date.indexOf(' ')));
+        // var hour = time.substring(0, time.indexOf(':'));
+        // var minute = time.substring(time.indexOf(':') + 1, time.indexOf(':', time.indexOf(':')));
+        // var second = time.substring(time.indexOf(':', time.indexOf(':')) + 1)
+
+        return (3600 * parseInt(hour)) + (60 * parseInt(minute)) + parseInt(second);
     }
 
     // var hasClass = function (element, cls) 

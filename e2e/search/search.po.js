@@ -19,6 +19,10 @@ var SearchPage = function ()
 	var clearSearchButton = element(by.css('.btn.btn-danger.clear-all-btn'));
 	var saveSearchButton = element(by.buttonText('Save'));
 
+	//Filter and sorting options
+	var sortMenu = element(by.id('sortMenu'));
+	var sortList = element.all(by.repeater('option in sortOptions track by $index'));
+
 	//Result elements
 	var resultList = element(by.id('results')).all(by.css('.list-group-item.ng-scope'));
 
@@ -36,6 +40,42 @@ var SearchPage = function ()
 	this.getCurrentQuery = function ()
 	{
 		return searchBar.getText();
+	};
+
+	//Returns the number of results found in a search
+	this.getResultCount = function (callback)
+	{
+		element(by.css('.right-column')).element(by.css('.column-header')).
+		element(by.tagName('h4')).getText().then(function (resultString)
+		{
+			var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
+			callback(count);
+		});
+	};
+
+	this.getTitle = function (number)
+	{
+		return resultList.get(number)
+		.element(by.css('.col-xs-7.col-sm-8.col-lg-9'))
+		.all(by.tagName('span')).first().getText();
+	};
+
+	//The following getters are data dependent but the only(?) way 
+	//to check if data specific sorting options are functional.
+
+	this.getDateCreated = function (number)
+	{
+		return resultList.get(number).element(by.css('.date')).getText();
+	};
+
+	this.getLocation = function (number)
+	{
+		return resultList.get(number).element(by.css('location')).getText();
+	};
+
+	this.getAge = function (number)
+	{
+		return resultList.get(number).element(by.css('age')).getText();
 	};
 
 	//Returns true if the results section is hidden, false otherwise
@@ -65,17 +105,6 @@ var SearchPage = function ()
 		.getAttribute('style').then(function (height)
 		{
 			return height !== 'height: 0px;';
-		});
-	};
-
-	//Returns the number of results found in a search
-	this.getResultCount = function (callback)
-	{
-		element(by.css('.right-column')).element(by.css('.column-header')).
-		element(by.tagName('h4')).getText().then(function (resultString)
-		{
-			var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
-			callback(count);
 		});
 	};
 
@@ -126,6 +155,25 @@ var SearchPage = function ()
 	this.toggleResult = function (number)
 	{
 		return resultList.get(number).element(by.css('.list-group-item-heading.collapsed')).click();
+	};
+
+	this.sortBy = function (index)
+	{
+		this.isHidingResults()
+		.then(function (hidden)
+		{
+			if(!hidden)
+			{
+				return sortMenu.click().then(function ()
+				{
+					return sortList.get(index).click();
+				});
+			}
+			else
+			{
+				return console.error('Sorting not available. Search before attempting to sort');
+			}
+		});
 	};
 
 
