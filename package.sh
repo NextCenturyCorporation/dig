@@ -63,8 +63,8 @@ push_docker() {
 	docker push $TAG
 	popd
 	pushd distnotify
-	docker build -t $TAG ./
-	docker push $TAG
+	docker build -t $NOTIFYTAG ./
+	docker push $NOTIFYTAG
 	popd
     fi
 }
