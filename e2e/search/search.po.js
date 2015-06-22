@@ -29,6 +29,8 @@ var SearchPage = function ()
 	var fromDateButton = leftColumn.all(by.css('input-group-btn')).first();
 	var toDateButton = leftColumn.all(by.css('input-group-btn')).last();
 	var attributeFilterList = element.all(by.repeater('filter in facets.aggFilters'));
+	//Breadcrumbs are in lists and each of the breadcrumb lists are part of a larger list based off of attributes
+	var breadcrumbListList = element.all(by.repeater('aggFilter in facets.aggFilters'));
 
 	//Result elements, use list only when in list view and grid in grid view
 	var resultList = element(by.id('results')).all(by.repeater('doc in indexVM.results.hits.hits track by $index'));
@@ -93,6 +95,35 @@ var SearchPage = function ()
 
 	//end data dependent getters
 
+	//Returns the text of the attribute with the index of number in the filter list
+	this.getAttributeFilter = function (number)
+	{
+		return attributeFilterList.get(number).element(by.tagName('h5')).getText();
+	};
+
+	//Returns the type of index typeNumber of the attribute with the index of attributeNumber in the filter list
+	this.getAttributeFilterType = function (attributeNumber, typeNumber)
+	{
+		return attributeFilterList.get(attributeNumber).all(by.css('.ng-scope.ng-binding'))
+		.get(typeNumber).getText();
+	};
+
+	//Gets the page element of the breadcrumb with index crumbNumber from the list of breadcrumbs associated
+	//with the attribute at the index attributeNumber
+	this.getBreadcrumb = function (attributeNumber, crumbNumber)
+	{
+		return breadcrumbListList.get(attributeNumber)
+		.all(by.repeater('(filterKey, selected) in filterStates.aggFilters[aggFilter.field]'))
+		.get(crumbNumber);
+	};
+
+	//Note that the crumbNumber might (and likely will) not equal the type number used in getAttributeFilterType
+	//Gets the text from the breadcrumb specified
+	this.getBreadcrumbText = function (attributeNumber, crumbNumber)
+	{
+		return this.getBreadcrumb(attributeNumber, crumbNumber).getText();
+	};
+
 	//Returns whether or not the save button is visible
 	this.isSaveButtonVisible = function ()
 	{
@@ -134,6 +165,16 @@ var SearchPage = function ()
 			{
 				return height !== 'height: 0px;';
 			});
+		});
+	};
+
+	this.isFilterExpanded = function (number)
+	{
+		return attributeFilterList.get(number)
+		.all(by.tagName('div')).get(2)
+		.getAttribute('style').then(function (style)
+		{
+			return style !== 'height: 0px;';
 		});
 	};
 
@@ -229,10 +270,25 @@ var SearchPage = function ()
 	// 	});
 	// };
 
+	//Will toggle the filter by the attribute with the index attributeNumber and type at index optionNumber
 	this.toggleFilterByAttribute = function (attributeNumber, optionNumber)
 	{
 		return attributeFilterList.get(attributeNumber).all(by.model('filterStates[aggregationName][bucket.key]'))
 		.get(optionNumber).click();
+	};
+
+	//Will remove the specified filter by clicking the 'x' icon on the breadcrumb
+	this.removeBreadcrumb = function (attributeNumber, crumbNumber)
+	{
+		return this.getBreadcrumb(attributeNumber, crumbNumber)
+		.element(by.css('.fa.fa-times-circle'))
+		.click();
+	};
+
+	//Will either expand or collapse the specified filter
+	this.toggleAttributeFilter = function (number)
+	{
+		return attributeFilterList.get(number).click();
 	};
 
 	/*

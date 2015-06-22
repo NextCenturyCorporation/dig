@@ -152,6 +152,10 @@ describe('Search View', function()
 
     // });
     
+    //Sometimes (1/10 times roughly) the second result would not expand or collapse 
+    //in time to pass the test. The sleeps were added to mitigate this but should
+    //this test continue to fail sporadically, increasing the sleep time should
+    //further reduce or completely stop the failures. 
     it('should allow users to expand and close results', function ()
     {
         page.searchFor('')
@@ -166,6 +170,7 @@ describe('Search View', function()
             return page.toggleResult(1);
         }).then(function ()
         {
+            browser.sleep(500);
             //Check that two can be expanded simultaneously
             expect(page.isResultExpanded(0)).toBeTruthy();
             expect(page.isResultExpanded(1)).toBeTruthy();
@@ -174,6 +179,7 @@ describe('Search View', function()
             return page.toggleResult(0);
         }).then(function ()
         {
+            browser.sleep(500);
             //Check that just the first result collapsed
             expect(page.isResultExpanded(0)).toBeFalsy();
             expect(page.isResultExpanded(1)).toBeTruthy();
@@ -182,6 +188,7 @@ describe('Search View', function()
             return page.toggleResult(1);
         }).then(function ()
         {
+            browser.sleep(500);
             //Check that both results have been collapsed
             expect(page.isResultExpanded(0)).toBeFalsy();
             expect(page.isResultExpanded(1)).toBeFalsy();
@@ -354,10 +361,179 @@ describe('Search View', function()
     });
     
     //Todo: add removal of from/to date breadcrumbs when the from/to date filter tests have been added
-    // iit('should display search filters and allow their removal with breadcrumbs', function ()
-    // {
-        
-    // });
+    it('should display search filters and allow their removal with breadcrumbs', function ()
+    {
+       var counts = [undefined, undefined, undefined, undefined];
+        page.search().then(page.getResultCount)
+        .then(function (count)
+        {
+            //counts[0] is the total number of results
+            counts[0] = count;
+        })
+        .then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[1] is the number of results after filtering by the first type of the first attribute
+            counts[1] = count;
+            
+            var filterAttribute = undefined, filterType = undefined, 
+            filter = undefined, breadCrumbText = undefined;
+
+            //The filter text should match the breadcrumb text
+            page.getAttributeFilter(0).then(function (name)
+            {
+                filterAttribute = name.toLowerCase();
+            });
+            page.getAttributeFilterType(0,0).then(function (name)
+            {
+                filterType = name.toLowerCase();
+            }).then(function ()
+            {
+                filter = filterAttribute + ": " + filterType;
+            }).then(function ()
+            {
+                page.getBreadcrumbText(0,0).then(function (text)
+                {
+                    breadCrumbText = text.toLowerCase();
+                });
+            }).then(function ()
+            {
+                expect(breadCrumbText).toEqual(filter);
+            });
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 1);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[2] is the number of results after filtering by the first or second type of the first attribute
+            counts[2] = count;
+            
+            var filterAttribute = undefined, filterType = undefined, 
+            filter = undefined, breadCrumbText = undefined;
+            
+            //The second breadcrumb text should match the new filter
+            var filterAttribute = undefined, filterType = undefined, 
+            filter = undefined, breadCrumbText = undefined;
+            
+            page.getAttributeFilter(0).then(function (name)
+            {
+                filterAttribute = name.toLowerCase();
+            });
+            page.getAttributeFilterType(0,1).then(function (name)
+            {
+                filterType = name.toLowerCase();
+            }).then(function ()
+            {
+                filter = filterAttribute + ": " + filterType;
+            }).then(function ()
+            {
+                page.getBreadcrumbText(0,1).then(function (text)
+                {
+                    breadCrumbText = text.toLowerCase();
+                });
+            }).then(function ()
+            {
+                expect(breadCrumbText).toEqual(filter);
+            });
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(1, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[3] is the number of results after filtering by the first or second type of the first attribute
+            //and the first type of the second attribute
+            counts[3] = count;
+            
+            var filterAttribute = undefined, filterType = undefined, 
+            filter = undefined, breadCrumbText = undefined;
+            
+            //The third breadcrumb text should match the new filter, this one is from a different attribute group
+            page.getAttributeFilter(1).then(function (name)
+            {
+                filterAttribute = name.toLowerCase();
+            });
+            page.getAttributeFilterType(1,0).then(function (name)
+            {
+                filterType = name.toLowerCase();
+            }).then(function ()
+            {
+                filter = filterAttribute + ": " + filterType;
+            }).then(function ()
+            {
+                page.getBreadcrumbText(1,0).then(function (text)
+                {
+                    breadCrumbText = text.toLowerCase();
+                });
+            }).then(function ()
+            {
+                expect(breadCrumbText).toEqual(filter);
+            });
+        //Check to see that removing filters using breadcrumbs works as expected
+        }).then(function ()
+        {
+            return page.removeBreadcrumb(1, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[2]);
+        }).then(function ()
+        {
+            return page.removeBreadcrumb(0, 1);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[1]);
+        }).then(function ()
+        {
+            return page.removeBreadcrumb(0, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[0]);
+        });
+    });
+    
+    //Sleeps were added because the expansions/collapses of filters were occurring
+    //slower than the tests. The time can be increased if the test sporadically fails
+    it('should allow the collapsing and expanding of attribute filters', function ()
+    {
+        page.search().then(function ()
+        {
+            expect(page.isFilterExpanded(0)).toBeTruthy();
+            expect(page.isFilterExpanded(1)).toBeTruthy();
+        }).then(function ()
+        {
+            return page.toggleAttributeFilter(0);
+        }).then(function ()
+        {
+            browser.sleep(500);
+            expect(page.isFilterExpanded(0)).toBeFalsy();
+            expect(page.isFilterExpanded(1)).toBeTruthy();
+        }).then(function ()
+        {
+            return page.toggleAttributeFilter(1);
+        }).then(function ()
+        {
+            browser.sleep(500);
+            expect(page.isFilterExpanded(0)).toBeFalsy();
+            expect(page.isFilterExpanded(1)).toBeFalsy();
+        }).then(function ()
+        {
+            return page.toggleAttributeFilter(1);
+        }).then(function ()
+        {
+            browser.sleep(500);
+            expect(page.isFilterExpanded(0)).toBeFalsy();
+            expect(page.isFilterExpanded(1)).toBeTruthy();
+        }).then(function ()
+        {
+            return page.toggleAttributeFilter(0);
+        }).then(function ()
+        {
+            browser.sleep(500);
+            expect(page.isFilterExpanded(0)).toBeTruthy();
+            expect(page.isFilterExpanded(1)).toBeTruthy();
+        });
+    });
 
     // Helper functions
 
