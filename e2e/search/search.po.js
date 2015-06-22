@@ -11,7 +11,10 @@ var SearchPage = function ()
 	Page element variables
 	*/
 
+	//Miscellaneous page elements
 	var searchBar = element(by.model('queryString.live'));
+	var leftColumn = element(by.css('.left-column.hidden-xs.col-sm-3.col-lg-2'));
+	var rightColumn = element(by.css('.right-column.col-sm-9'));
 
 	//Search Buttons
 	var searchButton = element(by.buttonText('Search'));
@@ -22,9 +25,14 @@ var SearchPage = function ()
 	//Filter and sorting options
 	var sortMenu = element(by.id('sortMenu'));
 	var sortList = element.all(by.repeater('option in sortOptions track by $index'));
+	var resultHeader = element(by.css('.results-header-div.row'));
+	var fromDateButton = leftColumn.all(by.css('input-group-btn')).first();
+	var toDateButton = leftColumn.all(by.css('input-group-btn')).last();
+	var attributeFilterList = element.all(by.repeater('filter in facets.aggFilters'));
 
-	//Result elements
-	var resultList = element(by.id('results')).all(by.css('.list-group-item.ng-scope'));
+	//Result elements, use list only when in list view and grid in grid view
+	var resultList = element(by.id('results')).all(by.repeater('doc in indexVM.results.hits.hits track by $index'));
+	var resultGrid = element(by.tagName('image-gallery')).all(by.repeater('doc in gallery.rawData track by $index'));
 
 	/*
 	Getters and state checks
@@ -43,16 +51,21 @@ var SearchPage = function ()
 	};
 
 	//Returns the number of results found in a search
-	this.getResultCount = function (callback)
+	this.getResultCount = function ()
 	{
-		element(by.css('.right-column')).element(by.css('.column-header')).
-		element(by.tagName('h4')).getText().then(function (resultString)
+		// rightColumn.element(by.css('.column-header')).
+		// element(by.tagName('h4')).getText().then(function (resultString)
+		// {
+		// 	var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
+		// 	callback(count);
+		// });
+		return rightColumn.element(by.css('.column-header')).element(by.tagName('h4')).getText().then(function (text)
 		{
-			var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
-			callback(count);
+			return parseInt(text.substring(0, text.indexOf(' ')).replace(',', ''));
 		});
 	};
 
+	//Returns the title of the result
 	this.getTitle = function (number)
 	{
 		return resultList.get(number)
@@ -68,25 +81,37 @@ var SearchPage = function ()
 		return resultList.get(number).element(by.css('.date')).getText();
 	};
 
-	this.getLocation = function (number)
-	{
-		return resultList.get(number).element(by.css('location')).getText();
-	};
+	// this.getLocation = function (number)
+	// {
+	// 	return resultList.get(number).element(by.css('location')).getText();
+	// };
 
-	this.getAge = function (number)
-	{
-		return resultList.get(number).element(by.css('age')).getText();
-	};
+	// this.getAge = function (number)
+	// {
+	// 	return resultList.get(number).element(by.css('age')).getText();
+	// };
 
-	//Returns true if the results section is hidden, false otherwise
-	this.isHidingResults = function ()
-	{
-		return element(by.css('.ng-scope.ng-isolate-scope.ng-hide')).isPresent();
-	};
+	//end data dependent getters
 
+	//Returns whether or not the save button is visible
 	this.isSaveButtonVisible = function ()
 	{
 		return saveSearchButton.isDisplayed();
+	};
+
+	//Returns whether or not the results are displaying as a grid
+	this.isInGridView = function ()
+	{
+		return element(by.tagName('image-gallery')).isPresent();
+	};
+
+	//Returns whether or not the results are displaying as a list
+	this.isInListView = function ()
+	{
+		return resultList.count().then(function (count)
+		{
+			return count !== 0;
+		});
 	};
 
 	//Returns true if the save query popup is visible, false otherwise
@@ -98,13 +123,17 @@ var SearchPage = function ()
 		})
 	};
 
+	//Returns whether a particular result is expanded
 	this.isResultExpanded = function (number)
 	{
-		return resultList.get(number)
-		.element(by.css('.list-group-item-text'))
-		.getAttribute('style').then(function (height)
+		return browser.wait(element(by.id('results')).isPresent()).then(function ()
 		{
-			return height !== 'height: 0px;';
+			return resultList.get(number)
+			.element(by.css('.list-group-item-text'))
+			.getAttribute('style').then(function (height)
+			{
+				return height !== 'height: 0px;';
+			});
 		});
 	};
 
@@ -116,9 +145,9 @@ var SearchPage = function ()
 	this.setQuery = function(query)
 	{
 		return searchBar.clear().then(function ()
-			{
+		{
 				return searchBar.sendKeys(query);
-			});
+		});
 	};
 
 	//Presses the search button
@@ -152,17 +181,19 @@ var SearchPage = function ()
 		return this.searchFor(query).then(saveSearchButton.click);
 	};
 
+	//Will flip the state of a result (from collapsed to expanded or vice versa)
 	this.toggleResult = function (number)
 	{
 		return resultList.get(number).element(by.css('.list-group-item-heading.collapsed')).click();
 	};
 
+	//Sorts the results by type at the given index in the sort menu
 	this.sortBy = function (index)
 	{
-		this.isHidingResults()
-		.then(function (hidden)
+		return this.isInListView()
+		.then(function (resultsDisplayed)
 		{
-			if(!hidden)
+			if(resultsDisplayed)
 			{
 				return sortMenu.click().then(function ()
 				{
@@ -176,6 +207,33 @@ var SearchPage = function ()
 		});
 	};
 
+	//Switches the result display to its list view
+	this.switchToListView = function ()
+	{
+		return resultHeader.all(by.css('.btn.btn-default')).first().click();
+	};
+
+	//Switches the result display to its grid view
+	this.switchToGridView = function ()
+	{
+		return resultHeader.all(by.css('.btn.btn-default')).get(1).click();
+	};
+
+	//Filters results from the date specified.
+	//date should be in a tuple with fields day,month,year
+	// this.filterFromDate = function (date)
+	// {
+	// 	return fromDateButton.click().then(function ()
+	// 	{
+
+	// 	});
+	// };
+
+	this.toggleFilterByAttribute = function (attributeNumber, optionNumber)
+	{
+		return attributeFilterList.get(attributeNumber).all(by.model('filterStates[aggregationName][bucket.key]'))
+		.get(optionNumber).click();
+	};
 
 	/*
 	Save dialog components, might be worth wrapping up somehow to be more intuitive and to reduce boilerplate
@@ -192,7 +250,7 @@ var SearchPage = function ()
 
 	this.setQueryName = function (name)
 	{
-		queryName.sendKeys(name);
+		return queryName.sendKeys(name);
 	};
 
 	//If check was here initially but taken out for complexity reasons
@@ -214,8 +272,7 @@ var SearchPage = function ()
 
 	this.saveSearchAs = function (name)
 	{
-		queryName.sendKeys(name);
-		this.saveSearch();
+		return queryName.sendKeys(name).then(this.saveSearch);
 	};
 
 	//If check was here initially but taken out for complexity reasons

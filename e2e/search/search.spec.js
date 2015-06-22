@@ -14,11 +14,11 @@ describe('Search View', function()
 
     it('should show results only after searching', function()
     {
-        expect(page.isHidingResults()).toBeTruthy();
+        expect(page.isInListView()).toBeFalsy();
         page.search()
         .then(function ()
         {
-             expect(page.isHidingResults()).toBeFalsy();
+             expect(page.isInListView()).toBeTruthy();
         });
 
     });
@@ -45,44 +45,43 @@ describe('Search View', function()
     //("the" and "be").
     it('should list the number results found on a search', function()
     {
-        //Intiially query for all results
-        page.search();
-        var resultCount = undefined;
-        page.getResultCount(function (ret)
+         var resultCount = undefined;
+        page.search().then(page.getResultCount).then(function (count)
         {
-            resultCount = ret;
+            //Results should be greater than 0
+            resultCount = count;
             expect(resultCount).toBeGreaterThan(0);
-        });
-
-        //Add a query string to cut down results
-        page.searchFor('the');
-        page.getResultCount(function (ret)
+        }).then(function ()
         {
-            expect(ret).toBeLessThan(resultCount);
-            resultCount = ret;
-        });
-
-        //The intersection of results should be smaller in size
-        page.searchFor('+the +be');
-        page.getResultCount(function (ret)
+            return page.searchFor('the');
+        }).then(page.getResultCount).then(function (count)
         {
-            expect(ret).toBeLessThan(resultCount);
-        });
-
-        //The union of the results should be greater in size
-        page.searchFor('the be');
-        page.getResultCount(function (ret)
+            //Searching for 'the' should cut down on results
+            expect(count).toBeLessThan(resultCount);
+            resultCount = count;
+        }).then(function ()
         {
-            expect(ret).toBeGreaterThan(resultCount);
+            return page.searchFor('+the +be');
+        }).then(page.getResultCount).then(function (count)
+        {
+            //The intersection of 'the' and 'be' should be less than simply 'the'
+            expect(count).toBeLessThan(resultCount);
+        }).then(function ()
+        {
+            return page.searchFor('the be');
+        }).then(page.getResultCount).then(function (count)
+        {
+            //The union of 'the' and 'be' should be greater than just 'the'
+            expect(count).toBeGreaterThan(resultCount);
         });
     });
 
     it('should be able to clear a search', function ()
     {
         page.searchFor('test');
-        expect(page.isHidingResults()).toBeFalsy();
+        expect(page.isInListView()).toBeTruthy();
         page.clearSearch();
-        expect(page.isHidingResults()).toBeTruthy();
+        expect(page.isInListView()).toBeFalsy();
     });
 
     it('should only show a save button when there is an active search', function ()
@@ -242,10 +241,10 @@ describe('Search View', function()
 
     it('should sort in a repeatable nature', function ()
     {
-        var firstResult = undefined, lastResult = undefined;
+        var firstResult = undefined;
         page.searchFor('').then(function ()
         {
-            return page.getTitle(3);
+            return page.getTitle(0);
         }).then(function (title)
         {
             firstResult = title;
@@ -257,12 +256,108 @@ describe('Search View', function()
             page.sortBy(0);
         }).then(function ()
         {
-            return page.getTitle(3);
+            return page.getTitle(0);
         }).then(function (title)
         {
             expect(title).toEqual(firstResult);
         });
     });
+
+    it('should be able to display results grid and list views', function ()
+    {
+        page.search().then(function ()
+        {
+            expect(page.isInListView()).toBeTruthy();
+            expect(page.isInGridView()).toBeFalsy();
+        })
+        .then(page.switchToGridView)
+        .then(function ()
+        {
+            expect(page.isInListView()).toBeFalsy();
+            expect(page.isInGridView()).toBeTruthy();
+        }).then(page.switchToListView)
+        .then(function ()
+        {
+            expect(page.isInListView()).toBeTruthy();
+            expect(page.isInGridView()).toBeFalsy(); 
+        });
+    });
+
+    // it('should allow filtering based on date created', function ()
+    // {
+
+    // });
+    
+    //This test does not actually test if the results after filtering all meet filter criteria.
+    //It merely checks to see if filters predictably reduce/increase result counts as they are applied.
+    //Adding a test to check if the filter is working correctly directly would cause it to be reliant on the
+    //specific data set since filters are based off of the underlying data fields. Since this would cause the 
+    //test to be nonfunctional for different data sets, direct testing of filters was omitted.
+    it('should allow filtering based on result attributes', function ()
+    {
+        var counts = [undefined, undefined, undefined, undefined];
+        page.search().then(page.getResultCount)
+        .then(function (count)
+        {
+            //counts[0] is the total number of results
+            counts[0] = count;
+        })
+        .then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[1] is the number of results after filtering by the first type of the first attribute
+            counts[1] = count;
+            //There should be less since a filter was applied
+            expect(count).toBeLessThan(counts[0]);
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 1);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[2] is the number of results after filtering by the first or second type of the first attribute
+            counts[2] = count;
+            //Since results can be either type 1 or type 2, should be greater than counts[1]
+            expect(count).toBeGreaterThan(counts[1]);
+            //Since results are being filtered, should be less than counts[0]
+            expect(count).toBeLessThan(counts[0])
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(1, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            //counts[3] is the number of results after filtering by the first or second type of the first attribute
+            //and the first type of the second attribute
+            counts[3] = count;
+            //Should be less than counts[2] since an additional filter was applied
+            expect(count).toBeLessThan(counts[2]);
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(1, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[2]);
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 1);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[1]);
+        }).then(function ()
+        {
+            return page.toggleFilterByAttribute(0, 0);
+        }).then(page.getResultCount).then(function (count)
+        {
+            expect(count).toEqual(counts[0]);
+        });
+    });
+    
+    //Todo: add removal of from/to date breadcrumbs when the from/to date filter tests have been added
+    // iit('should display search filters and allow their removal with breadcrumbs', function ()
+    // {
+        
+    // });
 
     // Helper functions
 
