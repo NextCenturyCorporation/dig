@@ -780,7 +780,7 @@ var all = {
                 }
             }
         },
-        'mockatf': {
+       'dig-atf-j28':{// 'mockatf': {
             facets: {
                 euiFilters: [],
                 //simFilter: {},
@@ -790,11 +790,13 @@ var all = {
                 fields: [
                     'hasTitlePart.text',
                     'hasBodyPart.text',
-                    'hasPost.hasFeatureCollection.person_username_feature.person_username',
+                    'hasPost.hasFeatureCollection.fromUser_feature.fromUser',
                     'hasPost.hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
+                    'hasPost.hasFeatureCollection.provider_name_feature_feature.provider_name',
                     'hasPost.dateCreated',
                     'hasPost.hasTitlePart.text',
-                    'hasPost.hasBodyPart.text'
+                    'hasPost.hasBodyPart.text',
+                    'hasPost.hasSignaturePart.text'
                 ]
             },
             listFields: {
@@ -806,7 +808,7 @@ var all = {
                 }],
                 short: [{
                     title: 'Date',
-                    field: "doc._source.dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    field: "doc._source.hasFeatureCollection.enrollment_date_aggregated_feature | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
                     title: 'User',
@@ -831,19 +833,29 @@ var all = {
                     classes: 'date'
                 },{
                     title: 'Username',
-                    field: 'hasFeatureCollection.person_username_feature.person_username',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.person_username_feature.person_username"]',
+                    field: 'hasFeatureCollection.fromUser_feature.fromUser',
+                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.fromUser_feature.fromUser"]',
                     classes: 'user'
                 },{
                     title: 'Address',
                     field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
                     highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.place_postalAddress_feature.place_postalAddress"]',
                     classes: 'location'
+                },{
+                    title: 'Provider',
+                    field: 'hasFeatureCollection.provider_name_feature.provider_name',
+                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.provider_name_feature.provider_name"]',
+                    classes: 'location'
                 }],
-                body: {
+                long: [{
+                    title: 'Body',
                     field: 'hasBodyPart.text',
                     highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
-                }
+                },{
+                    title: 'Signature',
+                    field: 'hasSignaturePart.text',
+                    highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                }]
             }
         }
     }
