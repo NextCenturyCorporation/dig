@@ -17,3 +17,6 @@ coverage
 *.tar
 *.tar.gz
 *~
+*.orig
+*.rej
+
