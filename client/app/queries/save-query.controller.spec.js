@@ -256,7 +256,7 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should save, update, and call close() function', function () {
-        spyOn(window, 'confirm').andCallFake(function () {
+        spyOn(window, 'confirm').and.callFake(function () {
             return true;
         });
 
@@ -271,7 +271,7 @@ describe('Controller: SaveQueryCtrl', function () {
     });
 
     it('should not update if user cancels existing query overwrite', function() {
-        spyOn(window, 'confirm').andCallFake(function () {
+        spyOn(window, 'confirm').and.callFake(function () {
             return false;
         });
 
