@@ -615,6 +615,50 @@ describe('Search View', function()
         })
     });
 
+    it('should present content in pages and allow users to switch pages', function ()
+    {
+        var totalPages = undefined;
+        var firstResult = undefined;
+        page.search().then(function ()
+        {
+            expect(page.getCurrentPageNumber()).toEqual(1);
+        }).then(page.getResultCount)
+        .then(function (count)
+        {   
+            totalPages = Math.trunc(count / 25) + 1
+        }).then(function ()
+        {
+            expect(page.getTotalPageCount()).toEqual(totalPages);
+        }).then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            firstResult = title;
+        }).then(function ()
+        {
+            page.goToPage(2);
+        }).then(function ()
+        {
+            expect(page.getCurrentPageNumber()).toEqual(2);
+        }).then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            expect(title).not.toEqual(firstResult);
+        }).then(function ()
+        {
+            page.goToPage(1);
+        }).then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            expect(title).toEqual(firstResult);
+        });
+    });
+
 
     // Helper functions
 

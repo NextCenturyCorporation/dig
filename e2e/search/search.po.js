@@ -16,6 +16,7 @@ var SearchPage = function ()
 	var searchBar = element(by.model('queryString.live'));
 	var leftColumn = element(by.css('.left-column.hidden-xs.col-sm-3.col-lg-2'));
 	var rightColumn = element(by.css('.right-column.col-sm-9'));
+	var pageLabel = element.all(by.css('.text-center')).last().element(by.css('.list-unstyled')).all(by.tagName('li')).last();
 
 	//Search Buttons
 	var searchButton = element(by.buttonText('Search'));
@@ -128,6 +129,22 @@ var SearchPage = function ()
 	this.getResultsOnPage = function ()
 	{
 		return resultList.count();
+	};
+
+	this.getCurrentPageNumber = function ()
+	{
+		return pageLabel.getText().then(function (text)
+		{
+			return parseInt(text.substring(text.indexOf('page ') + 5, text.indexOf(' of')));
+		});
+	};
+
+	this.getTotalPageCount = function ()
+	{
+		return pageLabel.getText().then(function (text)
+		{
+			return parseInt(text.substring(text.indexOf('of ') + 3));
+		});
 	};
 
 	//Returns whether or not the save button is visible
@@ -391,6 +408,14 @@ var SearchPage = function ()
 			return element.all(by.tagName('input')).first().click();
 		});
 		
+	};
+	
+	//Number - 1 is used because it is presumed the user will want consistency using this
+	//and getCurrentPageNumber.
+	this.goToPage = function (number)
+	{
+		return element(by.model('indexVM.page')).all(by.repeater('page in pages track by $index'))
+		.get(number - 1).element(by.tagName('a')).click();
 	};
 
 	/*
