@@ -19,4 +19,6 @@ coverage
 *~
 *.orig
 *.rej
+conf
+**/dig_deploy.sh
 
