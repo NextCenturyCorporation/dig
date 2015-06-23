@@ -69,11 +69,11 @@ Various application parameters can be configured via environment variables - the
 
 ## Deployment
 
-To package the application for deployment:
-
   `grunt build # builds the application and prepares the dist/ directory`
 
-  `bash ./package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
+To package the application for deployment:
+
+  `bash ./scripts/package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
 
 The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will extract the dig application and download docker-compose into a directory called `dig/`.  Inside the `dig/` directory is `run.sh` which can be used to run the dig application as a daemon.
 

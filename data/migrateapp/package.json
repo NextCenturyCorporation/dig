@@ -1,0 +1,20 @@
+{
+  "name": "migrateapp",
+  "version": "1.0.0",
+  "description": "migrate data from mongodb to mysql",
+  "main": "migrate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NextCenturyCorporation/dig.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.0.35",
+    "mysql": "^2.7.0",
+    "sequelize": "^3.3.0"
+  }
+}

@@ -1,6 +1,11 @@
 #!/bin/bash
 #set -x
 ## DEFAULTS
+
+# move up a directory if this script is called from scripts directory
+[[ $PWD =~ "scripts"$ ]] && cd ..
+
+
 DEFAULT_INSTALL_PATH=/usr/local/dig
 DEFAULT_CFGDIR=./conf
 DOCKER_PREFIX="digmemex/digapp"
