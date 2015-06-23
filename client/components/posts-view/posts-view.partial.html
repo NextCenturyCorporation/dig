@@ -20,13 +20,15 @@
                 </span>
               </span>                
             </div>
-            <span ng-repeat="field in euiConfigs.postFields['long'] track by $index">
-              <span ng-bind-html="highlightCheck($eval('item.' + field.field), $eval(field.highlightArray))">
-              </span>
-              <hr ng-if="$index < euiConfigs.postFields['long'].length - 1">
+            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields.body.field), 
+              $eval(euiConfigs.postFields.body.highlightArray))"></span>
+            <span ng-if="$eval('item.' + euiConfigs.postFields.signature.field)">
+              <hr>
             </span>
+            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields.signature.field), 
+             $eval(euiConfigs.postFields.signature.highlightArray))"></span>
           </li>
-        </ul> 
+        </ul>  
       </div>
     </div>
   </div>

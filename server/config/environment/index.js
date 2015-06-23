@@ -790,9 +790,14 @@ var all = {
                 fields: [
                     'hasTitlePart.text',
                     'hasBodyPart.text',
+                    'hasFeatureCollection.enrollment_date_aggregated_feature.featureValue',
+                    'hasFeatureCollection.fromUser_histogram_feature.featureValue',
+                    'hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
                     'hasPost.hasFeatureCollection.fromUser_feature.fromUser',
+                    'hasPost.hasFeatureCollection.person_userid_feature.person_userid',
                     'hasPost.hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
                     'hasPost.hasFeatureCollection.provider_name_feature_feature.provider_name',
+                    'hasPost.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
                     'hasPost.dateCreated',
                     'hasPost.hasTitlePart.text',
                     'hasPost.hasBodyPart.text',
@@ -808,12 +813,16 @@ var all = {
                 }],
                 short: [{
                     title: 'Date',
-                    field: "doc._source.hasFeatureCollection.enrollment_date_aggregated_feature | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    field: "doc._source.hasFeatureCollection.enrollment_date_aggregated_feature.featureValue | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
                     title: 'User',
-                    field: 'doc._source.hasFeatureCollection.person_username_feature.person_username',
+                    field: 'doc._source.hasFeatureCollection.fromUser_histogram_feature.featureValue',
                     classes: 'name'
+                },{
+                    title: 'Weapons Mentioned',
+                    field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                    classes: 'weapons'
                 }]
             },
             postFields: {
@@ -832,10 +841,15 @@ var all = {
                     highlightArray: 'doc.highlight["hasPost.dateCreated"]',
                     classes: 'date'
                 },{
-                    title: 'Username',
+                    title: 'From User',
                     field: 'hasFeatureCollection.fromUser_feature.fromUser',
                     highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.fromUser_feature.fromUser"]',
-                    classes: 'user'
+                    classes: 'from-user'
+                },{
+                    title: 'User Id',
+                    field: 'hasFeatureCollection.person_userid_feature.person_userid',
+                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.person_userid_feature.person_userid"]',
+                    classes: 'user-id'
                 },{
                     title: 'Address',
                     field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
@@ -845,17 +859,23 @@ var all = {
                     title: 'Provider',
                     field: 'hasFeatureCollection.provider_name_feature.provider_name',
                     highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.provider_name_feature.provider_name"]',
-                    classes: 'location'
+                    classes: 'provider'
+                },{
+                    title: 'Weapons Mentioned',
+                    field: 'hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
+                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned"]',
+                    classes: 'provider'
                 }],
-                long: [{
+                body: {
                     title: 'Body',
                     field: 'hasBodyPart.text',
                     highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
-                },{
+                },
+                signature: {
                     title: 'Signature',
                     field: 'hasSignaturePart.text',
                     highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
-                }]
+                }
             }
         }
     }
