@@ -7,6 +7,7 @@
 
 var SearchPage = function () 
 {
+
 	/*
 	Page element variables
 	*/
@@ -124,6 +125,11 @@ var SearchPage = function ()
 		return this.getBreadcrumb(attributeNumber, crumbNumber).getText();
 	};
 
+	this.getResultsOnPage = function ()
+	{
+		return resultList.count();
+	};
+
 	//Returns whether or not the save button is visible
 	this.isSaveButtonVisible = function ()
 	{
@@ -151,7 +157,7 @@ var SearchPage = function ()
 		return element(by.tagName('body')).getAttribute('class').then(function (name)
 		{
 			return name === 'modal-open';
-		})
+		});
 	};
 
 	//Returns whether a particular result is expanded
@@ -177,6 +183,87 @@ var SearchPage = function ()
 			return style !== 'height: 0px;';
 		});
 	};
+
+	//This is unused because of a (scoping?) issue using it in the following 3 methods.
+	// this.isImageBlurred = function (style)
+	// {
+	// 	if(style === '')
+	// 		return false;
+	// 	var tmp = style.substring(style.indexOf('blur'));
+	// 	var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
+	// 	return blur !== '0px'
+	// };
+
+	this.isThumbnailImageBlurred = function (number)
+	{
+		return this.isInListView().then(function (inListView)
+		{
+			if(inListView)
+			{
+				return resultList.get(number).element(by.css('.image-thumb.center-block'))
+				.getAttribute('style').then(function (style)
+				{
+					if(style === '')
+						return false;
+					var tmp = style.substring(style.indexOf('blur'));
+					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
+					return blur !== '0px'
+				});
+			}
+			else
+			{
+				return console.error('Cannot check image blur unless result list is visible.');
+			}
+		});
+	};
+
+	this.isExpandedImageBlurred = function (number)
+	{
+		return this.isResultExpanded(number).then(function (expanded)
+		{
+			if(expanded)
+			{
+				return resultList.get(number).element(by.css('.image-expanded.center-block'))
+				.getAttribute('style').then(function (style)
+				{
+					if(style === '')
+						return false;
+					var tmp = style.substring(style.indexOf('blur'));
+					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
+					return blur !== '0px'
+				});
+			}	
+			else
+			{
+				return console.error('Cannot check image blur unless result is expanded.');
+			}
+		});
+	};
+
+	this.isGridImageBlurred = function (number)
+	{
+		return this.isInGridView().then(function (inGridView)
+		{
+			if(inGridView)
+			{
+				return resultGrid.get(number).element(by.css('.image-gallery-img.center-block'))
+				.getAttribute('style').then(function (style)
+				{
+					if(style === '')
+						return false;
+					var tmp = style.substring(style.indexOf('blur'));
+					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
+					return blur !== '0px'
+				});
+			}
+			else
+			{
+				return console.error('Cannot check image blur unless in grid view.');
+			}
+		});
+	};
+
+
 
 	/*
 	Setters and Action methods
@@ -291,6 +378,21 @@ var SearchPage = function ()
 		return attributeFilterList.get(number).click();
 	};
 
+	//Will expand or collapse the settings menu
+	this.toggleSettingsMenu = function ()
+	{
+		return element(by.id('settingsMenu')).click();
+	};
+
+	this.toggleImageBlur = function ()
+	{
+		return this.toggleSettingsMenu().then(function () 
+		{
+			return element.all(by.tagName('input')).first().click();
+		});
+		
+	};
+
 	/*
 	Save dialog components, might be worth wrapping up somehow to be more intuitive and to reduce boilerplate
 	*/
@@ -355,7 +457,6 @@ var SearchPage = function ()
 		this.searchAndOpenSave(query);
 		this.saveSearchAs(name);
 	};
-
 
 
 };

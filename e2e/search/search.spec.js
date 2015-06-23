@@ -534,6 +534,87 @@ describe('Search View', function()
             expect(page.isFilterExpanded(1)).toBeTruthy();
         });
     });
+    
+    //Checking all results on page caused a timeout so only a fraction are checked.
+    //Since all images are uniform this should be sufficient.
+    it('should allow the toggling of image blur', function ()
+    {
+        page.search()
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isThumbnailImageBlurred(i)).toBeTruthy();
+            }
+            return count;
+        }).then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                page.toggleResult(i);
+                //sleep was used instead of wait because of closure issues
+                browser.sleep(500);
+            }
+            return count;
+        }).then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isExpandedImageBlurred(i)).toBeTruthy();
+            }
+        }).then(page.switchToGridView)
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isGridImageBlurred(i)).toBeTruthy();
+            }
+        }).then(function ()
+        {
+            return page.toggleImageBlur();
+        })
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isGridImageBlurred(i)).toBeFalsy();
+            }
+        }).then(page.switchToListView)
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isThumbnailImageBlurred(i)).toBeFalsy();
+                expect(page.isExpandedImageBlurred(i)).toBeFalsy();
+            }
+        })
+        .then(function ()
+        {
+            return page.toggleImageBlur();
+        })
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isThumbnailImageBlurred(i)).toBeTruthy();
+                expect(page.isExpandedImageBlurred(i)).toBeTruthy();
+            }
+        }).then(page.switchToGridView)
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/5) + 1; i++)
+            {
+                expect(page.isGridImageBlurred(i)).toBeTruthy();
+            }
+        })
+    });
+
 
     // Helper functions
 
