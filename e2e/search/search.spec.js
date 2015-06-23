@@ -536,7 +536,10 @@ describe('Search View', function()
     });
     
     //Checking all results on page caused a timeout so only a fraction are checked.
-    //Since all images are uniform this should be sufficient.
+    //Since all images are uniform this should be sufficient. This test is dependent
+    //on the images starting blurred which is the default but can be changed. If this
+    //test is failing, simply direct to dig and enable image blurring before running
+    //the test.
     it('should allow the toggling of image blur', function ()
     {
         page.search()
@@ -615,19 +618,22 @@ describe('Search View', function()
         })
     });
 
-    it('should present content in pages and allow users to switch pages', function ()
+    it('should present result list in pages and allow users to switch pages', function ()
     {
         var totalPages = undefined;
         var firstResult = undefined;
+        var secondResult = undefined;
         page.search().then(function ()
         {
+            //We should start on page 1
             expect(page.getCurrentPageNumber()).toEqual(1);
         }).then(page.getResultCount)
         .then(function (count)
-        {   
+        {
             totalPages = Math.trunc(count / 25) + 1
         }).then(function ()
         {
+            //The total pages should be the formula above as there are 25 results a page
             expect(page.getTotalPageCount()).toEqual(totalPages);
         }).then(function ()
         {
@@ -637,27 +643,120 @@ describe('Search View', function()
             firstResult = title;
         }).then(function ()
         {
-            page.goToPage(2);
+            return page.goToPage(2);
         }).then(function ()
         {
+            //Should be on page 2 now
             expect(page.getCurrentPageNumber()).toEqual(2);
         }).then(function ()
         {
             return page.getTitle(0);
         }).then(function (title)
         {
+            //The first result should not be the same since we are on a new page
+            secondResult = title;
             expect(title).not.toEqual(firstResult);
         }).then(function ()
         {
-            page.goToPage(1);
+            return page.goToPage(1);
         }).then(function ()
         {
             return page.getTitle(0);
         }).then(function (title)
         {
+            //The first result should be what it was as we went back to page 1
             expect(title).toEqual(firstResult);
+        }).then(page.goToNextPage)
+        .then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            //Using the next page button, we should be on the second page
+            expect(title).toEqual(secondResult);
+            expect(page.getCurrentPageNumber()).toEqual(2);
+        }).then(page.goToPreviousPage)
+        .then(function ()
+        {
+            return page.getTitle(0);
+        }).then(function (title)
+        {
+            //Then using the previous button, we should be on the first page
+            expect(title).toEqual(firstResult);
+            expect(page.getCurrentPageNumber()).toEqual(1);
         });
     });
+    
+    //Basic page testing like checking page count / expansion of page switching options left
+    //out as they are the same in the grid and the list.
+    it('should present grid of images in pages and allow users to switch pages', function ()
+    {
+        var firstResult = undefined;
+        page.search()
+        .then(page.switchToGridView)
+        .then(function ()
+        {
+            expect(page.getCurrentPageNumber()).toEqual(1);
+        }).then(function ()
+        {
+            return page.getGridImageSrc(0);
+        }).then(function (src)
+        {
+            firstResult = src;
+        }).then(function ()
+        {
+            return page.goToPage(2);
+        }).then(function ()
+        {
+            expect(page.getCurrentPageNumber()).toEqual(2);
+        }).then(function ()
+        {
+            return page.getGridImageSrc(0);
+        }).then(function (src)
+        {
+            expect(src).not.toEqual(firstResult);
+        }).then(function ()
+        {
+            return page.goToPage(1);
+        }).then(function ()
+        {
+            return page.getGridImageSrc(0);
+        }).then(function (src)
+        {
+            expect(src).toEqual(firstResult);
+        });
+    });
+    
+    //This test is dependent on at least 626 results (25 * 25 + 1) so it can be disabled on smaller data sets
+    it('should adjust the pages available to switch to based on the displayed page', function ()
+    {
+        page.search()
+        .then(page.getFirstSwitchablePage)
+        .then(function (first)
+        {
+            //Originally, the first switchable page is 1
+            expect(first).toEqual('1');
+        }).then(page.getLastSwitchablePage)
+        .then(function (last)
+        {
+            //Originally, the last switchable page is 25
+            expect(last).toEqual('25');
+        }).then(function ()
+        {
+            //Since 13 is the midpoint of 1 and 25, going to 14 should change the page switch options
+            return page.goToPage(14);
+        }).then(page.getFirstSwitchablePage)
+        .then(function (first)
+        {
+            //Now the first page should be 2
+            expect(first).toEqual('2');
+        }).then(page.getLastSwitchablePage)
+        .then(function (last)
+        {
+            //Now the last page should be 26
+            expect(last).toEqual('26');
+        });
+    })
 
 
     // Helper functions

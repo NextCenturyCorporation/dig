@@ -17,6 +17,7 @@ var SearchPage = function ()
 	var leftColumn = element(by.css('.left-column.hidden-xs.col-sm-3.col-lg-2'));
 	var rightColumn = element(by.css('.right-column.col-sm-9'));
 	var pageLabel = element.all(by.css('.text-center')).last().element(by.css('.list-unstyled')).all(by.tagName('li')).last();
+	var pageList = element(by.model('indexVM.page')).all(by.repeater('page in pages track by $index'));
 
 	//Search Buttons
 	var searchButton = element(by.buttonText('Search'));
@@ -145,6 +146,21 @@ var SearchPage = function ()
 		{
 			return parseInt(text.substring(text.indexOf('of ') + 3));
 		});
+	};
+
+	this.getGridImageSrc = function (number)
+	{
+		return resultGrid.get(number).element(by.tagName('img')).getAttribute('src');
+	};
+
+	this.getLastSwitchablePage = function ()
+	{
+		return pageList.last().element(by.tagName('a')).getText();
+	};
+
+	this.getFirstSwitchablePage = function ()
+	{
+		return pageList.first().element(by.tagName('a')).getText();
 	};
 
 	//Returns whether or not the save button is visible
@@ -416,6 +432,18 @@ var SearchPage = function ()
 	{
 		return element(by.model('indexVM.page')).all(by.repeater('page in pages track by $index'))
 		.get(number - 1).element(by.tagName('a')).click();
+	};
+
+	this.goToPreviousPage = function ()
+	{
+		return element(by.model('indexVM.page')).all(by.tagName('li'))
+		.first().element(by.tagName('a')).click();
+	};
+
+	this.goToNextPage = function ()
+	{
+		return element(by.model('indexVM.page')).all(by.tagName('li'))
+		.last().element(by.tagName('a')).click();
 	};
 
 	/*
