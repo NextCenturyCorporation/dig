@@ -226,7 +226,7 @@ build() {
     cp -r ${CONFDIR} conf
     npm install
     grunt build
-    ${BUILD_DIR}/dig/package.sh $package_opts
+    ${BUILD_DIR}/dig/scripts/package.sh $package_opts
     cp dig_deploy.sh ${CURRENT_DIR}
     cd ${CURRENT_DIR}
     if [[ $UID != 0 ]]; then
