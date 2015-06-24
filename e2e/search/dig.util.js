@@ -44,4 +44,13 @@ function getTimeOfDay (time)
     return (3600 * parseInt(hour)) + (60 * parseInt(minute)) + parseInt(second);
 }
 
+/*
+This is used to cut down on time costs for tests. The higher the value, the shorter the tests run.
+Many tests checking the results of a search will loop through a number of the results.
+The number of results looked at will be the number of results per page (likely 25) divided
+by this number. 
+*/
+var reductionDivisor = 5;
+
 module.exports.compareDates = compareDates;
+module.exports.reductionDivisor = reductionDivisor;

@@ -244,44 +244,70 @@ describe('Search View', function()
     //in time to pass the test. The sleeps were added to mitigate this but should
     //this test continue to fail sporadically, increasing the sleep time should
     //further reduce or completely stop the failures. 
-    
-    //Todo: change to generic loop
     it('should allow users to expand and close results', function ()
     {
-        page.searchFor('')
-        .then(function ()
+       page.search()
+        .then(page.getResultsOnPage)
+        .then(function (count)
+        {
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
+            {
+                //Check to see they are all collapsed
+                expect(page.isResultExpanded(i)).toBeFalsy();
+            }
+
+            return count;
+        }).then(function (count)
+        {
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
+            {
+                page.toggleResult(i);
+                //sleep was used instead of wait because of closure issues
+                browser.sleep(750);
+            }
+
+            return count;
+        }).then(function (count)
+        {
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
+            {
+                //Now check to see they have all correctly expanded
+                expect(page.isResultExpanded(i)).toBeTruthy();
+            }
+
+            return count;
+        }).then(function ()
         {
             return page.toggleResult(0);
         }).then(function ()
         {
-            expect(page.isResultExpanded(0)).toBeTruthy();
-        }).then(function ()
-        {
-            return page.toggleResult(1);
-        }).then(function ()
-        {
-            browser.sleep(750);
-            //Check that two can be expanded simultaneously
-            expect(page.isResultExpanded(0)).toBeTruthy();
-            expect(page.isResultExpanded(1)).toBeTruthy();
+            //Try toggling just one and checking to see it collapses
+            expect(page.isResultExpanded(0)).toBeFalsy();
         }).then(function ()
         {
             return page.toggleResult(0);
         }).then(function ()
         {
-            browser.sleep(750);
-            //Check that just the first result collapsed
-            expect(page.isResultExpanded(0)).toBeFalsy();
-            expect(page.isResultExpanded(1)).toBeTruthy();
-        }).then(function ()
+            //Then check to see it will expand again
+            expect(page.isResultExpanded(0)).toBeTruthy();
+        }).then(page.getResultsOnPage)
+        .then(function (count)
         {
-            return page.toggleResult(1);
-        }).then(function ()
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
+            {
+                page.toggleResult(i);
+                //sleep was used instead of wait because of closure issues
+                browser.sleep(750);
+            }
+
+            return count;
+        }).then(function (count)
         {
-            browser.sleep(750);
-            //Check that both results have been collapsed
-            expect(page.isResultExpanded(0)).toBeFalsy();
-            expect(page.isResultExpanded(1)).toBeFalsy();
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
+            {
+                //After collapsing them all, check again to see they have collapsed
+                expect(page.isResultExpanded(i)).toBeFalsy();
+            }
         });
     });
     
@@ -335,28 +361,35 @@ describe('Search View', function()
         });
     });
     
-    //Todo: change to generic loop
     it('should sort in a repeatable nature', function ()
     {
-        var firstResult = undefined;
-        page.searchFor('').then(function ()
+        var results = [];
+
+        page.searchFor('')
+        .then(function ()
         {
-            return page.getTitle(0);
-        }).then(function (title)
+            return page.getResultListOnPage();
+        }).then(function (resultList)
         {
-            firstResult = title;
+            results = resultList;
         }).then(function ()
         {
-            page.sortBy(3);
+            return page.sortBy(2);
         }).then(function ()
         {
-            page.sortBy(0);
+            return page.getResultListOnPage();
+        }).then(function (resultList)
+        {
+            expect(resultList).not.toEqual(results);
         }).then(function ()
         {
-            return page.getTitle(0);
-        }).then(function (title)
+            return page.sortBy(0);
+        }).then(function ()
         {
-            expect(title).toEqual(firstResult);
+            return page.getResultListOnPage();
+        }).then(function (resultList)
+        {
+            expect(resultList).toEqual(results);
         });
     });
 
@@ -585,7 +618,6 @@ describe('Search View', function()
     
     //Sleeps were added because the expansions/collapses of filters were occurring
     //slower than the tests. The time can be increased if the test sporadically fails
-    //Todo: change to generic loop
     it('should allow the collapsing and expanding of attribute filters', function ()
     {
         page.search().then(function ()
@@ -638,14 +670,14 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isThumbnailImageBlurred(i)).toBeTruthy();
             }
             return count;
         }).then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 page.toggleResult(i);
                 //sleep was used instead of wait because of closure issues
@@ -654,7 +686,7 @@ describe('Search View', function()
             return count;
         }).then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isExpandedImageBlurred(i)).toBeTruthy();
             }
@@ -662,7 +694,7 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isGridImageBlurred(i)).toBeTruthy();
             }
@@ -673,7 +705,7 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isGridImageBlurred(i)).toBeFalsy();
             }
@@ -681,7 +713,7 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isThumbnailImageBlurred(i)).toBeFalsy();
                 expect(page.isExpandedImageBlurred(i)).toBeFalsy();
@@ -694,7 +726,7 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isThumbnailImageBlurred(i)).toBeTruthy();
                 expect(page.isExpandedImageBlurred(i)).toBeTruthy();
@@ -703,7 +735,7 @@ describe('Search View', function()
         .then(page.getResultsOnPage)
         .then(function (count)
         {
-            for(var i = 0; i < (count/5) + 1; i++)
+            for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 expect(page.isGridImageBlurred(i)).toBeTruthy();
             }
