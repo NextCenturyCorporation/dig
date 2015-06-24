@@ -515,7 +515,7 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
@@ -545,7 +545,7 @@ describe('Controller: SearchCtrl', function () {
         scope.init();
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
@@ -572,7 +572,7 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
