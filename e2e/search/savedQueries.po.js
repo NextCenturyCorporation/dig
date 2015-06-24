@@ -15,42 +15,60 @@ var SavedQueriesPage = function ()
 		browser.get('/queries');
 	};
 
-	this.getSavedQueryCount = function (callback)
+	this.getSavedQueryCount = function ()
 	{
-		element(by.css('.column-header')).element(by.tagName('h4')).getText().then(function (resultString)
+		return savedQueryList.count();
+	};
+
+	this.deleteSavedSearch = function (number)
+	{
+		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
+	 	.all(by.tagName('button')).last().click();
+	};
+
+	this.getQueryName = function (number)
+	{
+		return savedQueryList.get(number).getText().then(function (text)
 		{
-			var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
-			callback(count);
+			return text.substring(0, text.indexOf('\n'));
+		})
+	};
+
+	this.getQueryTerms = function (number)
+	{
+		return savedQueryList.get(number).all(by.tagName('span')).get(1).getText().then(function (text)
+		{
+			return text.substring(text.indexOf('Search Terms: ') + 14);
 		});
 	};
 
-	//Todo: Fix this
-	this.reset = function ()
-	{
-		var defaults = ['query1', 'query2', 'query3'];
-	// 	savedQueryList.forEach(function (savedQuery)
+	//Todo: find out how to get displayed value of a dropdown
+	// this.getQueryFrequency = function (number)
+	// {
+	// 	return savedQueryList.get(number).click().then(function ()
 	// 	{
-	// 		savedQuery.getText().then(function (text)
-	// 		{
-	// 			for(var i = 0; i < defaults.length; i++)
-	// 			{
-	// 				if(text === defaults[i])
-	// 					return;
-	// 			}
-	// 			savedQuery.element(by.buttonText('Delete')).click();
-	// 		});
+	// 		return element.all(by.model('query.frequency')).$('option:checked').getText();
 	// 	});
 	// };
-		savedQueryList.filter(function (savedQuery)
+
+	this.expandQuery = function (number)
+	{
+		return savedQueryList.get(number).click();
+	}
+
+	this.clearSavedSearches = function ()
+	{
+		var numQueries = undefined;
+		return this.getSavedQueryCount().then(function (count)
 		{
-			return savedQuery.getText().then(function (text)
+			numQueries = count;
+		}).then(function ()
+		{
+			for(var i = 0; i < numQueries; i++)
 			{
-				//If I knew how to safely loop I would
-				return text !== defaults[0] && text !== defaults[1] && text !== defaults[2] 
-			});
-		}).each(function (nonDefault)
-		{
-			return nonDefault.element(by.buttonText('Delete')).click();
+				savedQueryList.get(0).element(by.css('.list-unstyled.query-options.horizontal-list'))
+				.all(by.tagName('button')).last().click();
+			}
 		});
 	};
 };

@@ -453,6 +453,8 @@ var SearchPage = function ()
 	var inDialogSaveButton = saveDialog.element(by.buttonText('Save'));
 	var inDialogCancelButton = saveDialog.all(by.buttonText('Cancel'));
 	var queryName = saveDialog.element(by.model('query.name'));
+	var previousQueriesList = saveDialog.element(by.model('existingQuery')).all(by.tagName('option'));
+	var frequencyDropdown = saveDialog.element(by.model('query.frequency'));
 
 	this.isSaveButtonEnabled = function ()
 	{
@@ -481,9 +483,23 @@ var SearchPage = function ()
 		// });
 	};
 
-	this.saveSearchAs = function (name)
+	this.searchForAndSaveAs = function (query, name, frequencyIndex)
 	{
-		return queryName.sendKeys(name).then(this.saveSearch);
+		return this.searchAndOpenSave(query)
+		.then(function ()
+		{
+			return queryName.sendKeys(name);
+		}).then(function ()
+		{
+			if(frequencyIndex !== undefined && frequencyIndex > 0 && frequencyIndex < 4)
+			{
+				return frequencyDropdown.click().then(function ()
+				{
+					return frequencyDropdown.all(by.tagName('option')).get(frequencyIndex).click();
+				});
+			}
+		})
+		.then(this.saveSearch);
 	};
 
 	//If check was here initially but taken out for complexity reasons
@@ -505,12 +521,14 @@ var SearchPage = function ()
 
 	};
 
-	this.saveSearchFor = function (query, name)
+	this.searchForAndSaveAsQueryNumber = function (query, number)
 	{
-		this.searchAndOpenSave(query);
-		this.saveSearchAs(name);
+		return this.searchAndOpenSave(query)
+		.then(function ()
+		{
+			return previousQueriesList.get(number + 1).click();
+		}).then(this.saveSearch);
 	};
-
 
 };
 

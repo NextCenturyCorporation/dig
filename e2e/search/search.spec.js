@@ -100,31 +100,22 @@ describe('Search View', function()
         expect(page.isSaveDialogVisible()).toBeTruthy();
     });
 
-    //ToDo: Fix this, race condition encountered on last check
-    // iit('should have a save Dialog that can be dismissed', function ()
-    // {
-        // page.searchAndOpenSave('')
-        // .then(page.isSaveDialogVisible)
-        // .then(function (visible)
-        // {
-        //     expect(visible).toBeTruthy();
-        // }).then(page.cancelSave)
-        // .then(page.isSaveDialogVisible)
-        // .then(function (visible)
-        // {
-        //     expect(visible).toBeFalsy();
-        // });
-
-        //older attempt
-        // page.searchAndOpenSave('').then(function ()
-        // {
-        //     expect(page.isSaveDialogVisible()).toBeTruthy();
-        // }).then(page.cancelSave).then(function ()
-        // {
-        //     browser.sleep(1000);
-        //     expect(page.isSaveDialogVisible()).toBeFalsy();
-        // });
-    // });
+    //A sleep was used to prevent the test from getting ahead of the browser
+    it('should have a save Dialog that can be dismissed', function ()
+    {
+        page.searchAndOpenSave('')
+        .then(page.isSaveDialogVisible)
+        .then(function (visible)
+        {
+            browser.sleep(500);
+            expect(visible).toBeTruthy();
+        }).then(page.cancelSave)
+        .then(page.isSaveDialogVisible)
+        .then(function (visible)
+        {
+            expect(visible).toBeFalsy();
+        });
+    });
 
     it('should only be able to saved named searches', function ()
     {
@@ -134,22 +125,120 @@ describe('Search View', function()
         expect(page.isSaveButtonEnabled()).toBeTruthy();
     });
 
-    //Todo: more saved query work here 
+    it('should be able to save a new search', function ()
+    {
+        savedQueriesPage.get();
+        savedQueriesPage.clearSavedSearches()
+        .then(page.get)
+        .then(function ()
+        {
+            return page.searchForAndSaveAs('test', 'query1');
+        }).then(savedQueriesPage.get)
+        .then(function ()
+        {
+            expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
+            expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
+            expect(savedQueriesPage.getQueryTerms(0)).toEqual('test');
+        })
+    });
 
-    // it('should be able to save a new search', function ()
+    //Like some other tests, a sleep had to be added to prevent the tests from
+    //getting ahead of the browser.
+    it('should be able to overwrite a previous search', function ()
+    {
+        savedQueriesPage.get();
+        savedQueriesPage.clearSavedSearches()
+        .then(page.get)
+        .then(function ()
+        {
+            return page.searchForAndSaveAs('test1', 'query1');
+        })
+        .then(function ()
+        {
+            browser.sleep(1000);
+            return page.searchForAndSaveAs('test2', 'query1');
+        }).then(function ()
+        {
+            browser.sleep(1000);
+            return browser.switchTo().alert().accept();
+        }).then(savedQueriesPage.get)
+        .then(function ()
+        {
+            expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
+            expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
+            expect(savedQueriesPage.getQueryTerms(0)).toEqual('test2');
+        });
+    });
+
+    it('should allow the user to cancel a save if it will overwrite an old one', function ()
+    { 
+        savedQueriesPage.get();
+        savedQueriesPage.clearSavedSearches()
+        .then(page.get)
+        .then(function ()
+        {
+            return page.searchForAndSaveAs('test1', 'query1');
+        })
+        .then(function ()
+        {
+            browser.sleep(1000);
+            return page.searchForAndSaveAs('test2', 'query1');
+        }).then(function ()
+        {
+            browser.sleep(1000);
+            return browser.switchTo().alert().dismiss();
+        }).then(savedQueriesPage.get)
+        .then(function ()
+        {
+            expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
+            expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
+            expect(savedQueriesPage.getQueryTerms(0)).toEqual('test1');
+        });
+    });
+
+    it('should let users select a previous query and overwrite it', function ()
+    {
+        savedQueriesPage.get();
+        savedQueriesPage.clearSavedSearches()
+        .then(page.get)
+        .then(function ()
+        {
+            return page.searchForAndSaveAs('test1', 'query1');
+        })
+        .then(function ()
+        {
+            browser.sleep(1000);
+            return page.searchForAndSaveAsQueryNumber('test2', 0);
+        }).then(function ()
+        {
+            browser.sleep(1000);
+            return browser.switchTo().alert().accept();
+        }).then(savedQueriesPage.get)
+        .then(function ()
+        {
+            expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
+            expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
+            expect(savedQueriesPage.getQueryTerms(0)).toEqual('test2');
+        });
+    });
+
+    //Todo: find out how to get displayed value of a dropdown
+    // iit('should allow users to set a frequency of execution for a search', function ()
     // {
-        // savedQueriesPage.get();
-        // savedQueriesPage.reset()
-        // .then(savedQueriesPage.getSavedQueryCount(expect3));
-
-        // page.get();
-        // page.saveSearchFor('test', 'example'); 
-        // savedQueriesPage.get();
-        // savedQueriesPage.getSavedQueryCount(function (count)
-        // {
-        //     expect(count).toEqual(4);
-        // });
-
+    //     savedQueriesPage.get();
+    //     savedQueriesPage.clearSavedSearches()
+    //     .then(page.get)
+    //     .then(function ()
+    //     {
+    //         return page.searchForAndSaveAs('test', 'query1', 1);
+    //     }).then(savedQueriesPage.get)
+    //     .then(function ()
+    //     {
+    //         expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
+    //         expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
+    //         expect(savedQueriesPage.getQueryTerms(0)).toEqual('test');
+    //         expect(savedQueriesPage.getQueryFrequency(0)).toEqual('hourly')
+    //     })
     // });
     
     //Sometimes (1/10 times roughly) the second result would not expand or collapse 
