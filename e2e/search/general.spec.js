@@ -11,7 +11,7 @@ describe('Top Bar', function()
 
     it('should have a functional home button and saved queries button', function ()
     {
-
+        
     });
 
     it('should have a settings menu that drops down', function ()

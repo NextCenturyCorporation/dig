@@ -20,10 +20,12 @@ var SavedQueriesPage = function ()
 		return savedQueryList.count();
 	};
 
-	this.deleteSavedSearch = function (number)
+	this.getSavedQueryCountLabel = function ()
 	{
-		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
-	 	.all(by.tagName('button')).last().click();
+		return element.all(by.tagName('h4')).first().getText().then(function (text)
+		{
+			return parseInt(text.substring(0, text.indexOf(' ')));
+		});
 	};
 
 	this.getQueryName = function (number)
@@ -38,7 +40,23 @@ var SavedQueriesPage = function ()
 	{
 		return savedQueryList.get(number).all(by.tagName('span')).get(1).getText().then(function (text)
 		{
-			return text.substring(text.indexOf('Search Terms: ') + 14);
+			return text.substring(text.indexOf('Search Terms: ') + 'Search Terms: '.length);
+		});
+	};
+
+	this.getQueryDateCreated = function (number)
+	{
+		return savedQueryList.get(number).all(by.tagName('span')).get(2).getText().then(function (text)
+		{
+			return text.substring(text.indexOf('Created: ') + 'Created: '.length);
+		});
+	};
+
+	this.isQueryExpanded = function (number)
+	{	
+		return element.all(by.css('[collapse="!isListItemOpened(query.id)"]')).get(number).getAttribute('style').then(function (style)
+		{
+			return style !== 'height: 0px;';
 		});
 	};
 
@@ -51,10 +69,16 @@ var SavedQueriesPage = function ()
 	// 	});
 	// };
 
-	this.expandQuery = function (number)
+	this.toggleQuery = function (number)
 	{
 		return savedQueryList.get(number).click();
-	}
+	};
+
+	this.deleteSavedSearch = function (number)
+	{
+		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
+	 	.all(by.tagName('button')).last().click();
+	};
 
 	this.clearSavedSearches = function ()
 	{
@@ -70,6 +94,12 @@ var SavedQueriesPage = function ()
 				.all(by.tagName('button')).last().click();
 			}
 		});
+	};
+
+	this.runQuery = function (number)
+	{
+		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
+	 	.all(by.tagName('button')).first().click();
 	};
 };
 

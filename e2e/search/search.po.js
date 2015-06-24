@@ -70,6 +70,26 @@ var SearchPage = function ()
 		});
 	};
 
+	this.getResultListOnPage = function ()
+	{
+		var titles = [];
+		var self = this;
+
+		return resultList.count().then(function (count)
+		{
+			for(var i = 0; i < count; i++)
+			{
+				self.getTitle(i).then(function (title)
+				{
+					titles.push(title);
+				});
+			}
+		}).then(function ()
+		{
+			return titles;
+		});
+	};
+
 	//Returns the title of the result
 	this.getTitle = function (number)
 	{
@@ -136,7 +156,7 @@ var SearchPage = function ()
 	{
 		return pageLabel.getText().then(function (text)
 		{
-			return parseInt(text.substring(text.indexOf('page ') + 5, text.indexOf(' of')));
+			return parseInt(text.substring(text.indexOf('page ') + 'page '.length, text.indexOf(' of')));
 		});
 	};
 
@@ -144,7 +164,7 @@ var SearchPage = function ()
 	{
 		return pageLabel.getText().then(function (text)
 		{
-			return parseInt(text.substring(text.indexOf('of ') + 3));
+			return parseInt(text.substring(text.indexOf('of ') + 'of '.length));
 		});
 	};
 
@@ -488,6 +508,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
+			browser.sleep(500);
 			return queryName.sendKeys(name);
 		}).then(function ()
 		{
@@ -526,6 +547,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
+			browser.sleep(500);
 			return previousQueriesList.get(number + 1).click();
 		}).then(this.saveSearch);
 	};

@@ -1,11 +1,10 @@
 'use strict';
 
-//isHiding and isVisible checks might be race conditions in their current form if they do not use promise structure
-
+//Todo: Related image search,filter by date, improve filter/result toggle tests
 describe('Search View', function() 
 {
 
-    var page = require('./search.po'), savedQueriesPage = require('./savedQueries.po');
+    var page = require('./search.po'), savedQueriesPage = require('./savedQueries.po'), util = require('./dig.util');
 
     beforeEach(function() 
     {
@@ -245,6 +244,8 @@ describe('Search View', function()
     //in time to pass the test. The sleeps were added to mitigate this but should
     //this test continue to fail sporadically, increasing the sleep time should
     //further reduce or completely stop the failures. 
+    
+    //Todo: change to generic loop
     it('should allow users to expand and close results', function ()
     {
         page.searchFor('')
@@ -259,7 +260,7 @@ describe('Search View', function()
             return page.toggleResult(1);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             //Check that two can be expanded simultaneously
             expect(page.isResultExpanded(0)).toBeTruthy();
             expect(page.isResultExpanded(1)).toBeTruthy();
@@ -268,7 +269,7 @@ describe('Search View', function()
             return page.toggleResult(0);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             //Check that just the first result collapsed
             expect(page.isResultExpanded(0)).toBeFalsy();
             expect(page.isResultExpanded(1)).toBeTruthy();
@@ -277,12 +278,11 @@ describe('Search View', function()
             return page.toggleResult(1);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             //Check that both results have been collapsed
             expect(page.isResultExpanded(0)).toBeFalsy();
             expect(page.isResultExpanded(1)).toBeFalsy();
         });
-
     });
     
     it('should be able to sort based on different parameters', function ()
@@ -312,7 +312,7 @@ describe('Search View', function()
                 secondDate = date;
             }).then(function ()
             {
-                expect(compareDates(firstDate, secondDate)).not.toBeLessThan(0);
+                expect(util.compareDates(firstDate, secondDate)).not.toBeLessThan(0);
             });
         }).then(function ()
         {
@@ -330,11 +330,12 @@ describe('Search View', function()
                 secondDate = date;
             }).then(function ()
             {
-                expect(compareDates(firstDate, secondDate)).not.toBeGreaterThan(0);
+                expect(util.compareDates(firstDate, secondDate)).not.toBeGreaterThan(0);
             });
         });
     });
-
+    
+    //Todo: change to generic loop
     it('should sort in a repeatable nature', function ()
     {
         var firstResult = undefined;
@@ -388,7 +389,8 @@ describe('Search View', function()
     //It merely checks to see if filters predictably reduce/increase result counts as they are applied.
     //Adding a test to check if the filter is working correctly directly would cause it to be reliant on the
     //specific data set since filters are based off of the underlying data fields. Since this would cause the 
-    //test to be nonfunctional for different data sets, direct testing of filters was omitted.
+    //test to be nonfunctional for different data sets, direct testing of filters was omitted. However,
+    //this might be able to be accomplished in a generic way and might be worth doing in the future.
     it('should allow filtering based on result attributes', function ()
     {
         var counts = [undefined, undefined, undefined, undefined];
@@ -583,6 +585,7 @@ describe('Search View', function()
     
     //Sleeps were added because the expansions/collapses of filters were occurring
     //slower than the tests. The time can be increased if the test sporadically fails
+    //Todo: change to generic loop
     it('should allow the collapsing and expanding of attribute filters', function ()
     {
         page.search().then(function ()
@@ -594,7 +597,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(0);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         }).then(function ()
@@ -602,7 +605,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(1);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeFalsy();
         }).then(function ()
@@ -610,7 +613,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(1);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         }).then(function ()
@@ -618,7 +621,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(0);
         }).then(function ()
         {
-            browser.sleep(500);
+            browser.sleep(750);
             expect(page.isFilterExpanded(0)).toBeTruthy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         });
@@ -646,7 +649,7 @@ describe('Search View', function()
             {
                 page.toggleResult(i);
                 //sleep was used instead of wait because of closure issues
-                browser.sleep(500);
+                browser.sleep(750);
             }
             return count;
         }).then(function (count)
@@ -860,65 +863,6 @@ describe('Search View', function()
         expect(bool).toBeFalsy();
     }
 
-    function compareDates (one, two)
-    {
-        if(getYear(one) === getYear(two))
-        {
-            if(getMonth(one) === getMonth(two))
-            {
-                if(getDay(one) === getDay(two))
-                {
-                    return getTimeOfDay(one) - getTimeOfDay(two);
-                }
-                else
-                {
-                    return getDay(one) - getDay(two);
-                }
-            }
-            else
-            {
-                return getMonth(one) - getMonth(two);
-            }
-        }
-        else
-        {
-            return getYear(one) - getYear(two);
-        }
-    }
-
-    //Commented out the correct way to do these, ran into a bug.
-    function getYear (date)
-    {
-        return parseInt(date.substring(6,11));
-        //return parseInt(date.substring(date.indexOf('/', date.indexOf('/')) + 1, date.indexOf(' ')));
-    }
-
-    function getMonth (date)
-    {
-        return parseInt(date.substring(0, 2));
-        //return parseInt(date.substring(0, date.indexOf('/')));
-    }
-
-    function getDay (date)
-    {
-        return parseInt(date.substring(3, 5));
-        //return parseInt(date.substring(date.indexOf('/') + 1, date.indexOf('/', date.indexOf('/'))));
-    }
-
-    //In total seconds
-    function getTimeOfDay (date)
-    {
-        var time = date.substring(12, 20);
-        var hour = time.substring(0, 2);
-        var minute = time.substring(3, 5);
-        var second = time.substring(6,8);
-        // var time = date.substring(date.indexOf(' ') + 1, date.indexOf(' ', date.indexOf(' ')));
-        // var hour = time.substring(0, time.indexOf(':'));
-        // var minute = time.substring(time.indexOf(':') + 1, time.indexOf(':', time.indexOf(':')));
-        // var second = time.substring(time.indexOf(':', time.indexOf(':')) + 1)
-
-        return (3600 * parseInt(hour)) + (60 * parseInt(minute)) + parseInt(second);
-    }
 
     // var hasClass = function (element, cls) 
     // {
