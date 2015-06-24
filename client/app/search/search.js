@@ -20,7 +20,7 @@ angular.module('digApp')
         controller: 'SearchResultsCtrl'
     })
     .state('search.results.list', {
-        url: '^/list',
+        url: '^/list?queryString',
         templateUrl: 'app/search/search-results/list/list.partial.html',
 		preserveScrollPos: true
       })
