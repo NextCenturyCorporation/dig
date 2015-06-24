@@ -1,5 +1,7 @@
 'use strict';
 
+//This method should compare two dates assuming they are formatted correctly. Dig uses two representations:
+//MM/DD//YY hh:mm:ss OR MM/DD/YYYY hh:mm:ss and both are supported.
 function compareDates (one, two)
 {
     var oneDate = one.split('/');

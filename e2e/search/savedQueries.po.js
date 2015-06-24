@@ -15,11 +15,13 @@ var SavedQueriesPage = function ()
 		browser.get('/queries');
 	};
 
+	//Returns the number of saved queries
 	this.getSavedQueryCount = function ()
 	{
 		return savedQueryList.count();
 	};
 
+	//Returns the numerical value of the saved query count label displayed at the top of the page
 	this.getSavedQueryCountLabel = function ()
 	{
 		return element.all(by.tagName('h4')).first().getText().then(function (text)
@@ -28,6 +30,7 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	//Returns the name of the query with index 'number'
 	this.getQueryName = function (number)
 	{
 		return savedQueryList.get(number).getText().then(function (text)
@@ -36,14 +39,16 @@ var SavedQueriesPage = function ()
 		})
 	};
 
+	//Returns the query terms (what was searched for) of the query with index 'number'
 	this.getQueryTerms = function (number)
 	{
 		return savedQueryList.get(number).all(by.tagName('span')).get(1).getText().then(function (text)
 		{
 			return text.substring(text.indexOf('Search Terms: ') + 'Search Terms: '.length);
 		});
-	};
+	};	
 
+	//Returns the date created of the saved query with index 'number'
 	this.getQueryDateCreated = function (number)
 	{
 		return savedQueryList.get(number).all(by.tagName('span')).get(2).getText().then(function (text)
@@ -52,6 +57,7 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	//Returns true if the query at index 'number' is expanded and false if it is collapsed
 	this.isQueryExpanded = function (number)
 	{	
 		return element.all(by.css('[collapse="!isListItemOpened(query.id)"]')).get(number).getAttribute('style').then(function (style)
@@ -69,17 +75,20 @@ var SavedQueriesPage = function ()
 	// 	});
 	// };
 
+	//Toggles the query (either expands or collapses it) at index 'number'
 	this.toggleQuery = function (number)
 	{
 		return savedQueryList.get(number).click();
 	};
 
+	//Deletes the saved query at index 'number'
 	this.deleteSavedSearch = function (number)
 	{
 		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
 	 	.all(by.tagName('button')).last().click();
 	};
 
+	//Deletes all saved searches
 	this.clearSavedSearches = function ()
 	{
 		var numQueries = undefined;
@@ -96,6 +105,7 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	//Runs the saved search
 	this.runQuery = function (number)
 	{
 		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))

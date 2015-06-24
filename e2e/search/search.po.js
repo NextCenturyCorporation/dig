@@ -40,6 +40,16 @@ var SearchPage = function ()
 	var resultGrid = element(by.tagName('image-gallery')).all(by.repeater('doc in gallery.rawData track by $index'));
 
 	/*
+	Save dialog components
+	*/
+	var saveDialog = element(by.css('.modal-content'));
+	var inDialogSaveButton = saveDialog.element(by.buttonText('Save'));
+	var inDialogCancelButton = saveDialog.all(by.buttonText('Cancel'));
+	var queryName = saveDialog.element(by.model('query.name'));
+	var previousQueriesList = saveDialog.element(by.model('existingQuery')).all(by.tagName('option'));
+	var frequencyDropdown = saveDialog.element(by.model('query.frequency'));
+
+	/*
 	Getters and state checks
 	*/
 
@@ -58,18 +68,13 @@ var SearchPage = function ()
 	//Returns the number of results found in a search
 	this.getResultCount = function ()
 	{
-		// rightColumn.element(by.css('.column-header')).
-		// element(by.tagName('h4')).getText().then(function (resultString)
-		// {
-		// 	var count = parseInt(resultString.substring(0, resultString.indexOf(' ')).replace(',', ''));
-		// 	callback(count);
-		// });
 		return rightColumn.element(by.css('.column-header')).element(by.tagName('h4')).getText().then(function (text)
 		{
 			return parseInt(text.substring(0, text.indexOf(' ')).replace(',', ''));
 		});
 	};
 
+	//Returns the titles of all results displayed on the page
 	this.getResultListOnPage = function ()
 	{
 		var titles = [];
@@ -98,25 +103,11 @@ var SearchPage = function ()
 		.all(by.tagName('span')).first().getText();
 	};
 
-	//The following getters are data dependent but the only(?) way 
-	//to check if data specific sorting options are functional.
-
+	//Gets the date the result was created
 	this.getDateCreated = function (number)
 	{
 		return resultList.get(number).element(by.css('.date')).getText();
 	};
-
-	// this.getLocation = function (number)
-	// {
-	// 	return resultList.get(number).element(by.css('location')).getText();
-	// };
-
-	// this.getAge = function (number)
-	// {
-	// 	return resultList.get(number).element(by.css('age')).getText();
-	// };
-
-	//end data dependent getters
 
 	//Returns the text of the attribute with the index of number in the filter list
 	this.getAttributeFilter = function (number)
@@ -147,11 +138,13 @@ var SearchPage = function ()
 		return this.getBreadcrumb(attributeNumber, crumbNumber).getText();
 	};
 
+	//Returns the number of results displaying on the page
 	this.getResultsOnPage = function ()
 	{
 		return resultList.count();
 	};
 
+	//Returns the number of the page currently displaying
 	this.getCurrentPageNumber = function ()
 	{
 		return pageLabel.getText().then(function (text)
@@ -160,6 +153,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Returns the total number of pages of results
 	this.getTotalPageCount = function ()
 	{
 		return pageLabel.getText().then(function (text)
@@ -168,16 +162,19 @@ var SearchPage = function ()
 		});
 	};
 
+	//Gets the image source of an image on a grid which can be used to check if two images are the same
 	this.getGridImageSrc = function (number)
 	{
 		return resultGrid.get(number).element(by.tagName('img')).getAttribute('src');
 	};
 
+	//Returns the page number of the last page displayed that the user can switch to
 	this.getLastSwitchablePage = function ()
 	{
 		return pageList.last().element(by.tagName('a')).getText();
 	};
 
+	//Returns the page number of the first page displayed that the user can switch to
 	this.getFirstSwitchablePage = function ()
 	{
 		return pageList.first().element(by.tagName('a')).getText();
@@ -227,6 +224,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Returns true if the filter is expanded and false if it is collapsed
 	this.isFilterExpanded = function (number)
 	{
 		return attributeFilterList.get(number)
@@ -237,18 +235,20 @@ var SearchPage = function ()
 		});
 	};
 
-	//This is unused because of a (scoping?) issue using it in the following 3 methods.
-	// this.isImageBlurred = function (style)
-	// {
-	// 	if(style === '')
-	// 		return false;
-	// 	var tmp = style.substring(style.indexOf('blur'));
-	// 	var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
-	// 	return blur !== '0px'
-	// };
+	//This is a helper method which given the style string on an image, will return true if it is blurred
+	this.isImageBlurred = function (style)
+	{
+		if(style === '')
+			return false;
+		var tmp = style.substring(style.indexOf('blur'));
+		var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
+		return blur !== '0px'
+	};
 
+	//Returns true if the thumbnail image of the result at index 'number' is blurred
 	this.isThumbnailImageBlurred = function (number)
 	{
+		var self = this;
 		return this.isInListView().then(function (inListView)
 		{
 			if(inListView)
@@ -256,11 +256,7 @@ var SearchPage = function ()
 				return resultList.get(number).element(by.css('.image-thumb.center-block'))
 				.getAttribute('style').then(function (style)
 				{
-					if(style === '')
-						return false;
-					var tmp = style.substring(style.indexOf('blur'));
-					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
-					return blur !== '0px'
+					return self.isImageBlurred(style);
 				});
 			}
 			else
@@ -270,8 +266,10 @@ var SearchPage = function ()
 		});
 	};
 
+	//Returns true if the expanded image of the result at index 'number' is blurred
 	this.isExpandedImageBlurred = function (number)
 	{
+		var self = this;
 		return this.isResultExpanded(number).then(function (expanded)
 		{
 			if(expanded)
@@ -279,11 +277,7 @@ var SearchPage = function ()
 				return resultList.get(number).element(by.css('.image-expanded.center-block'))
 				.getAttribute('style').then(function (style)
 				{
-					if(style === '')
-						return false;
-					var tmp = style.substring(style.indexOf('blur'));
-					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
-					return blur !== '0px'
+					return self.isImageBlurred(style);
 				});
 			}	
 			else
@@ -293,8 +287,10 @@ var SearchPage = function ()
 		});
 	};
 
+	//Returns true if the grid image of the result at index 'number' is blurred
 	this.isGridImageBlurred = function (number)
 	{
+		var self = this;
 		return this.isInGridView().then(function (inGridView)
 		{
 			if(inGridView)
@@ -302,11 +298,7 @@ var SearchPage = function ()
 				return resultGrid.get(number).element(by.css('.image-gallery-img.center-block'))
 				.getAttribute('style').then(function (style)
 				{
-					if(style === '')
-						return false;
-					var tmp = style.substring(style.indexOf('blur'));
-					var blur = tmp.substring(tmp.indexOf('(')+ 1, tmp.indexOf(')'));
-					return blur !== '0px'
+					return self.isImageBlurred(style);
 				});
 			}
 			else
@@ -316,7 +308,11 @@ var SearchPage = function ()
 		});
 	};
 
-
+	//Returns true if the save button in the save query dialog is clickable
+	this.isSaveButtonEnabled = function ()
+	{
+		return inDialogSaveButton.isEnabled();
+	};
 
 	/*
 	Setters and Action methods
@@ -329,6 +325,56 @@ var SearchPage = function ()
 		{
 				return searchBar.sendKeys(query);
 		});
+	};
+
+	//Sets the name of the query in the save query dialog
+	this.setQueryName = function (name)
+	{
+		return queryName.sendKeys(name);
+	};
+
+	//Clicks the save button in the save search dialog.
+	this.saveSearch = function ()
+	{
+		return inDialogSaveButton.click();
+	};
+
+	//Searches for 'query', saves it as 'name', and optionally sets the frequency of execution to frequencyIndex
+	this.searchForAndSaveAs = function (query, name, frequencyIndex)
+	{
+		return this.searchAndOpenSave(query)
+		.then(function ()
+		{
+			browser.sleep(500);
+			return queryName.sendKeys(name);
+		}).then(function ()
+		{
+			if(frequencyIndex !== undefined && frequencyIndex > 0 && frequencyIndex < 4)
+			{
+				return frequencyDropdown.click().then(function ()
+				{
+					return frequencyDropdown.all(by.tagName('option')).get(frequencyIndex).click();
+				});
+			}
+		})
+		.then(this.saveSearch);
+	};
+
+	//Clicks the cancel button in the save search dialog
+	this.cancelSave = function ()
+	{
+		return inDialogCancelButton.click();
+	};
+
+	//Searches for 'query' and overwrites the query at index 'number'
+	this.searchForAndSaveAsQueryNumber = function (query, number)
+	{
+		return this.searchAndOpenSave(query)
+		.then(function ()
+		{
+			browser.sleep(500);
+			return previousQueriesList.get(number + 1).click();
+		}).then(this.saveSearch);
 	};
 
 	//Presses the search button
@@ -431,20 +477,6 @@ var SearchPage = function ()
 		return attributeFilterList.get(number).click();
 	};
 
-	//Will expand or collapse the settings menu
-	this.toggleSettingsMenu = function ()
-	{
-		return element(by.id('settingsMenu')).click();
-	};
-
-	this.toggleImageBlur = function ()
-	{
-		return this.toggleSettingsMenu().then(function () 
-		{
-			return element.all(by.tagName('input')).first().click();
-		});
-		
-	};
 	
 	//Number - 1 is used because it is presumed the user will want consistency using this
 	//and getCurrentPageNumber.
@@ -454,102 +486,18 @@ var SearchPage = function ()
 		.get(number - 1).element(by.tagName('a')).click();
 	};
 
+	//This will go to the previous page of results using the previous button
 	this.goToPreviousPage = function ()
 	{
 		return element(by.model('indexVM.page')).all(by.tagName('li'))
 		.first().element(by.tagName('a')).click();
 	};
 
+	//This will go to the next page of results using the next button
 	this.goToNextPage = function ()
 	{
 		return element(by.model('indexVM.page')).all(by.tagName('li'))
 		.last().element(by.tagName('a')).click();
-	};
-
-	/*
-	Save dialog components, might be worth wrapping up somehow to be more intuitive and to reduce boilerplate
-	*/
-	var saveDialog = element(by.css('.modal-content'));
-	var inDialogSaveButton = saveDialog.element(by.buttonText('Save'));
-	var inDialogCancelButton = saveDialog.all(by.buttonText('Cancel'));
-	var queryName = saveDialog.element(by.model('query.name'));
-	var previousQueriesList = saveDialog.element(by.model('existingQuery')).all(by.tagName('option'));
-	var frequencyDropdown = saveDialog.element(by.model('query.frequency'));
-
-	this.isSaveButtonEnabled = function ()
-	{
-		return inDialogSaveButton.isEnabled();
-	};
-
-	this.setQueryName = function (name)
-	{
-		return queryName.sendKeys(name);
-	};
-
-	//If check was here initially but taken out for complexity reasons
-	this.saveSearch = function ()
-	{
-		// this.isSaveDialogVisible().then(function (visible)
-		// {
-		// 	if(visible)
-		// 	{
-		return inDialogSaveButton.click();
-		// 	}
-		// 	else
-		// 	{
-		// 		return console.error('Save dialog not open. Open the save dialog and try again');
-		// 	}
-
-		// });
-	};
-
-	this.searchForAndSaveAs = function (query, name, frequencyIndex)
-	{
-		return this.searchAndOpenSave(query)
-		.then(function ()
-		{
-			browser.sleep(500);
-			return queryName.sendKeys(name);
-		}).then(function ()
-		{
-			if(frequencyIndex !== undefined && frequencyIndex > 0 && frequencyIndex < 4)
-			{
-				return frequencyDropdown.click().then(function ()
-				{
-					return frequencyDropdown.all(by.tagName('option')).get(frequencyIndex).click();
-				});
-			}
-		})
-		.then(this.saveSearch);
-	};
-
-	//If check was here initially but taken out for complexity reasons
-	this.cancelSave = function ()
-	{
-		// this.isSaveDialogVisible().then(function (visible)
-		// {
-		// 	if(visible)
-		// 	{
-		return inDialogCancelButton.click();
-		// }
-		// else
-		// {
-		// 	return new Promise(function (){},function ()
-		// 	{
-		// 		return 'Save dialog not open. Open the save dialog and try again';
-		// 	}).reject();
-		// }
-
-	};
-
-	this.searchForAndSaveAsQueryNumber = function (query, number)
-	{
-		return this.searchAndOpenSave(query)
-		.then(function ()
-		{
-			browser.sleep(500);
-			return previousQueriesList.get(number + 1).click();
-		}).then(this.saveSearch);
 	};
 
 };
