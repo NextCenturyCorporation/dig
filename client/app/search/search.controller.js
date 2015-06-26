@@ -59,8 +59,8 @@ angular.module('digApp')
         $scope.selectedSort = {};
 
 
-        if($state.params && $state.params.queryString) {
-            $scope.queryString.live = $state.params.queryString;
+        if($state.params && $state.params.searchTerms) {
+            $scope.queryString.live = $state.params.searchTerms;
 
             if($state.current.name === 'search.results.list' && $scope.showresults === false) {
                 $scope.submit();
