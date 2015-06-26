@@ -190,9 +190,62 @@ describe('Saved Queries View', function()
 
 
     //Todo: this test
-    // it('should allow users to change the frequency of execution on a saved query', function ()
-    // {
-
-    // });
+    it('should allow users to change the frequency of execution on a saved query', function ()
+    {
+        //should initially be never
+        expect(queryPage.getQueryFrequency(0)).toEqual('never');
+        //Try settings to all options
+        queryPage.setQueryFrequency(0, 1)
+        .then(function ()
+        {
+            return queryPage.getQueryFrequency(0);
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('hourly');
+            return queryPage.setQueryFrequency(0, 2);
+        }).then(function ()
+        {
+            return queryPage.getQueryFrequency(0);
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('daily');
+            return queryPage.setQueryFrequency(0, 3);
+        }).then(function ()
+        {
+            return queryPage.getQueryFrequency(0);
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('weekly');
+            return queryPage.setQueryFrequency(0, 0);
+        }).then(function ()
+        {
+            return queryPage.getQueryFrequency(0);
+        //Try to set to the current option to ensure it does nothing
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('never');
+            return queryPage.setQueryFrequency(0, 0);
+        }).then(function ()
+        {
+            return queryPage.getQueryFrequency(0);
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('never');
+            return queryPage.setQueryFrequency(0, 1);
+        //Make sure setting frequencies of two different queries works without a page refresh
+        }).then(function (){
+            return queryPage.setQueryFrequency(1, 2);
+        }).then(function ()
+        {
+            return queryPage.getQueryFrequency(1)
+        }).then(function (frequency)
+        {   
+            expect(queryPage.getQueryFrequency(1)).toEqual('daily');
+            return queryPage.getQueryFrequency(0);
+        }).then(function (frequency)
+        {
+            expect(queryPage.getQueryFrequency(0)).toEqual('hourly');
+        });
+    });
 
 });

@@ -222,23 +222,32 @@ describe('Search View', function()
     });
 
     //Todo: find out how to get displayed value of a dropdown
-    // iit('should allow users to set a frequency of execution for a search', function ()
-    // {
-    //     savedQueriesPage.get();
-    //     savedQueriesPage.clearSavedSearches()
-    //     .then(page.get)
-    //     .then(function ()
-    //     {
-    //         return page.searchForAndSaveAs('test', 'query1', 1);
-    //     }).then(savedQueriesPage.get)
-    //     .then(function ()
-    //     {
-    //         expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
-    //         expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
-    //         expect(savedQueriesPage.getQueryTerms(0)).toEqual('test');
-    //         expect(savedQueriesPage.getQueryFrequency(0)).toEqual('hourly')
-    //     })
-    // });
+    it('should allow users to set a frequency of execution for a search', function ()
+    {
+        savedQueriesPage.get();
+        savedQueriesPage.clearSavedSearches()
+        .then(page.get)
+        .then(function ()
+        {
+            return page.searchForAndSaveAs('test1', 'query1', savedQueriesPage.FREQUENCY_NEVER);
+        }).then(function ()
+        {
+            return page.searchForAndSaveAs('test2', 'query2', savedQueriesPage.FREQUENCY_HOURLY);
+        }).then(function ()
+        {
+            return page.searchForAndSaveAs('test3', 'query3', savedQueriesPage.FREQUENCY_DAILY);
+        }).then(function ()
+        {
+            return page.searchForAndSaveAs('test4', 'query4', savedQueriesPage.FREQUENCY_WEEKLY);
+        }).then(savedQueriesPage.get)
+        .then(function ()
+        {
+            expect(savedQueriesPage.getQueryFrequency(0)).toEqual('never');
+            expect(savedQueriesPage.getQueryFrequency(1)).toEqual('hourly');
+            expect(savedQueriesPage.getQueryFrequency(2)).toEqual('daily');
+            expect(savedQueriesPage.getQueryFrequency(3)).toEqual('weekly');
+        });
+    });
     
     //Sometimes (1/10 times roughly) the second result would not expand or collapse 
     //in time to pass the test. The sleeps were added to mitigate this but should

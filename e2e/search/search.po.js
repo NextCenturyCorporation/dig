@@ -227,43 +227,41 @@ var SearchPage = function ()
 	//Returns the state of the calendar as a promise containing either 'day', 'month', or 'year'
 	this.getFromCalendarState = function ()
 	{
-		var state = undefined;
+		var state = undefined, self = this;
 		return this.isFromCalendarOpen()
 		.then(function (open)
 		{
-			if(open)
+			if(!open)
 			{
-				return fromDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
-				.then(function (type)
-				{
-					return type;
-				});
+				return self.toggleFromCalendar();
 			}
-			else
+		}).then(function ()
+		{
+			return fromDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
+			.then(function (type)
 			{
-				return console.error('From calendar is not open, cannot get state');
-			}
+				return type;
+			});
 		});
 	};
 
 	this.getToCalendarState = function ()
 	{
-		var state = undefined;
+		var state = undefined, self = this;
 		return this.isToCalendarOpen()
 		.then(function (open)
 		{
-			if(open)
+			if(!open)
 			{
-				return toDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
-				.then(function (type)
-				{
-					return type;
-				});
+				self.toggleToCalendar();
 			}
-			else
+		}).then(function ()
+		{
+			return toDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
+			.then(function (type)
 			{
-				return console.error('To calendar is not open, cannot get state');
-			}
+				return type;
+			});
 		});
 	};
 
@@ -810,7 +808,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on from calendar when it is not open (up).');
+				return console.error('Cannot operate on from calendar when it is not open.');
 			}
 		});
 	};
@@ -842,7 +840,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on from calendar when it is not open (prev).');
+				return console.error('Cannot operate on from calendar when it is not open.');
 			}
 		});
 	};
@@ -874,7 +872,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on from calendar when it is not open (next).');
+				return console.error('Cannot operate on from calendar when it is not open.');
 			}
 		});
 	};
@@ -906,7 +904,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on from calendar when it is not open (select).');
+				return console.error('Cannot operate on from calendar when it is not open.');
 			}
 		});
 	};
@@ -938,7 +936,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on from calendar when it is not open (select).');
+				return console.error('Cannot operate on from calendar when it is not open.');
 			}
 		});
 	}
@@ -954,7 +952,7 @@ var SearchPage = function ()
 			}
 			else
 			{
-				return console.error('Cannot operate on To calendar when it is not open (select).');
+				return console.error('Cannot operate on To calendar when it is not open.');
 			}
 		});
 	}

@@ -8,7 +8,7 @@
 var SavedQueriesPage = function () 
 {
 
-	var savedQueryList = element.all(by.css('.col-xs-9.col-sm-10.col-lg-11.ng-binding'));
+	var savedQueryList = element.all(by.repeater('query in queryResults track by $index'));
 
 	this.get = function ()
 	{
@@ -36,7 +36,7 @@ var SavedQueriesPage = function ()
 		return savedQueryList.get(number).getText().then(function (text)
 		{
 			return text.substring(0, text.indexOf('\n'));
-		})
+		});
 	};
 
 	//Returns the query terms (what was searched for) of the query with index 'number'
@@ -57,34 +57,59 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	this.getQueryFrequency = function (number)
+	{
+		var self = this;
+		return this.isQueryFrequencyDirty(number)
+		.then(function (dirty)
+		{
+			if(dirty)
+				return self.get();
+		}).then(function ()
+		{
+			return self.isQueryExpanded(number);
+		}).then(function (expanded)
+		{
+			if(!expanded)
+				return self.toggleQuery(number);
+		}).then(function ()
+		{
+			browser.sleep(1000);
+			return savedQueryList.get(number).element(by.model('query.frequency'))
+			.element(by.css('option[selected]')).getText();
+		});
+	};
+
 	//Returns true if the query at index 'number' is expanded and false if it is collapsed
 	this.isQueryExpanded = function (number)
 	{	
-		return element.all(by.css('[collapse="!isListItemOpened(query.id)"]')).get(number).getAttribute('style').then(function (style)
+		return element.all(by.css('[collapse="!isListItemOpened(query.id)"]')).get(number)
+		.getAttribute('style').then(function (style)
 		{
 			return style !== 'height: 0px;';
 		});
 	};
 
-	//Todo: find out how to get displayed value of a dropdown
-	// this.getQueryFrequency = function (number)
-	// {
-	// 	return savedQueryList.get(number).click().then(function ()
-	// 	{
-	// 		return element.all(by.model('query.frequency')).$('option:checked').getText();
-	// 	});
-	// };
+	this.isQueryFrequencyDirty = function (number)
+	{
+		return savedQueryList.get(number).element(by.model('query.frequency'))
+		.getAttribute('class').then(function (classText)
+		{
+			return classText.split(' ')[0] !== 'ng-pristine';
+		});
+	};
 
 	//Toggles the query (either expands or collapses it) at index 'number'
 	this.toggleQuery = function (number)
 	{
-		return savedQueryList.get(number).click();
+		return savedQueryList.get(number).element(by.css('.query-result.list-group-item-heading.collapsed'))
+		.click();
 	};
 
 	//Deletes the saved query at index 'number'
 	this.deleteSavedSearch = function (number)
 	{
-		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
+		return savedQueryList.get(number).all(by.tagName('ul')).first()
 	 	.all(by.tagName('button')).last().click();
 	};
 
@@ -99,7 +124,7 @@ var SavedQueriesPage = function ()
 		{
 			for(var i = 0; i < numQueries; i++)
 			{
-				savedQueryList.get(0).element(by.css('.list-unstyled.query-options.horizontal-list'))
+				savedQueryList.get(0).all(by.tagName('ul')).first()
 				.all(by.tagName('button')).last().click();
 			}
 		});
@@ -108,9 +133,34 @@ var SavedQueriesPage = function ()
 	//Runs the saved search
 	this.runQuery = function (number)
 	{
-		return savedQueryList.get(number).element(by.css('.list-unstyled.query-options.horizontal-list'))
+		return savedQueryList.get(number).all(by.tagName('ul')).first()
 	 	.all(by.tagName('button')).first().click();
+	};
+
+	this.setQueryFrequency = function (queryNumber, frequencyIndex)
+	{
+		var self = this;
+		return this.isQueryExpanded(queryNumber)
+		.then(function (expanded)
+		{
+			if(!expanded)
+			{
+				return self.toggleQuery(queryNumber)
+				.then(function ()
+				{
+					browser.sleep(500);
+				});
+			}
+		}).then(function ()
+		{
+			return savedQueryList.get(queryNumber).element(by.model('query.frequency'))
+			.all(by.tagName('option')).get(frequencyIndex).click();
+		});
 	};
 };
 
  module.exports = new SavedQueriesPage();
+ module.exports.FREQUENCY_NEVER = 0;
+ module.exports.FREQUENCY_HOURLY = 1;
+ module.exports.FREQUENCY_DAILY = 2;
+ module.exports.FREQUENCY_WEEKLY = 3;
