@@ -1,6 +1,6 @@
 'use strict';
 
-//Todo: Related image search,filter by date, improve filter/result toggle tests
+//Todo: Related image search,filter by date, notifications,frequency of execution.
 describe('Search View', function() 
 {
 
@@ -327,18 +327,17 @@ describe('Search View', function()
             page.sortBy(1);
         }).then(function ()
         {
-            //Although it is possible they are the same, it is extremely unlikely
             expect(page.getTitle(0)).not.toEqual(firstResult);
             page.getDateCreated(0).then(function (date)
             {
-                firstDate = date;
+                firstDate = new Date(date);
             });
             page.getDateCreated(1).then(function (date)
             {
-                secondDate = date;
+                secondDate = new Date(date);
             }).then(function ()
             {
-                expect(util.compareDates(firstDate, secondDate)).not.toBeLessThan(0);
+                expect(firstDate).not.toBeLessThan(secondDate);
             });
         }).then(function ()
         {
@@ -349,14 +348,14 @@ describe('Search View', function()
             expect(page.getTitle(0)).not.toEqual(firstResult);
             page.getDateCreated(0).then(function (date)
             {
-                firstDate = date;
+                firstDate = new Date(date);
             });
             page.getDateCreated(1).then(function (date)
             {
-                secondDate = date;
+                secondDate = new Date(date);
             }).then(function ()
             {
-                expect(util.compareDates(firstDate, secondDate)).not.toBeGreaterThan(0);
+                expect(firstDate).not.toBeGreaterThan(secondDate);
             });
         });
     });
@@ -411,12 +410,472 @@ describe('Search View', function()
             expect(page.isInListView()).toBeTruthy();
             expect(page.isInGridView()).toBeFalsy(); 
         });
+    }); 
+
+    //Todo check functionality of date selector
+
+    it('should have a from date selector that can be opened and closed', function ()
+    {
+        page.search().then(function ()
+        {
+            expect(page.isFromCalendarOpen()).toBeFalsy();
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            expect(page.isFromCalendarOpen()).toBeTruthy();
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            expect(page.isFromCalendarOpen()).toBeFalsy();
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            return browser.actions().mouseMove({x: 100, y: 100}).doubleClick().perform();
+        }).then(function ()
+        {
+            expect(page.isFromCalendarOpen()).toBeFalsy();
+        });
+
     });
 
-    // it('should allow filtering based on date created', function ()
+    it('should have a to date selector that can be opened and closed', function ()
+    {
+        page.search().then(function ()
+        {
+            expect(page.isToCalendarOpen()).toBeFalsy();
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            expect(page.isToCalendarOpen()).toBeTruthy();
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            expect(page.isToCalendarOpen()).toBeFalsy();
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            return browser.actions().mouseMove({x: 100, y: 100}).doubleClick().perform();
+        }).then(function ()
+        {
+            expect(page.isToCalendarOpen()).toBeFalsy();
+        });
+
+    });
+
+    it('should have a from date calendar that allows switching view states', function ()
+    {
+        var day = undefined, month = undefined, year = undefined;
+        page.search().then(function ()
+        {
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar();
+        }).then(function (option)
+        {
+            day = option;
+            expect(page.getFromCalendarState()).toEqual('day');
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar();
+        }).then(function (option)
+        {
+            month = option;
+            expect(page.getFromCalendarState()).toEqual('month');
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar()
+        }).then(function  (option)
+        {
+            year = option;
+            expect(page.getFromCalendarState()).toEqual('year');
+            return page.selectOptionInFromCalendar(year);
+        }).then(function ()
+        {
+            expect(page.getFromCalendarState()).toEqual('month');
+            return page.selectOptionInFromCalendar(month);
+        }).then(function ()
+        {
+            expect(page.getFromCalendarState()).toEqual('day');
+        });
+    });
+
+    it('should have a to date calendar that allows switching view states', function ()
+    {
+        var day = undefined, month = undefined, year = undefined;
+        page.search().then(function ()
+        {
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar();
+        }).then(function (option)
+        {
+            day = option;
+            expect(page.getToCalendarState()).toEqual('day');
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar();
+        }).then(function (option)
+        {
+            month = option;
+            expect(page.getToCalendarState()).toEqual('month');
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar()
+        }).then(function  (option)
+        {
+            year = option;
+            expect(page.getToCalendarState()).toEqual('year');
+            return page.selectOptionInToCalendar(year);
+        }).then(function ()
+        {
+            expect(page.getToCalendarState()).toEqual('month');
+            return page.selectOptionInToCalendar(month);
+        }).then(function ()
+        {
+            expect(page.getToCalendarState()).toEqual('day');
+        });
+    });
+
+    it('should have a from calendar that allows users to select dates and updates properly', function ()
+    {
+        var day = undefined, month = undefined, year = undefined;
+        var dayNumber = undefined, monthString = undefined, yearNumber = undefined;
+        page.search().then(function ()
+        {
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar();
+        }).then(function (option)
+        {
+            day = option;
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar();
+        }).then(function (option)
+        {
+            month = option;
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInFromCalendar()
+        }).then(function  (option)
+        {
+            year = option;
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            yearNumber = util.getYearFromRange(title, year);
+            expect(page.getOptionTextInFromCalendar(year)).toEqual(yearNumber.toString());
+            return page.selectOptionInFromCalendar(year);
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(yearNumber.toString());
+            monthString = util.getMonthName(month);
+            expect(page.getOptionTextInFromCalendar(month)).toEqual(monthString);
+            return page.selectOptionInFromCalendar(month);
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(monthString + ' ' + yearNumber);
+        });
+    });
+
+    it('should have a to calendar that allows users to select dates and updates properly', function ()
+    {
+        var day = undefined, month = undefined, year = undefined;
+        var dayNumber = undefined, monthString = undefined, yearNumber = undefined;
+        page.search().then(function ()
+        {
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar();
+        }).then(function (option)
+        {
+            day = option;
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar();
+        }).then(function (option)
+        {
+            month = option;
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedOptionInToCalendar()
+        }).then(function  (option)
+        {
+            year = option;
+            return page.getToCalendarTitle();
+        }).then(function (title)
+        {
+            yearNumber = util.getYearFromRange(title, year);
+            expect(page.getOptionTextInToCalendar(year)).toEqual(yearNumber.toString());
+            return page.selectOptionInToCalendar(year);
+        }).then(function ()
+        {
+            return page.getToCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(yearNumber.toString());
+            monthString = util.getMonthName(month);
+            expect(page.getOptionTextInToCalendar(month)).toEqual(monthString);
+            return page.selectOptionInToCalendar(month);
+        }).then(function ()
+        {
+            return page.getToCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(monthString + ' ' + yearNumber);
+        });
+    });
+    
+    //Todo: Figure out how to tell which date is highlighted
+    // iit('should highlight the current date in the from calendar', function ()
     // {
 
     // });
+    
+    it('should have the current day selected in the from calendar by default', function ()
+    {
+        var currentDate = new Date();
+        page.search()
+        .then(function ()
+        {
+            return page.toggleFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedDateInFromCalendar();
+        }).then(function (date)
+        {
+            expect(date.getYear()).toEqual(currentDate.getYear());
+            expect(date.getMonth()).toEqual(currentDate.getMonth());
+            expect(date.getDate()).toEqual(currentDate.getDate());
+        });
+    });
+
+    it('should have the current day selected in the to calendar by default', function ()
+    {
+        var currentDate = new Date();
+        page.search()
+        .then(function ()
+        {
+            return page.toggleToCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedDateInToCalendar();
+        }).then(function (date)
+        {
+            expect(date.getYear()).toEqual(currentDate.getYear());
+            expect(date.getMonth()).toEqual(currentDate.getMonth());
+            expect(date.getDate()).toEqual(currentDate.getDate());
+        });
+    });
+
+    it('should have functional cycling arrows in the from calendar', function ()
+    {
+        var date = undefined;
+        var selectedTitle = undefined;
+        page.search()
+        .then(function ()
+        {
+            return page.toggleFromCalendar();
+        //Check arrows in day state
+        }).then(function ()
+        {
+            return page.getSelectedDateInFromCalendar();
+        }).then(function (selectedDate)
+        {
+            date = selectedDate;
+            return page.goToPreviousInFromCalendar();  
+        }).then(function ()
+        {
+            return page.getSelectedDateInFromCalendar();
+        }).then(function (selectedDate)
+        {
+            expect(selectedDate.getMonth()).toBeLessThan(date.getMonth());
+            return page.goToNextInFromCalendar();
+        }).then(function ()
+        {
+            return page.getSelectedDateInFromCalendar();
+        }).then(function (selectedDate)
+        {
+            expect(selectedDate.getMonth()).toEqual(date.getMonth());
+            return page.goUpInFromCalendar();
+
+        //Check arrows in month state
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle()
+        }).then(function (title)
+        {
+            selectedTitle = title;
+            return page.goToPreviousInFromCalendar();
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).not.toEqual(selectedTitle);
+            return page.goToNextInFromCalendar();
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(selectedTitle);
+            return page.goUpInFromCalendar();
+
+        //Check arrows in year state
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            selectedTitle = title;
+            return page.goToPreviousInFromCalendar();
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).not.toEqual(selectedTitle);
+            return page.goToNextInFromCalendar();
+        }).then(function ()
+        {
+            return page.getFromCalendarTitle();
+        }).then(function (title)
+        {
+            expect(title).toEqual(selectedTitle);
+        });
+    });
+    
+    //This test assumes the 3rd sort option is sorting by date created, oldest to newest
+    it('should be able to filter out all results before a date', function ()
+    {  
+        var earliestDate = undefined, resultCount = undefined, resultList = undefined;
+        page.search()
+        .then(function ()
+        {
+            //Sort oldest to newest
+            return page.sortBy(2);
+        }).then(function ()
+        {
+            return page.getResultCount();
+        }).then(function (count)
+        {
+            resultCount = count;
+            return page.getResultListOnPage();
+        }).then(function (list)
+        {
+            resultList = list;
+        }).then(function ()
+        {
+            return page.getEarliestCreatedDate();
+        })
+        .then(function (date)
+        {
+            //Filter from the earliest date, should not affect results
+            earliestDate = new Date(date);
+            return page.filterFromDate(earliestDate);
+        }).then(function ()
+        {
+            return page.getResultCount();
+        }).then(function (count)
+        {
+            //expect(count).toEqual(resultCount);
+            return page.getResultListOnPage();
+        }).then(function (list)
+        {
+            //expect(list).toEqual(resultList);
+        }).then(function ()
+        {
+            //Add one to the earliest day, this should decrease results by
+            //at least one
+            var date = earliestDate;
+            date.setDate(date.getDate() + 1);
+            return page.filterFromDate(date);
+        }).then(function ()
+        {
+            return page.getDateCreated(0);
+        }).then(function (date)
+        {
+            expect(new Date(date)).toBeGreaterThan(earliestDate);
+            expect(page.getResultCount()).toBeLessThan(resultCount);
+            expect(page.getResultListOnPage()).not.toEqual(resultList);
+        });
+    });
+
+    //This test assumes the 2nd sort option is sorting by date created, newest to oldest
+    it('should be able to filter out all results before a date', function ()
+    {  
+        var latestDate = undefined, resultCount = undefined, resultList = undefined;
+        page.search()
+        .then(function ()
+        {
+            //Sort newest to oldest
+            return page.sortBy(1);
+        }).then(function ()
+        {
+            return page.getResultCount();
+        }).then(function (count)
+        {
+            //Get total results
+            resultCount = count;
+            return page.getResultListOnPage();
+        }).then(function (list)
+        {
+            resultList = list;
+        }).then(function ()
+        {
+            return page.getLatestCreatedDate();
+        })
+        .then(function (date)
+        {
+            //Filter up to the latest date, should not affect results
+            latestDate = new Date(date);
+            return page.filterToDate(latestDate);
+        }).then(function ()
+        {
+            return page.getResultCount();
+        }).then(function (count)
+        {
+            //expect(count).toEqual(resultCount);
+            return page.getResultListOnPage();
+        }).then(function (list)
+        {
+            //expect(list).toEqual(resultList);
+        }).then(function ()
+        {   
+            //Subtract one from the latest day, this should decrease results by
+            //at least one
+            var date = latestDate;
+            date.setDate(date.getDate() - 1);
+            return page.filterToDate(date);
+        }).then(function ()
+        {
+            return page.getDateCreated(0);
+        }).then(function (date)
+        {
+            expect(new Date(date)).toBeLessThan(latestDate);
+            expect(page.getResultCount()).toBeLessThan(resultCount);
+            expect(page.getResultListOnPage()).not.toEqual(resultList);
+        });
+    });
     
     //This test does not actually test if the results after filtering all meet filter criteria.
     //It merely checks to see if filters predictably reduce/increase result counts as they are applied.
@@ -800,7 +1259,6 @@ describe('Search View', function()
             expect(last).toEqual('26');
         });
     })
-
 
     // Helper functions
 

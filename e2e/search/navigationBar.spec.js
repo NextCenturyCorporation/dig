@@ -73,6 +73,7 @@ describe('Top Bar', function()
             return browser.actions().mouseMove({x: 50, y: 50}).doubleClick().perform();
         }).then(function ()
         {
+            browser.sleep(2000);
             expect(navBar.isAboutDialogOpen()).toBeFalsy();
         });
     });

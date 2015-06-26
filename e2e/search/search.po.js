@@ -7,6 +7,7 @@
 
 var SearchPage = function () 
 {
+	var util = require('./dig.util');
 
 	/*
 	Page element variables
@@ -29,11 +30,25 @@ var SearchPage = function ()
 	var sortMenu = element(by.id('sortMenu'));
 	var sortList = element.all(by.repeater('option in sortOptions track by $index'));
 	var resultHeader = element(by.css('.results-header-div.row'));
-	var fromDateButton = leftColumn.all(by.css('input-group-btn')).first();
-	var toDateButton = leftColumn.all(by.css('input-group-btn')).last();
 	var attributeFilterList = element.all(by.repeater('filter in facets.aggFilters'));
 	//Breadcrumbs are in lists and each of the breadcrumb lists are part of a larger list based off of attributes
 	var breadcrumbListList = element.all(by.repeater('aggFilter in facets.aggFilters'));
+
+	//Date filter elements
+	var fromDate = leftColumn.element(by.css('.col-xs-12')).all(by.css('.input-group')).first();
+	var toDate = leftColumn.element(by.css('.col-xs-12')).all(by.css('.input-group')).last();
+	var fromDateButton = fromDate.all(by.css('.btn.btn-default')).last();
+	var toDateButton = toDate.all(by.css('.btn.btn-default')).last();
+	var fromDateCalendar = fromDate.element(by.model('date'));
+	var toDateCalendar = toDate.element(by.model('date'));
+	var fromCalendarHeader = fromDateCalendar.element(by.tagName('thead'));
+	var toCalendarHeader = toDateCalendar.element(by.tagName('thead'));
+	var fromCalendarTitle = fromCalendarHeader.all(by.tagName('th')).get(1);
+	var toCalendarTitle = toCalendarHeader.all(by.tagName('th')).get(1);
+	var fromCalendarLeftArrow = fromCalendarHeader.all(by.tagName('th')).get(0).element(by.tagName('button'));
+	var toCalendarLeftArrow = fromCalendarHeader.all(by.tagName('th')).get(0).element(by.tagName('button'));
+	var fromCalendarRightArrow = fromCalendarHeader.all(by.tagName('th')).get(2).element(by.tagName('button'));
+	var toCalendarRightArrow = fromCalendarHeader.all(by.tagName('th')).get(2).element(by.tagName('button'));
 
 	//Result elements, use list only when in list view and grid in grid view
 	var resultList = element(by.id('results')).all(by.repeater('doc in indexVM.results.hits.hits track by $index'));
@@ -180,6 +195,204 @@ var SearchPage = function ()
 		return pageList.first().element(by.tagName('a')).getText();
 	};
 
+	//Gets the date of the earliest result in the data set. It is dependent on the sort
+	//by date created being the third option in the sorts. This approach was taken instead
+	//of doing a text match since on different data sets there may not be a field strictly
+	//labelled 'date created'.
+	this.getEarliestCreatedDate = function ()
+	{
+		var self = this;
+		return this.search().then(function ()
+		{	
+			return self.sortBy(2);
+		}).then(function ()
+		{
+			return self.getDateCreated(0);
+		});
+	};
+
+	this.getLatestCreatedDate = function ()
+	{
+		var self = this;
+		return this.search().then(function ()
+		{	
+			return self.sortBy(1);
+		}).then(function ()
+		{
+			return self.getDateCreated(0);
+		});
+	};
+
+
+	//Returns the state of the calendar as a promise containing either 'day', 'month', or 'year'
+	this.getFromCalendarState = function ()
+	{
+		var state = undefined;
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
+				.then(function (type)
+				{
+					return type;
+				});
+			}
+			else
+			{
+				return console.error('From calendar is not open, cannot get state');
+			}
+		});
+	};
+
+	this.getToCalendarState = function ()
+	{
+		var state = undefined;
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toDateCalendar.element(by.tagName('table')).getAttribute('ng-switch-when')
+				.then(function (type)
+				{
+					return type;
+				});
+			}
+			else
+			{
+				return console.error('To calendar is not open, cannot get state');
+			}
+		});
+	};
+
+	this.getSelectedOptionInFromCalendar = function ()
+	{
+		return fromDateCalendar.element(by.tagName('table')).getAttribute('aria-activedescendant')
+		.then(function (selectedString)
+		{
+			return parseInt(selectedString.split('-')[3]);
+		});
+	};
+
+	this.getSelectedOptionInToCalendar = function ()
+	{
+		return toDateCalendar.element(by.tagName('table')).getAttribute('aria-activedescendant')
+		.then(function (selectedString)
+		{
+			return parseInt(selectedString.split('-')[3]);
+		});
+	};
+
+	this.getSelectedOptionTextInFromCalendar = function ()
+	{
+		return this.getSelectedOptionInFromCalendar()
+		.then(function (index)
+		{
+			return fromDateCalendar.all(by.repeater('dt in row track by dt.date')).get(index).getText();
+		});
+	};
+
+	this.getSelectedOptionTextInToCalendar = function ()
+	{
+		return this.getSelectedOptionInToCalendar()
+		.then(function (index)
+		{
+			return toDateCalendar.all(by.repeater('dt in row track by dt.date')).get(index).getText();
+		});
+	};
+
+	this.getOptionTextInFromCalendar = function (number)
+	{
+		return fromDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).getText();
+	};
+
+	this.getOptionTextInToCalendar = function (number)
+	{
+		return toDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).getText();
+	};
+
+	this.getFromCalendarTitle = function ()
+	{
+		return fromCalendarTitle.getText();
+	};
+
+	this.getToCalendarTitle = function ()
+	{
+		return toCalendarTitle.getText();
+	};
+
+	this.getSelectedDateInFromCalendar = function ()
+	{
+		var self = this, month = undefined, year = undefined;
+		return this.getFromCalendarState()
+		.then(function (state)
+		{
+			if(state === 'day')
+			{
+				return self.getFromCalendarTitle().then(function (title)
+				{
+					month = title.split(' ')[0];
+					year = title.split(' ')[1];
+				}).then(function ()
+				{
+					return self.getSelectedOptionTextInFromCalendar()
+				}).then(function (day)
+				{
+					return new Date(month + ' ' + day + ", " + year);
+				});
+			}
+			else
+			{	
+				return self.getSelectedOptionInFromCalendar()
+				.then(function (index)
+				{
+					return self.selectOptionInFromCalendar(index)
+					.then(function ()
+					{
+						return self.getSelectedDateInFromCalendar();
+					});
+				});
+			}	
+		});
+	};
+
+	this.getSelectedDateInToCalendar = function ()
+	{
+		var self = this, month = undefined, year = undefined;
+		return this.getToCalendarState()
+		.then(function (state)
+		{
+			if(state === 'day')
+			{
+				return self.getToCalendarTitle().then(function (title)
+				{
+					month = title.split(' ')[0];
+					year = title.split(' ')[1];
+				}).then(function ()
+				{
+					return self.getSelectedOptionTextInToCalendar()
+				}).then(function (day)
+				{
+					return new Date(month + ' ' + day + ", " + year);
+				});
+			}
+			else
+			{	
+				return self.getSelectedOptionInToCalendar()
+				.then(function (index)
+				{
+					return self.selectOptionInToCalendar(index)
+					.then(function ()
+					{
+						return self.getSelectedDateInToCalendar();
+					});
+				});
+			}	
+		});
+	};
+
 	//Returns whether or not the save button is visible
 	this.isSaveButtonVisible = function ()
 	{
@@ -314,6 +527,25 @@ var SearchPage = function ()
 		return inDialogSaveButton.isEnabled();
 	};
 
+	this.isFromCalendarOpen = function ()
+	{
+		return fromDateCalendar.getAttribute('style')
+		.then(function (style)
+		{
+			return style.substring(0, style.indexOf(';')) !== 'display: none';
+		});
+	};
+
+	this.isToCalendarOpen = function ()
+	{
+		return toDateCalendar.getAttribute('style')
+		.then(function (style)
+		{
+			return style.substring(0, style.indexOf(';')) !== 'display: none';
+		});
+	};
+
+
 	/*
 	Setters and Action methods
 	*/
@@ -323,7 +555,7 @@ var SearchPage = function ()
 	{
 		return searchBar.clear().then(function ()
 		{
-				return searchBar.sendKeys(query);
+			return searchBar.sendKeys(query);
 		});
 	};
 
@@ -345,7 +577,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
-			browser.sleep(500);
+			browser.sleep(1000);
 			return queryName.sendKeys(name);
 		}).then(function ()
 		{
@@ -372,7 +604,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
-			browser.sleep(500);
+			browser.sleep(1000);
 			return previousQueriesList.get(number + 1).click();
 		}).then(this.saveSearch);
 	};
@@ -447,14 +679,286 @@ var SearchPage = function ()
 	};
 
 	//Filters results from the date specified.
-	//date should be in a tuple with fields day,month,year
-	// this.filterFromDate = function (date)
-	// {
-	// 	return fromDateButton.click().then(function ()
-	// 	{
+	this.filterFromDate = function (date)
+	{
+		var self = this;
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(!open)
+			{
+				return self.toggleFromCalendar()
+			}
+		//Go to the top level, even if we are not at the bottom clicking the title does no harm
+		}).then(function ()
+		{
+			return self.goUpInFromCalendar();
+		}).then(function ()
+		{
+			return self.goUpInFromCalendar();
+		}).then(function ()
+		{
+			return self.getFromCalendarTitle();
+		}).then(function (title)
+		{
+			var yearStart = parseInt(title.split('-')[0]);
+			var cmp = util.getRangeDifference(date, yearStart, parseInt(title.split('-')[1]));
+			for(var i = 0; i != cmp;)
+			{
+				if(i < cmp)
+				{
+					self.goToPreviousInFromCalendar()
+					.then(function ()
+					{
+						i--;
+					});
+				}
+				else
+				{
+					self.goToNextInFromCalendar()
+					.then(function ()
+					{
+						i++;
+					});
+				}
+			}
+			return self.selectOptionInFromCalendar(date.getFullYear() - yearStart);
+		}).then(function ()
+		{
+			return self.selectOptionInFromCalendar(date.getMonth());
+		}).then(function ()
+		{
+			return self.selectOptionByTextInFromCalendar(('0' + date.getDate()).slice(-2));
+		});
+	};
 
-	// 	});
-	// };
+	//Filters results to the date specified.
+	this.filterToDate = function (date)
+	{
+		var self = this;
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(!open)
+			{
+				return self.toggleToCalendar()
+			}
+		//Go to the top level, even if we are not at the bottom clicking the title does no harm
+		}).then(function ()
+		{
+			return self.goUpInToCalendar();
+		}).then(function ()
+		{
+			return self.goUpInToCalendar();
+		}).then(function ()
+		{
+			return self.getToCalendarTitle();
+		}).then(function (title)
+		{
+			var yearStart = parseInt(title.split('-')[0]);
+			var cmp = util.getRangeDifference(date, yearStart, parseInt(title.split('-')[1]));
+			for(var i = 0; i != cmp;)
+			{
+				if(i < cmp)
+				{
+					self.goToPreviousInToCalendar()
+					.then(function ()
+					{
+						i--;
+					});
+				}
+				else
+				{
+					self.goToNextInToCalendar()
+					.then(function ()
+					{
+						i++;
+					});
+				}
+			}
+			return self.selectOptionInToCalendar(date.getFullYear() - yearStart);
+		}).then(function ()
+		{
+			return self.selectOptionInToCalendar(date.getMonth());
+		}).then(function ()
+		{
+			return self.selectOptionByTextInToCalendar(('0' + date.getDate()).slice(-2));
+		});
+	};
+
+	this.toggleFromCalendar = function ()
+	{
+		return fromDateButton.click();
+	};
+
+	this.toggleToCalendar = function ()
+	{
+		return toDateButton.click();
+	};
+
+	//This will bring the calendar up a state if possible. If it is in 
+	//day state it will go to month and month will go to year. If it is in
+	//year state nothing will happen.
+	this.goUpInFromCalendar = function ()
+	{
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromCalendarTitle.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on from calendar when it is not open (up).');
+			}
+		});
+	};
+
+	this.goUpInToCalendar = function ()
+	{
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toCalendarTitle.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on to calendar when it is not open.');
+			}
+		});
+	};
+
+	this.goToPreviousInFromCalendar = function ()
+	{
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromCalendarLeftArrow.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on from calendar when it is not open (prev).');
+			}
+		});
+	};
+
+	this.goToPreviousInToCalendar = function ()
+	{
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toCalendarLeftArrow.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on to calendar when it is not open.');
+			}
+		});
+	};
+
+	this.goToNextInFromCalendar = function ()
+	{
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromCalendarRightArrow.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on from calendar when it is not open (next).');
+			}
+		});
+	};
+
+	this.goToNextInToCalendar = function ()
+	{
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toCalendarRightArrow.click();
+			}
+			else
+			{
+				return console.error('Cannot operate on to calendar when it is not open.');
+			}
+		});
+	};
+
+	this.selectOptionInFromCalendar = function (number)
+	{
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).click();
+			}
+			else
+			{
+				return console.error('Cannot operate on from calendar when it is not open (select).');
+			}
+		});
+	};
+
+	this.selectOptionInToCalendar = function (number)
+	{
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).click();
+			}
+			else
+			{
+				return console.error('Cannot operate on to calendar when it is not open.');
+			}
+		});
+	};
+
+	this.selectOptionByTextInFromCalendar = function (text)
+	{
+		return this.isFromCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return fromDateCalendar.all(by.buttonText(text)).first().click();
+			}
+			else
+			{
+				return console.error('Cannot operate on from calendar when it is not open (select).');
+			}
+		});
+	}
+
+	this.selectOptionByTextInToCalendar = function (text)
+	{
+		return this.isToCalendarOpen()
+		.then(function (open)
+		{
+			if(open)
+			{
+				return toDateCalendar.all(by.buttonText(text)).first().click();
+			}
+			else
+			{
+				return console.error('Cannot operate on To calendar when it is not open (select).');
+			}
+		});
+	}
+
 
 	//Will toggle the filter by the attribute with the index attributeNumber and type at index optionNumber
 	this.toggleFilterByAttribute = function (attributeNumber, optionNumber)
@@ -503,4 +1007,3 @@ var SearchPage = function ()
 };
 
  module.exports = new SearchPage();
-

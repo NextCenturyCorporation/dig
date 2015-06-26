@@ -39,14 +39,14 @@ describe('Saved Queries View', function()
     		var lastDate = undefined;
     		queryPage.getQueryDateCreated(0).then(function (date)
     		{
-    			lastDate = date;
+    			lastDate = new Date(date);
     		}).then(function ()
     		{
     			for(var i = 1; i < count; i++)
 	   			{
 	   				queryPage.getQueryDateCreated(i).then(function (date)
 	   				{
-	   					expect(util.compareDates(date, lastDate)).not.toBeLessThan(0);
+	   					expect(new Date(date)).not.toBeLessThan(lastDate);
 	   				});
 	   			}
     		});
@@ -84,6 +84,7 @@ describe('Saved Queries View', function()
     		return queryPage.toggleQuery(0);
     	}).then(function ()
     	{
+            browser.sleep(750);
 			expect(queryPage.isQueryExpanded(0)).toBeFalsy();
 		}).then(function ()
 		{
@@ -96,7 +97,7 @@ describe('Saved Queries View', function()
 			for(var i = 1; i < count; i++)
 			{
 				queryPage.toggleQuery(i);
-                browser.sleep(1000);
+                browser.sleep(750);
 			}
 		}).then(function ()
 		{

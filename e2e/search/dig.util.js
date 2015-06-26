@@ -1,49 +1,60 @@
 'use strict';
 
-//This method should compare two dates assuming they are formatted correctly. Dig uses two representations:
-//MM/DD//YY hh:mm:ss OR MM/DD/YYYY hh:mm:ss and both are supported.
-function compareDates (one, two)
+function getYearFromRange(range, number)
 {
-    var oneDate = one.split('/');
-    var twoDate = two.split('/');
-    var oneYearTime = oneDate[2].split(' ');
-    var twoYearTime = twoDate[2].split(' ');
+    var firstYear = parseInt(range.split('-')[0]);
+    return firstYear + number;
+}
 
-    var yearComparison = oneYearTime[0] - twoYearTime[0];
-    if(yearComparison === 0)
+function getMonthNumber (month)
+{
+    switch(month)
     {
-        var monthComparison = oneDate[0] - twoDate[0];
-        if(monthComparison === 0)
-        {
-            var dayComparison = oneDate[1] - twoDate[1];
-            if(dayComparison === 0)
-            {
-                return getTimeOfDay(oneYearTime[1]) - getTimeOfDay(twoYearTime[1]);
-            }
-            else
-            {
-                return dayComparison;
-            }
-        }
-        else
-        {
-            return monthComparison;
-        }
-    }
-    else
-    {
-        return yearComparison;
+        case 'January': return '01';
+        case 'February': return '02';
+        case 'March': return '03';
+        case 'April': return '04';
+        case 'May': return '05';
+        case 'June': return '06';
+        case 'July': return '07';
+        case 'August': return '08';
+        case 'September': return '09';
+        case 'October': return '10';
+        case 'November': return '11';
+        case 'December': return '12';
     }
 }
 
-//In total seconds
-function getTimeOfDay (time)
+function getMonthName(number)
 {
-    var timeSplit = time.split(":");
-    var hour = timeSplit[0];
-    var minute = timeSplit[1];
-    var second = timeSplit[2];
-    return (3600 * parseInt(hour)) + (60 * parseInt(minute)) + parseInt(second);
+    switch(number)
+    {
+        case 0: return 'January';
+        case 1: return 'February';
+        case 2: return 'March';
+        case 3: return 'April';
+        case 4: return 'May';
+        case 5: return 'June';
+        case 6: return 'July';
+        case 7: return 'August';
+        case 8: return 'September';
+        case 9: return 'October';
+        case 10: return 'November';
+        case 11: return 'December';
+    }
+}
+
+function getRangeDifference(date, yearStart, yearEnd)
+{
+    var targetYear = date.getFullYear();
+    if(targetYear < yearStart || targetYear > yearEnd)
+    {
+        return Math.ceil((targetYear - yearStart)/20);
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /*
@@ -54,5 +65,8 @@ by this number.
 */
 var reductionDivisor = 5;
 
-module.exports.compareDates = compareDates;
 module.exports.reductionDivisor = reductionDivisor;
+module.exports.getMonthNumber = getMonthNumber;
+module.exports.getMonthName = getMonthName;
+module.exports.getYearFromRange = getYearFromRange;
+module.exports.getRangeDifference = getRangeDifference;
