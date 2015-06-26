@@ -5,6 +5,7 @@
 
  'use strict';
 
+//Having both from and to calendar elements may be superflous. Might be worth revisiting later.
 var SearchPage = function () 
 {
 	var util = require('./dig.util');
@@ -32,7 +33,9 @@ var SearchPage = function ()
 	var resultHeader = element(by.css('.results-header-div.row'));
 	var attributeFilterList = element.all(by.repeater('filter in facets.aggFilters'));
 	//Breadcrumbs are in lists and each of the breadcrumb lists are part of a larger list based off of attributes
-	var breadcrumbListList = element.all(by.repeater('aggFilter in facets.aggFilters'));
+	var attributeBreadcrumbListList = element.all(by.repeater('aggFilter in facets.aggFilters'));
+	var dateBreadcrumbList = element(by.repeater('(dateFilter, values) in filterStates.dateFilters'))
+							 .all(by.repeater('(filterKey, date) in values'));
 
 	//Date filter elements
 	var fromDate = leftColumn.element(by.css('.col-xs-12')).all(by.css('.input-group')).first();
@@ -121,7 +124,11 @@ var SearchPage = function ()
 	//Gets the date the result was created
 	this.getDateCreated = function (number)
 	{
-		return resultList.get(number).element(by.css('.date')).getText();
+		return resultList.get(number).element(by.css('.date')).getText()
+		.then(function (text)
+		{
+				return new Date(text);
+		});
 	};
 
 	//Returns the text of the attribute with the index of number in the filter list
@@ -137,20 +144,40 @@ var SearchPage = function ()
 		.get(typeNumber).getText();
 	};
 
-	//Gets the page element of the breadcrumb with index crumbNumber from the list of breadcrumbs associated
-	//with the attribute at the index attributeNumber
-	this.getBreadcrumb = function (attributeNumber, crumbNumber)
+	//Returns the number of available attribute filters
+	this.getAttributeFilterCount = function ()
 	{
-		return breadcrumbListList.get(attributeNumber)
+		return attributeFilterList.count();
+	};
+
+	//Gets the page element of the attribute breadcrumb with index crumbNumber from the 
+	//list of breadcrumbs associated with the attribute at the index attributeNumber
+	this.getAttributeBreadcrumb = function (attributeNumber, crumbNumber)
+	{
+		return attributeBreadcrumbListList.get(attributeNumber)
 		.all(by.repeater('(filterKey, selected) in filterStates.aggFilters[aggFilter.field]'))
 		.get(crumbNumber);
 	};
 
-	//Note that the crumbNumber might (and likely will) not equal the type number used in getAttributeFilterType
-	//Gets the text from the breadcrumb specified
-	this.getBreadcrumbText = function (attributeNumber, crumbNumber)
+	//Note that the crumbNumber might (and likely will) not equal the type number used 
+	//in getAttributeFilterType. Gets the text from the attribute breadcrumb specified
+	this.getAttributeBreadcrumbText = function (attributeNumber, crumbNumber)
 	{
-		return this.getBreadcrumb(attributeNumber, crumbNumber).getText();
+		return this.getAttributeBreadcrumb(attributeNumber, crumbNumber).getText();
+	};
+
+	//Note that date breadcrumbs work differently than attribute ones
+	//to breadcrumb will always be at index 1 even if no from breadcrumb exists
+	//Gets the page element of the date breadcrumb with index crumbnumber
+	this.getDateBreadcrumb = function (crumbNumber)
+	{
+		return dateBreadcrumbList.get(crumbNumber);
+	};
+
+	//Gets the text from the date breadcrumb specified
+	this.getDateBreadcrumbText = function (crumbNumber)
+	{
+		return this.getDateBreadcrumb(crumbNumber).getText();
 	};
 
 	//Returns the number of results displaying on the page
@@ -211,6 +238,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Does the same as the above method but finds the latest date instead.
 	this.getLatestCreatedDate = function ()
 	{
 		var self = this;
@@ -245,6 +273,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Gets the state of the to calendar
 	this.getToCalendarState = function ()
 	{
 		var state = undefined, self = this;
@@ -265,6 +294,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Gets the currently selected option in the from calendar
 	this.getSelectedOptionInFromCalendar = function ()
 	{
 		return fromDateCalendar.element(by.tagName('table')).getAttribute('aria-activedescendant')
@@ -274,6 +304,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar
 	this.getSelectedOptionInToCalendar = function ()
 	{
 		return toDateCalendar.element(by.tagName('table')).getAttribute('aria-activedescendant')
@@ -283,6 +314,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Gets the text value of the currently selected option in the from calendar
 	this.getSelectedOptionTextInFromCalendar = function ()
 	{
 		return this.getSelectedOptionInFromCalendar()
@@ -292,6 +324,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar
 	this.getSelectedOptionTextInToCalendar = function ()
 	{
 		return this.getSelectedOptionInToCalendar()
@@ -301,26 +334,32 @@ var SearchPage = function ()
 		});
 	};
 
+	//Gets the option text of the option at index 'number' in the from calendar
 	this.getOptionTextInFromCalendar = function (number)
 	{
 		return fromDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).getText();
 	};
 
+	//Same as above but for to calendar
 	this.getOptionTextInToCalendar = function (number)
 	{
 		return toDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).getText();
 	};
 
+	//Gets the title of the calendar in the from calendar
 	this.getFromCalendarTitle = function ()
 	{
 		return fromCalendarTitle.getText();
 	};
 
+	//Same as above but for to calendar
 	this.getToCalendarTitle = function ()
 	{
 		return toCalendarTitle.getText();
 	};
 
+	//Returns a Javascript date object representing the currently selected date
+	//in the from calendar
 	this.getSelectedDateInFromCalendar = function ()
 	{
 		var self = this, month = undefined, year = undefined;
@@ -356,6 +395,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar	
 	this.getSelectedDateInToCalendar = function ()
 	{
 		var self = this, month = undefined, year = undefined;
@@ -388,6 +428,28 @@ var SearchPage = function ()
 					});
 				});
 			}	
+		});
+	};
+
+	//Gets the date being displayed under the from label (should be
+	//the date being filtered from).
+	this.getFilteredFromDate = function ()
+	{
+		return element(by.model('beginDate')).getAttribute('value')
+		.then(function (value)
+		{
+			return value;
+		});
+	};
+
+	//Gets the date being displayed under the to label (should be
+	//the date being filtered to).
+	this.getFilteredToDate = function ()
+	{
+		return element(by.model('endDate')).getAttribute('value')
+		.then(function (value)
+		{
+			return value;
 		});
 	};
 
@@ -525,6 +587,8 @@ var SearchPage = function ()
 		return inDialogSaveButton.isEnabled();
 	};
 
+
+	//Returns true if the from calendar is open
 	this.isFromCalendarOpen = function ()
 	{
 		return fromDateCalendar.getAttribute('style')
@@ -534,6 +598,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar	
 	this.isToCalendarOpen = function ()
 	{
 		return toDateCalendar.getAttribute('style')
@@ -784,11 +849,13 @@ var SearchPage = function ()
 		});
 	};
 
+	//Either opens or collapses the from calendar
 	this.toggleFromCalendar = function ()
 	{
 		return fromDateButton.click();
 	};
 
+	//Same as above but for to calendar	
 	this.toggleToCalendar = function ()
 	{
 		return toDateButton.click();
@@ -813,6 +880,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar
 	this.goUpInToCalendar = function ()
 	{
 		return this.isToCalendarOpen()
@@ -829,6 +897,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Uses the previous arrow in the from calendar
 	this.goToPreviousInFromCalendar = function ()
 	{
 		return this.isFromCalendarOpen()
@@ -845,6 +914,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar	
 	this.goToPreviousInToCalendar = function ()
 	{
 		return this.isToCalendarOpen()
@@ -861,6 +931,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Uses the next arrow in the from calendar
 	this.goToNextInFromCalendar = function ()
 	{
 		return this.isFromCalendarOpen()
@@ -877,6 +948,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar
 	this.goToNextInToCalendar = function ()
 	{
 		return this.isToCalendarOpen()
@@ -893,6 +965,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Selects the option at index 'number' in the from calendar	
 	this.selectOptionInFromCalendar = function (number)
 	{
 		return this.isFromCalendarOpen()
@@ -909,6 +982,7 @@ var SearchPage = function ()
 		});
 	};
 
+	//Same as above but for to calendar
 	this.selectOptionInToCalendar = function (number)
 	{
 		return this.isToCalendarOpen()
@@ -925,6 +999,8 @@ var SearchPage = function ()
 		});
 	};
 
+	//Selects the option by its text value in the from calendar
+	//If in day state, will select the text day from the current month.
 	this.selectOptionByTextInFromCalendar = function (text)
 	{
 		return this.isFromCalendarOpen()
@@ -932,7 +1008,17 @@ var SearchPage = function ()
 		{
 			if(open)
 			{
-				return fromDateCalendar.all(by.buttonText(text)).first().click();
+				return fromDateCalendar.all(by.buttonText(text))
+				.filter(function (elem, index)
+				{
+					return elem.element(by.tagName('span')).getAttribute('class')
+					.then(function (classText)
+					{
+						//In case of days, elements from later or previous months
+						//will have 'ng-binding text-muted'
+						return classText === 'ng-binding';
+					});
+				}).first().click();
 			}
 			else
 			{
@@ -941,6 +1027,7 @@ var SearchPage = function ()
 		});
 	}
 
+	//Same as above but for to calendar
 	this.selectOptionByTextInToCalendar = function (text)
 	{
 		return this.isToCalendarOpen()
@@ -948,7 +1035,15 @@ var SearchPage = function ()
 		{
 			if(open)
 			{
-				return toDateCalendar.all(by.buttonText(text)).first().click();
+				return toDateCalendar.all(by.buttonText(text))
+				.filter(function (elem, index)
+				{
+					return elem.element(by.tagName('span')).getAttribute('class')
+					.then(function (classText)
+					{
+						return classText === 'ng-binding';
+					});
+				}).first().click();
 			}
 			else
 			{
@@ -966,9 +1061,17 @@ var SearchPage = function ()
 	};
 
 	//Will remove the specified filter by clicking the 'x' icon on the breadcrumb
-	this.removeBreadcrumb = function (attributeNumber, crumbNumber)
+	this.removeAttributeBreadcrumb = function (attributeNumber, crumbNumber)
 	{
-		return this.getBreadcrumb(attributeNumber, crumbNumber)
+		return this.getAttributeBreadcrumb(attributeNumber, crumbNumber)
+		.element(by.css('.fa.fa-times-circle'))
+		.click();
+	};
+
+	//Will remove the specified date filter by clicking the 'x' icon on the breadcrumb
+	this.removeDateBreadcrumb = function (crumbNumber)
+	{
+		return this.getDateBreadcrumb(crumbNumber)		
 		.element(by.css('.fa.fa-times-circle'))
 		.click();
 	};

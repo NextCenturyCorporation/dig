@@ -57,6 +57,7 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	//Returns the query frequency for this query as a string
 	this.getQueryFrequency = function (number)
 	{
 		var self = this;
@@ -90,6 +91,7 @@ var SavedQueriesPage = function ()
 		});
 	};
 
+	//Returns whether or not the frequency is dirty and will change in CSS on page refresh
 	this.isQueryFrequencyDirty = function (number)
 	{
 		return savedQueryList.get(number).element(by.model('query.frequency'))
@@ -137,6 +139,7 @@ var SavedQueriesPage = function ()
 	 	.all(by.tagName('button')).first().click();
 	};
 
+	//Sets the query freqency to 'frequencyIndex' of the query at index 'queryNumber'
 	this.setQueryFrequency = function (queryNumber, frequencyIndex)
 	{
 		var self = this;

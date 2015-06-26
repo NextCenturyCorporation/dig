@@ -221,7 +221,6 @@ describe('Search View', function()
         });
     });
 
-    //Todo: find out how to get displayed value of a dropdown
     it('should allow users to set a frequency of execution for a search', function ()
     {
         savedQueriesPage.get();
@@ -420,8 +419,6 @@ describe('Search View', function()
             expect(page.isInGridView()).toBeFalsy(); 
         });
     }); 
-
-    //Todo check functionality of date selector
 
     it('should have a from date selector that can be opened and closed', function ()
     {
@@ -773,6 +770,9 @@ describe('Search View', function()
         });
     });
     
+    //Todo: Remove commented out expects from this and following test when data set has
+    //improved.
+
     //This test assumes the 3rd sort option is sorting by date created, oldest to newest
     it('should be able to filter out all results before a date', function ()
     {  
@@ -798,8 +798,8 @@ describe('Search View', function()
         })
         .then(function (date)
         {
+            earliestDate = date;
             //Filter from the earliest date, should not affect results
-            earliestDate = new Date(date);
             return page.filterFromDate(earliestDate);
         }).then(function ()
         {
@@ -811,11 +811,15 @@ describe('Search View', function()
         }).then(function (list)
         {
             //expect(list).toEqual(resultList);
-        }).then(function ()
+            return page.getFilteredFromDate();
+        }).then(function (dateString)
         {
             //Add one to the earliest day, this should decrease results by
             //at least one
-            var date = earliestDate;
+            var fromDate = new Date(dateString);
+            expect(fromDate.toDateString()).toEqual(earliestDate.toDateString());
+
+            var date = new Date(earliestDate.getTime());
             date.setDate(date.getDate() + 1);
             return page.filterFromDate(date);
         }).then(function ()
@@ -826,11 +830,18 @@ describe('Search View', function()
             expect(new Date(date)).toBeGreaterThan(earliestDate);
             expect(page.getResultCount()).toBeLessThan(resultCount);
             expect(page.getResultListOnPage()).not.toEqual(resultList);
+            return page.getFilteredFromDate();
+        }).then(function (dateString)
+        {
+            var fromDate = new Date(dateString);
+            var addedDate  = earliestDate;
+            addedDate.setDate(addedDate.getDate() + 1)
+            expect(fromDate.toDateString()).toEqual(addedDate.toDateString());
         });
     });
 
     //This test assumes the 2nd sort option is sorting by date created, newest to oldest
-    it('should be able to filter out all results before a date', function ()
+    it('should be able to filter out all results after a date', function ()
     {  
         var latestDate = undefined, resultCount = undefined, resultList = undefined;
         page.search()
@@ -855,8 +866,9 @@ describe('Search View', function()
         })
         .then(function (date)
         {
+
+            latestDate = date;
             //Filter up to the latest date, should not affect results
-            latestDate = new Date(date);
             return page.filterToDate(latestDate);
         }).then(function ()
         {
@@ -868,11 +880,14 @@ describe('Search View', function()
         }).then(function (list)
         {
             //expect(list).toEqual(resultList);
-        }).then(function ()
+            return page.getFilteredToDate();
+        }).then(function (dateString)
         {   
+            var toDate = new Date(dateString);
+            expect(toDate.toDateString()).toEqual(latestDate.toDateString());
             //Subtract one from the latest day, this should decrease results by
             //at least one
-            var date = latestDate;
+            var date = new Date(latestDate.getTime());
             date.setDate(date.getDate() - 1);
             return page.filterToDate(date);
         }).then(function ()
@@ -883,6 +898,13 @@ describe('Search View', function()
             expect(new Date(date)).toBeLessThan(latestDate);
             expect(page.getResultCount()).toBeLessThan(resultCount);
             expect(page.getResultListOnPage()).not.toEqual(resultList);
+            return page.getFilteredToDate();
+        }).then(function (dateString)
+        {
+            var toDate = new Date(dateString);
+            var subtractedDate = toDate;
+            subtractedDate.setDate(subtractedDate.getDate() - 1);
+            expect(toDate.toDateString()).toEqual(subtractedDate.toDateString());
         });
     });
     
@@ -955,130 +977,159 @@ describe('Search View', function()
     //Todo: add removal of from/to date breadcrumbs when the from/to date filter tests have been added
     it('should display search filters and allow their removal with breadcrumbs', function ()
     {
-       var counts = [undefined, undefined, undefined, undefined];
+       //var counts = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+        var counts = [];
+        var attributeFilterCount = undefined
         page.search().then(page.getResultCount)
         .then(function (count)
         {
             //counts[0] is the total number of results
             counts[0] = count;
+        }).then(function ()
+        {
+            return page.getAttributeFilterCount();
+        }).then(function (count)
+        {
+            attributeFilterCount = count;
+        }).then(function ()
+        {  
+            //Testing data set has an empty last attribute filter
+            //so it must be skipped
+            for(var i = 0; i < attributeFilterCount - 1; i++)
+            {
+                page.toggleFilterByAttribute(i, 0)
+                .then(page.getResultCount)
+                .then(function (count)
+                {
+                    var j = counts.length - 1;
+                    counts.push(count);
+                    var filterAttribute = undefined, filterType = undefined, 
+                    filter = undefined, breadCrumbText = undefined;
+
+                    //The filter text should match the breadcrumb text
+                    page.getAttributeFilter(j).then(function (name)
+                    {
+                        filterAttribute = name.toLowerCase();
+                    });
+                    page.getAttributeFilterType(j,0).then(function (name)
+                    {
+                        filterType = name.toLowerCase();
+                    }).then(function ()
+                    {
+                        filter = filterAttribute + ": " + filterType;
+                    }).then(function ()
+                    {
+                        browser.sleep(500);
+                        page.getAttributeBreadcrumbText(j,0).then(function (text)
+                        {
+                            breadCrumbText = text.toLowerCase();
+                        });
+                    }).then(function ()
+                    {
+                        expect(breadCrumbText).toEqual(filter);
+                    });
+                });
+            }
+        })
+        //Check to see that removing filters using breadcrumbs works as expected
+        .then(function ()
+        {
+            expect(page.getResultCount()).toEqual(counts.pop());
+            for(var i = attributeFilterCount - 2; i >= 0; i--)
+            {
+                page.removeAttributeBreadcrumb(i, 0)
+                .then(page.getResultCount)
+                .then(function (count)
+                {
+                    expect(count).toEqual(counts.pop());
+                });
+            }
+        //Check to make sure filtering by two types of the same attribute works
+        }).then(function ()
+        {
+            page.toggleFilterByAttribute(0,0)
+            .then(page.getResultCount)
+            .then(function (count)
+            {
+                counts.push(count);
+                return page.toggleFilterByAttribute(0,1);
+            }).then(page.getResultCount)
+            .then(function (count)
+            {
+                expect(count).toBeGreaterThan(counts[0]);
+                return page.removeAttributeBreadcrumb(0,1);
+            }).then(page.getResultCount)
+            .then(function (count)
+            {
+                expect(count).toEqual(counts.pop());
+                return page.removeAttributeBreadcrumb(0,0);
+            });
+        //Check to make sure filtering by dates works
+        }).then(page.getResultCount)
+        .then(function (count)
+        {
+            counts.push(count);
         })
         .then(function ()
         {
-            return page.toggleFilterByAttribute(0, 0);
-        }).then(page.getResultCount).then(function (count)
+            return page.getEarliestCreatedDate();
+        }).then(function (earliestDate)
         {
-            //counts[1] is the number of results after filtering by the first type of the first attribute
-            counts[1] = count;
+            earliestDate.setDate(earliestDate.getDate() + 1);
+            return page.filterFromDate(earliestDate);
+        }).then(page.getResultCount)
+        .then(function (count)
+        {
+            var fromDate = undefined;
+            expect(count).toBeLessThan(counts[0]);
             
-            var filterAttribute = undefined, filterType = undefined, 
-            filter = undefined, breadCrumbText = undefined;
-
-            //The filter text should match the breadcrumb text
-            page.getAttributeFilter(0).then(function (name)
+            return page.getFilteredFromDate()
+            .then(function (dateString)
             {
-                filterAttribute = name.toLowerCase();
-            });
-            page.getAttributeFilterType(0,0).then(function (name)
-            {
-                filterType = name.toLowerCase();
+                fromDate = dateString;
             }).then(function ()
             {
-                filter = filterAttribute + ": " + filterType;
+                return page.getDateBreadcrumbText(0);
+            }).then(function (text)
+            {
+                expect(text).toEqual('beginDate: ' + fromDate);
             }).then(function ()
             {
-                page.getBreadcrumbText(0,0).then(function (text)
-                {
-                    breadCrumbText = text.toLowerCase();
-                });
-            }).then(function ()
-            {
-                expect(breadCrumbText).toEqual(filter);
-            });
-        }).then(function ()
+                return page.removeDateBreadcrumb(0);
+            })
+        }).then(page.getResultCount)
+        .then(function (count)
         {
-            return page.toggleFilterByAttribute(0, 1);
-        }).then(page.getResultCount).then(function (count)
+            expect(count).toEqual(counts[0]);
+            return page.getLatestCreatedDate();
+        }).then(function (latestDate)
         {
-            //counts[2] is the number of results after filtering by the first or second type of the first attribute
-            counts[2] = count;
+            latestDate.setDate(latestDate.getDate() - 1);
+            return page.filterToDate(latestDate);
+        }).then(page.getResultCount)
+        .then(function (count)
+        {
+            //Date breadcrumbs work differently in that the to breadcrumb will
+            //always be at index 1 even if there is no from breadcrumb.
+            var toDate = undefined;
+            expect(count).toBeLessThan(counts[0]);
             
-            var filterAttribute = undefined, filterType = undefined, 
-            filter = undefined, breadCrumbText = undefined;
-            
-            //The second breadcrumb text should match the new filter
-            var filterAttribute = undefined, filterType = undefined, 
-            filter = undefined, breadCrumbText = undefined;
-            
-            page.getAttributeFilter(0).then(function (name)
+            return page.getFilteredToDate()
+            .then(function (dateString)
             {
-                filterAttribute = name.toLowerCase();
-            });
-            page.getAttributeFilterType(0,1).then(function (name)
-            {
-                filterType = name.toLowerCase();
+                toDate = dateString;
             }).then(function ()
             {
-                filter = filterAttribute + ": " + filterType;
+                return page.getDateBreadcrumbText(1);
+            }).then(function (text)
+            {
+                expect(text).toEqual('endDate: ' + toDate);
             }).then(function ()
             {
-                page.getBreadcrumbText(0,1).then(function (text)
-                {
-                    breadCrumbText = text.toLowerCase();
-                });
-            }).then(function ()
-            {
-                expect(breadCrumbText).toEqual(filter);
-            });
-        }).then(function ()
-        {
-            return page.toggleFilterByAttribute(1, 0);
-        }).then(page.getResultCount).then(function (count)
-        {
-            //counts[3] is the number of results after filtering by the first or second type of the first attribute
-            //and the first type of the second attribute
-            counts[3] = count;
-            
-            var filterAttribute = undefined, filterType = undefined, 
-            filter = undefined, breadCrumbText = undefined;
-            
-            //The third breadcrumb text should match the new filter, this one is from a different attribute group
-            page.getAttributeFilter(1).then(function (name)
-            {
-                filterAttribute = name.toLowerCase();
-            });
-            page.getAttributeFilterType(1,0).then(function (name)
-            {
-                filterType = name.toLowerCase();
-            }).then(function ()
-            {
-                filter = filterAttribute + ": " + filterType;
-            }).then(function ()
-            {
-                page.getBreadcrumbText(1,0).then(function (text)
-                {
-                    breadCrumbText = text.toLowerCase();
-                });
-            }).then(function ()
-            {
-                expect(breadCrumbText).toEqual(filter);
-            });
-        //Check to see that removing filters using breadcrumbs works as expected
-        }).then(function ()
-        {
-            return page.removeBreadcrumb(1, 0);
-        }).then(page.getResultCount).then(function (count)
-        {
-            expect(count).toEqual(counts[2]);
-        }).then(function ()
-        {
-            return page.removeBreadcrumb(0, 1);
-        }).then(page.getResultCount).then(function (count)
-        {
-            expect(count).toEqual(counts[1]);
-        }).then(function ()
-        {
-            return page.removeBreadcrumb(0, 0);
-        }).then(page.getResultCount).then(function (count)
+                return page.removeDateBreadcrumb(1);
+            })
+        }).then(page.getResultCount)
+        .then(function (count)
         {
             expect(count).toEqual(counts[0]);
         });

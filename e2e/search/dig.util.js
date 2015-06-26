@@ -1,11 +1,13 @@
 'use strict';
 
+//Given the year at index 'number' from the range, find the year value
 function getYearFromRange(range, number)
 {
     var firstYear = parseInt(range.split('-')[0]);
     return firstYear + number;
 }
 
+//Takes the month name and returns its numerical representation
 function getMonthNumber (month)
 {
     switch(month)
@@ -25,6 +27,7 @@ function getMonthNumber (month)
     }
 }
 
+//Takes the number representing the month and returns its name
 function getMonthName(number)
 {
     switch(number)
@@ -44,6 +47,8 @@ function getMonthName(number)
     }
 }
 
+//Given 20 year ranges, how far away the target date is
+//from the current range.
 function getRangeDifference(date, yearStart, yearEnd)
 {
     var targetYear = date.getFullYear();
