@@ -66,7 +66,7 @@ function getRangeDifference(date, yearStart, yearEnd)
 This is used to cut down on time costs for tests. The higher the value, the shorter the tests run.
 Many tests checking the results of a search will loop through a number of the results.
 The number of results looked at will be the number of results per page (likely 25) divided
-by this number. 
+by this number. The minimum value is 1, meaning there will be no decrease in test time.
 */
 var reductionDivisor = 5;
 

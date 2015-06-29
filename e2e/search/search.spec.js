@@ -1,6 +1,6 @@
 'use strict';
 
-//Todo: Related image search,filter by date, notifications,frequency of execution.
+//Todo: Related image search and notifications.
 describe('Search View', function() 
 {
 
@@ -916,65 +916,139 @@ describe('Search View', function()
     //this might be able to be accomplished in a generic way and might be worth doing in the future.
     it('should allow filtering based on result attributes', function ()
     {
-        var counts = [undefined, undefined, undefined, undefined];
-        page.search().then(page.getResultCount)
+        var counts = [], attributeFilterCount = undefined, typeCounts = [];
+        page.search()
+        .then(page.getResultCount)
         .then(function (count)
         {
-            //counts[0] is the total number of results
-            counts[0] = count;
-        })
+            counts.push(count);
+            return page.getAttributeFilterCount()
+        }).then(function (count)
+        {
+            attributeFilterCount = count;
+            for(var i = 0; i < attributeFilterCount; i++)
+            {
+                page.getTypeCountOfAttributeFilter(i)
+                .then(function (typeCount)
+                {
+                    typeCounts.push(typeCount);
+                });
+            }
+        }).then(function ()
+        {
+            //Must skip the last filter type as all data in the current data set has 
+            //null for it.
+            for(var i = 0; i < attributeFilterCount - 1; i++)
+            {
+                for(var j = 0; j < Math.floor(((typeCounts[i])/util.reductionDivisor) + 1); j++)
+                {
+                    var func = (function ()
+                    {
+                        var k = j;
+                        page.toggleFilterByAttribute(i, j)
+                        .then(page.getResultCount)
+                        .then(function (resultCount)
+                        {
+                            if(k === 0)
+                            {
+                                expect(resultCount).not.toBeGreaterThan(counts[counts.length - 1]);
+                            }
+                            else
+                            {
+                                expect(resultCount).toBeGreaterThan(counts[counts.length - 1]);
+                            }
+                            counts.push(resultCount);
+                            browser.sleep(250);
+                        });  
+                    });
+                    func();   
+                }
+            }
+        }).then(function ()
+        {
+            counts.pop();
+            for(var i = attributeFilterCount - 2; i > -1; i--)
+            {
+                for(var j = Math.floor(((typeCounts[i])/util.reductionDivisor)); j > -1 ; j--)
+                {
+                    page.toggleFilterByAttribute(i, j)
+                    .then(page.getResultCount)
+                    .then(function (resultCount)
+                    {
+                        expect(resultCount).toEqual(counts.pop());
+                        browser.sleep(250);
+                    });    
+                }
+            }
+
+        });  
+    });
+    
+    it('should list filter types ordered by the number of matching results', function ()
+    {
+        var attributeFilterCount = undefined, typeCounts = [];
+        page.search()
         .then(function ()
         {
-            return page.toggleFilterByAttribute(0, 0);
-        }).then(page.getResultCount).then(function (count)
+            return page.getAttributeFilterCount()
+        }).then(function (count)
         {
-            //counts[1] is the number of results after filtering by the first type of the first attribute
-            counts[1] = count;
-            //There should be less since a filter was applied
-            expect(count).toBeLessThan(counts[0]);
+            attributeFilterCount = count;
+            for(var i = 0; i < attributeFilterCount; i++)
+            {
+                page.getTypeCountOfAttributeFilter(i)
+                .then(function (typeCount)
+                {
+                    typeCounts.push(typeCount);
+                });
+            }
         }).then(function ()
         {
-            return page.toggleFilterByAttribute(0, 1);
-        }).then(page.getResultCount).then(function (count)
+            //Must skip the last filter type as all data in the current data set has 
+            //null for it.
+            var currMatching = Number.MAX_VALUE;
+            for(var i = 0; i < attributeFilterCount - 1; i++)
+            {
+                for(var j = 0; j < Math.floor(((typeCounts[i])/util.reductionDivisor) + 1); j++)
+                {
+                    var func = (function ()
+                    {
+                        var k = j;
+                        page.getResultCountMatchingFilter(i, j)
+                        .then(function (count)
+                        {
+                            if(k !== 0)
+                            {
+                                expect(count).not.toBeGreaterThan(currMatching);
+                            }
+                            currMatching = count;
+                        });  
+                    });
+                    func();      
+                }
+            }
+        });
+    });
+
+    it('should allow users to hide and show excess types under attribute filters', function ()
+    {
+       var attributeFilterCount = undefined, typeCounts = [];
+        page.search()
+        .then(function ()
         {
-            //counts[2] is the number of results after filtering by the first or second type of the first attribute
-            counts[2] = count;
-            //Since results can be either type 1 or type 2, should be greater than counts[1]
-            expect(count).toBeGreaterThan(counts[1]);
-            //Since results are being filtered, should be less than counts[0]
-            expect(count).toBeLessThan(counts[0])
-        }).then(function ()
+            return page.getAttributeFilterCount()
+        }).then(function (count)
         {
-            return page.toggleFilterByAttribute(1, 0);
-        }).then(page.getResultCount).then(function (count)
-        {
-            //counts[3] is the number of results after filtering by the first or second type of the first attribute
-            //and the first type of the second attribute
-            counts[3] = count;
-            //Should be less than counts[2] since an additional filter was applied
-            expect(count).toBeLessThan(counts[2]);
-        }).then(function ()
-        {
-            return page.toggleFilterByAttribute(1, 0);
-        }).then(page.getResultCount).then(function (count)
-        {
-            expect(count).toEqual(counts[2]);
-        }).then(function ()
-        {
-            return page.toggleFilterByAttribute(0, 1);
-        }).then(page.getResultCount).then(function (count)
-        {
-            expect(count).toEqual(counts[1]);
-        }).then(function ()
-        {
-            return page.toggleFilterByAttribute(0, 0);
-        }).then(page.getResultCount).then(function (count)
-        {
-            expect(count).toEqual(counts[0]);
+            var currTypeCount = undefined;
+            attributeFilterCount = count;
+            for(var i = 0; i < attributeFilterCount; i++)
+            {
+                expandUntilFullyExpanded(i, 0);
+                collapseUntilFullyCollapsed(i, 0);
+            }
         });
     });
     
-    //Todo: add removal of from/to date breadcrumbs when the from/to date filter tests have been added
     it('should display search filters and allow their removal with breadcrumbs', function ()
     {
        //var counts = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
@@ -1331,5 +1405,98 @@ describe('Search View', function()
     {
         expect(bool).toBeFalsy();
     }
+
+    //Will continuously show more types under the specified attribute until the show more button
+    //is disabled (all types are shown) or until it reaches 10/reductionDivisor + 2. This was added
+    //since the test data set has an extremely long list of types under some attributes.
+    function expandUntilFullyExpanded(attributeNumber, callCount)
+    {
+        if(callCount > Math.floor((10 / util.reductionDivisor) + 1))
+            return;
+        var typeCount = undefined, resultCount = undefined;
+        page.getResultCount()
+        .then(function (count)
+        {
+            resultCount = count;
+        }).then(function ()
+        {
+            return page.getTypeCountOfAttributeFilter(attributeNumber)
+        }).then(function (count)
+        {
+            typeCount = count;
+        }).then(function ()
+        {
+            return page.isShowMoreTypesButtonEnabled(attributeNumber);
+        }).then(function (enabled)
+        {
+            if(enabled)
+            {
+                return page.showMoreTypesUnderAttributeFilter(attributeNumber)
+                .then(function ()
+                {
+                    browser.sleep(250);
+                    page.getTypeCountOfAttributeFilter(attributeNumber)
+                    .then(function (count)
+                    {
+                        expect(count).toBeGreaterThan(typeCount);
+                        return page.toggleFilterByAttribute(attributeNumber, typeCount);
+                    }).then(page.getResultCount)
+                    .then(function (count)
+                    {
+                        browser.sleep(250);
+                        expect(count).toBeLessThan(resultCount);
+                        return page.toggleFilterByAttribute(attributeNumber, typeCount);
+                    }).then(function ()
+                    {
+                        expandUntilFullyExpanded(attributeNumber, callCount + 1);
+                    });
+                })
+            }
+            else
+            {
+                return;
+            }
+        });
+    };
+
+    //Does the opposite of the above function.
+    function collapseUntilFullyCollapsed(attributeNumber, callCount)
+    {
+        var typeCount = undefined, resultCount = undefined;
+        page.getResultCount()
+        .then(function (count)
+        {
+            resultCount = count;
+        }).then(function ()
+        {
+            return page.getTypeCountOfAttributeFilter(attributeNumber)
+        }).then(function (count)
+        {
+            typeCount = count;
+        }).then(function ()
+        {
+            return page.isShowFewerTypesButtonEnabled(attributeNumber);
+        }).then(function (enabled)
+        {
+            if(enabled)
+            {
+                return page.showFewerTypesUnderAttributeFilter(attributeNumber)
+                .then(function ()
+                {
+                    browser.sleep(250);
+                    page.getTypeCountOfAttributeFilter(attributeNumber)
+                    .then(function (count)
+                    {
+                        expect(count).toBeLessThan(typeCount);
+                        collapseUntilFullyCollapsed(attributeNumber, callCount + 1);  
+                    });
+                })
+            }
+            else
+            {
+                return;
+            }
+        });
+    };
 
 });

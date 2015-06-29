@@ -144,11 +144,29 @@ var SearchPage = function ()
 		.get(typeNumber).getText();
 	};
 
+	//Returns the number of types (visibly) available to filter by under the specified attribute filter
+	this.getTypeCountOfAttributeFilter = function (attributeNumber)
+	{
+		return attributeFilterList.get(attributeNumber).all(by.css('.ng-scope.ng-binding'))
+		.count();
+	};
+
+	//Returns the number of results that match the type specified
+	this.getResultCountMatchingFilter = function (attributeNumber, typeNumber)
+	{
+		return attributeFilterList.get(attributeNumber).all(by.repeater('bucket in displayBuckets'))
+		.get(typeNumber).element(by.css('.badge.pull-right.ng-binding')).getText()
+		.then(function (text)
+		{
+			return parseInt(text);
+		});
+	};
+
 	//Returns the number of available attribute filters
 	this.getAttributeFilterCount = function ()
 	{
 		return attributeFilterList.count();
-	};
+	};	
 
 	//Gets the page element of the attribute breadcrumb with index crumbNumber from the 
 	//list of breadcrumbs associated with the attribute at the index attributeNumber
@@ -450,6 +468,30 @@ var SearchPage = function ()
 		.then(function (value)
 		{
 			return value;
+		});
+	};
+
+	//Returns true if the '+' button under the specified attribute filter
+	//is clickable
+	this.isShowMoreTypesButtonEnabled = function (attributeNumber)
+	{
+		return attributeFilterList.get(attributeNumber)
+		.all(by.tagName('a')).first().getAttribute('class')
+		.then(function (classText)
+		{
+			return classText !== 'disabled';
+		});
+	};
+
+	//Retiurns true if the '-' button under the specified attribute filter
+	//is clickable
+	this.isShowFewerTypesButtonEnabled = function (attributeNumber)
+	{
+		return attributeFilterList.get(attributeNumber)
+		.all(by.tagName('a')).last().getAttribute('class')
+		.then(function (classText)
+		{
+			return classText !== 'disabled';
 		});
 	};
 
@@ -1082,6 +1124,43 @@ var SearchPage = function ()
 		return attributeFilterList.get(number).click();
 	};
 
+	//Will press the '+' button under the specified attribute filter to display
+	//more types to filter by.
+	this.showMoreTypesUnderAttributeFilter = function (number)
+	{
+		return attributeFilterList.get(number).element(by.css('.pull-right.more-less-buttons'))
+		.all(by.tagName('i')).first().isEnabled().then(function (enabled)
+		{
+			if(enabled)
+			{
+				return attributeFilterList.get(number).element(by.css('.pull-right.more-less-buttons'))
+				.all(by.tagName('i')).first().click();
+			}
+			else
+			{
+				return console.error('Cannot show any more types under attribute number ' + number);
+			}
+		});
+	};
+
+	//Will press the '-' button under the specified attribute filter to display
+	//less types to filter by.
+	this.showFewerTypesUnderAttributeFilter = function (number)
+	{
+		return attributeFilterList.get(number).element(by.css('.pull-right.more-less-buttons'))
+		.all(by.tagName('i')).last().isEnabled().then(function (enabled)
+		{
+			if(enabled)
+			{
+				return attributeFilterList.get(number).element(by.css('.pull-right.more-less-buttons'))
+				.all(by.tagName('i')).last().click();
+			}
+			else
+			{
+				return console.error('Cannot show any fewer types under attribute number ' + number);
+			}
+		});
+	};
 	
 	//Number - 1 is used because it is presumed the user will want consistency using this
 	//and getCurrentPageNumber.
