@@ -43,12 +43,20 @@ var esClient = new elasticsearch.Client({
     host: {
         host: process.env.EUI_SERVER || 'localhost',
         port: process.env.EUI_SERVER_PORT || 9200,
+        protocol: process.env.EUI_SERVER_PROTO || 'http',
         auth: esauth
     },
     log: LogToBunyan
 });
 
-
+esClient.ping({
+    requestTimeout: 30000,
+    hello: "elasticsearch!"    
+}).then(function() {
+    applog.info('elasticsearch connection established');
+}, function(error) {
+    applog.error(error.message);
+});
 
 // route sequelize output to log
 models.sequelize.options.logging=function(loginfo) {
