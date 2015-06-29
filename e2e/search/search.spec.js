@@ -650,11 +650,61 @@ describe('Search View', function()
         });
     });
     
-    //Todo: Figure out how to tell which date is highlighted
-    // iit('should highlight the current date in the from calendar', function ()
-    // {
+    it('should highlight the current date in the from calendar', function ()
+    {
+        var today = new Date();
+        page.search()
+        .then(page.toggleFromCalendar)
+        .then(function ()
+        {
+            return page.getHighlightedTextInFromCalendar();
+        }).then(function (text)
+        {
+            expect(parseInt(text)).toEqual(today.getDate());
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getHighlightedTextInFromCalendar();
+        }).then(function (text)
+        {
+            expect(text).toEqual(util.getMonthName(today.getMonth()));
+            return page.goUpInFromCalendar();
+        }).then(function ()
+        {
+            return page.getHighlightedTextInFromCalendar();
+        }).then(function (text)
+        {
+            expect(parseInt(text)).toEqual(today.getFullYear());
+        });
+    });
 
-    // });
+    it('should highlight the current date in the to calendar', function ()
+    {
+        var today = new Date();
+        page.search()
+        .then(page.toggleToCalendar)
+        .then(function ()
+        {
+            return page.getHighlightedTextInToCalendar();
+        }).then(function (text)
+        {
+            expect(parseInt(text)).toEqual(today.getDate());
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getHighlightedTextInToCalendar();
+        }).then(function (text)
+        {
+            expect(text).toEqual(util.getMonthName(today.getMonth()));
+            return page.goUpInToCalendar();
+        }).then(function ()
+        {
+            return page.getHighlightedTextInToCalendar();
+        }).then(function (text)
+        {
+            expect(parseInt(text)).toEqual(today.getFullYear());
+        });
+    });
     
     it('should have the current day selected in the from calendar by default', function ()
     {

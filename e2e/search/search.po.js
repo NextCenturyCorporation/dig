@@ -364,6 +364,18 @@ var SearchPage = function ()
 		return toDateCalendar.all(by.repeater('dt in row track by dt.date')).get(number).getText();
 	};
 
+	//Returns the text of the highlighted option in the currently displayed view of the from calendar
+	this.getHighlightedTextInFromCalendar = function ()
+	{
+		return fromDateCalendar.element(by.css('.ng-binding.text-info')).getText();
+	};
+
+	//Same as above with the to calendar
+	this.getHighlightedTextInToCalendar = function ()
+	{
+		return toDateCalendar.element(by.css('.ng-binding.text-info')).getText();
+	};
+
 	//Gets the title of the calendar in the from calendar
 	this.getFromCalendarTitle = function ()
 	{
