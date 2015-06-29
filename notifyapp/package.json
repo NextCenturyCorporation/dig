@@ -1,6 +1,6 @@
 {
   "name": "notifyapp",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "notifyapp: offline query runner and notifier",
   "main": "app.js",
   "readme": "README.md",
