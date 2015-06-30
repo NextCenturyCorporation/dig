@@ -79,8 +79,6 @@ describe('Saved Queries View', function()
     		{
     			expect(queryPage.isQueryExpanded(i)).toBeTruthy();
     		}
-    	}).then(function ()
-    	{
     		return queryPage.toggleQuery(0);
     	}).then(function ()
     	{
@@ -126,9 +124,10 @@ describe('Saved Queries View', function()
         {   
             resultCount  = count;
         }).then(queryPage.get)
-
-        queryPage.runQuery(0)
         .then(function ()
+        {
+            return queryPage.runQuery(0)
+        }).then(function ()
         {
             return searchPage.getResultListOnPage();
         }).then(function (list)
@@ -158,8 +157,6 @@ describe('Saved Queries View', function()
         {
             expect(queryPage.getSavedQueryCount()).toEqual(1);
             expect(queryPage.getQueryName(0)).toEqual(queryTwo[1]);
-        }).then(function ()
-        {
             return queryPage.deleteSavedSearch(0);
         }).then(function ()
         {
@@ -179,8 +176,6 @@ describe('Saved Queries View', function()
         }).then(function ()
         {
             expect(queryPage.getSavedQueryCountLabel()).toEqual(1);
-        }).then(function ()
-        {
             return queryPage.deleteSavedSearch(0);
         }).then(function ()
         {
@@ -188,8 +183,6 @@ describe('Saved Queries View', function()
         });
     });
 
-
-    //Todo: this test
     it('should allow users to change the frequency of execution on a saved query', function ()
     {
         //should initially be never

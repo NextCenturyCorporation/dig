@@ -37,9 +37,6 @@ describe('Top Bar', function()
         .then(function ()
         {
             expect(navBar.isSettingsMenuOpen()).toBeTruthy();
-        })
-        .then(function ()
-        {
             //Click anywhere to close the menu
             return browser.actions().mouseMove({x: 50, y: 50}).doubleClick().perform();
         }).then(function ()
@@ -54,22 +51,16 @@ describe('Top Bar', function()
         navBar.openAboutDialog().then(function ()
         {
             expect(navBar.isAboutDialogOpen()).toBeTruthy();
-        }).then(function ()
-        {
             return navBar.closeAboutDialog();
         })
         .then(function ()
         {
             expect(navBar.isAboutDialogOpen()).toBeFalsy();
-        }).then(function ()
-        {
             return navBar.openAboutDialog();
         })
         .then(function ()
         {
-            expect(navBar.isAboutDialogOpen()).toBeTruthy();
-        }).then(function ()
-        {   
+            expect(navBar.isAboutDialogOpen()).toBeTruthy();  
             return browser.actions().mouseMove({x: 50, y: 50}).doubleClick().perform();
         }).then(function ()
         {
@@ -83,7 +74,7 @@ describe('Top Bar', function()
     //on the images starting blurred which is the default but can be changed. If this
     //test is failing, simply direct to dig and enable image blurring before running
     //the test.
-    iit('should allow the toggling of image blur', function ()
+    it('should allow the toggling of image blur', function ()
     {
         searchPage.search()
         .then(function ()

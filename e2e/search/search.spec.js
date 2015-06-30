@@ -27,18 +27,18 @@ describe('Search View', function()
     it('should handle user input in the search bar', function()
     {
         page.setQuery('test').then(function ()
+        {
+            page.getCurrentQuery(function (ret)
             {
-                page.getCurrentQuery(function (ret)
-                {
-                    expect(ret).toEqual('test');
-                });
-            }).then(page.clearQuery).then(function ()
-            {
-                page.getCurrentQuery(function (ret)
-                {
-                    expect(ret).toEqual('');
-                });
+                expect(ret).toEqual('test');
             });
+        }).then(page.clearQuery).then(function ()
+        {
+            page.getCurrentQuery(function (ret)
+            {
+                expect(ret).toEqual('');
+            });
+        });
     });
 
     //This test depends on data sets in English. All data sets in english should
@@ -46,31 +46,30 @@ describe('Search View', function()
     //("the" and "be").
     it('should list the number results found on a search', function()
     {
-         var resultCount = undefined;
-        page.search().then(page.getResultCount).then(function (count)
+        var resultCount = undefined;
+        page.search()
+        .then(page.getResultCount)
+        .then(function (count)
         {
             //Results should be greater than 0
             resultCount = count;
             expect(resultCount).toBeGreaterThan(0);
-        }).then(function ()
-        {
             return page.searchFor('the');
-        }).then(page.getResultCount).then(function (count)
+        }).then(page.getResultCount)
+        .then(function (count)
         {
             //Searching for 'the' should cut down on results
             expect(count).toBeLessThan(resultCount);
             resultCount = count;
-        }).then(function ()
-        {
             return page.searchFor('+the +be');
-        }).then(page.getResultCount).then(function (count)
+        }).then(page.getResultCount)
+        .then(function (count)
         {
             //The intersection of 'the' and 'be' should be less than simply 'the'
             expect(count).toBeLessThan(resultCount);
-        }).then(function ()
-        {
             return page.searchFor('the be');
-        }).then(page.getResultCount).then(function (count)
+        }).then(page.getResultCount)
+        .then(function (count)
         {
             //The union of 'the' and 'be' should be greater than just 'the'
             expect(count).toBeGreaterThan(resultCount);
@@ -140,7 +139,7 @@ describe('Search View', function()
             expect(savedQueriesPage.getSavedQueryCount()).toEqual(1);
             expect(savedQueriesPage.getQueryName(0)).toEqual('query1');
             expect(savedQueriesPage.getQueryTerms(0)).toEqual('test');
-        })
+        });
     });
 
     //Like some other tests, a sleep had to be added to prevent the tests from
@@ -153,8 +152,7 @@ describe('Search View', function()
         .then(function ()
         {
             return page.searchForAndSaveAs('test1', 'query1');
-        })
-        .then(function ()
+        }).then(function ()
         {
             browser.sleep(1000);
             return page.searchForAndSaveAs('test2', 'query1');
@@ -179,8 +177,7 @@ describe('Search View', function()
         .then(function ()
         {
             return page.searchForAndSaveAs('test1', 'query1');
-        })
-        .then(function ()
+        }).then(function ()
         {
             browser.sleep(1000);
             return page.searchForAndSaveAs('test2', 'query1');
@@ -205,8 +202,7 @@ describe('Search View', function()
         .then(function ()
         {
             return page.searchForAndSaveAs('test1', 'query1');
-        })
-        .then(function ()
+        }).then(function ()
         {
             browser.sleep(1000);
             return page.searchForAndSaveAsQueryNumber('test2', 0);
@@ -284,16 +280,11 @@ describe('Search View', function()
                 expect(page.isResultExpanded(i)).toBeTruthy();
             }
 
-            return count;
-        }).then(function ()
-        {
             return page.toggleResult(0);
         }).then(function ()
         {
             //Try toggling just one and checking to see it collapses
             expect(page.isResultExpanded(0)).toBeFalsy();
-        }).then(function ()
-        {
             return page.toggleResult(0);
         }).then(function ()
         {
@@ -329,10 +320,8 @@ describe('Search View', function()
         }).then(function (title)
         {
             firstResult = title;
-        }).then(function ()
-        {
             //Date created newest first
-            page.sortBy(1);
+            return page.sortBy(1);
         }).then(function ()
         {
             expect(page.getTitle(0)).not.toEqual(firstResult);
@@ -347,10 +336,8 @@ describe('Search View', function()
             {
                 expect(firstDate).not.toBeLessThan(secondDate);
             });
-        }).then(function ()
-        {
             //Date created oldest first
-            page.sortBy(2);
+            return page.sortBy(2);
         }).then(function ()
         {
             expect(page.getTitle(0)).not.toEqual(firstResult);
@@ -379,8 +366,6 @@ describe('Search View', function()
         }).then(function (resultList)
         {
             results = resultList;
-        }).then(function ()
-        {
             return page.sortBy(2);
         }).then(function ()
         {
@@ -388,8 +373,6 @@ describe('Search View', function()
         }).then(function (resultList)
         {
             expect(resultList).not.toEqual(results);
-        }).then(function ()
-        {
             return page.sortBy(0);
         }).then(function ()
         {
@@ -1101,7 +1084,6 @@ describe('Search View', function()
     
     it('should display search filters and allow their removal with breadcrumbs', function ()
     {
-       //var counts = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
         var counts = [];
         var attributeFilterCount = undefined
         page.search().then(page.getResultCount)
@@ -1317,12 +1299,7 @@ describe('Search View', function()
         .then(function (count)
         {
             totalPages = Math.trunc(count / 25) + 1
-        }).then(function ()
-        {
-            //The total pages should be the formula above as there are 25 results a page
             expect(page.getTotalPageCount()).toEqual(totalPages);
-        }).then(function ()
-        {
             return page.getTitle(0);
         }).then(function (title)
         {
@@ -1334,16 +1311,12 @@ describe('Search View', function()
         {
             //Should be on page 2 now
             expect(page.getCurrentPageNumber()).toEqual(2);
-        }).then(function ()
-        {
             return page.getTitle(0);
         }).then(function (title)
         {
             //The first result should not be the same since we are on a new page
             secondResult = title;
             expect(title).not.toEqual(firstResult);
-        }).then(function ()
-        {
             return page.goToPage(1);
         }).then(function ()
         {
@@ -1352,8 +1325,8 @@ describe('Search View', function()
         {
             //The first result should be what it was as we went back to page 1
             expect(title).toEqual(firstResult);
-        }).then(page.goToNextPage)
-        .then(function ()
+            return page.goToNextPage();
+        }).then(function ()
         {
             return page.getTitle(0);
         }).then(function (title)
@@ -1361,8 +1334,8 @@ describe('Search View', function()
             //Using the next page button, we should be on the second page
             expect(title).toEqual(secondResult);
             expect(page.getCurrentPageNumber()).toEqual(2);
-        }).then(page.goToPreviousPage)
-        .then(function ()
+            return page.goToPreviousPage();
+        }).then(function ()
         {
             return page.getTitle(0);
         }).then(function (title)
@@ -1383,26 +1356,18 @@ describe('Search View', function()
         .then(function ()
         {
             expect(page.getCurrentPageNumber()).toEqual(1);
-        }).then(function ()
-        {
             return page.getGridImageSrc(0);
         }).then(function (src)
         {
             firstResult = src;
-        }).then(function ()
-        {
             return page.goToPage(2);
         }).then(function ()
         {
             expect(page.getCurrentPageNumber()).toEqual(2);
-        }).then(function ()
-        {
             return page.getGridImageSrc(0);
         }).then(function (src)
         {
             expect(src).not.toEqual(firstResult);
-        }).then(function ()
-        {
             return page.goToPage(1);
         }).then(function ()
         {
