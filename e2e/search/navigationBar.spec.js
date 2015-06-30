@@ -83,10 +83,20 @@ describe('Top Bar', function()
     //on the images starting blurred which is the default but can be changed. If this
     //test is failing, simply direct to dig and enable image blurring before running
     //the test.
-    it('should allow the toggling of image blur', function ()
+    iit('should allow the toggling of image blur', function ()
     {
         searchPage.search()
-        .then(searchPage.getResultsOnPage)
+        .then(function ()
+        {
+            return searchPage.isThumbnailImageBlurred(0)
+            .then(function (blurred)
+            {
+                if(!blurred)
+                {
+                    return navBar.toggleImageBlur();
+                }
+            });
+        }).then(searchPage.getResultsOnPage)
         .then(function (count)
         {
             for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)

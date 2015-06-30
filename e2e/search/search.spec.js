@@ -4,7 +4,9 @@
 describe('Search View', function() 
 {
 
-    var page = require('./search.po'), savedQueriesPage = require('./savedQueries.po'), util = require('./dig.util');
+    var page = require('./search.po'), 
+    savedQueriesPage = require('./savedQueries.po'), 
+    util = require('./dig.util');
 
     beforeEach(function() 
     {
@@ -270,7 +272,6 @@ describe('Search View', function()
             for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 page.toggleResult(i);
-                //sleep was used instead of wait because of closure issues
                 browser.sleep(750);
             }
 
@@ -304,7 +305,6 @@ describe('Search View', function()
             for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 page.toggleResult(i);
-                //sleep was used instead of wait because of closure issues
                 browser.sleep(750);
             }
 

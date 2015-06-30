@@ -68,7 +68,7 @@ var SearchPage = function ()
 	var frequencyDropdown = saveDialog.element(by.model('query.frequency'));
 
 	/*
-	Getters and state checks
+	Getters 
 	*/
 
 	//Fetches the url (provided in .conf file)
@@ -483,6 +483,10 @@ var SearchPage = function ()
 		});
 	};
 
+	/*
+	State Checks
+	*/
+
 	//Returns true if the '+' button under the specified attribute filter
 	//is clickable
 	this.isShowMoreTypesButtonEnabled = function (attributeNumber)
@@ -495,7 +499,7 @@ var SearchPage = function ()
 		});
 	};
 
-	//Retiurns true if the '-' button under the specified attribute filter
+	//Returns true if the '-' button under the specified attribute filter
 	//is clickable
 	this.isShowFewerTypesButtonEnabled = function (attributeNumber)
 	{
@@ -540,7 +544,8 @@ var SearchPage = function ()
 	//Returns whether a particular result is expanded
 	this.isResultExpanded = function (number)
 	{
-		return browser.wait(element(by.id('results')).isPresent()).then(function ()
+		return browser.wait(element(by.id('results')).isPresent())
+		.then(function ()
 		{
 			return resultList.get(number)
 			.element(by.css('.list-group-item-text'))
@@ -664,7 +669,7 @@ var SearchPage = function ()
 
 
 	/*
-	Setters and Action methods
+	Setters
 	*/
 
 	//Sets the query string within the search bar
@@ -681,6 +686,10 @@ var SearchPage = function ()
 	{
 		return queryName.sendKeys(name);
 	};
+
+	/*
+	Action Methods
+	*/
 
 	//Clicks the save button in the save search dialog.
 	this.saveSearch = function ()
