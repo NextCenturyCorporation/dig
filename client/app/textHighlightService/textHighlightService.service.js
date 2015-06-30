@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.services')
-.service('utilService', function($sce) {
+.service('textHighlightService', function($sce) {
     var svc = this;
 
     /*

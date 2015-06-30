@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('postsView', function(euiConfigs, utilService) {
+.directive('postsView', function(euiConfigs, textHighlightService) {
     return {
         restrict: 'E',
         scope: {
@@ -12,7 +12,7 @@ angular.module('digApp.directives')
             $scope.euiConfigs = euiConfigs;
 
             $scope.highlightCheck = function(field, highlightedText) {
-                return utilService.highlightCheck(field, highlightedText);
+                return textHighlightService.highlightCheck(field, highlightedText);
             };
         }
     };
