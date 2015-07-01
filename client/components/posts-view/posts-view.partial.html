@@ -24,9 +24,10 @@
               $eval(euiConfigs.postFields.body.highlightArray))"></span>
             <span ng-if="$eval('item.' + euiConfigs.postFields.signature.field)">
               <hr>
+              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields.signature.field), 
+                $eval(euiConfigs.postFields.signature.highlightArray))">
+              </span>
             </span>
-            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.postFields.signature.field), 
-             $eval(euiConfigs.postFields.signature.highlightArray))"></span>
           </li>
         </ul>  
       </div>

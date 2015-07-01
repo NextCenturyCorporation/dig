@@ -27,7 +27,9 @@ angular.module('digApp.services')
      *  
      */
     svc.highlightCheck = function(field, highlightedText) {
-        if(highlightedText) {
+        if(!field) {
+            return field;
+        } else if(highlightedText) {
             for(var i = 0; i < highlightedText.length; i++) {
                 // strip all html tags from both fields to do comparison
                 var stripTagsHighlightItem = String(highlightedText[i]).replace(/<[^>]+>/gm, '');

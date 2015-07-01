@@ -780,7 +780,7 @@ var all = {
                 }
             }
         },
-       'dig-atf-j28':{// 'mockatf': {
+       'dig-atf-j28':{
             facets: {
                 euiFilters: [],
                 //simFilter: {},
@@ -823,7 +823,31 @@ var all = {
                     title: 'Weapons Mentioned',
                     field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
                     classes: 'weapons'
-                }]
+                }],
+                full: {
+                    "1": {
+                        classes: 'thread-details',
+                        fields: [{
+                            title: 'Enrollment Dates',
+                            field: 'doc._source.hasFeatureCollection.enrollment_date_aggregated_feature.featureValue',
+                            featureAggregation: 'doc._source.hasFeatureCollection.enrollment_date_aggregated_feature',
+                            aggName: 'featureValue',
+                            aggCount: 'count' 
+                        },{
+                            title: 'From Users',
+                            field: 'doc._source.hasFeatureCollection.fromUser_histogram_feature.featureValue',
+                            featureAggregation: 'doc._source.hasFeatureCollection.fromUser_histogram_feature',
+                            aggName: 'featureValue',
+                            aggCount: 'count' 
+                        },{
+                            title: 'Weapons Mentioned',
+                            field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                            featureAggregation: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature',
+                            aggName: 'featureValue',
+                            aggCount: 'count'
+                        }]
+                    }
+                }
             },
             postFields: {
                 title: 'Posts', 
@@ -845,11 +869,6 @@ var all = {
                     field: 'hasFeatureCollection.fromUser_feature.fromUser',
                     highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.fromUser_feature.fromUser"]',
                     classes: 'from-user'
-                },{
-                    title: 'User Id',
-                    field: 'hasFeatureCollection.person_userid_feature.person_userid',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.person_userid_feature.person_userid"]',
-                    classes: 'user-id'
                 },{
                     title: 'Address',
                     field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
