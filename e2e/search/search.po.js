@@ -544,15 +544,11 @@ var SearchPage = function ()
 	//Returns whether a particular result is expanded
 	this.isResultExpanded = function (number)
 	{
-		return browser.wait(element(by.id('results')).isPresent())
-		.then(function ()
+		return resultList.get(number)
+		.element(by.css('.list-group-item-text'))
+		.getAttribute('style').then(function (height)
 		{
-			return resultList.get(number)
-			.element(by.css('.list-group-item-text'))
-			.getAttribute('style').then(function (height)
-			{
-				return height !== 'height: 0px;';
-			});
+			return height !== 'height: 0px;';
 		});
 	};
 
