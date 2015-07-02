@@ -790,7 +790,21 @@ var all = {
             facets: {
                 euiFilters: [],
                 //simFilter: {},
-                aggFilters: []
+                aggFilters: [{
+                    title: 'Weapons Mentioned',
+                    type: 'eui-aggregation',
+                    field: 'weapons_agg',
+                    terms: 'hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                    termsType: 'string',
+                    count: 15
+                },{
+                    title: 'Users',
+                    type: 'eui-aggregation',
+                    field: 'users_agg',
+                    terms: 'hasFeatureCollection.fromUser_histogram_feature.featureValue',
+                    termsType: 'string',
+                    count: 15
+                }]
             },
             highlight: {
                 fields: [
@@ -823,11 +837,11 @@ var all = {
                     classes: 'date'
                 },{
                     title: 'User',
-                    field: 'doc._source.hasFeatureCollection.fromUser_histogram_feature.featureValue',
+                    field: 'doc._source.hasFeatureCollection.fromUser_histogram_feature.featureValue || doc._source.hasFeatureCollection.fromUser_histogram_feature[0].featureValue',
                     classes: 'name'
                 },{
                     title: 'Weapons Mentioned',
-                    field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                    field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue || doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature[0].featureValue',
                     classes: 'weapons'
                 }],
                 full: {
