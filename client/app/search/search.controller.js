@@ -15,6 +15,8 @@ angular.module('digApp')
     $scope.euiConfigs = euiConfigs;
     $scope.facets = euiConfigs.facets;
     $scope.notificationHasRun = true;
+    $scope.displayImageBreadcrumb = false;
+
 
     $scope.saveQuery = function() {
         $modal.open({
@@ -159,6 +161,9 @@ angular.module('digApp')
 
     $scope.toggleImageSearchEnabled = function(searchUrl) {
         imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
+        $scope.displayImageBreadcrumb = !$scope.displayImageBreadcrumb;
+
+
     };
 
     $scope.clearSearch = function() {
@@ -182,6 +187,7 @@ angular.module('digApp')
     };
 
     $scope.imageSearch = function(imgUrl) {
+	    $scope.displayImageBreadcrumb = true;
         imageSearchService.imageSearch(imgUrl);
     };
 
@@ -249,6 +255,7 @@ angular.module('digApp')
                     $scope.searchConfig.filterByImage = false;
                 }
             } else {
+                $scope.displayImageBreadcrumb = false;
                 $scope.imagesimLoading = false;
                 $scope.searchConfig.filterByImage = false;
             }

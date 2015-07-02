@@ -15,7 +15,7 @@ var log = bunyan.createLogger({
     name: 'digapp',
     streams: [{
         type: 'rotating-file',
-        path: 'digapp.log',
+        path: config.logfile,
         period: '1d',
         count: 10
         // `type: 'file'` is implied
@@ -40,7 +40,7 @@ var app = express();
 var server = require('http').createServer(app);
 
 require('./config/express')(app);
-require('./routes')(app);
+require('./routes')(app, log);
 
 app.models = models;
 app.log = log;

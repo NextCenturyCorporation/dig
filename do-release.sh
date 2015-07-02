@@ -80,7 +80,7 @@ cleanup 0
 
 get_options() {
     
-    while getopts ":Mmpucaitd" opt; do
+    while getopts ":Mmpuc:aitd" opt; do
 	case $opt in
 	    M)
 		BUMP_VER=maj
@@ -121,6 +121,7 @@ get_options() {
 		;;
 	    c)
 		CONFDIR=$OPTARG
+		echo "Using ${CONFDIR} as config dir"
 		;;
 	esac
     done
@@ -163,7 +164,7 @@ sanity_check() {
 	cleanup 10
     }
     
-    if [[ -z "${OPTARG}" ]]; then
+    if [[ -z "${CONFDIR}" ]]; then
 	echo "You did not set the config directory with -c"
 	cleanup 20
     fi
@@ -194,7 +195,12 @@ version() {
 	PUSH_TO_DOCKER=0
 	GIT_TAG=$(npm version prerelease)
     fi
-
+    
+    if [[ "$?" != 0 ]]; then
+	echo "Stale tag exists that needs to be removed"
+        cleanup 30
+    fi
+    
     if [[ "$FORCE_PUSH_TO_DOCKER" -eq 1 ]]; then
 	PUSH_TO_DOCKER=1
     fi
@@ -220,7 +226,7 @@ build() {
     cp -r ${CONFDIR} conf
     npm install
     grunt build
-    ${BUILD_DIR}/dig/package.sh $package_opts
+    ${BUILD_DIR}/dig/scripts/package.sh $package_opts
     cp dig_deploy.sh ${CURRENT_DIR}
     cd ${CURRENT_DIR}
     if [[ $UID != 0 ]]; then

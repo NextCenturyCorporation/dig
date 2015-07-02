@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('should');
-var models = require('../models');
+var models = require('./models');
 var elasticsearch = require('elasticsearch');
 var QueryDB = require('./querydb');
 

@@ -1,7 +1,6 @@
 'use strict';
 var elasticsearch = require('elasticsearch'),
-    schedule = require('node-schedule'),
-    models = require('../models');
+    models = require('./models');
 
 // get a logger
 var bunyan = require('bunyan');
@@ -9,7 +8,7 @@ var applog = bunyan.createLogger({
     name: 'Saved Scheduled Query Runner',
     streams: [{
         type: 'rotating-file',
-        path: 'headlessqueryrunner.log',
+        path: '/var/log/notifyapp.log',
         period: '1d',
         count: 10
         // `type: 'file'` is implied
@@ -44,17 +43,25 @@ var esClient = new elasticsearch.Client({
     host: {
         host: process.env.EUI_SERVER || 'localhost',
         port: process.env.EUI_SERVER_PORT || 9200,
+        protocol: process.env.EUI_SERVER_PROTO || 'http',
         auth: esauth
     },
     log: LogToBunyan
 });
 
-
+esClient.ping({
+    requestTimeout: 30000,
+    hello: "elasticsearch!"    
+}).then(function() {
+    applog.info('elasticsearch connection established');
+}, function(error) {
+    applog.error(error.message);
+});
 
 // route sequelize output to log
 models.sequelize.options.logging=function(loginfo) {
     applog.info(loginfo);
-}
+};
 
 // initialize configuration for elasticsearch queries
 var config = {};

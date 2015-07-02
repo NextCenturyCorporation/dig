@@ -515,7 +515,7 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual({});
@@ -545,7 +545,7 @@ describe('Controller: SearchCtrl', function () {
         scope.init();
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
@@ -572,7 +572,7 @@ describe('Controller: SearchCtrl', function () {
 
         expect(scope.queryString.live).toBe(state.params.query.digState.searchTerms);
         expect(scope.submit).toHaveBeenCalled();
-        expect(scope.submit.callCount).toBe(1);
+        expect(scope.submit.calls.count()).toBe(1);
         expect(scope.filterStates).toEqual(state.params.query.digState.filters);
         expect(scope.includeMissing).toEqual(state.params.query.digState.includeMissing);
         expect(scope.selectedSort).toEqual(state.params.query.digState.selectedSort);
@@ -969,6 +969,29 @@ describe('Controller: SearchCtrl', function () {
 
         scope.toggleImageSearchEnabled('https://some.server/test.jpg', false);
         expect(imageSearchService.isImageSearchEnabled('https://some.server/test.jpg')).toBe(false);
+    });
+
+    it('should toggle the bool value of displayImageBreadcrumb', function() {
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg', true);
+        expect(scope.displayImageBreadcrumb).toBe(true);
+
+        scope.toggleImageSearchEnabled('https://some.server/test.jpg');
+        expect(scope.displayImageBreadcrumb).toBe(false);
+    });
+
+    it('should set displayImageBreadcrumb to false if image sim filter is deleted or breadcrumb image is deleted', function() {
+        scope.clearActiveImageSearch();
+        expect(scope.displayImageBreadcrumb).toBe(false);
+    });
+
+    it('should set the bool value of displayImageBreadcrumb to true', function() {
+        scope.imageSearch('https://some.server/test.jpg');
+        expect(scope.displayImageBreadcrumb).toBe(true);
+    });
+
+    it('should set displayImageBreadcrumb as false when imageSearchService.getActiveImageSearch does not return success', function() {
+        expect(imageSearchService.getImageSearchStatus('http://foo')).toBe('no search available');
+        expect(scope.displayImageBreadcrumb).toBe(false);
     });
 
 });

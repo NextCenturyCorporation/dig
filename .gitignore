@@ -16,3 +16,9 @@ coverage
 *.log
 *.tar
 *.tar.gz
+*~
+*.orig
+*.rej
+conf
+**/dig_deploy.sh
+
