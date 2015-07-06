@@ -699,7 +699,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
-			browser.sleep(1000);
+			browser.sleep(util.minimumSleepInterval * 4);
 			return queryName.sendKeys(name);
 		}).then(function ()
 		{
@@ -726,7 +726,7 @@ var SearchPage = function ()
 		return this.searchAndOpenSave(query)
 		.then(function ()
 		{
-			browser.sleep(1000);
+			browser.sleep(util.minimumSleepInterval * 4);
 			return previousQueriesList.get(number + 1).click();
 		}).then(this.saveSearch);
 	};

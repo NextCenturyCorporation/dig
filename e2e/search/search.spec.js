@@ -107,7 +107,7 @@ describe('Search View', function()
         .then(page.isSaveDialogVisible)
         .then(function (visible)
         {
-            browser.sleep(500);
+            browser.sleep(util.minimumSleepInterval * 2);
             expect(visible).toBeTruthy();
         }).then(page.cancelSave)
         .then(page.isSaveDialogVisible)
@@ -154,11 +154,11 @@ describe('Search View', function()
             return page.searchForAndSaveAs('test1', 'query1');
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return page.searchForAndSaveAs('test2', 'query1');
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return browser.switchTo().alert().accept();
         }).then(savedQueriesPage.get)
         .then(function ()
@@ -179,11 +179,11 @@ describe('Search View', function()
             return page.searchForAndSaveAs('test1', 'query1');
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return page.searchForAndSaveAs('test2', 'query1');
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return browser.switchTo().alert().dismiss();
         }).then(savedQueriesPage.get)
         .then(function ()
@@ -204,11 +204,11 @@ describe('Search View', function()
             return page.searchForAndSaveAs('test1', 'query1');
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return page.searchForAndSaveAsQueryNumber('test2', 0);
         }).then(function ()
         {
-            browser.sleep(1000);
+            browser.sleep(util.minimumSleepInterval * 4);
             return browser.switchTo().alert().accept();
         }).then(savedQueriesPage.get)
         .then(function ()
@@ -268,7 +268,7 @@ describe('Search View', function()
             for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 page.toggleResult(i);
-                browser.sleep(750);
+                browser.sleep(util.minimumSleepInterval * 3);
             }
 
             return count;
@@ -296,7 +296,7 @@ describe('Search View', function()
             for(var i = 0; i < (count/util.reductionDivisor) + 1; i++)
             {
                 page.toggleResult(i);
-                browser.sleep(750);
+                browser.sleep(util.minimumSleepInterval * 3);
             }
 
             return count;
@@ -991,7 +991,7 @@ describe('Search View', function()
                                 expect(resultCount).toBeGreaterThan(counts[counts.length - 1]);
                             }
                             counts.push(resultCount);
-                            browser.sleep(250);
+                            browser.sleep(util.minimumSleepInterval * 2);
                         });  
                     });
                     func();   
@@ -1009,7 +1009,7 @@ describe('Search View', function()
                     .then(function (resultCount)
                     {
                         expect(resultCount).toEqual(counts.pop());
-                        browser.sleep(250);
+                        browser.sleep(util.minimumSleepInterval * 2);
                     });    
                 }
             }
@@ -1125,7 +1125,7 @@ describe('Search View', function()
                         filter = filterAttribute + ": " + filterType;
                     }).then(function ()
                     {
-                        browser.sleep(500);
+                        browser.sleep(util.minimumSleepInterval * 2);
                         page.getAttributeBreadcrumbText(j,0).then(function (text)
                         {
                             breadCrumbText = text.toLowerCase();
@@ -1254,7 +1254,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(0);
         }).then(function ()
         {
-            browser.sleep(750);
+            browser.sleep(util.minimumSleepInterval * 3);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         }).then(function ()
@@ -1262,7 +1262,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(1);
         }).then(function ()
         {
-            browser.sleep(750);
+            browser.sleep(util.minimumSleepInterval * 3);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeFalsy();
         }).then(function ()
@@ -1270,7 +1270,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(1);
         }).then(function ()
         {
-            browser.sleep(750);
+            browser.sleep(util.minimumSleepInterval * 3);
             expect(page.isFilterExpanded(0)).toBeFalsy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         }).then(function ()
@@ -1278,7 +1278,7 @@ describe('Search View', function()
             return page.toggleAttributeFilter(0);
         }).then(function ()
         {
-            browser.sleep(750);
+            browser.sleep(util.minimumSleepInterval * 3);
             expect(page.isFilterExpanded(0)).toBeTruthy();
             expect(page.isFilterExpanded(1)).toBeTruthy();
         });
@@ -1449,7 +1449,7 @@ describe('Search View', function()
                 return page.showMoreTypesUnderAttributeFilter(attributeNumber)
                 .then(function ()
                 {
-                    browser.sleep(250);
+                    browser.sleep(util.minimumSleepInterval * 2);
                     page.getTypeCountOfAttributeFilter(attributeNumber)
                     .then(function (count)
                     {
@@ -1458,7 +1458,7 @@ describe('Search View', function()
                     }).then(page.getResultCount)
                     .then(function (count)
                     {
-                        browser.sleep(250);
+                        browser.sleep(util.minimumSleepInterval * 2);
                         expect(count).toBeLessThan(resultCount);
                         return page.toggleFilterByAttribute(attributeNumber, typeCount);
                     }).then(function ()
@@ -1498,7 +1498,7 @@ describe('Search View', function()
                 return page.showFewerTypesUnderAttributeFilter(attributeNumber)
                 .then(function ()
                 {
-                    browser.sleep(250);
+                    browser.sleep(util.minimumSleepInterval * 2);
                     page.getTypeCountOfAttributeFilter(attributeNumber)
                     .then(function (count)
                     {

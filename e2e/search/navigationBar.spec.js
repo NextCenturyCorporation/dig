@@ -64,7 +64,7 @@ describe('Top Bar', function()
             return browser.actions().mouseMove({x: 50, y: 50}).doubleClick().perform();
         }).then(function ()
         {
-            browser.sleep(2000);
+            browser.sleep(util.minimumSleepInterval * 8);
             expect(navBar.isAboutDialogOpen()).toBeFalsy();
         });
     });
@@ -101,7 +101,7 @@ describe('Top Bar', function()
             {
                 searchPage.toggleResult(i);
                 //sleep was used instead of wait because of closure issues
-                browser.sleep(750);
+                browser.sleep(util.minimumSleepInterval * 3);
             }
             return count;
         }).then(function (count)

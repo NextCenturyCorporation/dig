@@ -8,6 +8,8 @@
 var SavedQueriesPage = function () 
 {
 
+	var util = require('./dig.util');
+
 	var savedQueryList = element.all(by.repeater('query in queryResults track by $index'));
 
 	this.get = function ()
@@ -75,7 +77,7 @@ var SavedQueriesPage = function ()
 				return self.toggleQuery(number);
 		}).then(function ()
 		{
-			browser.sleep(1000);
+			browser.sleep(util.minimumSleepInterval * 4);
 			return savedQueryList.get(number).element(by.model('query.frequency'))
 			.element(by.css('option[selected]')).getText();
 		});
@@ -151,7 +153,7 @@ var SavedQueriesPage = function ()
 				return self.toggleQuery(queryNumber)
 				.then(function ()
 				{
-					browser.sleep(500);
+					browser.sleep(util.minimumSleepInterval * 2);
 				});
 			}
 		}).then(function ()

@@ -13,17 +13,16 @@ describe('Saved Queries View', function()
     {
     	queryPage.get();
     	queryPage.clearSavedSearches();
-    	var searchqueryPage = require('./search.po');
-    	searchqueryPage.get();
-    	searchqueryPage.searchForAndSaveAs(queryOne[0], queryOne[1])
+    	searchPage.get();
+    	searchPage.searchForAndSaveAs(queryOne[0], queryOne[1])
     	.then(function ()
     	{
-    		browser.sleep(1000);
-	    	searchqueryPage.searchForAndSaveAs(queryTwo[0], queryTwo[1]);
+    		browser.sleep(util.minimumSleepInterval * 4);
+	    	searchPage.searchForAndSaveAs(queryTwo[0], queryTwo[1]);
     	}).then(function ()
     	{
-    		browser.sleep(1000);
-    		searchqueryPage.searchForAndSaveAs(queryThree[0], queryThree[1]);
+    		browser.sleep(util.minimumSleepInterval * 4);
+    		searchPage.searchForAndSaveAs(queryThree[0], queryThree[1]);
     	}).then(queryPage.get);
     });
 
@@ -71,7 +70,7 @@ describe('Saved Queries View', function()
     		for(var i = 0; i < count; i++)
     		{
     			queryPage.toggleQuery(i);
-                browser.sleep(750);
+                browser.sleep(util.minimumSleepInterval * 3);
     		}
     	}).then(function ()
     	{
@@ -82,7 +81,7 @@ describe('Saved Queries View', function()
     		return queryPage.toggleQuery(0);
     	}).then(function ()
     	{
-            browser.sleep(750);
+            browser.sleep(util.minimumSleepInterval * 3);
 			expect(queryPage.isQueryExpanded(0)).toBeFalsy();
 		}).then(function ()
 		{
@@ -95,7 +94,7 @@ describe('Saved Queries View', function()
 			for(var i = 1; i < count; i++)
 			{
 				queryPage.toggleQuery(i);
-                browser.sleep(750);
+                browser.sleep(util.minimumSleepInterval * 3);
 			}
 		}).then(function ()
 		{

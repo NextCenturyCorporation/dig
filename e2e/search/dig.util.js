@@ -70,7 +70,12 @@ by this number. The minimum value is 1, meaning there will be no decrease in tes
 */
 var reductionDivisor = 5;
 
+//The sleep interval used in tests. Certain require more time than other and will do some multiple of this.
+//The number can be increased on slower systems or connections.
+var minimumSleepInterval = 250;
+
 module.exports.reductionDivisor = reductionDivisor;
+module.exports.minimumSleepInterval = minimumSleepInterval;
 module.exports.getMonthNumber = getMonthNumber;
 module.exports.getMonthName = getMonthName;
 module.exports.getYearFromRange = getYearFromRange;
