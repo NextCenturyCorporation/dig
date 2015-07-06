@@ -88,7 +88,8 @@ var SearchPage = function ()
 	{
 		return rightColumn.element(by.css('.column-header')).element(by.tagName('h4')).getText().then(function (text)
 		{
-			return parseInt(text.substring(0, text.indexOf(' ')).replace(',', ''));
+			return parseInt(text.substring(0, text.indexOf(' '))
+				.replace(new RegExp(',', 'g'), ''));
 		});
 	};
 
