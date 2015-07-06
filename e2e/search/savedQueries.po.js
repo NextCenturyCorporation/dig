@@ -120,7 +120,7 @@ var SavedQueriesPage = function ()
 	//Deletes all saved searches
 	this.clearSavedSearches = function ()
 	{
-		var numQueries = undefined;
+		var numQueries = undefined, self = this;
 		return this.getSavedQueryCount().then(function (count)
 		{
 			numQueries = count;
@@ -128,8 +128,7 @@ var SavedQueriesPage = function ()
 		{
 			for(var i = 0; i < numQueries; i++)
 			{
-				savedQueryList.get(0).all(by.tagName('ul')).first()
-				.all(by.tagName('button')).last().click();
+				self.deleteSavedSearch(0);
 			}
 		});
 	};

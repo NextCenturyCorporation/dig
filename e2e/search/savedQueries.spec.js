@@ -3,7 +3,7 @@
 describe('Saved Queries View', function() 
 {
 
-	var queryPage = require('./savedQueries.po'), searchPage = require('./search.po'), util = require('./dig.util');
+    var queryPage = require('./savedQueries.po'), searchPage = require('./search.po'), util = require('./dig.util');
     var queryOne = ['the', 'queryA'];
     var queryTwo = ['be', 'queryB'];
     var queryThree = ['to', 'queryC'];

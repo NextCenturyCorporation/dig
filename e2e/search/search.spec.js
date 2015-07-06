@@ -78,10 +78,16 @@ describe('Search View', function()
 
     it('should be able to clear a search', function ()
     {
-        page.searchFor('test');
-        expect(page.isInListView()).toBeTruthy();
-        page.clearSearch();
-        expect(page.isInListView()).toBeFalsy();
+        page.searchFor('test')
+        .then(function ()
+        {
+            expect(page.isInListView()).toBeTruthy();
+            return page.clearSearch();
+        }).then(function ()
+        {
+            expect(page.isInListView()).toBeFalsy(); 
+        });
+
     });
 
     it('should only show a save button when there is an active search', function ()
