@@ -54,10 +54,12 @@
 
   <div class="right-column col-sm-9">
     <div class="row">
-      <!-- <date-histogram-aggregation aggregation-name="date_hist_agg"
-        aggregation-key="dateCreated" date-interval="month"
-        indexvm="indexVM" ejs="ejs" filters="filters">
-      </date-histogram-aggregation> -->
+      <span ng-if="euiConfigs.dateHistogram"> 
+        <date-histogram-aggregation aggregation-name="date_hist_agg"
+          aggregation-key="{{euiConfigs.dateHistogram.field}}" date-interval="month"
+          indexvm="indexVM" ejs="ejs" filters="filters">
+        </date-histogram-aggregation>        
+      </span>
     </div>
     <div class="results-header-div row">
       <button class="btn btn-default" ng-click="switchView('list')">

@@ -824,6 +824,9 @@ var all = {
                     'hasPost.hasSignaturePart.text'
                 ]
             },
+            dateHistogram: {
+                field: 'hasPost.dateCreated'
+            },
             listFields: {
                 title: [{
                     title: 'Title',
