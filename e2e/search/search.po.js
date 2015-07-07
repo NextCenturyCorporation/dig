@@ -1076,7 +1076,7 @@ var SearchPage = function ()
 					{
 						//In case of days, elements from later or previous months
 						//will have 'ng-binding text-muted'
-						return classText === 'ng-binding';
+						return classText !== 'ng-binding text-muted';
 					});
 				}).first().click();
 			}
@@ -1101,7 +1101,7 @@ var SearchPage = function ()
 					return elem.element(by.tagName('span')).getAttribute('class')
 					.then(function (classText)
 					{
-						return classText === 'ng-binding';
+						return classText !== 'ng-binding text-muted';
 					});
 				}).first().click();
 			}
