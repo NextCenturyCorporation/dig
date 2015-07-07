@@ -11,54 +11,57 @@ angular.module('digApp')
 .controller('MainCtrl', ['$scope', '$state', '$modal', '$location', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'MainConstants', '$http',
     function($scope, $state, $modal, $location, imageSearchService, euiSearchIndex, euiConfigs, MainConstants, $http) {
 
-      $scope.FILTER_TAB = MainConstants.FILTER_TAB;
-      $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB
-      $scope.searchConfig = {};
-      $scope.searchConfig.filterByImage = false;
-      $scope.searchConfig.euiSearchIndex = '';
-      $scope.loading = false;
-      $scope.imagesimLoading = false;
-      $scope.euiConfigs = euiConfigs;
-      $scope.facets = euiConfigs.facets;
+    $scope.FILTER_TAB = MainConstants.FILTER_TAB;
+    $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB
+    $scope.searchConfig = {};
+    $scope.searchConfig.filterByImage = false;
+    $scope.searchConfig.euiSearchIndex = '';
+    $scope.imageSearchResults = {};
+    $scope.loading = false;
+    $scope.imagesimLoading = false;
+    $scope.euiConfigs = euiConfigs;
+    $scope.facets = euiConfigs.facets;
+    $scope.notificationHasRun = true;
+    $scope.displayImageBreadcrumb = false;
+    
 
-      // All the folders created with child folders within their parents.
-      // Each folder only has the name, _id, parentId, and an array of children
-      $scope.nestedFolders = [];
+    // All the folders created with child folders within their parents.
+    // Each folder only has the name, _id, parentId, and an array of children
+    $scope.nestedFolders = [];
 
-      // All the folders created in a flat list.
-      // Each folder only has the name, _id, and parentId
-      $scope.folders = [];
+    // All the folders created in a flat list.
+    // Each folder only has the name, _id, and parentId
+    $scope.folders = [];
 
-      $scope.selectedFolder = {};
+    $scope.selectedFolder = {};
 
-      // Each key is the _id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
-      // Each value contains an array of _ids of items that are selected in the folder (or search results)
-      $scope.selectedItems = {};
+    // Each key is the _id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
+    // Each value contains an array of _ids of items that are selected in the folder (or search results)
+    $scope.selectedItems = {};
 
-      // Each key is the _id of a folder that was selected
-      // Each value contains an array of _ids of sub-folders that are selected in the folder
-      $scope.selectedChildFolders = {};
+    // Each key is the _id of a folder that was selected
+    // Each value contains an array of _ids of sub-folders that are selected in the folder
+    $scope.selectedChildFolders = {};
 
-      $scope.selectedItemsKey = $scope.FILTER_TAB;
+    $scope.selectedItemsKey = $scope.FILTER_TAB;
 
-      // Valid folders that items can be moved to (contains objects of names and _ids)
-      $scope.validMoveFolders = [];
+    // Valid folders that items can be moved to (contains objects of names and _ids)
+    $scope.validMoveFolders = [];
 
-      $scope.activeTab = '';
-      $scope.tabChange = false;
+    $scope.activeTab = '';
+    $scope.tabChange = false;
 
-      $scope.tabs = [
-      {
+    $scope.tabs = [
+    {
         'title': 'Filter',
         'link': $scope.FILTER_TAB
-      }, {
+    }, {
         'title': 'Folders',
         'link': $scope.FOLDERS_TAB
-      }];
+    }];
 
 
-
-      $scope.init = function() {
+    $scope.init = function() {
         $scope.showresults = false;
         $scope.queryString = {
             live: '', submitted: ''
@@ -86,129 +89,171 @@ angular.module('digApp')
 
         if($state.params && $state.params.query) {
 
+
             if($state.params.query.digState.searchTerms) {
                 $scope.queryString.live = $state.params.query.digState.searchTerms;
             }
 
-            if($state.params.query.digState.filters.aggFilters) {
-                $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.digState.filters.aggFilters);
-            }
-            if($state.params.query.digState.filters.textFilters) {
-                $scope.filterStates.textFilters = _.cloneDeep($state.params.query.digState.filters.textFilters);
+            if($state.params.query.digState.filters) {
+                if($state.params.query.digState.filters.aggFilters) {
+                    $scope.filterStates.aggFilters = _.cloneDeep($state.params.query.digState.filters.aggFilters);
+                }
+
+                if($state.params.query.digState.filters.textFilters) {
+                    $scope.filterStates.textFilters = _.cloneDeep($state.params.query.digState.filters.textFilters);
+                }
+
+                if($state.params.query.digState.filters.dateFilters) {
+                    $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
+                }
+
+                if($state.params.query.digState.filters.withImagesOnly) {
+                    $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
+                }
             }
 
-            if($state.params.query.digState.filters.dateFilters) {
-                $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
+            if($state.params.query.digState.includeMissing) {
+                if($state.params.query.digState.includeMissing.allIncludeMissing) {
+                    $scope.includeMissing.allIncludeMissing = $state.params.query.digState.includeMissing.allIncludeMissing;
+                }
+                
+                if($state.params.query.digState.includeMissing.aggregations) {
+                    $scope.includeMissing.aggregations = _.cloneDeep($state.params.query.digState.includeMissing.aggregations);
+                }
             }
             
-            if($state.params.query.digState.includeMissing) {
-                $scope.includeMissing = _.cloneDeep($state.params.query.digState.includeMissing);
+            if($state.params.query.notificationHasRun === false) {
+                $scope.notificationHasRun = $state.params.query.notificationHasRun;
+                $scope.notificationLastRun = new Date($state.params.query.lastRunDate);  
+                $http.put('api/queries/' + $state.params.query.id, {lastRunDate: new Date(), notificationHasRun: true});
+            } else if($state.params.query.digState.selectedSort) {
+                $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
             }
 
             if($state.params.query.digState.selectedSort) {
                 $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
-            }   
-
-            if($state.params.query.digState.filters.withImagesOnly) {
-                $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
             }
 
             $scope.$on('$locationChangeSuccess', function() {
-                if($state.current.name === 'main.search.results.list') {
+                if($state.current.name === 'main.search.results.list' && $scope.showresults === false) {
                     $scope.submit();
                 }
             });
-        }
-      };
 
-      $scope.submit = function() {
+            if($state.params.callSubmit && $state.current.name === 'main.search.results.list' && $scope.showresults === false) {
+                $scope.submit();
+            }
+        }
+    };
+
+    $scope.clearNotification = function() {
+        if($state.params.query && $scope.notificationHasRun === false && $scope.notificationLastRun) {
+            $scope.notificationLastRun = null;
+            $scope.notificationHasRun = true;
+        }
+    };
+
+    $scope.submit = function() {
         if($state.params.query && $scope.queryString.live !== $state.params.query.digState.searchTerms) {
             $scope.clearNotification();
         }
-          $scope.selectedItems[$scope.selectedItemsKey] = [];
-          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
-          $scope.queryString.submitted = $scope.queryString.live;
-          if(!$scope.searchConfig.euiSearchIndex) {
-              $scope.searchConfig.euiSearchIndex = euiSearchIndex;
-          }
-          $scope.viewList();
-      };
+        $scope.selectedItems[$scope.selectedItemsKey] = [];
+        $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
+        $scope.queryString.submitted = $scope.queryString.live;
+        if(!$scope.searchConfig.euiSearchIndex) {
+            $scope.searchConfig.euiSearchIndex = euiSearchIndex;
+        }
+        $scope.viewList();
+    };
 
-      $scope.viewList = function() {
-          $scope.activeTab = $scope.FILTER_TAB;
-          $state.go('main.search.results.list');
-      };
+    $scope.setAllIncludeMissing = function() {
+        $scope.includeMissing.allIncludeMissing = !$scope.includeMissing.allIncludeMissing;
+        for(var aggregation in $scope.includeMissing.aggregations) {
+            $scope.includeMissing.aggregations[aggregation].active = $scope.includeMissing.allIncludeMissing;
+        }
+    };
 
-      $scope.getActiveImageSearch = function() {
-          return imageSearchService.getActiveImageSearch();
-      };
+    $scope.viewList = function() {
+        $scope.activeTab = $scope.FILTER_TAB;
+        $state.go('main.search.results.list');
+    };
 
-      $scope.toggleImageSearchEnabled = function(searchUrl) {
-          imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
-      };
+    $scope.getActiveImageSearch = function() {
+        return imageSearchService.getActiveImageSearch();
+    };
 
-      $scope.clearActiveImageSearch = function() {
-          $scope.searchConfig.filterByImage = false;
-          imageSearchService.clearActiveImageSearch();
-      };
+    $scope.toggleImageSearchEnabled = function(searchUrl) {
+        imageSearchService.setImageSearchEnabled(searchUrl, !imageSearchService.isImageSearchEnabled(searchUrl));
+        $scope.displayImageBreadcrumb = !$scope.displayImageBreadcrumb;
+    };
 
-      // Updates which tab is active
-      $scope.isActive = function() {
+    $scope.clearActiveImageSearch = function() {
+        $scope.searchConfig.filterByImage = false;
+        imageSearchService.clearActiveImageSearch();
+    };
+
+    $scope.imageSearch = function(imgUrl) {
+        $scope.displayImageBreadcrumb = true;
+        imageSearchService.imageSearch(imgUrl);
+    };
+
+    // Updates which tab is active
+    $scope.isActive = function() {
         var path = $location.path();
-        
+
         if(path == '/search') {
-          $scope.activeTab = $scope.FILTER_TAB;
-          return true;
+            $scope.activeTab = $scope.FILTER_TAB;
+            return true;
         } else if(path == '/folder') {
-          $scope.activeTab = $scope.FOLDERS_TAB;
-          return true;
+            $scope.activeTab = $scope.FOLDERS_TAB;
+            return true;
         }
 
         return false;
-      }
+    }
 
-      $scope.changeTab = function(link) {
+    $scope.changeTab = function(link) {
         $scope.selectedFolder = {};
         $scope.validMoveFolders = [];
         $scope.tabChange = true;
 
         if(link == $scope.FILTER_TAB) {
-          $scope.selectedItemsKey = $scope.FILTER_TAB;
-          $scope.selectedFolderSort = {};
-          $scope.viewList();
+            $scope.selectedItemsKey = $scope.FILTER_TAB;
+            $scope.selectedFolderSort = {};
+            $scope.viewList();
         } else {
-          $scope.activeTab = $scope.FOLDERS_TAB;
+            $scope.activeTab = $scope.FOLDERS_TAB;
         }
-      };
+    };
 
-      // Returns array of valid folders the selected folder (if any) can move to.
-      // A folder can move to to anything but itself and any children (recursively)
-      $scope.retrieveValidMoveFolders = function() {
+    // Returns array of valid folders the selected folder (if any) can move to.
+    // A folder can move to to anything but itself and any children (recursively)
+    $scope.retrieveValidMoveFolders = function() {
         if($scope.selectedFolder._id) {
-          var validFolders = [];
+            var validFolders = [];
 
-          // Push ROOT on first since a folder can always move to it
-          validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+            // Push ROOT on first since a folder can always move to it
+            validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
 
-          // Take out itself and all children from the list of valid folders
-          validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
+            // Take out itself and all children from the list of valid folders
+            validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
 
-          return validFolders;
+            return validFolders;
         }
 
         return [];
-      };
+    };
 
-      // Moves selected folder to given folder
-      $scope.moveFolder = function(parentFolder) {
+    // Moves selected folder to given folder
+    $scope.moveFolder = function(parentFolder) {
         $http.put('api/folders/' + $scope.selectedFolder._id,
-          {name: $scope.selectedFolder.name, parentId: parentFolder._id}).success(function() {
+        {name: $scope.selectedFolder.name, parentId: parentFolder._id}).success(function() {
             $scope.getFolders();
-          });
-      };
+        });
+    };
 
-      // Selects/Deselects folder and changes to folder view
-      $scope.select = function(folder, event) {
+    // Selects/Deselects folder and changes to folder view
+    $scope.select = function(folder, event) {
         // Change active tab so folder view shows
         $scope.activeTab = $scope.FOLDERS_TAB;
         $state.go('main.folder.results.list');
@@ -216,23 +261,23 @@ angular.module('digApp')
 
         // Select/Deselect folder and update folders able to move to
         if(!$scope.selectedFolder._id) {
-          $scope.selectedFolder = angular.copy(folder);
-          $scope.selectedItemsKey = $scope.selectedFolder._id;
-          $scope.selectedItems[$scope.selectedItemsKey] = [];
-          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
-          $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
+            $scope.selectedFolder = angular.copy(folder);
+            $scope.selectedItemsKey = $scope.selectedFolder._id;
+            $scope.selectedItems[$scope.selectedItemsKey] = [];
+            $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
+            $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         } else if($scope.selectedFolder._id != folder._id) {
-          $scope.selectedFolder = angular.copy(folder);
-          $scope.selectedItemsKey = $scope.selectedFolder._id;
-          $scope.selectedItems[$scope.selectedItemsKey] = [];
-          $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
-          $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
+            $scope.selectedFolder = angular.copy(folder);
+            $scope.selectedItemsKey = $scope.selectedFolder._id;
+            $scope.selectedItems[$scope.selectedItemsKey] = [];
+            $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
+            $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
         }
 
         if(event) {
-          $scope.isFolderSelectEvent = true;
+            $scope.isFolderSelectEvent = true;
         }
-      };
+    };
 
       $scope.deselect = function() {
         if(!$scope.isFolderSelectEvent) {
@@ -486,57 +531,74 @@ angular.module('digApp')
         return names;
       };
 
-      $scope.$watch(function() {
-              return imageSearchService.getActiveImageSearch();
-          }, function(newVal) {
-              if(newVal) {
-                  if(newVal.status === 'searching') {
-                      $scope.imagesimLoading = true;
-                  } else if(newVal.status === 'success' && newVal.enabled) {
-                      // If our latest img search was successful, re-issue our query and
-                      // enable our image filter.
-                      $scope.imagesimLoading = false;
-                      $scope.searchConfig.filterByImage = true;
-                  } else {
-                      $scope.imagesimLoading = false;
-                      $scope.searchConfig.filterByImage = false;
-                  }
-              } else {
-                  $scope.imagesimLoading = false;
-                  $scope.searchConfig.filterByImage = false;
-              }
-          },
-          true);
+    $scope.$watch(function() {
+            return imageSearchService.getActiveImageSearch();
+        }, function(newVal) {
+            if(newVal) {
+                if(newVal.status === 'searching') {
+                    $scope.imagesimLoading = true;
+                } else if(newVal.status === 'success' && newVal.enabled) {
+                    // If our latest img search was successful, re-issue our query and
+                    // enable our image filter.
+                    $scope.imagesimLoading = false;
+                    $scope.searchConfig.filterByImage = true;
+                } else {
+                    $scope.imagesimLoading = false;
+                    $scope.searchConfig.filterByImage = false;
+                }
+            } else {
+                $scope.displayImageBreadcrumb = false;
+                $scope.imagesimLoading = false;
+                $scope.searchConfig.filterByImage = false;
+            }
+        },true);
 
-      $scope.$watch('indexVM.loading',
-          function(newValue, oldValue) {
-              if(newValue !== oldValue) {
-                  $scope.loading = newValue;
+    $scope.$watch('indexVM.loading',
+        function(newValue, oldValue) {
+            if(newValue !== oldValue) {
+                $scope.loading = newValue;
 
-                  if($scope.loading === false && $scope.showresults === false && !$scope.indexVM.error) {
-                      $scope.showresults = true;
-                  }
-              }
-          }
-      );
+                if($scope.loading === false && $scope.showresults === false && !$scope.indexVM.error) {
+                    $scope.showresults = true;
+                }
 
-      $scope.$watch('indexVM.error', function() {
-          if($scope.indexVM.error) {
-              $scope.loading = false;
-              $scope.showresults = false;
-              if($scope.activeTab == $scope.FILTER_TAB) {
+                if($scope.showresults && $scope.indexVM.sort && $scope.indexVM.sort.field() !== '_timestamp') {
+                    $scope.clearNotification();
+                }
+
+                // First ensure filters are initialized, then check to see if user made updates
+                if($scope.showresults && $scope.loading === false && $state.params.query && $state.params.query.elasticUIState.filterState) {
+                    var currentFilters = $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {};
+                    var originalFilters = $state.params.query.elasticUIState.filterState;
+
+                    if(angular.equals(currentFilters, originalFilters)) {
+                        $scope.filtersInitialized = true;
+                    } else {
+                        if($scope.filtersInitialized) {
+                            $scope.filtersInitalized = null;
+                            $scope.clearNotification();
+                        }
+                    }
+                }
+            }
+        }
+    );
+
+    $scope.$watch('indexVM.error', function() {
+        if($scope.indexVM.error) {
+            $scope.loading = false;
+            $scope.showresults = false;
+            if($scope.activeTab == $scope.FILTER_TAB) {
                 $state.go('main.search.error');
-              } else {
+            } else {
                 $state.go('main.folder.error');
-              }
-          }
-      }, true);
+            }
+        }
+    }, true);
 
-      if($state.current.name === 'main') {
-          $scope.viewList();
-      }
-
-      $scope.init();
+    if($state.current.name === 'main') {
+        $scope.viewList();
     }
-  ]
-);
+
+    $scope.init();
+}]);
