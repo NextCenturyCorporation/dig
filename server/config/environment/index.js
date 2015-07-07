@@ -846,7 +846,10 @@ var all = {
                     title: 'Weapons Mentioned',
                     field: 'doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue || doc._source.hasFeatureCollection.weaponsMentioned_histogram_feature[0].featureValue',
                     classes: 'weapons'
-                }],
+                }]
+            },
+            threadFields: {
+                threadTitle: 'doc.highlight["hasTitlePart.text"][0] ||doc._source.hasTitlePart.text',
                 full: {
                     "1": {
                         classes: 'thread-details',
@@ -870,10 +873,8 @@ var all = {
                             aggCount: 'count'
                         }]
                     }
-                }
-            },
-            postFields: {
-                title: 'Posts', 
+                },
+                postFields: {
                 field: 'doc._source.hasPost',
                 subject: [{
                     title: 'Title',
@@ -917,6 +918,66 @@ var all = {
                     title: 'Signature',
                     field: 'hasSignaturePart.text',
                     highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                }
+            }
+            }
+        },
+        'dig-atf-weapons-01':{
+            facets: {
+                euiFilters: [],
+                //simFilter: {},
+                aggFilters: []
+            },
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'At or From',
+                    field: 'doc._source.availableAtOrFrom.address.name || doc._source.availableAtOrFrom[0].address.name',
+                    classes: 'name'
+                },{
+                    title: 'Publisher',
+                    field: 'doc._source.publisher.name || doc._source.publisher[0].name',
+                    classes: 'publisher'
+                }],
+                full: {
+                    "1": {
+                        classes: 'offer-details',
+                        fields: [{
+                            title: 'Seller',
+                            field: 'doc._source.seller.description'
+                        },{
+                            title: 'Price',
+                            field: 'doc._source.price'
+                        },{
+                            title: 'Currency Type',
+                            field: 'doc._source.priceCurrency',
+                        },{
+                            title: 'Date',
+                            field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'At or From',
+                            field: 'doc._source.availableAtOrFrom.address.name'
+                        },{
+                            title: 'Publisher',
+                            field: 'doc._source.publisher.name'
+                        },{
+                            title: 'Description',
+                            field: 'doc._source.description'
+                        }]
+                    }
+                },
+                body: {
+                    title: 'Description',
+                    field: 'doc._source.description'
                 }
             }
         }

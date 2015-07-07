@@ -33,8 +33,17 @@
         </div>
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
-        <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
-        <posts-view doc="doc"></posts-view>
+        <!--TODO: debug directive?-->
+        <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
+          <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
+        </div>
+        <!--TODO: use doc.a field and create config/directive to render correct template -->
+        <span ng-if="euiConfigs.listFields['full']">
+          <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
+        </span>
+        <span ng-if="euiConfigs.threadFields">
+          <posts-view doc="doc"></posts-view>
+        </span>
       </div>
     </li>
   </ul>

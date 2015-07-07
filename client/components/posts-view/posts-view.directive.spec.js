@@ -6,12 +6,15 @@ describe('Directive: postsView', function () {
     beforeEach(module('digApp'));
     beforeEach(module('components/posts-view/posts-view.partial.html'));
 
-    var scope, element, euiConfigs;
+    var scope, element, euiConfigs, $httpBackend;
 
     // Initialize the mock scope
-    beforeEach(inject(function ($compile, $rootScope, _euiConfigs_) {
+    beforeEach(inject(function ($compile, $rootScope, _euiConfigs_, _$httpBackend_) {
         scope = $rootScope.$new();
         euiConfigs = _euiConfigs_;
+        $httpBackend = _$httpBackend_;
+            $httpBackend.when('GET', new RegExp('components/display-desc-list/display-desc-list.partial.html'))
+                .respond(200, 'some text');
 
         scope.doc = {
             _source : {
