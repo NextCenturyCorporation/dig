@@ -136,7 +136,7 @@ describe('Controller: MainCtrl', function () {
             state.current.name = 'main';
             spyOn(state, 'go');
             modal = $modal;
-            spyOn($modal, 'open').andCallFake(function(options) {
+            spyOn($modal, 'open').and.callFake(function(options) {
                 modalOpts = options;
                 return {
                   result: $q.defer().promise
@@ -567,28 +567,28 @@ describe('Controller: MainCtrl', function () {
     });
 
     it('should change active tab on /folder load', function () {
-      spyOn(location, 'path').andReturn('/folder');
+      spyOn(location, 'path').and.returnValue('/folder');
 
       expect(scope.isActive()).toBe(true);
       expect(scope.activeTab).toBe("#folders");
     });
 
     it('should change active tab on /gallery load', function () {
-      spyOn(location, 'path').andReturn('/search');
+      spyOn(location, 'path').and.returnValue('/search');
 
       expect(scope.isActive()).toBe(true);
       expect(scope.activeTab).toBe("#filter");
     });
 
     it('should change active tab on /list load', function () {
-      spyOn(location, 'path').andReturn('/search');
+      spyOn(location, 'path').and.returnValue('/search');
 
       expect(scope.isActive()).toBe(true);
       expect(scope.activeTab).toBe("#filter");
     });
 
     it('should not change active tab on unknown url load', function () {
-      spyOn(location, 'path').andReturn('/fake');
+      spyOn(location, 'path').and.returnValue('/fake');
 
       expect(scope.isActive()).toBe(false);
     });

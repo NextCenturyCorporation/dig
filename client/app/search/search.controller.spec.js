@@ -9,6 +9,78 @@ describe('Controller: SearchCtrl', function () {
     var imageSearchService;
     var SearchCtrl, scope, rootScope, state, modal;
 
+    var sampleQuery = { 
+        id: 1,
+        name: 'Query #1',
+         /* jshint camelcase:false */
+        digState: {
+            searchTerms: 'bob smith',
+            filters: {
+                aggFilters: {
+                    city_agg: {
+                      'LittleRock': true,
+                      'FortSmith': true
+                    }
+                },
+                textFilters: {
+                    phonenumber: {
+                      live: '',
+                      submitted: ''
+                    }
+                },
+                dateFilters: {
+                    dateCreated: {
+                      beginDate: null,
+                      endDate: null
+                    }
+                }
+
+            },
+            selectedSort: {
+                title:'Best Match',
+                order:'rank'
+            },  
+            includeMissing: {
+                allIncludeMissing : false, 
+                aggregations : { 
+                    city_agg : { 
+                        active : true 
+                    } 
+                } 
+            }
+        }, 
+        elasticUIState: {
+            queryState: {
+                query_string: {
+                    fields:['_all'],
+                    query:'bob smith'
+                }
+            },
+            filterState: {
+                bool: {
+                    should: [
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['LittleRock']
+                            }
+                        },
+                        {
+                            terms: {
+                                'hasFeatureCollection\\uff0eplace_postalAddress_feature\\uff0efeatureObject\\uff0eaddressLocality':['FortSmith']
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+         /* jshint camelcase:true*/
+        username: 'test',
+        frequency: 'daily',
+        createDate: '2015-04-01T20:13:11.093Z',
+        lastRunDate: '2015-04-01T20:13:11.093Z',
+        notificationHasRun: false   
+    };
+
     var sampleDoc = {
         "_index": "dig",
         "_type": "WebPage",

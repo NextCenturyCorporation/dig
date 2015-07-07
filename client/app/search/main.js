@@ -10,7 +10,8 @@ angular.module('digApp')
         abstract: true,
         controller: 'MainCtrl',
         params: {
-          query: null
+          query: null,
+          callSubmit: null
         }
       })
     .state('main.folder', {

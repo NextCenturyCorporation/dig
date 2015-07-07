@@ -20,7 +20,7 @@ describe('Controller: EditModalCtrl', function () {
             };
             
             user = {
-              get: jasmine.createSpy('user.get').andReturn({username: 'test'})
+              get: jasmine.createSpy('user.get').and.returnValue({username: 'test'})
             };
 
             folder = {

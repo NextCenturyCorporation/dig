@@ -7,10 +7,11 @@
 var errors = require('./components/errors');
 var config = require('./config/environment');
 
-module.exports = function(app) {
-
+module.exports = function(app, logger) {
     app.route('*')
     .get(function(req, res, next) {
+	logger.info({Username: req.headers.user, Route: req.path});
+
         if(req.headers.user) {
             next();
         } else {
@@ -20,8 +21,7 @@ module.exports = function(app) {
 
     // Insert routes below
     app.use('/api/folders', require('./api/folder'));
-    app.use('/api/queries', require('./api/query'));
-    app.use('/api/things', require('./api/thing'));
+    app.use('/api', require('./api/query'));
     app.use('/api/users', require('./api/user'));
 
     // All undefined asset or api routes should return a 404

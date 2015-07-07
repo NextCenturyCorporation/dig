@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker run -it --rm --name myscr -e "DB_USER=digapp" -e "DB_PASS=digdig" -e "DB_HOST=mysql" -e "DB_PORT=3306" -e "NODE_ENV=production" --link dig_mongo_1:mongo --link dig_mysql_1:mysql -v /home/ubuntu/migrateapp:/usr/src/myapp -w /usr/src/myapp node node migrate.js

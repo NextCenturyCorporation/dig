@@ -34,7 +34,8 @@ describe('Controller: QueriesCtrl', function () {
         'username': 'test',
         'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
-        'lastRunDate': '2015-04-01T20:13:11.093Z'
+        'lastRunDate': '2015-04-01T20:13:11.093Z',
+        'notificationHasRun': false
       },
       {
         '_id': 2,
@@ -57,7 +58,8 @@ describe('Controller: QueriesCtrl', function () {
         'username': 'test',
         'frequency': 'never',
         'createDate': '2015-04-01T20:13:11.093Z',
-        'lastRunDate': '2015-04-01T20:13:11.093Z'
+        'lastRunDate': '2015-04-01T20:13:11.093Z',
+        'notificationHasRun': false
       }
     ];
 
@@ -95,7 +97,7 @@ describe('Controller: QueriesCtrl', function () {
             $httpBackend.when('GET', new RegExp('app/search/list/list.partial.html'))
                 .respond(200, 'some text');
 
-            $httpBackend.expectGET('api/queries/').respond(200, queryResults);
+            $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
 
             QueriesCtrl = $controller('QueriesCtrl', {
                 $scope: scope,
@@ -136,7 +138,7 @@ describe('Controller: QueriesCtrl', function () {
 
     it('should make delete request with correct id and update queryResults', function () {
         $httpBackend.expectDELETE('api/queries/1').respond(200, {});
-        $httpBackend.expectGET('api/queries/').respond(200, queryResults);
+        $httpBackend.expectGET('api/users/reqHeader/queries').respond(200, queryResults);
 
         scope.deleteQuery(1);
         $httpBackend.flush();

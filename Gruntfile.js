@@ -31,7 +31,9 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
-      dist: 'dist'
+      dist: 'dist',
+      distnotify: 'distnotify',
+      notifyapp: 'notifyapp'
     },
     express: {
       options: {
@@ -161,6 +163,8 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
+            'db.digappdev.sqlite',
+            '*.log',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*',
             '!<%= yeoman.dist %>/.openshift',
@@ -168,7 +172,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      distnotify: '<%= yeoman.distnotify %>/*'
     },
 
     // Add vendor prefixed styles
@@ -377,6 +382,16 @@ module.exports = function (grunt) {
             'server/**/*'
           ]
         }]
+      },
+      distnotify: {
+        files: [
+          {
+            expand: true, 
+            cwd: '<%= yeoman.notifyapp %>', 
+            dest: '<%= yeoman.distnotify %>',
+            src: ['*.js', 'models/**/*', 'package.json', 'README.md', 'Dockerfile']
+          }
+        ]
       },
       styles: {
         expand: true,
@@ -607,8 +622,10 @@ module.exports = function (grunt) {
   grunt.registerTask('test', function(target) {
     if (target === 'server') {
       return grunt.task.run([
-        'env:all',
-        'env:test',
+        // env:all and env:test require mysql to be configured
+        // see server/config/mysql_setup_notes.txt
+        // 'env:all',
+        // 'env:test',
         'mochaTest'
       ]);
     }
@@ -648,6 +665,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'clean:distnotify',
     'injector:less', 
     'concurrent:dist',
     'injector',
@@ -658,6 +676,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
+    'copy:distnotify',
     'cdnify',
     'cssmin',
     'uglify',

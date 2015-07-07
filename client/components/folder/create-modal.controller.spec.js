@@ -19,7 +19,7 @@ describe('Controller: CreateModalCtrl', function () {
               dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
             user = {
-              get: jasmine.createSpy('user.get').andReturn({username: 'test'})
+              get: jasmine.createSpy('user.get').and.returnValue({username: 'test'})
             };
 
             folders = [

@@ -5,7 +5,7 @@
     <div class="col-sm-12 list-group-item search-bar">
       <div class="row search-header">
         <div class="col-sm-12 search-container-div">
-          <div class="row">
+          <div class="row search-bar">
             <div class="col-xs-10 controls controls-search">
               <form ng-submit="submit()">
                 <div class="input-group input-group-lg">
@@ -31,6 +31,12 @@
             </div>
           </div>
           <div class="row breadcrumb-box">
+	          <span ng-if="displayImageBreadcrumb">
+              <span class="search-facet-image">
+                <img style="float:left;" blurred-image ng-src="{{getActiveImageSearch().url}}" class="image-thumb-breadbox">
+                <i style="float:right;"class="fa fa-times-circle" ng-click="toggleImageSearchEnabled(getActiveImageSearch().url)"></i>
+              </span>
+            </span>
             <span ng-if="filterStates.withImagesOnly">
               <span class="search-facet">
                 With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>

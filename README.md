@@ -6,17 +6,9 @@ DIG is a visual analysis tool based on a faceted search engine that enables rapi
 - [Node.js]
 - [grunt-cli] installed globally (npm i -g grunt-cli)
 - [Bower] installed globally (npm i -g bower)
-- [MongoDB]
+- [MySQL]
 - [Elasticsearch]
 
-### MongoDB Notes
-
-MongoDB is used to store relevant data for users.
-
-When running in development mode:
-The necessary MongoDB collections are newly instantiated each time the application starts and auto populated with records specified in `server/config/seed.js`. 
-
-Similarly, in a production environment a user would be supplied in the request header, but in development, the header will be auto populated with the mock user specified in the seed.js file. 
 
 ### Elasticsearch Setup
 
@@ -61,19 +53,27 @@ Various application parameters can be configured via environment variables - the
 | PORT | 9000 | The port on which the application listens for browser requests |
 | EUI_SERVER_URL | 'http://localhost' | The base URL at which [Elasticsearch] can be found |
 | EUI_SERVER_PORT | 9200 | The port on which to connect to [Elasticsearch] |
-| EUI_SEARCH_INDEX | 'dig' | The name of the [Elasticsearch] index |
+| EUI_SEARCH_INDEX | 'dig-latest' | The name of the [Elasticsearch] index |
+| EUI_SEARCH_TYPE | 'WebPage' | The ElasticSearch document type |
 | BLUR_IMAGES | 'true' | Determines whether images linked to the [Elasticsearch] data are blurred in the user interface |
 | BLUR_PERCENT | 2.5 | The amount of image blurring |
-| MONGOHQ_URL | 'mongodb://localhost/dig-dev' | In development mode, this variable is ignored and the default value is used |
+| DB_USER |  | user used by application to connect to DB| (leave blank for dev/sqlite)
+| DB_PASS |  | password used by applicaion to connect to DB (leave blank for dev/sqlite) |
+| DB_HOST |  | hostname of db (leave blank for dev/sqlite) |
+| DB_PORT | 3306 | port for mysql db service |
+| ES_USER |  | user name for elasticsearch |
+| ES_PASS |  | user password for elasticsearch |
+| EUI_SERVER | 'localhost' |  |
+| MYSQL_ROOT_PASSWORD |  |  |
 
 
 ## Deployment
 
-To package the application for deployment:
-
   `grunt build # builds the application and prepares the dist/ directory`
 
-  `bash ./package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
+To package the application for deployment:
+
+  `bash ./scripts/package.sh # create a makeself archive that can be used to easily deploy dig` **(please note that this requires that makeself is installed on your system)**`
 
 The `package.sh` script creates `dig_deploy.sh`.  Running `dig_deploy.sh` will extract the dig application and download docker-compose into a directory called `dig/`.  Inside the `dig/` directory is `run.sh` which can be used to run the dig application as a daemon.
 

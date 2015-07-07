@@ -21,33 +21,38 @@
       </div>
       <ul id="queryResults" class="list-group">
         <li class="list-group-item" ng-repeat="query in queryResults track by $index">
-          <div ng-click="toggleListItemOpened(query._id)" class="query-result list-group-item-heading collapsed" tabindex="-1">
+          <div ng-click="toggleListItemOpened(query.id)" class="query-result list-group-item-heading collapsed" tabindex="-1">
             <div class="row">
               <div class="col-xs-9 col-sm-10 col-lg-11">
                 {{query.name}}
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
+                    <li>
+                      <span ng-if="query.notificationHasRun === false" class="notification-badge">
+                        New Results Available
+                      </span>
+                    </li>
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
-                    <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
+                    <li><button style="btn" ng-click="deleteQuery(query.id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
                 </span>
 
                 <div class="list-group-item-meta">
                   <span>Search Terms: {{query.digState.searchTerms | limitTo: 20}}{{query.digState.searchTerms.length > 20 ? '...' : ''}}</span>
-                  <span>Created: {{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
+                  <span>Created: {{query.createdAt | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                   <span>Last Run: {{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div collapse="!isListItemOpened(query._id)" class="list-group-item-text collapse">
+          <div collapse="!isListItemOpened(query.id)" class="list-group-item-text collapse">
             <div class="row">
               <div class="col-xs-9 col-sm-10 col-lg-11">
                 <h4>Name: {{query.name}}</h4>
                 <span class="pull-right">
                   <ul class="list-unstyled query-options horizontal-list">
                     <li><button style="btn" ng-click="runQuery(query)"><i class="fa fa-share"></i> Run</button></li>
-                    <li><button style="btn" ng-click="deleteQuery(query._id)"><i class="fa fa-trash-o"></i> Delete</button></li>
+                    <li><button style="btn" ng-click="deleteQuery(query.id)"><i class="fa fa-trash-o"></i> Delete</button></li>
                   </ul>
                 </span>
                 <div class="row">
@@ -92,7 +97,7 @@
                   <div class="col-sm-3 query-details">
                     <dl>
                       <dt>Created</dt>
-                      <dd>{{query.createDate | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
+                      <dd>{{query.createdAt | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
                     </dl>
                   </div>
                   <div class="col-sm-3 query-details">
@@ -101,12 +106,12 @@
                       <dd>{{query.lastRunDate | date:'MM/dd/yyyy HH:mm:ss'}}</dd>
                     </dl>
                   </div>
-<!--                   <div class="col-sm-3 query-details">
-  <label>Frequency of Execution</label><br/>
-  <select ng-options="option for option in frequencyOptions" ng-model="query.frequency"
-      ng-change="toggleFrequency(query._id, query.frequency)">
-  </select>
-</div> -->
+                  <div class="col-sm-3 query-details">
+                    <label>Frequency of Execution</label><br/>
+                    <select ng-options="option for option in frequencyOptions" ng-model="query.frequency"
+                        ng-change="toggleFrequency(query.id, query.frequency)">
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>

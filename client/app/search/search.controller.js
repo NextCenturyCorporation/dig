@@ -21,7 +21,7 @@ angular.module('digApp')
                       };
                   }, elasticUIState: function() {
                       return {
-                          queryState: $scope.indexVM.query.toJSON(),
+                        queryState: $scope.indexVM.query ? $scope.indexVM.query.toJSON() : {},
                           filterState: $scope.indexVM.filters.getAsFilter() ? $scope.indexVM.filters.getAsFilter().toJSON() : {}
                       };
                   }

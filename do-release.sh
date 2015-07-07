@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 ##
 ## Build a (mostly) clean-room package of the dig project
 ##
@@ -15,11 +15,13 @@ realpath_Linux() {
 
 #call the proper version based on your kernel type
 CURRENT_DIR=$(realpath_$(uname) $(dirname ${BASH_SOURCE[0]}) )
+
 BUILD_DIR=$(mktemp -d ${TMPDIR-/tmp}/dig_release.XXXXXXXX)
 CLONE_URL="https://github.com/NextCenturyCorporation/dig.git"
 BUMP_VER=dev
 PUSH_REQUIRED=0
 GIT_PUSH_OPTS=""
+DRY_RUN=0
 
 backup() {
     #backup some values so we can rollback if necessary
@@ -28,6 +30,7 @@ backup() {
 
 rollback() {
     echo "** Rolling back because something failed **"
+    cd ${CURRENT_DIR}
     echo "Deleting git tag: ${GIT_TAG}"
     git tag -d ${GIT_TAG}
     echo "Rolling back to commit: ${GIT_CURRENT}"
@@ -64,8 +67,12 @@ The versions are tagged in git
 -i Preminor
 -t Prepatch
 
-Passing no parameters performs a development build.
-The prerelease version is bumped and tagged in git
+Passing no parameters performs a development build in which the prerelease version is bumped.
+All builds after a pre{major,minor,patch} build has been launched, until the release is finalized (major,minor,patch} should be pre-release builds.
+do-release will tag the commit in git with the current version number.
+
+-d will trigger a dry-run in which changes will not be persisted to git or docker-hub
+
 -u force a development build to push the resulting image to docker hub
 EOF
 cleanup 0
@@ -73,7 +80,7 @@ cleanup 0
 
 get_options() {
     
-    while getopts ":Mmpucaitd" opt; do
+    while getopts ":Mmpuc:aitd" opt; do
 	case $opt in
 	    M)
 		BUMP_VER=maj
@@ -95,13 +102,15 @@ get_options() {
 		;;
 	    u)
 		echo "Forcing a push to docker-hub"
+		FORCE_PUSH_TO_DOCKER=1
 		;;
 	    d)
-		GIT_PUSH_OPTS="--dry-run"	
+		GIT_PUSH_OPTS="--dry-run"
+		DRY_RUN=1	
 		echo "*************************"
 		echo "* PERFORMING A DRY-RUN! *"
 		echo "*************************"
-		sleep 2s
+		sleep 1s
 		;;
 	    \?)
 		echo "INVALID OPTION: -$OPTARG" >&2
@@ -109,6 +118,10 @@ get_options() {
 		;;
 	    h)
 		help
+		;;
+	    c)
+		CONFDIR=$OPTARG
+		echo "Using ${CONFDIR} as config dir"
 		;;
 	esac
     done
@@ -145,6 +158,17 @@ sanity_check() {
 	cleanup 4
     fi
 
+    #Ensure we have makeself available
+    command -v makeself >/dev/null 2>&1 || {
+	echo "You do not have makeself installed. Cannot continue."
+	cleanup 10
+    }
+    
+    if [[ -z "${CONFDIR}" ]]; then
+	echo "You did not set the config directory with -c"
+	cleanup 20
+    fi
+
 }
 
 version() {
@@ -171,6 +195,19 @@ version() {
 	PUSH_TO_DOCKER=0
 	GIT_TAG=$(npm version prerelease)
     fi
+    
+    if [[ "$?" != 0 ]]; then
+	echo "Stale tag exists that needs to be removed"
+        cleanup 30
+    fi
+    
+    if [[ "$FORCE_PUSH_TO_DOCKER" -eq 1 ]]; then
+	PUSH_TO_DOCKER=1
+    fi
+
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+	PUSH_TO_DOCKER=0
+    fi
 
     if [[ $? != 0 ]]; then
 	echo "There was an error with npm version, cannot continue"
@@ -186,12 +223,14 @@ build() {
     cd ${BUILD_DIR}
     git clone ${CURRENT_DIR} dig
     cd dig
+    cp -r ${CONFDIR} conf
     npm install
     grunt build
-    ./package.sh $package_opts
+    ${BUILD_DIR}/dig/scripts/package.sh $package_opts
     cp dig_deploy.sh ${CURRENT_DIR}
     cd ${CURRENT_DIR}
     if [[ $UID != 0 ]]; then
+	echo "Deleting temporary build directory"
 	rm -rf ${BUILD_DIR}
     fi
 }
@@ -205,5 +244,10 @@ backup
 get_options $@
 sanity_check
 version
-push_new_version
 build
+if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo -e "DRY RUN COMPLETE\nNot pushing changes"
+    rollback
+else
+    push_new_version
+fi     

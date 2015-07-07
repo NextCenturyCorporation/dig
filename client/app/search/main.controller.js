@@ -122,6 +122,9 @@ angular.module('digApp')
       };
 
       $scope.submit = function() {
+        if($state.params.query && $scope.queryString.live !== $state.params.query.digState.searchTerms) {
+            $scope.clearNotification();
+        }
           $scope.selectedItems[$scope.selectedItemsKey] = [];
           $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
           $scope.queryString.submitted = $scope.queryString.live;
