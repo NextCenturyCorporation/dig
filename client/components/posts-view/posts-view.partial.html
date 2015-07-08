@@ -1,7 +1,7 @@
 <span ng-if="euiConfigs.threadFields">
   <div class="row">
     <div class="col-md-12">
-      <h4><span ng-bind-html="$eval(euiConfigs.threadFields.threadTitle)"></span></h4>
+      <h4><span ng-bind-html="$eval(euiConfigs.threadFields.title[0].field) || 'N/A'"></span></h4>
       <div class="row">
         <div class="col-sm-12" ng-repeat="section in euiConfigs.threadFields['full']">
           <display-desc-list doc="doc" section="section"></display-desc-list>

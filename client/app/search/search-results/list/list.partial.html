@@ -18,30 +18,31 @@
             </span> 
           </div>
           <div class="col-xs-7 col-sm-8 col-lg-9">
-            <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
-            <div class="list-group-item-meta">
-              <span ng-repeat="field in euiConfigs.listFields['short']">
-                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
-              </span>
-            </div>
+            <!--TODO: create config/directive to render correct template -->
+            <span ng-if="doc._source.a === 'Offer'">
+               <short-listing doc="doc" fields-to-render="euiConfigs.listFields"></short-listing>
+            </span>
+            <span ng-if="doc._source.a === 'Thread'">
+               <short-listing doc="doc" fields-to-render="euiConfigs.threadFields"></short-listing>
+            </span>
           </div>
           <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
               ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
             <span class="label label-default">NEW <i class="fa fa-inbox"></i></span>
           </h3>
         </div>
+
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <!--TODO: debug directive?-->
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
           <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
         </div>
-        <!--TODO: use doc.a field and create config/directive to render correct template -->
-        <span ng-if="euiConfigs.listFields['full']">
+        <!--TODO: create config/directive to render correct template, rename views? -->
+        <span ng-if="doc._source.a === 'Offer'">
           <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
         </span>
-        <span ng-if="euiConfigs.threadFields">
+        <span ng-if="doc._source.a === 'Thread'">
           <posts-view doc="doc"></posts-view>
         </span>
       </div>

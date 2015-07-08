@@ -980,6 +980,158 @@ var all = {
                     field: 'doc._source.description'
                 }
             }
+        },
+       'dig-atf-weapons-latest':{
+            facets: {
+                euiFilters: [],
+                //simFilter: {},
+                aggFilters: [{
+                    title: 'Weapons Mentioned',
+                    type: 'eui-aggregation',
+                    field: 'weapons_agg',
+                    terms: 'hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                    termsType: 'string',
+                    count: 15
+                },{
+                    title: 'Users',
+                    type: 'eui-aggregation',
+                    field: 'users_agg',
+                    terms: 'hasFeatureCollection.fromUser_histogram_feature.featureValue',
+                    termsType: 'string',
+                    count: 15
+                }]
+            },
+            highlight: {
+                fields: [
+                    'hasTitlePart.text',
+                    /*'hasBodyPart.text',
+                    'hasPost.dateCreated',
+                    'hasPost.hasTitlePart.text',
+                    'hasPost.hasBodyPart.text',
+                    'hasPost.hasSignaturePart.text'*/
+                ]
+            },
+/*            dateHistogram: {
+                field: 'hasPost.dateCreated'
+            },*/
+            listFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'At or From',
+                    field: 'doc._source.availableAtOrFrom.address.name || doc._source.availableAtOrFrom[0].address.name',
+                    classes: 'name'
+                },{
+                    title: 'Publisher',
+                    field: 'doc._source.publisher.name || doc._source.publisher[0].name',
+                    classes: 'publisher'
+                }],
+                full: {
+                    "1": {
+                        classes: 'offer-details',
+                        fields: [{
+                            title: 'Seller',
+                            field: 'doc._source.seller.description'
+                        },{
+                            title: 'Price',
+                            field: 'doc._source.price'
+                        },{
+                            title: 'Currency Type',
+                            field: 'doc._source.priceCurrency',
+                        },{
+                            title: 'Date',
+                            field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'At or From',
+                            field: 'doc._source.availableAtOrFrom.address.name'
+                        },{
+                            title: 'Publisher',
+                            field: 'doc._source.publisher.name'
+                        },{
+                            title: 'Description',
+                            field: 'doc._source.description'
+                        }]
+                    }
+                },
+                body: {
+                    title: 'Description',
+                    field: 'doc._source.description'
+                }
+
+            },
+            threadFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Dates Created',
+                    field: "doc._source.dateCreated_aggregated.value | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'Provider',
+                    field: 'doc._source.provider.name',
+                    classes: 'provider'
+                }],
+                full: {
+                    "1": {
+                        classes: 'thread-details',
+                        fields: [{
+                            title: 'Dates Created',
+                            field: 'doc._source.dateCreated_aggregated.value'
+                        },{
+                            title: 'Author Name',
+                            featureAggregation: 'doc._source.author_name_histogram',
+                            aggName: 'value',
+                            aggCount: 'count' 
+                        },{
+                            title: 'Provider',
+                            field: 'doc._source.provider.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.hasPost',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'hasTitlePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Date',
+                        field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        highlightArray: 'doc.highlight["hasPost.dateCreated"]',
+                        classes: 'date'
+                    },{
+                        title: 'Author',
+                        field: 'author.name',
+                        highlightArray: 'doc.highlight["hasPost.author.name"]',
+                        classes: 'author'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'hasBodyPart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
+                    },
+                    signature: {
+                        title: 'Signature',
+                        field: 'hasSignaturePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    }
+                }
+            }
         }
     }
 };
