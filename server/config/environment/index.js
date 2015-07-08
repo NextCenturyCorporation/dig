@@ -986,19 +986,19 @@ var all = {
                 euiFilters: [],
                 //simFilter: {},
                 aggFilters: [{
-                    title: 'Weapons Mentioned',
+                    title: 'Type',
+                    type: 'eui-aggregation',
+                    field: 'type_agg',
+                    terms: 'a',
+                    termsType: 'string',
+                    count: 5
+                },{
+                    title: 'Keywords',
                     type: 'eui-aggregation',
                     field: 'weapons_agg',
-                    terms: 'hasFeatureCollection.weaponsMentioned_histogram_feature.featureValue',
+                    terms: 'itemOffered.keywords',
                     termsType: 'string',
-                    count: 15
-                },{
-                    title: 'Users',
-                    type: 'eui-aggregation',
-                    field: 'users_agg',
-                    terms: 'hasFeatureCollection.fromUser_histogram_feature.featureValue',
-                    termsType: 'string',
-                    count: 15
+                    count: 10
                 }]
             },
             highlight: {
@@ -1077,7 +1077,7 @@ var all = {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text || doc._source.hasTitlePart[0].text',
                     section: 'title'
                 }],
                 short: [{
@@ -1111,7 +1111,7 @@ var all = {
                     subject: [{
                         title: 'Title',
                         type: 'title',
-                        field: 'hasTitlePart.text',
+                        field: 'hasTitlePart.text || hasTitlePart[0].text',
                         highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
                         section: 'title'
                     }],
