@@ -1006,6 +1006,20 @@ var all = {
                     terms: 'author_name_histogram.value',
                     termsType: 'string',
                     count: 10
+                },{
+                    title: 'Seller',
+                    type: 'eui-aggregation',
+                    field: 'seller_agg',
+                    terms: 'seller.description',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Location',
+                    type: 'eui-aggregation',
+                    field: 'locations_agg',
+                    terms: 'availableAtOrFrom.address.name',
+                    termsType: 'string',
+                    count: 10
                 }]
             },
             highlight: {
