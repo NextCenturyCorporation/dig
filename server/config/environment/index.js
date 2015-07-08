@@ -1056,6 +1056,12 @@ var all = {
                             title: 'Publisher',
                             field: 'doc._source.publisher.name'
                         },{
+                            title: 'Category',
+                            field: 'doc._source.itemOffered.category'
+                        },{
+                            title: 'Keywords',
+                            featureArray: 'doc._source.itemOffered.keywords'
+                        },{
                             title: 'Description',
                             field: 'doc._source.description'
                         }]

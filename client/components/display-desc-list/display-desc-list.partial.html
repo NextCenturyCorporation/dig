@@ -2,7 +2,10 @@
   <dt ng-repeat-start="field in section.fields">{{field.title}}</dt>
   <dd ng-if="$eval(field.field)">{{$eval(field.field)}}</dd>
   <dd ng-if="$eval(field.featureArray + '.length')"
-   ng-repeat="item in $eval(field.featureArray) track by $index">{{$eval('item.' + field.featureValue)}}</dd>
+   ng-repeat="item in $eval(field.featureArray) track by $index">
+    <span ng-if="field.featureValue">{{$eval('item.' + field.featureValue)}}</span>
+    <span ng-if="!field.featureValue">{{item}}</span>  
+  </dd>
   <dd ng-if="$eval(field.featureAggregation)">
     <span ng-repeat="item in $eval(field.featureAggregation) track by $index">
       <b>{{$eval('item.' + field.aggCount)}}</b> - {{$eval('item.' + field.aggName)}}<span ng-if="$index + 1 < $eval(field.featureAggregation + '.length')">, </span>
