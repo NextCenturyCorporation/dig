@@ -999,6 +999,13 @@ var all = {
                     terms: 'itemOffered.keywords',
                     termsType: 'string',
                     count: 10
+                },{
+                    title: 'Authors',
+                    type: 'eui-aggregation',
+                    field: 'authors_agg',
+                    terms: 'author_name_histogram.value',
+                    termsType: 'string',
+                    count: 10
                 }]
             },
             highlight: {
