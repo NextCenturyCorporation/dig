@@ -1034,7 +1034,7 @@ var all = {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.name',
+                    field: 'doc.highlight["title"][0] || doc._source.title',
                     section: 'title'
                 }],
                 short: [{
@@ -1068,6 +1068,11 @@ var all = {
                         },{
                             title: 'Currency Type',
                             field: 'doc._source.priceCurrency',
+                            hideIfMissing: true
+                        },{
+                            title: 'Price Specification',
+                            featureArray: 'doc._source.priceSpecification',
+                            featureValues: ['price', 'priceCurrency'],
                             hideIfMissing: true
                         },{
                             title: 'Date',
