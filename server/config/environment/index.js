@@ -1071,10 +1071,12 @@ var all = {
                             hideIfMissing: true
                         },{
                             title: 'Price',
-                            field: 'doc._source.price'
+                            field: 'doc._source.price',
+                            hideIfMissing: true
                         },{
                             title: 'Currency Type',
                             field: 'doc._source.priceCurrency',
+                            hideIfMissing: true
                         },{
                             title: 'Date',
                             field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
