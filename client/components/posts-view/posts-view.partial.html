@@ -21,7 +21,7 @@
           <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.threadFields.postFields.field)">
             <span class="post-title" 
               ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields['subject'][0].field), 
-                euiConfigs.threadFields.postFields['subject'][0].highlightArray)"></span>
+                $eval(euiConfigs.threadFields.postFields['subject'][0].highlightArray))"></span>
             <div class="list-group-item-meta">
               <span ng-repeat="field in euiConfigs.threadFields.postFields['short']">
                 <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>

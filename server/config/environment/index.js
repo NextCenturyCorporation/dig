@@ -875,51 +875,51 @@ var all = {
                     }
                 },
                 postFields: {
-                field: 'doc._source.hasPost',
-                subject: [{
-                    title: 'Title',
-                    type: 'title',
-                    field: 'hasTitlePart.text',
-                    highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
-                    section: 'title'
-                }],
-                short: [{
-                    title: 'Date',
-                    field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
-                    highlightArray: 'doc.highlight["hasPost.dateCreated"]',
-                    classes: 'date'
-                },{
-                    title: 'From User',
-                    field: 'hasFeatureCollection.fromUser_feature.fromUser',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.fromUser_feature.fromUser"]',
-                    classes: 'from-user'
-                },{
-                    title: 'Address',
-                    field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.place_postalAddress_feature.place_postalAddress"]',
-                    classes: 'location'
-                },{
-                    title: 'Provider',
-                    field: 'hasFeatureCollection.provider_name_feature.provider_name',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.provider_name_feature.provider_name"]',
-                    classes: 'provider'
-                },{
-                    title: 'Weapons Mentioned',
-                    field: 'hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
-                    highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned"]',
-                    classes: 'provider'
-                }],
-                body: {
-                    title: 'Body',
-                    field: 'hasBodyPart.text',
-                    highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
-                },
-                signature: {
-                    title: 'Signature',
-                    field: 'hasSignaturePart.text',
-                    highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    field: 'doc._source.hasPost',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'hasTitlePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Date',
+                        field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        highlightArray: 'doc.highlight["hasPost.dateCreated"]',
+                        classes: 'date'
+                    },{
+                        title: 'From User',
+                        field: 'hasFeatureCollection.fromUser_feature.fromUser',
+                        highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.fromUser_feature.fromUser"]',
+                        classes: 'from-user'
+                    },{
+                        title: 'Address',
+                        field: 'hasFeatureCollection.place_postalAddress_feature.place_postalAddress',
+                        highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.place_postalAddress_feature.place_postalAddress"]',
+                        classes: 'location'
+                    },{
+                        title: 'Provider',
+                        field: 'hasFeatureCollection.provider_name_feature.provider_name',
+                        highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.provider_name_feature.provider_name"]',
+                        classes: 'provider'
+                    },{
+                        title: 'Weapons Mentioned',
+                        field: 'hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned',
+                        highlightArray: 'doc.highlight["hasPost.hasFeatureCollection.weaponsMentioned_feature.weaponsMentioned"]',
+                        classes: 'provider'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'hasBodyPart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
+                    },
+                    signature: {
+                        title: 'Signature',
+                        field: 'hasSignaturePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    }
                 }
-            }
             }
         },
         'dig-atf-weapons-01':{
@@ -1027,9 +1027,12 @@ var all = {
                     'hasTitlePart.text',
                     /*'hasBodyPart.text',
                     'hasPost.dateCreated',
+                    'hasPost',
                     'hasPost.hasTitlePart.text',
                     'hasPost.hasBodyPart.text',
-                    'hasPost.hasSignaturePart.text'*/
+                    'hasPost.hasSignaturePart.text',
+                    'hasPost.author.name',
+                    'hasPost.author'*/       
                 ]
             },
 /*            dateHistogram: {
@@ -1059,8 +1062,13 @@ var all = {
                     "1": {
                         classes: 'offer-details',
                         fields: [{
+                            title: 'Buyer',
+                            field: 'doc._source.buyer.description',
+                            hideIfMissing: true
+                        },{
                             title: 'Seller',
-                            field: 'doc._source.seller.description'
+                            field: 'doc._source.seller.description',
+                            hideIfMissing: true
                         },{
                             title: 'Price',
                             field: 'doc._source.price'
