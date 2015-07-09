@@ -10,16 +10,14 @@
   </dd>
   <dd ng-if="$eval(field.featureArray + '.length')"
    ng-repeat="item in $eval(field.featureArray) track by $index">
-    <span ng-if="field.featureValue">
-      <span ng-bind-html="highlightCheck($eval('item.' + field.featureValue), $eval(field.highlightArray))"></span>
+    <span ng-if="field.featureValue" 
+      ng-bind-html="highlightCheck($eval('item.' + field.featureValue), $eval(field.highlightArray))">
     </span>
-    <span ng-if="!field.featureValue && !field.featureValues">
-      <span ng-bind-html="highlightCheck(item, $eval(field.highlightArray))"></span>
+    <span ng-if="!field.featureValue && !field.featureValues" 
+      ng-bind-html="highlightCheck(item, $eval(field.highlightArray))">
     </span>
-    <span ng-if="field.featureValues">
-      <span ng-repeat="value in field.featureValues">
-        {{$eval('item.' + value)}}
-      </span>
+    <span ng-if="field.featureValues" ng-repeat="value in field.featureValues">
+      {{$eval('item.' + value)}}
     </span>
   </dd>
   <dd ng-if="$eval(field.featureAggregation)">
