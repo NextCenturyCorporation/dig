@@ -20,6 +20,9 @@
         <div class="col-sm-6" ng-repeat="section in euiConfigs.listFields['full']">
           <display-desc-list doc="doc" section="section"></display-desc-list>
         </div>
+        <div class="col-sm-12">
+          <display-desc-list doc="doc" section="euiConfigs.listFields.body"></display-desc-list>
+        </div>
       </div>
       <button ng-if="euiConfigs.detailFields" type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">
         View Details

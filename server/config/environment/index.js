@@ -1081,24 +1081,27 @@ var all = {
                         },{
                             title: 'At or From',
                             field: 'doc._source.availableAtOrFrom.address.name'
-                        },{
-                            title: 'Publisher',
-                            field: 'doc._source.publisher.name'
-                        },{
+                        }]
+                    },
+                    "2": {
+                        classes: 'more-details',
+                        fields: [{
                             title: 'Category',
                             field: 'doc._source.itemOffered.category'
                         },{
                             title: 'Keywords',
                             featureArray: 'doc._source.itemOffered.keywords'
                         },{
-                            title: 'Description',
-                            field: 'doc._source.description'
+                            title: 'Publisher',
+                            field: 'doc._source.publisher.name'
                         }]
                     }
                 },
                 body: {
-                    title: 'Description',
-                    field: 'doc._source.description'
+                    fields: [{
+                        title: 'Description',
+                        field: 'doc._source.description'
+                    }]
                 }
 
             },
