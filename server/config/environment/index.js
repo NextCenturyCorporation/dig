@@ -1000,7 +1000,7 @@ var all = {
                     termsType: 'string',
                     count: 10
                 },{
-                    title: 'Authors',
+                    title: 'Author Names',
                     type: 'eui-aggregation',
                     field: 'authors_agg',
                     terms: 'author_name_histogram.value',
@@ -1153,10 +1153,16 @@ var all = {
                         highlightArray: 'doc.highlight["hasPost.dateCreated"]',
                         classes: 'date'
                     },{
-                        title: 'Author',
+                        title: 'Author Name',
                         field: 'author.name',
                         highlightArray: 'doc.highlight["hasPost.author.name"]',
                         classes: 'author'
+                    },{
+                        title: 'Author Identifier',
+                        field: 'author.identifier.name',
+                        highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
+                        classes: 'author'
+
                     }],
                     body: {
                         title: 'Body',
