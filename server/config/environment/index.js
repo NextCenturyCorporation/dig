@@ -1034,7 +1034,7 @@ var all = {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc.highlight["title"][0] || doc._source.title',
+                    field: 'doc.highlight["name"][0] || doc._source.name',
                     section: 'title'
                 }],
                 short: [{
