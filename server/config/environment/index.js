@@ -1071,6 +1071,7 @@ var all = {
                             hideIfMissing: true
                         },{
                             title: 'Price Specification',
+                            field: 'doc._source.priceSpecification',
                             featureArray: 'doc._source.priceSpecification',
                             featureValues: ['price', 'priceCurrency'],
                             hideIfMissing: true
