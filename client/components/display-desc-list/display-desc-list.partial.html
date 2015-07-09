@@ -1,6 +1,8 @@
 <dl class="{{section.classes}}">
   <dt ng-repeat-start="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray) || $eval(field.featureAggregation)'>{{field.title}}</dt>
-  <dd ng-if="$eval(field.field)"><span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span></dd>
+  <dd ng-if="$eval(field.field)">
+    <span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span>
+  </dd>
   <dd ng-if="$eval(field.featureArray + '.length')"
    ng-repeat="item in $eval(field.featureArray) track by $index">
     <span ng-if="field.featureValue">

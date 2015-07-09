@@ -15,6 +15,10 @@ angular.module('digApp.directives')
         templateUrl: 'components/expanded-listing-view/expanded-listing-view.partial.html',
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
+
+            $scope.getFirstAtfImageUrl = function(doc) {
+                return doc._source.itemOffered.image[0].url || doc._source.itemOffered.image.url;
+            };
         }
     };
 });

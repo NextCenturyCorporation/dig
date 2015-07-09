@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-md-5 col-lg-4 text-center">
       <span ng-if="doc._source.hasImagePart">
+      <!--doc._source.itemOffered.image & getFirstAtfImageUrl-->
         <div class="image-with-caption">
           <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
           <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
