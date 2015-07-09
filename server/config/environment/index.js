@@ -1024,15 +1024,7 @@ var all = {
             },
             highlight: {
                 fields: [
-                    'hasTitlePart.text',
-                    /*'hasBodyPart.text',
-                    'hasPost.dateCreated',
-                    'hasPost',
-                    'hasPost.hasTitlePart.text',
-                    'hasPost.hasBodyPart.text',
-                    'hasPost.hasSignaturePart.text',
-                    'hasPost.author.name',
-                    'hasPost.author'*/       
+                    '*'
                 ]
             },
 /*            dateHistogram: {
@@ -1063,11 +1055,11 @@ var all = {
                         classes: 'offer-details',
                         fields: [{
                             title: 'Buyer',
-                            field: 'doc._source.buyer.description',
+                            field: 'doc.highlight["buyer.description"][0] || doc._source.buyer.description',
                             hideIfMissing: true
                         },{
                             title: 'Seller',
-                            field: 'doc._source.seller.description',
+                            field: 'doc.highlight["seller.description"][0] || doc._source.seller.description',
                             hideIfMissing: true
                         },{
                             title: 'Price',
@@ -1092,7 +1084,8 @@ var all = {
                             field: 'doc._source.itemOffered.category'
                         },{
                             title: 'Keywords',
-                            featureArray: 'doc._source.itemOffered.keywords'
+                            featureArray: 'doc._source.itemOffered.keywords',
+                            highlightArray: 'doc.highlight["itemOffered.keywords"]'
                         },{
                             title: 'Publisher',
                             field: 'doc._source.publisher.name'
@@ -1102,7 +1095,7 @@ var all = {
                 body: {
                     fields: [{
                         title: 'Description',
-                        field: 'doc._source.description'
+                        field: 'doc.highlight["description"][0] || doc._source.description'
                     }]
                 }
 

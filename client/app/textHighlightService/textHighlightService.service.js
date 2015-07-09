@@ -46,4 +46,15 @@ angular.module('digApp.services')
         return $sce.trustAsHtml(String(field).replace(/<(?!\/?mark\s*\/?)[^>]+>/gm, ''));
     };
 
+    // todo - refactor
+    svc.stripOtherHtmlTags = function(field) {
+        if(!field) {
+            return field;
+        } else {
+            // return field with all html tags except tags used for highlighting striped out
+            return $sce.trustAsHtml(String(field).replace(/<(?!\/?mark\s*\/?)[^>]+>/gm, ''));
+        }
+
+    };
+
 });
