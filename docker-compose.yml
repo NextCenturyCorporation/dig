@@ -1,5 +1,5 @@
 digapp:
-  image: digmemex/digapp:1.0.5
+  image: digmemex/digapp:1.0.6
   ports:
     - "8080:8080"
   links:
@@ -64,13 +64,3 @@ nginx:
     - ./conf/nginx/.htpasswd:/etc/nginx/.htpasswd
     - ./conf/nginx_sites_enabled/dig:/etc/nginx/conf.d/default.conf
     - ./logs/nginx:/var/log/nginx
-
-mongo:
-  image: mongo
-  volumes_from:
-    - mongodata
-
-mongodata:
-  image: busybox
-  volumes:
-    - /data/db/
