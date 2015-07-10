@@ -38,13 +38,7 @@
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
           <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
         </div>
-        <!--TODO: create config/directive to render correct template, rename views? -->
-        <span ng-if="doc._source.a === 'Offer'">
-          <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
-        </span>
-        <span ng-if="doc._source.a === 'Thread'">
-          <posts-view doc="doc"></posts-view>
-        </span>
+        <div render-template></div render-template>
       </div>
     </li>
   </ul>

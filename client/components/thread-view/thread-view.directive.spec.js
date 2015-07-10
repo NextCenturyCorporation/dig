@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: postsView', function () {
+describe('Directive: threadsView', function () {
 
     // load the necessary modules
     beforeEach(module('digApp'));
-    beforeEach(module('components/posts-view/posts-view.partial.html'));
+    beforeEach(module('components/threads-view/threads-view.partial.html'));
 
     var scope, element, euiConfigs, $httpBackend;
 
@@ -27,7 +27,7 @@ describe('Directive: postsView', function () {
 
     it('should initialize all fields to the appropriate values', function () {
         inject(function ($compile) {
-            element = angular.element('<posts-view doc="doc"></posts-view>');
+            element = angular.element('<threads-view doc="doc"></threads-view>');
 
             $compile(element)(scope);
             element.scope().$digest();

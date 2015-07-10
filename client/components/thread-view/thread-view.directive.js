@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('postsView', function(euiConfigs, textHighlightService) {
+.directive('threadView', function(euiConfigs, textHighlightService) {
     return {
-        restrict: 'E',
+        restrict: 'EA',
         scope: {
             doc: '='
         },
-        templateUrl: 'components/posts-view/posts-view.partial.html',
+        templateUrl: 'components/thread-view/thread-view.partial.html',
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
 
