@@ -39,9 +39,9 @@ exports.index = function (req, res) {
         queries.forEach(function(query) {
             desQueries.push(deserialize(query));
         });
-        res.json(200, desQueries);
+        res.status(200).json(desQueries);
     }).catch(function(error) {
-        res.json(400, error);
+        res.status(400).json(error);
     });
 }
 
@@ -56,9 +56,9 @@ exports.notifications = function (req, res) {
         queries.forEach(function(query) {
             desQueries.push(deserialize(query));
         });
-        res.json(200, desQueries);
+        res.status(200).json(desQueries);
     }).catch(function(error) {
-        res.json(400, error);
+        res.status(400).json(error);
     });
 }
 
@@ -66,9 +66,9 @@ exports.show = function (req, res) {
     models.Query.find({
         where: {id: req.params.queryid}
     }).then(function(query){
-        res.json(200, deserialize(query));
+        res.status(200).json(deserialize(query));
     }).catch(function(error) {
-        res.json(404, error);
+        res.status(404).json(error);
     });
 }
 
@@ -83,13 +83,13 @@ exports.create = function (req, res) {
         models.Query.create(serialize(req.body))
         .then(function(query) {
             query.setUser(user).then(function() {
-                res.json(201, query);
+                res.status(201).json(query);
             });
         }).catch(function (error) {
-            res.json(404, error);
+            res.status(404).json(error);
         });
     }).catch(function (error) {
-        res.json(404, error);
+        res.status(404).json(error);
     });
 }
 
@@ -101,7 +101,7 @@ exports.update = function (req, res) {
         res.status(204).end();
     }).catch(function(error) {
         console.log(error);
-        res.json(404, error);
+        res.status(404).json(error);
     });
 }
 

@@ -17,21 +17,21 @@ exports.index = function(req, res) {
   if(req.headers.user == "test") {
     return res.json(folders);
   } else {
-    return res.send(404);
+    return res.status(404).end();
   }
 };
 
 // Get a single folder
 exports.show = function(req, res) {
   if(req.headers.user !== "test") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   var id = parseInt(req.params.id);
   var index = findIndex(id);
 
   if(index == -1) {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   return res.json(folders[index]);
@@ -46,14 +46,14 @@ exports.create = function(req, res) {
   //    - adding itself as its child
   if(req.body.name == "ROOT" || req.headers.user !== "test" ||
       req.body.parentId == nextIndex || req.body.childIds.indexOf(nextIndex) != -1) {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   var parentIndex = findIndex(parseInt(req.body.parentId));
 
   // Prevent adding with unknown parent and adding folders within themselves
   if(parentIndex == -1 || findIDInChildren(parentIndex, req.body.childIds)) {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   // Create new folder with new _id
@@ -81,7 +81,7 @@ exports.create = function(req, res) {
     }
   }
 
-  return res.json(201, folders[index]);
+  return res.status(201).json(folders[index]);
 };
 
 // Updates an existing folder in the DB
@@ -89,7 +89,7 @@ exports.update = function(req, res) {
   // Prevents changing name to ROOT (or changing ROOT folder in general) and
   // changing another user's folders
   if(req.body.name == "ROOT" || req.headers.user !== "test") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   var id = parseInt(req.params.id);
@@ -101,10 +101,10 @@ exports.update = function(req, res) {
   //    - adding itself as its parent
   //    - moving itself to one of its subfolders
   if(index == -1) {
-    return res.send(404);
+    return res.status(404).end();
   } else if(folders[index].name == "ROOT" ||
       req.body.parentId == id || findIDInChildren(req.body.parentId, folders[index].childIds)) {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   // Remove folder reference in its parent folder
@@ -150,7 +150,7 @@ exports.update = function(req, res) {
   var newParentIndex = findIndex(folders[index].parentId);
   folders[newParentIndex].childIds.push(id);
 
-  return res.json(200, folders[index]);
+  return res.status(200).json(folders[index]);
 };
 
 // Removes items in an existing folder in the DB
@@ -158,7 +158,7 @@ exports.removeItems = function(req, res) {
   // Prevents changing name to ROOT (or changing ROOT folder in general) and
   // changing another user's folders
   if(req.body.name == "ROOT" || req.headers.user !== "test") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   var id = parseInt(req.params.id);
@@ -168,9 +168,9 @@ exports.removeItems = function(req, res) {
   //    - updating non-existant folder
   //    - changing ROOT folder
   if(index == -1) {
-    return res.send(404);
+    return res.status(404).end();
   } else if(folders[index].name == "ROOT") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   // Check child folder ids are valid
@@ -182,7 +182,7 @@ exports.removeItems = function(req, res) {
       }
     }
     if(invalidChildren) {
-      return res.send(404);
+      return res.status(404).end();
     }
   }
 
@@ -212,13 +212,13 @@ exports.removeItems = function(req, res) {
     removeChildren(req.body.childIds);
   }
 
-  return res.json(200, folders[findIndex(id)]);
+  return res.status(200).json(folders[findIndex(id)]);
 };
 
 // Deletes a folder from the DB
 exports.destroy = function(req, res) {
   if(req.headers.user !== "test") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   var id = parseInt(req.params.id);
@@ -226,9 +226,9 @@ exports.destroy = function(req, res) {
 
   // Prevents removing unknown folder and removing the ROOT folder
   if(index == -1) {
-    return res.send(404);
+    return res.status(404).end();
   } else if(folders[index].name == "ROOT") {
-    return res.send(404);
+    return res.status(404).end();
   }
 
   // Remove folder reference in its parent folder
@@ -241,7 +241,7 @@ exports.destroy = function(req, res) {
   // Remove folder itself
   folders.splice(findIndex(id), 1);
 
-  return res.send(204);
+  return res.sendStatus(204).end();
 };
 
 // Finds the id in the given children (recursively).
