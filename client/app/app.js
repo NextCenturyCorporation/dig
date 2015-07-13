@@ -33,7 +33,8 @@ angular.element(document).ready(function() {
 
         var euiConfigs = (config.euiConfigs || {
             facets: [],
-            listFields: [],
+            threadFields: [],
+            offerFields: [],
             detailFields: []
         });
         digApp.constant('euiConfigs', euiConfigs);
@@ -57,7 +58,8 @@ angular.element(document).ready(function() {
         digApp.constant('euiSearchIndex', 'dig');
         digApp.constant('euiConfigs', {
             facets: [],
-            listFields: [],
+            threadFields: [],
+            offerFields: [],
             detailFields: []
         });
         digApp.constant('simHost', 'http://localhost:3001');

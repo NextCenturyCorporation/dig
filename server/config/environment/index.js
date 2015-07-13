@@ -135,7 +135,7 @@ var all = {
                 'title'
                 ]
             },
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -390,7 +390,7 @@ var all = {
             lastUpdateQuery: {
                 field: 'dateCreated'
             },
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -708,7 +708,7 @@ var all = {
                 }]
             },
 
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -827,7 +827,7 @@ var all = {
             dateHistogram: {
                 field: 'hasPost.dateCreated'
             },
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -928,7 +928,7 @@ var all = {
                 //simFilter: {},
                 aggFilters: []
             },
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -1030,7 +1030,7 @@ var all = {
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/
-            listFields: {
+            offerFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',

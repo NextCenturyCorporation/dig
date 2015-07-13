@@ -30,6 +30,11 @@ angular.module('digApp.directives')
                 // Use the ES document type to determine which view to render.
                 var docType = $scope.doc._source.a.toLowerCase();
 
+                // Temporary workaround until all data sets have doc._source.a field set to appropriate schema
+                if(docType === 'webpage') {
+                    docType = 'offer';
+                }
+
                 if($scope.templateConfigs && $scope.templateConfigs[docType]) {
 
                     var viewElement = document.createElement('div');

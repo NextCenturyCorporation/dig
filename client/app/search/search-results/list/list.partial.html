@@ -18,13 +18,7 @@
             </span> 
           </div>
           <div class="col-xs-7 col-sm-8 col-lg-9">
-            <!--TODO: create config/directive to render correct template -->
-            <span ng-if="doc._source.a === 'Offer'">
-               <short-listing doc="doc" fields-to-render="euiConfigs.listFields"></short-listing>
-            </span>
-            <span ng-if="doc._source.a === 'Thread'">
-               <short-listing doc="doc" fields-to-render="euiConfigs.threadFields"></short-listing>
-            </span>
+            <short-listing doc="doc"></short-listing>
           </div>
           <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
               ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
@@ -38,7 +32,7 @@
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
           <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
         </div>
-        <div render-template></div render-template>
+        <div render-view-template></div render-view-template>
       </div>
     </li>
   </ul>
