@@ -15,7 +15,7 @@ exports.index = function (req, res) {
     //     include: [ models.Query ]
     // }
     ).then(function(users) {
-        res.json(200, users);
+        res.status(200).json(users);
     });
 };
 
@@ -24,18 +24,18 @@ exports.show = function (req, res) {
     models.User.findOrCreate({
         where: {username: req.params.username}
     }).spread(function(user, created) {
-        res.json(200, user);
+        res.status(200).json(user);
     }).catch(function(error) {
-        res.json(400, error);
+        res.status(400).json(error);
     });
 }
 
 exports.create = function (req, res) {
     models.User.create(req.body)
     .then(function(newuser) {
-        res.json(201, newuser);
+        res.status(201).json(newuser);        
     }).catch(function(error) {
-        res.json(404, error);
+        res.status(404).json(error);        
     });
 }
 
@@ -47,7 +47,7 @@ exports.update = function (req, res) {
     ).then(function(user) {
         res.status(204).end();
     }).catch(function(error) {
-        res.json(404, error);
+        res.status(404).json(error);               
     });
 }
 
@@ -65,7 +65,7 @@ exports.delete = function (req, res) {
         }
     })
     .catch(function(error) {
-        res.json(404, error);
+        res.status(404).json(error);               
     });
 }
 
@@ -80,9 +80,9 @@ exports.notificationCount = function (req, res) {
         type: sequelize.QueryTypes.SELECT })
     .then(function(results) {
         var count = results[0].notrun;
-        res.json(200, {notRunCount: count});
+        res.status(200).json({notRunCount: count});               
     }).catch(function(error) {
-        res.json(400, error);
+        res.status(400).json(error);               
     });    
 }
 
