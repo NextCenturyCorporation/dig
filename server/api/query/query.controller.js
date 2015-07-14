@@ -14,7 +14,7 @@ var models = require('../../models');
 var setUserName = function (req) {
     if (req.params.username === 'reqHeader') {
         req.params.username = req.headers.user;
-    }    
+    }
 }
 
 var deserialize = function (query) {

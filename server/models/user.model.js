@@ -23,7 +23,11 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 User.hasMany(models.Query, {onDelete: 'CASCADE'});
-                User.hasMany(models.Folder, {onDelete: 'CASCADE'});
+                User.hasOne(models.Folder, 
+                {
+                    as: 'RootFolder', 
+                    onDelete: 'CASCADE'
+                });
             }
         }
     });
