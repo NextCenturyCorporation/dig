@@ -992,6 +992,15 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
+                },
+                // TODO: update provider.name to publisher.name
+                {
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'provider.name',
+                    termsType: 'string',
+                    count: 10
                 },{
                     title: 'Keywords',
                     type: 'eui-aggregation',
