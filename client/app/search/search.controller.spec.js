@@ -553,6 +553,49 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.notificationLastRun).toBe(undefined);
     });
 
+    it('should initialize variables based on state params and call submit based on searchTerms param', function() {
+        inject(function($controller) {
+            state.current.name = 'search.results.list';
+            state.params = {searchTerms: 'test'};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            spyOn(scope, 'submit');
+
+        });
+
+        scope.init();
+        expect(scope.queryString.live).toBe(state.params.searchTerms);
+        expect(scope.submit).toHaveBeenCalled();
+        expect(scope.submit.calls.count()).toBe(1);
+    });
+
+    it('should initialize variables based on searchTerms param but not call submit', function() {
+        inject(function($controller) {
+            state.current.name = 'search.not.right.view';
+            state.params = {searchTerms: 'test'};
+
+            SearchCtrl = $controller('SearchCtrl', {
+                $scope: scope,
+                $state: state,
+                $modal: modal,
+                blurImageService: blurImageSvcMock
+            });
+
+            spyOn(scope, 'submit');
+
+        });
+
+        scope.init();
+        expect(scope.queryString.live).toBe(state.params.searchTerms);
+        expect(scope.submit).not.toHaveBeenCalled();
+    });
+
     it('should initialize variables based on state params and call submit based on locationChangeSuccess', function() {
         inject(function($controller) {
             state.current.name = 'search.results.list';
