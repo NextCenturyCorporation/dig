@@ -419,7 +419,8 @@ describe('Controller: SearchCtrl', function () {
             $provide.constant('euiSearchIndex', 'dig');
             $provide.constant('euiConfigs', {
                 facets: [],
-                listFields: [],
+                offerFields: [],
+                threadFields: [],
                 detailsFields: []
             });
             $provide.constant('includeMissingDefault', false);

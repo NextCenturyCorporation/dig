@@ -1,0 +1,46 @@
+<span ng-if="euiConfigs.threadFields">
+  <div class="row">
+    <div class="col-md-12">
+      <h4><span ng-bind-html="$eval(euiConfigs.threadFields.title[0].field) || 'N/A'"></span></h4>
+      <div class="row">
+        <div class="col-sm-12" ng-repeat="section in euiConfigs.threadFields['full']">
+          <display-desc-list doc="doc" section="section"></display-desc-list>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <label class="post-label">Posts</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12"> 
+      <div class="posts">
+        <ul class="post-list-group list-unstyled">
+          <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.threadFields.postFields.field)">
+            <span class="post-title" 
+              ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields['subject'][0].field), 
+                $eval(euiConfigs.threadFields.postFields['subject'][0].highlightArray))"></span>
+            <div class="list-group-item-meta">
+              <span ng-repeat="field in euiConfigs.threadFields.postFields['short']">
+                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                <span class="{{field.classes}}" 
+                  ng-bind-html="highlightCheck($eval('item.' + field.field), $eval(field.highlightArray)) || 'N/A'">
+                </span>
+            </span>                
+            </div>
+            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields.body.field), 
+              $eval(euiConfigs.threadFields.postFields.body.highlightArray))"></span>
+            <span ng-if="$eval('item.' + euiConfigs.threadFields.postFields.signature.field)">
+              <hr>
+              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields.signature.field), 
+                $eval(euiConfigs.threadFields.postFields.signature.highlightArray))">
+              </span>
+            </span>
+          </li>
+        </ul>  
+      </div>
+    </div>
+  </div>
+</span>

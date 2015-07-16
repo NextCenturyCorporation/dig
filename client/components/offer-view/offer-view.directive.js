@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('expandedListingView', function(euiConfigs) {
+.directive('offerView', function(euiConfigs) {
     return {
-        restrict: 'E',
+        restrict: 'EA',
         scope: {
             doc: '=',
             parentState: '@',
@@ -12,9 +12,13 @@ angular.module('digApp.directives')
             facets: '=',
             imageSearch: '='
         },
-        templateUrl: 'components/expanded-listing-view/expanded-listing-view.partial.html',
+        templateUrl: 'components/offer-view/offer-view.partial.html',
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
+
+            $scope.getFirstAtfImageUrl = function(doc) {
+                return doc._source.itemOffered.image[0].url || doc._source.itemOffered.image.url;
+            };
         }
     };
 });

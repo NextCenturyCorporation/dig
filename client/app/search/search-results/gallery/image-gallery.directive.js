@@ -22,9 +22,9 @@ angular.module('digApp.directives')
                 addAfterRule(leftPos);
 
                 $('#gallery-expander').remove();
-                insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" class="gallery-item-expanded" ' +
+                insertAfterEl.after($compile('<div offer-view id="gallery-expander" class="gallery-item-expanded" ' +
                 'doc="indexVM.results.hits.hits[' + docNum + ']" get-display-image-src="getDisplayImageSrc" ' +
-                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></expanded-listing-view>')($scope));
+                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></div>')($scope));
             };
 
             $scope.renderExpander = function(clickEvent) {
