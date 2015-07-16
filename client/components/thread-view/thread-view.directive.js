@@ -8,24 +8,6 @@ angular.module('digApp.directives')
             doc: '='
         },
         templateUrl: 'components/thread-view/thread-view.partial.html',
-        controller: function($scope) {
-
-            $scope.getArray = function(structure) {
-               var arrToReturn = [];
-
-                if(structure) {
-                    for(var i = 0; i < structure.length; i++) {
-                        arrToReturn.push(structure[i].count);
-                    }                
-                }
-
-                return arrToReturn;
-            };
-
-            /* jshint camelcase:false */
-            $scope.numPostsPerUser = $scope.getArray($scope.doc._source.author_name_histogram);
-            /* jshint camelcase:true */
-        },
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
 
