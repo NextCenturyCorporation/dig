@@ -1036,6 +1036,210 @@ var all = {
                     '*'
                 ]
             },
+            // TODO: rename offerFields to say authorFields, and then
+            // follow template.
+            offerFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["title"][0] || doc._source.title || doc.highlight["name"][0] || doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'At or From',
+                    field: 'doc._source.availableAtOrFrom.address.name || doc._source.availableAtOrFrom[0].address.name',
+                    classes: 'name'
+                },{
+                    title: 'Publisher',
+                    field: 'doc._source.publisher.name || doc._source.publisher[0].name',
+                    classes: 'publisher'
+                }],
+                full: {
+                    "1": {
+                        classes: 'offer-details',
+                        fields: [{
+                            title: 'Buyer',
+                            field: 'doc.highlight["buyer.description"][0] || doc._source.buyer.description',
+                            hideIfMissing: true
+                        },{
+                            title: 'Seller',
+                            field: 'doc.highlight["seller.description"][0] || doc._source.seller.description',
+                            hideIfMissing: true
+                        },{
+                            title: 'Price',
+                            field: 'doc._source.price',
+                            hideIfMissing: true
+                        },{
+                            title: 'Currency Type',
+                            field: 'doc._source.priceCurrency',
+                            hideIfMissing: true
+                        },{
+                            title: 'Price Specification',
+                            field: 'doc._source.priceSpecification',
+                            featureArray: 'doc._source.priceSpecification',
+                            featureValues: ['price', 'priceCurrency'],
+                            hideIfMissing: true
+                        },{
+                            title: 'Date',
+                            field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'At or From',
+                            field: 'doc._source.availableAtOrFrom.address.name'
+                        }]
+                    },
+                    "2": {
+                        classes: 'more-details',
+                        fields: [{
+                            title: 'Category',
+                            field: 'doc._source.itemOffered.category'
+                        },{
+                            title: 'Keywords',
+                            featureArray: 'doc._source.itemOffered.keywords',
+                            highlightArray: 'doc.highlight["itemOffered.keywords"]'
+                        },{
+                            title: 'Publisher',
+                            field: 'doc._source.publisher.name'
+                        }]
+                    }
+                },
+                body: {
+                    fields: [{
+                        title: 'Description',
+                        field: 'doc.highlight["description"][0] || doc._source.description'
+                    }]
+                }
+
+            },
+            // TODO: rename threadFields to say articleFields, and then ...
+            threadFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text || doc._source.hasTitlePart[0].text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Dates Created',
+                    field: "doc._source.dateCreated_aggregated.value | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'Provider',
+                    field: 'doc._source.provider.name',
+                    classes: 'provider'
+                }],
+                full: {
+                    "1": {
+                        classes: 'thread-details',
+                        fields: [{
+                            title: 'Dates Created',
+                            field: 'doc._source.dateCreated_aggregated.value'
+                        },{
+                            title: 'Author Name',
+                            featureAggregation: 'doc._source.author_name_histogram',
+                            aggName: 'value',
+                            aggCount: 'count' 
+                        },{
+                            title: 'Provider',
+                            field: 'doc._source.provider.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.hasPost',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'hasTitlePart.text || hasTitlePart[0].text',
+                        highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Date',
+                        field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        highlightArray: 'doc.highlight["hasPost.dateCreated"]',
+                        classes: 'date'
+                    },{
+                        title: 'Author Name',
+                        field: 'author.name',
+                        highlightArray: 'doc.highlight["hasPost.author.name"]',
+                        classes: 'author'
+                    },{
+                        title: 'Author Identifier',
+                        field: 'author.identifier.name',
+                        highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
+                        classes: 'author'
+
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'hasBodyPart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
+                    },
+                    signature: {
+                        title: 'Signature',
+                        field: 'hasSignaturePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    }
+                }
+            }
+        },
+       'dig-autonomy-latest':{
+            facets: {
+                aggFilters: [{
+                    title: 'Type',
+                    type: 'eui-aggregation',
+                    field: 'type_agg',
+                    terms: 'a',
+                    termsType: 'string',
+                    count: 5
+                },
+                // TODO: update provider.name to publisher.name
+                {
+                    title: 'Provider',
+                    type: 'eui-aggregation',
+                    field: 'provider_agg',
+                    terms: 'provider.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Keywords',
+                    type: 'eui-aggregation',
+                    field: 'weapons_agg',
+                    terms: 'itemOffered.keywords',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Author Names',
+                    type: 'eui-aggregation',
+                    field: 'authors_agg',
+                    terms: 'author_name_histogram.value',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Seller',
+                    type: 'eui-aggregation',
+                    field: 'seller_agg',
+                    terms: 'seller.description',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Location',
+                    type: 'eui-aggregation',
+                    field: 'locations_agg',
+                    terms: 'availableAtOrFrom.address.name',
+                    termsType: 'string',
+                    count: 10
+                }]
+            },
+            highlight: {
+                fields: [
+                    '*'
+                ]
+            },
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/
