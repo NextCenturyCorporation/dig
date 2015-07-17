@@ -36,7 +36,7 @@ describe('Directive: shortListing', function() {
         };
     }));
 
-    it('should initialize doc in isolate scope to scope.doc', function() {
+    xit('should initialize doc in isolate scope to scope.doc', function() {
         inject(function ($compile) {       
             element = angular.element('<short-listing doc="doc"></short-listing>');
             $compile(element)(scope);
@@ -47,7 +47,7 @@ describe('Directive: shortListing', function() {
         expect(expect(element.isolateScope().fieldsToRender).toBe(euiConfigs.threadFields));
     });
 
-    it('should initialize fieldsToRender in isolate scope to euiConfigs.threadFields', function() {
+    xit('should initialize fieldsToRender in isolate scope to euiConfigs.threadFields', function() {
         inject(function ($compile) {       
             element = angular.element('<short-listing doc="doc"></short-listing>');
             $compile(element)(scope);
@@ -57,7 +57,7 @@ describe('Directive: shortListing', function() {
         expect(expect(element.isolateScope().fieldsToRender).toBe(euiConfigs.threadFields));
     });
 
-    it('should initialize fieldsToRender in isolate scope to euiConfigs.offerFields if doc type is WebPage', function() {
+    xit('should initialize fieldsToRender in isolate scope to euiConfigs.offerFields if doc type is WebPage', function() {
         scope.doc._source.a = 'WebPage';
 
         inject(function ($compile) {       
@@ -70,7 +70,7 @@ describe('Directive: shortListing', function() {
     });
 
 
-    it('should change fieldsToRender if needed', function() {
+    xit('should change fieldsToRender if needed', function() {
         inject(function ($compile) {       
             element = angular.element('<short-listing doc="doc"></short-listing>');
             $compile(element)(scope);
