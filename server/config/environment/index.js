@@ -1218,6 +1218,9 @@ var all = {
                     '*'
                 ]
             },
+            debugFields: {
+                fields: ['doc._id']
+            },
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/

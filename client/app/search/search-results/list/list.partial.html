@@ -10,7 +10,8 @@
       <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
         <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
       </span>
-      <a href="" ng-click="toggleListItemOpened(doc._id)" class="list-group-item-heading collapsed" target="_self">
+      <div ng-click="toggleListItemOpened(doc._id)" class="query-result list-group-item-heading collapsed" tabindex="-1">
+     <!--  <a href=""  class="list-group-item-heading collapsed" target="_self"> -->
         <div class="row">
           <div class="col-xs-3 col-sm-2 col-lg-1">
             <span ng-if="doc._source.hasImagePart">
@@ -26,7 +27,7 @@
           </h3>
           <button popover-placement="top" popover="{{doc._id}}" class="btn btn-default"><i class="fa fa-info-circle"></i></button>
         </div>
-      </a>
+      </div>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <!--TODO: debug directive?-->
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
