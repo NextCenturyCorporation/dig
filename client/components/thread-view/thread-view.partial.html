@@ -30,9 +30,11 @@
                 </span>
               </span>                
             </div>
-            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.body.field), 
+            <span ng-if="euiConfigs.authorFields.postFields.body">
+              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.body.field), 
               $eval(euiConfigs.authorFields.postFields.body.highlightArray))"></span>
-            <span ng-if="$eval('item.' + euiConfigs.authorFields.postFields.signature.field)">
+            </span>
+            <span ng-if="euiConfigs.authorFields.postFields.signature.field && $eval('item.' + euiConfigs.authorFields.postFields.signature.field)">
               <hr>
               <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.signature.field), 
                 $eval(euiConfigs.authorFields.postFields.signature.highlightArray))">
@@ -76,9 +78,11 @@
                 </span>
               </span>                
             </div>
-            <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields.body.field), 
+            <span ng-if="euiConfigs.threadFields.postFields.body">
+              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields.body.field), 
               $eval(euiConfigs.threadFields.postFields.body.highlightArray))"></span>
-            <span ng-if="$eval('item.' + euiConfigs.threadFields.postFields.signature.field)">
+            </span>
+            <span ng-if="euiConfigs.threadFields.postFields.signature && $eval('item.' + euiConfigs.threadFields.postFields.signature.field)">
               <hr>
               <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.threadFields.postFields.signature.field), 
                 $eval(euiConfigs.threadFields.postFields.signature.highlightArray))">
