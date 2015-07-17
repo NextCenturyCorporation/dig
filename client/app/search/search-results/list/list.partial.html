@@ -32,7 +32,7 @@
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
           <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
         </div>
-        <div render-view-template></div render-view-template>
+        <div thread-view doc="doc"></div>
       </div>
     </li>
   </ul>

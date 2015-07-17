@@ -1196,44 +1196,22 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-                },
-                // TODO: update provider.name to publisher.name
-                {
-                    title: 'Provider',
-                    type: 'eui-aggregation',
-                    field: 'provider_agg',
-                    terms: 'provider.name',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Keywords',
-                    type: 'eui-aggregation',
-                    field: 'weapons_agg',
-                    terms: 'itemOffered.keywords',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Author Names',
-                    type: 'eui-aggregation',
-                    field: 'authors_agg',
-                    terms: 'author_name_histogram.value',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Seller',
-                    type: 'eui-aggregation',
-                    field: 'seller_agg',
-                    terms: 'seller.description',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Location',
-                    type: 'eui-aggregation',
-                    field: 'locations_agg',
-                    terms: 'availableAtOrFrom.address.name',
-                    termsType: 'string',
-                    count: 10
                 }]
+/*                ,{
+                    title: 'Name',
+                    type: 'eui-aggregation',
+                    field: 'name_agg',
+                    terms: 'name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Email',
+                    type: 'eui-aggregation',
+                    field: 'email_agg',
+                    terms: 'email',
+                    termsType: 'string',
+                    count: 10
+                }*/
             },
             highlight: {
                 fields: [
@@ -1323,71 +1301,99 @@ var all = {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text || doc._source.hasTitlePart[0].text',
+                    field: 'doc.highlight["name"][0] || doc._source.name',
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Dates Created',
-                    field: "doc._source.dateCreated_aggregated.value | date:'MM/dd/yyyy HH:mm:ss UTC'",
-                    classes: 'date'
-                },{
-                    title: 'Provider',
-                    field: 'doc._source.provider.name',
-                    classes: 'provider'
+                    title: 'Author Name',
+                    field: 'doc._source.author[0].name || doc._source.article.author.name',
+                    classes: 'name'
                 }],
                 full: {
                     "1": {
                         classes: 'thread-details',
-                        fields: [{
+                        fields: [/*{
                             title: 'Dates Created',
                             field: 'doc._source.dateCreated_aggregated.value'
-                        },{
+                        },*/{
                             title: 'Author Name',
-                            featureAggregation: 'doc._source.author_name_histogram',
-                            aggName: 'value',
-                            aggCount: 'count' 
+                            featureArray: 'doc._source.author',
+                            featureValue: 'name'
                         },{
-                            title: 'Provider',
-                            field: 'doc._source.provider.name'
+                            title: 'Source Organization',
+                            featureArray: 'doc._source.sourceOrganization',
+                            featureValue: 'name'
+                        }, {
+                            title: 'Text',
+                            field: 'doc._source.text'
                         }]
                     }
                 },
                 postFields: {
-                    field: 'doc._source.hasPost',
+                    field: 'doc._source.citation',
                     subject: [{
                         title: 'Title',
                         type: 'title',
-                        field: 'hasTitlePart.text || hasTitlePart[0].text',
-                        highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
+                        field: 'title',
                         section: 'title'
                     }],
                     short: [{
                         title: 'Date',
-                        field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
-                        highlightArray: 'doc.highlight["hasPost.dateCreated"]',
+                        field: "datePublished | date:'MM/dd/yyyy HH:mm:ss UTC'",
                         classes: 'date'
                     },{
                         title: 'Author Name',
-                        field: 'author.name',
-                        highlightArray: 'doc.highlight["hasPost.author.name"]',
+                        field: 'author.name || author[0].name',
                         classes: 'author'
+                    }]
+                }
+            },
+            authorFields: {
+                title: [{
+                    title: 'Name',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Author Name',
+                    field: 'doc._source.name || doc._source.name[0]',
+                    classes: 'name'
+                },{
+                    title: 'Author Email',
+                    field: 'doc._source.email || doc._source.email[0]',
+                    classes: 'email'
+                }],
+                full: {
+                    "1": {
+                        classes: 'author-details',
+                        fields: [/*{
+                            title: 'Dates Created',
+                            field: 'doc._source.dateCreated_aggregated.value'
+                        },*/{
+                            title: 'Author Name',
+                            field: 'doc._source.name || doc._source.name[0]'
+                        },{
+                            title: 'Email',
+                            field: 'doc._source.email'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.isAuthorOf',
+                    subject: [{
+                        title: 'Name',
+                        field: 'name',
+                        classes: 'name'
                     },{
-                        title: 'Author Identifier',
-                        field: 'author.identifier.name',
-                        highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
+                        title: 'Source Organization',
+                        field: 'sourceOrganization.name || sourceOrganization[0].name',
                         classes: 'author'
-
                     }],
                     body: {
                         title: 'Body',
-                        field: 'hasBodyPart.text',
-                        highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
+                        field: 'text'
                     },
-                    signature: {
-                        title: 'Signature',
-                        field: 'hasSignaturePart.text',
-                        highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
-                    }
                 }
             }
         }
