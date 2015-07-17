@@ -1221,92 +1221,16 @@ var all = {
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/
-            offerFields: {
-                title: [{
-                    title: 'Title',
-                    type: 'title',
-                    field: 'doc.highlight["title"][0] || doc._source.title || doc.highlight["name"][0] || doc._source.name',
-                    section: 'title'
-                }],
-                short: [{
-                    title: 'Date',
-                    field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'",
-                    classes: 'date'
-                },{
-                    title: 'At or From',
-                    field: 'doc._source.availableAtOrFrom.address.name || doc._source.availableAtOrFrom[0].address.name',
-                    classes: 'name'
-                },{
-                    title: 'Publisher',
-                    field: 'doc._source.publisher.name || doc._source.publisher[0].name',
-                    classes: 'publisher'
-                }],
-                full: {
-                    "1": {
-                        classes: 'offer-details',
-                        fields: [{
-                            title: 'Buyer',
-                            field: 'doc.highlight["buyer.description"][0] || doc._source.buyer.description',
-                            hideIfMissing: true
-                        },{
-                            title: 'Seller',
-                            field: 'doc.highlight["seller.description"][0] || doc._source.seller.description',
-                            hideIfMissing: true
-                        },{
-                            title: 'Price',
-                            field: 'doc._source.price',
-                            hideIfMissing: true
-                        },{
-                            title: 'Currency Type',
-                            field: 'doc._source.priceCurrency',
-                            hideIfMissing: true
-                        },{
-                            title: 'Price Specification',
-                            field: 'doc._source.priceSpecification',
-                            featureArray: 'doc._source.priceSpecification',
-                            featureValues: ['price', 'priceCurrency'],
-                            hideIfMissing: true
-                        },{
-                            title: 'Date',
-                            field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
-                        },{
-                            title: 'At or From',
-                            field: 'doc._source.availableAtOrFrom.address.name'
-                        }]
-                    },
-                    "2": {
-                        classes: 'more-details',
-                        fields: [{
-                            title: 'Category',
-                            field: 'doc._source.itemOffered.category'
-                        },{
-                            title: 'Keywords',
-                            featureArray: 'doc._source.itemOffered.keywords',
-                            highlightArray: 'doc.highlight["itemOffered.keywords"]'
-                        },{
-                            title: 'Publisher',
-                            field: 'doc._source.publisher.name'
-                        }]
-                    }
-                },
-                body: {
-                    fields: [{
-                        title: 'Description',
-                        field: 'doc.highlight["description"][0] || doc._source.description'
-                    }]
-                }
-
-            },
             threadFields: {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc.highlight["name"][0] || doc._source.name',
+                    field: 'doc._source.name || doc._source.name[0]',
                     section: 'title'
                 }],
                 short: [{
                     title: 'Author Name',
-                    field: 'doc._source.author[0].name || doc._source.article.author.name',
+                    field: 'doc._source.author.name || doc._source.author[0].name',
                     classes: 'name'
                 }],
                 full: {
@@ -1318,11 +1242,13 @@ var all = {
                         },*/{
                             title: 'Author Name',
                             featureArray: 'doc._source.author',
-                            featureValue: 'name'
+                            featureValue: 'name',
+                            field: 'doc._source.author.name'
                         },{
                             title: 'Source Organization',
                             featureArray: 'doc._source.sourceOrganization',
-                            featureValue: 'name'
+                            featureValue: 'name',
+                            field: 'doc._source.sourceOrganization.name'
                         }, {
                             title: 'Text',
                             field: 'doc._source.text'
