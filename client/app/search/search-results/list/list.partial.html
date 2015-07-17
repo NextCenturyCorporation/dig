@@ -24,8 +24,8 @@
               ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
             <span class="label label-default">NEW <i class="fa fa-inbox"></i></span>
           </h3>
+          <button popover-placement="top" popover="{{doc._id}}" class="btn btn-default"><i class="fa fa-info-circle"></i></button>
         </div>
-
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
         <!--TODO: debug directive?-->
