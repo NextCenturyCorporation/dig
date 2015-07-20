@@ -18,29 +18,45 @@
     <div class="col-xs-12"> 
       <div class="posts">
         <ul class="post-list-group list-unstyled">
-          <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.authorFields.postFields.field)">
-            <span class="post-title" 
-              ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields['subject'][0].field), 
-                $eval(euiConfigs.authorFields.postFields['subject'][0].highlightArray))"></span>
-            <div class="list-group-item-meta">
-              <span ng-repeat="field in euiConfigs.authorFields.postFields['short']">
-                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                <span class="{{field.classes}}" 
-                  ng-bind-html="highlightCheck($eval('item.' + field.field), $eval(field.highlightArray)) || 'N/A'">
-                </span>
-              </span>                
-            </div>
-            <span ng-if="euiConfigs.authorFields.postFields.body">
-              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.body.field), 
-              $eval(euiConfigs.authorFields.postFields.body.highlightArray))"></span>
-            </span>
-            <span ng-if="euiConfigs.authorFields.postFields.signature.field && $eval('item.' + euiConfigs.authorFields.postFields.signature.field)">
-              <hr>
-              <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.signature.field), 
-                $eval(euiConfigs.authorFields.postFields.signature.highlightArray))">
+          <span ng-if="$eval(euiConfigs.authorFields.postFields.field).length">
+            <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.authorFields.postFields.field)">
+              <span class="post-title" 
+                ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields['subject'][0].field), 
+                  $eval(euiConfigs.authorFields.postFields['subject'][0].highlightArray))"></span>
+              <div class="list-group-item-meta">
+                <span ng-repeat="field in euiConfigs.authorFields.postFields['short']">
+                  <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                  <span class="{{field.classes}}" 
+                    ng-bind-html="highlightCheck($eval('item.' + field.field), $eval(field.highlightArray)) || 'N/A'">
+                  </span>
+                </span>                
+              </div>
+              <span ng-if="euiConfigs.authorFields.postFields.body">
+                <span ng-bind-html="highlightCheck($eval('item.' + euiConfigs.authorFields.postFields.body.field), 
+                $eval(euiConfigs.authorFields.postFields.body.highlightArray))"></span>
               </span>
-            </span>
-          </li>
+            </li>
+          </span>
+          <span ng-if="!$eval(euiConfigs.authorFields.postFields.field).length">
+            <li class="post-list-item">
+              <span class="post-title" 
+                ng-bind-html="highlightCheck($eval(euiConfigs.authorFields.postFields.field + '.' + euiConfigs.authorFields.postFields['subject'][0].field), 
+                  $eval(euiConfigs.authorFields.postFields['subject'][0].highlightArray))"></span>
+              <div class="list-group-item-meta">
+                <span ng-repeat="field in euiConfigs.authorFields.postFields['short']">
+                  <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+                  <span class="{{field.classes}}" 
+                    ng-bind-html="highlightCheck($eval(euiConfigs.authorFields.postFields.field  + '.' + field.field), $eval(field.highlightArray)) || 'N/A'">
+                  </span>
+                </span>                
+              </div>
+              <span ng-if="euiConfigs.authorFields.postFields.body">
+                <span ng-bind-html="highlightCheck($eval(euiConfigs.authorFields.postFields.field + '.' + euiConfigs.authorFields.postFields.body.field), 
+                $eval(euiConfigs.authorFields.postFields.body.highlightArray))"></span>
+              </span>
+            </li>  
+          </span>
+
         </ul>  
       </div>
     </div>
