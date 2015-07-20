@@ -1172,7 +1172,6 @@ var all = {
                         field: 'author.identifier.name',
                         highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
                         classes: 'author'
-
                     }],
                     body: {
                         title: 'Body',
@@ -1196,15 +1195,14 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-                },{
+                }]/*,{
                     title: 'Name',
                     type: 'eui-aggregation',
                     field: 'name_agg',
                     terms: 'name.raw',
                     termsType: 'string',
                     count: 10
-                }]
-                /*,{
+                },{
                     title: 'Email',
                     type: 'eui-aggregation',
                     field: 'email_agg',
@@ -1224,6 +1222,7 @@ var all = {
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/
+            // for articles
             threadFields: {
                 title: [{
                     title: 'Title',
