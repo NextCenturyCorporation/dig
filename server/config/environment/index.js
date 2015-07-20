@@ -1196,15 +1196,15 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-                }]
-/*                ,{
+                },{
                     title: 'Name',
                     type: 'eui-aggregation',
                     field: 'name_agg',
-                    terms: 'name',
+                    terms: 'name.raw',
                     termsType: 'string',
                     count: 10
-                },{
+                }]
+                /*,{
                     title: 'Email',
                     type: 'eui-aggregation',
                     field: 'email_agg',
