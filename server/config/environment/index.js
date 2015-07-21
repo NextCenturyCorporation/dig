@@ -1195,21 +1195,21 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-                }]/*,{
-                    title: 'Name',
+                },{
+/*                    title: 'Name',
                     type: 'eui-aggregation',
                     field: 'name_agg',
-                    terms: 'name.raw',
+                    terms: 'author.name.raw',
                     termsType: 'string',
                     count: 10
-                },{
-                    title: 'Email',
+                },{*/
+                    title: 'Date Published',
                     type: 'eui-aggregation',
-                    field: 'email_agg',
-                    terms: 'email',
-                    termsType: 'string',
+                    field: 'date_agg',
+                    terms: 'datePublished',
+                    termsType: 'date',
                     count: 10
-                }*/
+                }]
             },
             highlight: {
                 fields: [
@@ -1234,6 +1234,10 @@ var all = {
                     title: 'Author Name',
                     field: 'doc._source.author.name || doc._source.author[0].name',
                     classes: 'name'
+                },{
+                    title: 'Date Published',
+                    field: "doc._source.datePublished | date: 'yyyy'",
+                    classes: 'name'
                 }],
                 full: {
                     "1": {
@@ -1246,6 +1250,9 @@ var all = {
                             featureArray: 'doc._source.author',
                             featureValue: 'name',
                             field: 'doc._source.author.name'
+                        },{
+                            title: 'Date Published',
+                            field: "doc._source.datePublished | date: 'yyyy'"
                         },{
                             title: 'Source Organization',
                             featureArray: 'doc._source.sourceOrganization',
@@ -1267,7 +1274,7 @@ var all = {
                     }],
                     short: [{
                         title: 'Date',
-                        field: "datePublished | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        field: "datePublished | date: 'yyyy'",
                         classes: 'date'
                     },{
                         title: 'Author Name',
