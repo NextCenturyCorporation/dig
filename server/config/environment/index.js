@@ -1231,7 +1231,7 @@ var all = {
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Author Name',
+                    title: 'Author',
                     field: 'doc._source.author.name || doc._source.author[0].name',
                     classes: 'name'
                 },{
@@ -1246,7 +1246,7 @@ var all = {
                             title: 'Dates Created',
                             field: 'doc._source.dateCreated_aggregated.value'
                         },*/{
-                            title: 'Author Name',
+                            title: 'Author',
                             featureArray: 'doc._source.author',
                             featureValue: 'name',
                             field: 'doc._source.author.name'
@@ -1273,13 +1273,13 @@ var all = {
                         section: 'title'
                     }],
                     short: [{
+                        title: 'Author(s)',
+                        field: 'author.name',
+                        classes: 'author'
+                    }, {
                         title: 'Date',
                         field: 'datePublished',
                         classes: 'date'
-                    },{
-                        title: 'Author Name',
-                        field: 'author.name || author[0].name',
-                        classes: 'author'
                     }]
                 }
             },
@@ -1312,6 +1312,15 @@ var all = {
                 },
                 postFields: {
                     field: 'doc._source.isAuthorOf',
+                    short: [{
+                        title: 'Author',
+                        field: 'author.name',
+                        classes: 'author'
+                    },{
+                        title: 'Date',
+                        field: 'datePublished',
+                        classes: 'date'
+                    }],
                     subject: [{
                         title: 'Name',
                         field: 'name',
