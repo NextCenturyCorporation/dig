@@ -10,12 +10,11 @@ var setUserName = function (req) {
 }
 
 exports.index = function (req, res) {
-    models.User.findAll(
-    //{
-    //     include: [ models.Query ]
-    // }
-    ).then(function(users) {
+    models.User.findAll().then(function(users) {
         res.status(200).json(users);
+    })
+    .catch(function(error) {
+        res.status(400).json(error);
     });
 };
 

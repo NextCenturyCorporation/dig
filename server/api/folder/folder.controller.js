@@ -2,6 +2,12 @@
 
 var _ = require('lodash');
 
+var setUserName = function (req) {
+    if (req.params.username === 'reqHeader') {
+        req.params.username = req.headers.user;
+    }
+};
+
 var folders = [
       {
         _id: 0,

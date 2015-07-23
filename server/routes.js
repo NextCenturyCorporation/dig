@@ -11,7 +11,6 @@ module.exports = function(app, logger) {
     app.route('*')
     .get(function(req, res, next) {
 	logger.info({Username: req.headers.user, Route: req.path});
-
         if(req.headers.user) {
             next();
         } else {
@@ -48,6 +47,6 @@ module.exports = function(app, logger) {
     // All other routes should redirect to the index.html
     app.route('/*')
     .get(function(req, res) {
-        res.sendile(app.get('appPath') + '/index.html');
+        res.sendFile('index.html', {root: __dirname + '/../' + app.get('appPath')});
     });
 };

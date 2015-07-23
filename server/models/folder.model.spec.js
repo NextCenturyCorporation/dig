@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('should'),
+    assert = require('assert'),
     models = require('./index'),
     User = models.User,
     Folder = models.Folder,
@@ -51,12 +52,32 @@ describe('Folder Model Unit Tests', function() {
             return user.getRootFolder();
         })
         .then(function(folder) {
-            console.log(folder);
+            assert.notEqual(folder, null);
             folder.getDataValue('name').should.equal('ROOT');
             done();
+        })
+        .catch(function(err) {
+            done(err);
         });
-    })
+    });
 
-    it('should get a list of folders for one user');
+    it('should get a list of folders for one user', function(done) {
+        return Folder.find({
+            where: {
+                UserUsername: testUser,
+                name: 'ROOT',
+                hierarchyLevel: 1
+            },
+            include: [FolderItem]
+        })
+        .then(function(folder) {
+            assert.notEqual(folder, null);
+            console.log(JSON.stringify(folder));
+            done();
+        })
+        .catch(function(err) {
+            done(err);
+        });
+    });
 
 });
