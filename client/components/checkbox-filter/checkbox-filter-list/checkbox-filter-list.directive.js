@@ -114,7 +114,7 @@ angular.module('digApp.directives')
                         return ((item.key) ? item.key.toString() : '') === checkedItems[i];
                     })) {
                         var key;
-                        if($scope.aggregationTermsType === 'number' || $scope.aggregationTermsType === 'date') {
+                        if($scope.aggregationTermsType === 'number') {
                             key = Number(checkedItems[i]);
                         } else {
                             key = checkedItems[i];

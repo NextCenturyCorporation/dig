@@ -1196,18 +1196,18 @@ var all = {
                     termsType: 'string',
                     count: 5
                 },{
-/*                    title: 'Name',
+                    title: 'Name',
                     type: 'eui-aggregation',
                     field: 'name_agg',
-                    terms: 'author.name.raw',
+                    terms: 'author.name',
                     termsType: 'string',
                     count: 10
-                },{*/
+                },{
                     title: 'Date Published',
                     type: 'eui-aggregation',
                     field: 'date_agg',
                     terms: 'datePublished',
-                    termsType: 'date',
+                    termsType: 'string',
                     count: 10
                 }]
             },
@@ -1236,7 +1236,7 @@ var all = {
                     classes: 'name'
                 },{
                     title: 'Date Published',
-                    field: "doc._source.datePublished | date: 'yyyy'",
+                    field: 'doc._source.datePublished',
                     classes: 'name'
                 }],
                 full: {
@@ -1252,7 +1252,7 @@ var all = {
                             field: 'doc._source.author.name'
                         },{
                             title: 'Date Published',
-                            field: "doc._source.datePublished | date: 'yyyy'"
+                            field: 'doc._source.datePublished'
                         },{
                             title: 'Source Organization',
                             featureArray: 'doc._source.sourceOrganization',
@@ -1274,7 +1274,7 @@ var all = {
                     }],
                     short: [{
                         title: 'Date',
-                        field: "datePublished | date: 'yyyy'",
+                        field: 'datePublished',
                         classes: 'date'
                     },{
                         title: 'Author Name',

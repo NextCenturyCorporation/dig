@@ -51,9 +51,7 @@
               </span>
               <span ng-repeat="(filterKey, selected) in filterStates.aggFilters[aggFilter.field]">
                 <span ng-if="selected" class="search-facet">
-                  {{aggFilter.title}}: 
-                  <span ng-if="aggFilter.termsType !== 'date'">{{filterKey}}</span>
-                  <span ng-if="aggFilter.termsType === 'date'">{{filterKey | date: 'yyyy' : 'UTC'}}</span>
+                  {{aggFilter.title}}: {{filterKey}}
                   <i class="fa fa-times-circle" ng-click="removeAggFilter(aggFilter.field, filterKey)"></i>
                 </span>
               </span>

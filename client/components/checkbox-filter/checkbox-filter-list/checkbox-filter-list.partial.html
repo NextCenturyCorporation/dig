@@ -1,8 +1,7 @@
 <div class="checkbox" ng-repeat="bucket in displayBuckets" ng-hide="bucket.hidden">
   <label eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
     <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">
-    <span ng-if="aggregationTermsType !== 'date'">{{bucket.key}}</span>
-    <span ng-if="aggregationTermsType === 'date'">{{bucket.key | date: 'yyyy' : 'UTC'}}</span>
+      {{bucket.key}}
   </label>
   <span class="badge pull-right">{{bucket.doc_count}}</span>
 </div>
