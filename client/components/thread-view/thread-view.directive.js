@@ -11,6 +11,10 @@ angular.module('digApp.directives')
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
 
+            $scope.fieldIsArray = function(field) {
+                return angular.isArray(field);
+            };
+
             $scope.highlightCheck = function(field, highlightedText) {
                 return textHighlightService.highlightCheck(field, highlightedText);
             };

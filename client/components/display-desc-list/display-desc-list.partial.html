@@ -2,7 +2,14 @@
   <dt ng-repeat-start="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray) || $eval(field.featureAggregation)'>{{field.title}}</dt>
   <dd ng-if="$eval(field.field)">
     <span ng-if="!field.featureValues">
-      <span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span>
+      <span ng-if="field.title === 'Alternate Names' && fieldIsArray($eval(field.field))">
+        <span ng-repeat="item in $eval(field.field)">
+          <span ng-bind-html="stripOtherHtmlTags(item)"></span><br/>
+        </span>
+      </span>
+      <span ng-if="field.title !== 'Alternate Names'">
+        <span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span>
+      </span>
     </span>
     <span ng-if="field.featureValues" ng-repeat="value in field.featureValues">
       <span ng-bind-html="stripOtherHtmlTags($eval(field.field + '.' + value))"></span>

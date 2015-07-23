@@ -1291,10 +1291,6 @@ var all = {
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Author Name',
-                    field: 'doc._source.name || doc._source.name[0]',
-                    classes: 'name'
-                },{
                     title: 'Author Email',
                     field: 'doc._source.email || doc._source.email[0]',
                     classes: 'email'
@@ -1306,8 +1302,8 @@ var all = {
                             title: 'Dates Created',
                             field: 'doc._source.dateCreated_aggregated.value'
                         },*/{
-                            title: 'Author Name',
-                            field: 'doc._source.name || doc._source.name[0]'
+                            title: 'Alternate Names',
+                            field: 'doc._source.name'
                         },{
                             title: 'Email',
                             field: 'doc._source.email'

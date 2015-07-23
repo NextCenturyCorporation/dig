@@ -10,6 +10,11 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/display-desc-list/display-desc-list.partial.html',
         link: function($scope) {
+
+            $scope.fieldIsArray = function(field) {
+                return angular.isArray(field);
+            };
+
             $scope.stripOtherHtmlTags = function(field) {
                 return textHighlightService.stripOtherHtmlTags(field);
             };

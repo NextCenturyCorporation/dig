@@ -1,5 +1,10 @@
 <span ng-if="euiConfigs.authorFields && doc._source.a === 'Person'">
-  <span ng-bind-html="$eval(euiConfigs.authorFields['title'][0].field) || 'N/A'"></span>
+  <span ng-if="fieldIsArray($eval(euiConfigs.authorFields.title[0].field))">
+    <span ng-bind-html="$eval(euiConfigs.authorFields.title[0].field)[0] || 'N/A'"></span>
+  </span>
+  <span ng-if="!fieldIsArray($eval(euiConfigs.authorFields.title[0].field))">
+    <span ng-bind-html="$eval(euiConfigs.authorFields.title[0].field) || 'N/A'"></span>
+  </span>
   <div class="list-group-item-meta">
     <span ng-repeat="field in euiConfigs.authorFields['short']">
       <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>

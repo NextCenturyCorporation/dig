@@ -9,6 +9,11 @@ angular.module('digApp.directives')
         },
         controller: function($scope) {
             $scope.euiConfigs = euiConfigs;
+
+            $scope.fieldIsArray = function(field) {
+                return angular.isArray(field);
+            };
+
         },
         templateUrl: 'components/short-listing/short-listing.partial.html'
     };
