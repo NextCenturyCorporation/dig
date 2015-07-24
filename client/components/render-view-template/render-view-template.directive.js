@@ -12,6 +12,16 @@ angular.module('digApp.directives')
                         'doc': 'doc'
                     }
                 },
+                person: {
+                    bindings: {
+                        'doc': 'doc',
+                        'get-display-image-src': 'getDisplayImageSrc',
+                        'view-details': 'viewDetails',
+                        'parent-state': 'list', //TODO: revisit for list vs gallery
+                        'facets' : 'facets', 
+                        'image-search': 'imageSearch'
+                    }
+                },
                 offer: {
                     bindings: {
                         'doc': 'doc',

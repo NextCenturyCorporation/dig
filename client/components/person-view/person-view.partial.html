@@ -1,0 +1,30 @@
+<span ng-if="euiConfigs.personFields['full']">
+  <div class="row">
+    <div class="col-md-5 col-lg-4 text-center">
+      <span ng-if="doc._source.hasImagePart">
+        <div class="image-with-caption">
+          <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
+          <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
+            <div class="caption-background"></div>
+            <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
+          </div>
+        </div>
+      </span>
+    </div>
+    
+    <div class="col-md-7 col-lg-8">
+      <h4>{{$eval(euiConfigs.personFields.title[0].field) || "N/A"}}</h4>
+      <div class="row">
+        <div class="col-sm-6" ng-repeat="section in euiConfigs.personFields['full']">
+          <display-desc-list doc="doc" section="section"></display-desc-list>
+        </div>
+        <div class="col-sm-12">
+          <display-desc-list doc="doc" section="euiConfigs.personFields.body"></display-desc-list>
+        </div>
+      </div>
+      <button ng-if="euiConfigs.detailFields" type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">
+        View Details
+      </button>
+    </div>
+  </div>
+</span>

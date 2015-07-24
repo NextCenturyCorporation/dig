@@ -1118,6 +1118,41 @@ var all = {
                 }
 
             },
+            personFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["name"][0] || doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Location',
+                    field: 'doc._source.location.address.name',
+                    classes: 'location'
+                },{
+                    title: 'Member Of',
+                    field: 'doc._source.memberOf.memberOf.name || doc._source.memberOf[0].memberOf.name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'person-details',
+                        fields: [{
+                            title: 'Location',
+                            field: 'doc._source.location.address.name'
+                        },{
+                            title: 'Member Of',
+                            field: 'doc._source.memberOf.memberOf.name || doc._source.memberOf[0].memberOf.name'
+                        },{
+                            title: 'Start Date',
+                            field: "(doc._source.memberOf.startDate || doc._source.memberOf[0].startDate) | date:'MM/yyyy UTC'"
+                        },{
+                            title: 'Identifier',
+                            field: 'doc._source.identifier.name'
+                        }]
+                    }
+                }
+            },
             threadFields: {
                 title: [{
                     title: 'Title',
