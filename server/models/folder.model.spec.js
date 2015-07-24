@@ -8,10 +8,16 @@ var should = require('should'),
     FolderItem = models.FolderItem;
 
 describe('Folder Model Unit Tests', function() {
-    var testUser = 'testuserfolder';
+    var testUserName = 'testuserfolder';
+    var testUser = {};
+    var rootFolder = 
+    {
+        name: 'ROOT',
+        hierarchyLevel: 1
+    };
 
     before(function (done) {
-        return User.sync()
+        User.sync()
         .then(function() {
             return Folder.sync();
         })
@@ -19,24 +25,24 @@ describe('Folder Model Unit Tests', function() {
             return FolderItem.sync();
         })
         .then(function () {
-            return models.User.destroy( {
-                where: {username: testUser}
+            return User.destroy( {
+                where: {username: testUserName}
             });
         })
         .then(function () {
             return User.create({
-                username: testUser
+                username: testUserName
             });
         })
         .then(function(user) {
-            return Folder.create({
-                name: 'ROOT',
-                parentId: null,
-                hierarchyLevel: 1
-            })
-            .then(function(folder) {
-                return user.setRootFolder(folder);
-            })
+            testUser = user;
+            return Folder.create(rootFolder)
+        })
+        .then(function(folder) {
+            return testUser.setRootFolder(folder);
+        })
+        .then(function() {
+            return testUser.getRootFolder();
         })
         .then(function() {
             done();
@@ -47,10 +53,7 @@ describe('Folder Model Unit Tests', function() {
     });
 
     it('should find ROOT folder for testuserfolder', function(done) {
-        return User.find({where: {username: testUser}})
-        .then(function (user) {
-            return user.getRootFolder();
-        })
+        testUser.getRootFolder()
         .then(function(folder) {
             assert.notEqual(folder, null);
             folder.getDataValue('name').should.equal('ROOT');
@@ -62,17 +65,27 @@ describe('Folder Model Unit Tests', function() {
     });
 
     it('should get a list of folders for one user', function(done) {
-        return Folder.find({
-            where: {
-                UserUsername: testUser,
-                name: 'ROOT',
-                hierarchyLevel: 1
-            },
+        Folder.find({
+            where: rootFolder,
             include: [FolderItem]
         })
         .then(function(folder) {
             assert.notEqual(folder, null);
-            console.log(JSON.stringify(folder));
+            done();
+        })
+        .catch(function(err) {
+            done(err);
+        });
+    });
+
+    it('should create a ROOT folder if it does not exist', function(done) {
+        testUser
+        .getRootFolder()
+        // .destroy()
+        .then(function(folder) {
+            return folder.destroy();
+        })
+        .then(function(folder) {
             done();
         })
         .catch(function(err) {

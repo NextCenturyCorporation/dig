@@ -10,7 +10,6 @@ module.exports = function(sequelize, DataTypes) {
     {
         classMethods: {
             associate: function(models) {
-                Folder.belongsTo(models.User, {onDelete: 'CASCADE'});
                 Folder.hasMany(models.FolderItem, {onDelete: 'CASCADE'});
             }
         },
