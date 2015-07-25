@@ -1019,7 +1019,14 @@ var all = {
                     title: 'Seller',
                     type: 'eui-aggregation',
                     field: 'seller_agg',
-                    terms: 'seller.description',
+                    terms: 'seller.description.raw',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Buyer',
+                    type: 'eui-aggregation',
+                    field: 'buyer_agg',
+                    terms: 'buyer.description.raw',
                     termsType: 'string',
                     count: 10
                 },{
