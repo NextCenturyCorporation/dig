@@ -993,12 +993,11 @@ var all = {
                     termsType: 'string',
                     count: 5
                 },
-                // TODO: update provider.name to publisher.name
                 {
-                    title: 'Provider',
+                    title: 'Publisher',
                     type: 'eui-aggregation',
-                    field: 'provider_agg',
-                    terms: 'provider.name',
+                    field: 'publisher_agg',
+                    terms: 'publisher.name',
                     termsType: 'string',
                     count: 10
                 },{
@@ -1012,7 +1011,7 @@ var all = {
                     title: 'Author Names',
                     type: 'eui-aggregation',
                     field: 'authors_agg',
-                    terms: 'author_name_histogram.value',
+                    terms: 'hasPost.author.name',//'author_name_histogram.value',
                     termsType: 'string',
                     count: 10
                 },{
@@ -1172,9 +1171,9 @@ var all = {
                     field: "doc._source.dateCreated_aggregated.value | date:'MM/dd/yyyy HH:mm:ss UTC'",
                     classes: 'date'
                 },{
-                    title: 'Provider',
-                    field: 'doc._source.provider.name',
-                    classes: 'provider'
+                    title: 'Publisher',
+                    field: 'doc._source.publisher.name',
+                    classes: 'publisher'
                 }],
                 full: {
                     "1": {
@@ -1188,8 +1187,8 @@ var all = {
                             aggName: 'value',
                             aggCount: 'count' 
                         },{
-                            title: 'Provider',
-                            field: 'doc._source.provider.name'
+                            title: 'Publisher',
+                            field: 'doc._source.publisher.name'
                         }]
                     }
                 },
