@@ -38,9 +38,9 @@ angular.module('digApp')
     };
 
     $scope.changeTab = function (link) {
-      if(link == '/list') {
-        $state.go('search.results.list');
-      } else if(link == '/queries') {
+      if(link === '/list') {
+        $state.go('main.search.results.list');
+      } else if(link === '/queries') {
         $state.go('queries');
       }
     };
