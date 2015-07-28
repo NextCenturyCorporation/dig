@@ -1313,10 +1313,6 @@ var all = {
                 postFields: {
                     field: 'doc._source.isAuthorOf',
                     short: [{
-                        title: 'Author',
-                        field: 'author.name',
-                        classes: 'author'
-                    },{
                         title: 'Date',
                         field: 'datePublished',
                         classes: 'date'
