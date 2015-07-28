@@ -1,7 +1,8 @@
 'use strict';
 
 var should = require('should'),
-    assert = require('assert'),    models = require('./index'),
+    assert = require('assert'),
+    models = require('./index'),
     User = models.User,
     Folder = models.Folder,
     FolderItem = models.FolderItem,
@@ -25,18 +26,15 @@ function getRootFolder (user) {
 
 describe('Folder Model Unit Tests', function() {
     var testUserName = 'testuserfolder';
-    var otherUserName = 'testotheruserfolder'
     var testUser = {};
-    var otherUser = {};
-
 
     before(function (done) {
-        User.sync()
+        models.sequelize.sync()
         .then(function() {
-            return Folder.sync();
-        })
-        .then(function() {
-            return FolderItem.sync();
+            // set parentId to null to prevent foreign constraint error
+            // when removing testuserfolder
+            return Folder.update({parentId: null}, 
+                {where: {parentId: {ne: null}}, hooks: false});
         })
         .then(function () {
             return User.destroy( {
@@ -68,20 +66,6 @@ describe('Folder Model Unit Tests', function() {
             assert.notEqual(folders, null);
             folders.length.should.be.exactly(1);
             folders[0].getDataValue('name').should.equal('ROOT');
-            done();
-        })
-        .catch(function(err) {
-            done(err);
-        });
-    });
-
-    it('should get a list of folders for one user', function(done) {
-        Folder.find({
-            where: rootFolder,
-            include: [FolderItem]
-        })
-        .then(function(folder) {
-            assert.notEqual(folder, null);
             done();
         })
         .catch(function(err) {
@@ -134,7 +118,7 @@ describe('Folder Model Unit Tests', function() {
                 {elasticId: 'id2'}
             ], function(item) {
                 return folder.createFolderItem(item);
-            })
+            });
         })
         .then(function () {
             return testUser.getFolders({include: [FolderItem]});
@@ -153,10 +137,38 @@ describe('Folder Model Unit Tests', function() {
         });
     });
 
-    it('should not allow more than one ROOT folder per user');
+    it('should not allow more than one ROOT folder per user', function(done) {
+        testUser.createFolder(rootFolder)
+        .then(function(folder) {
+            folder.should.be.undefined();
+            done();
+        })
+        .catch(function(err) {
+            err.should.not.be.undefined();
+            err.should.have.property('name', 'SequelizeUniqueConstraintError');
+            done();
+        })
+    });
 
-    it('should not allow users to share same ROOT folder')
-
-    it('should find the correct ROOT folder')
+    it ('should create some children folders', function(done) {
+        getRootFolder(testUserName)
+        .then(function(folder) {
+            return Promise.each([
+                {fname: 'folder1', parentId: folder.id},
+                {fname: 'folder2', parentId: folder.id}
+            ], function(newfolder) {
+                return testUser.createFolder({
+                    name: newfolder.fname,
+                    parentId: newfolder.parentId
+                });
+            })
+        })
+        .then(function() {
+            done();
+        })
+        .catch(function(err) {
+            done(err);
+        })
+    });
 
 });

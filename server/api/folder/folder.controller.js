@@ -1,11 +1,15 @@
 'use strict';
 
-var _ = require('lodash');
+var _ = require('lodash'),
+    models = require('../../models'),
+    User = models.User,
+    Folder = models.Folder;
 
 var setUserName = function (req) {
     if (req.params.username === 'reqHeader') {
         req.params.username = req.headers.user;
     }
+    return req.params.username;
 };
 
 var folders = [
@@ -17,6 +21,23 @@ var folders = [
       }
     ];
 var nextIndex = 1;
+
+
+
+// Get list of folders based on user
+exports.index2 = function(req, res) {
+    var userName = setUserName(req);
+    User.findOne({where: {username: 'test'}})
+    .then(function(user) {
+        return user.getFolders({include: [FolderItem]})
+    })
+    .then(function(folders){
+        return res.json(folders);
+    })
+    .catch(function(err) {
+        res.status(404).json(err);
+    })  
+};
 
 // Get list of folders based on user
 exports.index = function(req, res) {

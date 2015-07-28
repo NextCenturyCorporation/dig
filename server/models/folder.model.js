@@ -4,9 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     var Folder = sequelize.define('Folder', {
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
-    }, 
+    },
     {
         classMethods: {
             associate: function(models) {
