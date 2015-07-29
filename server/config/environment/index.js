@@ -1219,10 +1219,6 @@ var all = {
             debugFields: {
                 fields: ['doc._id']
             },
-/*            dateHistogram: {
-                field: 'hasPost.dateCreated'
-            },*/
-            // for articles
             threadFields: {
                 title: [{
                     title: 'Title',
@@ -1330,6 +1326,125 @@ var all = {
                         title: 'Body',
                         field: 'text'
                     },
+                }
+            }
+        },
+        'dig-patents-01':{
+            facets: {
+/*                aggFilters: [{
+                    title: 'Type',
+                    type: 'eui-aggregation',
+                    field: 'type_agg',
+                    terms: 'a',
+                    termsType: 'string',
+                    count: 5
+                },{
+                    title: 'Name',
+                    type: 'eui-aggregation',
+                    field: 'name_agg',
+                    terms: 'author.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Date Published',
+                    type: 'eui-aggregation',
+                    field: 'date_agg',
+                    terms: 'datePublished',
+                    termsType: 'string',
+                    count: 10
+                }]*/
+            },
+            highlight: {
+                fields: [
+                    '*'
+                ]
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            threadFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Identifier',
+                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                    classes: 'identifier'
+                },{
+                    title: 'Organization',
+                    field: 'doc._source.sourceOrganization.name || doc._source.sourceOrganization[0].name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'patent-details',
+                        fields: [{
+                            title: 'Identifier',
+                            featureArray: 'doc._source.identifier',
+                            featureValue: 'name',
+                            field: 'doc._source.identifier.name'
+                        },{
+                            title: 'Agent',
+                            featureArray: 'doc._source.agent',
+                            featureValue: 'name',
+                            field: 'doc._source.agent.name'
+                        },{
+                            title: 'Date Published',
+                            field: 'doc._source.datePublished'
+                        }]
+                    }, 
+                    "2": {
+                        classes: 'more-patent-details',
+                        fields: [{
+                            title: 'Creator',
+                            featureArray: 'doc._source.creator',
+                            featureValue: 'name',
+                            field: 'doc._source.creator.name'
+                        },{
+                            title: 'Source Organization',
+                            featureArray: 'doc._source.sourceOrganization',
+                            featureValue: 'name',
+                            field: 'doc._source.sourceOrganization.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.legalAction',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'name',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Identifier(s)',
+                        field: 'identifier',
+                        classes: 'identifier'
+                    }, {
+                        title: 'Start Time',
+                        field: 'startTime',
+                        classes: 'date'
+                    },{
+                        title: 'Location',
+                        field: 'location.name',
+                        classes: 'location'
+                    },{
+                        title: 'Region',
+                        field: 'location.address.addressRegion',
+                        classes: 'region'
+                    },{
+                        title: 'Country',
+                        field: 'location.address.addressCountry',
+                        classes: 'country'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'mainEntityOfPage.text',
+                        highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
+                    }
                 }
             }
         }

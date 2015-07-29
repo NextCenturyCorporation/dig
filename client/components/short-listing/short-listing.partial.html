@@ -1,19 +1,13 @@
-<span ng-if="euiConfigs.authorFields && doc._source.a === 'Person'">
-  <span ng-if="fieldIsArray($eval(euiConfigs.authorFields.title[0].field))">
-    <span ng-bind-html="$eval(euiConfigs.authorFields.title[0].field)[0] || 'N/A'"></span>
-  </span>
-  <span ng-if="!fieldIsArray($eval(euiConfigs.authorFields.title[0].field))">
-    <span ng-bind-html="$eval(euiConfigs.authorFields.title[0].field) || 'N/A'"></span>
-  </span>
-  <div class="list-group-item-meta">
-    <span ng-repeat="field in euiConfigs.authorFields['short']">
-      <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-      <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
-    </span>
-  </div>
+<span ng-if="euiConfigs.threadFields">
+<span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
+<!--   
+Uncomment if we only want to display first name in name array
+<span ng-if="$eval(euiConfigs.threadFields['title'][0].field).length">
+  <span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field + '[0]') || 'N/A'"></span>
 </span>
-<span ng-if="euiConfigs.threadFields && doc._source.a === 'ScholarlyArticle'">
+<span ng-if="!$eval(euiConfigs.threadFields['title'][0].field).length">
   <span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
+</span> -->
   <div class="list-group-item-meta">
     <span ng-repeat="field in euiConfigs.threadFields['short']">
       <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>

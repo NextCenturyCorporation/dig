@@ -38,10 +38,10 @@
       </checkbox-filter>
     </collapse-filter>
 
-    <div class="form-group images-only-filter" ng-if="euiConfigs.imageField">
+    <div class="form-group images-only-filter" ng-if="euiConfigs.threadFields.postFields.field">
       <div class="filter-header filter-header-selected">
-        <h5><input type="checkbox" eui-filter="ejs.ExistsFilter(euiConfigs.imageField)"
-          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Images Only
+        <h5><input type="checkbox" eui-filter="ejs.ExistsFilter('legalAction')"
+          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Court Cases Only
         </h5>
       </div>
     </div>
