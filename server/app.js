@@ -33,7 +33,7 @@ models.sequelize.options.logging=function(loginfo) {
 }
 
 // Populate DB with sample data        
-if(config.seedDB) {require('./config/seedsql');}
+//if(config.seedDB) {require('./config/seedsql');}
 
 // Setup server
 var app = express();

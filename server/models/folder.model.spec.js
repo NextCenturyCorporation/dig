@@ -64,7 +64,7 @@ describe('Folder Model Unit Tests', function() {
         testUser.getFolders({where: rootFolder})
         .then(function(folders) {
             assert.notEqual(folders, null);
-            folders.length.should.be.exactly(1);
+            folders.should.be.instanceOf(Array).and.have.lengthOf(1);
             folders[0].getDataValue('name').should.equal('ROOT');
             done();
         })
@@ -74,18 +74,20 @@ describe('Folder Model Unit Tests', function() {
     });
 
     it('should create a ROOT folder if it does not exist', function(done) {
-        testUser
-        .getFolders({where: rootFolder})
+        testUser.getFolders({where: rootFolder})
         .then(function(folders) {
+            folders.should.be.instanceof(Array).and.have.lengthOf(1);
             return folders[0].destroy();
         })
         .then(function() {
-            return Folder.findOrCreate({where: rootFolder});
+            return testUser.getFolders();
         })
-        .spread(function(folder, created) {
-            created.should.be.true();
+        .then(function(folders) {
+            folders.should.be.instanceof(Array).and.have.lengthOf(0);
+            return testUser.createFolder(rootFolder);
         })
-        .then(function() {
+        .then(function(folder) {
+            folder.should.have.property('name', 'ROOT');
             done();
         })
         .catch(function(err) {
