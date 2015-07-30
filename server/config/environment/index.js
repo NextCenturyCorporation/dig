@@ -1331,28 +1331,39 @@ var all = {
         },
         'dig-patents-latest':{
             facets: {
-/*                aggFilters: [{
-                    title: 'Type',
+                aggFilters: [{
+                    title: 'Region',
                     type: 'eui-aggregation',
-                    field: 'type_agg',
-                    terms: 'a',
-                    termsType: 'string',
-                    count: 5
-                },{
-                    title: 'Name',
-                    type: 'eui-aggregation',
-                    field: 'name_agg',
-                    terms: 'author.name',
+                    field: 'region_agg',
+                    nestedPath: 'assignee.address',
+                    terms: 'assignee.address.addressRegion',
                     termsType: 'string',
                     count: 10
                 },{
-                    title: 'Date Published',
+                    title: 'Creator',
                     type: 'eui-aggregation',
-                    field: 'date_agg',
-                    terms: 'datePublished',
+                    field: 'creator_agg',
+                    nestedPath: 'creator',
+                    terms: 'creator.name',
                     termsType: 'string',
                     count: 10
-                }]*/
+                },{
+                    title: 'Assignee',
+                    type: 'eui-aggregation',
+                    field: 'assignee_agg',
+                    nestedPath: 'assignee',
+                    terms: 'assignee.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Citation Ids',
+                    type: 'eui-aggregation',
+                    field: 'citation_agg',
+                    nestedPath: 'citation.identifier',
+                    terms: 'citation.identifier.name',
+                    termsType: 'string',
+                    count: 10
+                }]
             },
             highlight: {
                 fields: [
