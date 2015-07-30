@@ -1374,8 +1374,8 @@ var all = {
                     field: 'doc._source.identifier.name || doc._source.identifier[0].name',
                     classes: 'identifier'
                 },{
-                    title: 'Organization',
-                    field: 'doc._source.sourceOrganization.name || doc._source.sourceOrganization[0].name',
+                    title: 'Assignee',
+                    field: 'doc._source.assignee.name || doc._source.assignee[0].name',
                     classes: 'name'
                 }],
                 full: {
@@ -1404,10 +1404,10 @@ var all = {
                             featureValue: 'name',
                             field: 'doc._source.creator.name'
                         },{
-                            title: 'Source Organization',
-                            featureArray: 'doc._source.sourceOrganization',
+                            title: 'Assignee',
+                            featureArray: 'doc._source.assignee',
                             featureValue: 'name',
-                            field: 'doc._source.sourceOrganization.name'
+                            field: 'doc._source.assignee.name'
                         }]
                     }
                 },
