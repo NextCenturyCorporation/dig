@@ -2,12 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <h4>
-        <span ng-if="$eval(euiConfigs.threadFields['title'][0].field).length" ng-repeat="name in $eval(euiConfigs.threadFields['title'][0].field) track by $index">
-          {{name}}<span ng-if="$index + 1 < $eval(euiConfigs.threadFields['title'][0].field).length">, </span>
-        </span>
-        <span ng-if="!$eval(euiConfigs.threadFields['title'][0].field).length">
-          <span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
-        </span>
+        <span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
       </h4>
       <div class="row">
         <div class="col-sm-4">

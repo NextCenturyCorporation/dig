@@ -1329,7 +1329,7 @@ var all = {
                 }
             }
         },
-        'dig-patents-01':{
+        'dig-patents-latest':{
             facets: {
 /*                aggFilters: [{
                     title: 'Type',
