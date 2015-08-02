@@ -45,7 +45,6 @@ exports.index = function (req, res) {
     });
 }
 
-//TODO: revisit endpoint
 exports.notifications = function (req, res) {
     setUserName(req);
 

@@ -24,7 +24,7 @@ function getRootFolder (user) {
     }})
 };
 
-describe('Folder Model Unit Tests', function() {
+describe('Folder Model', function() {
     var testUserName = 'testuserfolder';
     var testUser = {};
 
@@ -142,7 +142,7 @@ describe('Folder Model Unit Tests', function() {
     it('should not allow more than one ROOT folder per user', function(done) {
         testUser.createFolder(rootFolder)
         .then(function(folder) {
-            folder.should.be.undefined();
+            throw new Error('expected SequelizeUniqueConstraintError');
             done();
         })
         .catch(function(err) {
@@ -165,12 +165,39 @@ describe('Folder Model Unit Tests', function() {
                 });
             })
         })
-        .then(function() {
+        .then(function () {
+            return testUser.getFolders({
+                include: [FolderItem, {model: Folder, as: 'descendents', hierarchy: true}]
+            })
+        })
+        .then(function(folders) {
+            assert.notEqual(folders, null);
+            folders.length.should.be.above(0);
+            folders[0].FolderItems.length.should.be.exactly(2);
+            folders[0].children.length.should.be.exactly(2);
+            console.log(JSON.stringify(folders));
             done();
         })
         .catch(function(err) {
             done(err);
         })
     });
+
+    it('should not create a folder with non-existent parent', function(done) {
+        testUser.createFolder({
+            name: 'folder3',
+            parentId: 0
+        })
+        .then(function() {
+            throw new Error('expected SequelizeForeignKeyConstraintError');
+            done();
+        })
+        .catch(function(err) {
+            err.should.have.property('name', 'SequelizeForeignKeyConstraintError');
+            done();
+        });       
+    });
+
+    it('should not create a folder that has a parent cycle')
 
 });
