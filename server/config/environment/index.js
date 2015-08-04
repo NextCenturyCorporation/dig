@@ -788,7 +788,7 @@ var all = {
                 }
             }
         },
-       'dig-atf-weapons-latest':{
+        'dig-atf-weapons-latest':{
             facets: {
                 euiFilters: [],
                 //simFilter: {},
@@ -852,9 +852,6 @@ var all = {
             debugFields: {
                 fields: ['doc._id']
             },
-/*            dateHistogram: {
-                field: 'hasPost.dateCreated'
-            },*/
             offerFields: [{
                 type: 'Offer', // this checks against the doc.a field or doc._type if doc.a does not exist
                 title: [{
@@ -990,11 +987,6 @@ var all = {
                             title: 'Dates Created',
                             field: 'doc._source.dateCreated_aggregated.value'
                         },{
-                            title: 'Author Name',
-                            featureAggregation: 'doc._source.author_name_histogram',
-                            aggName: 'value',
-                            aggCount: 'count' 
-                        },{
                             title: 'Publisher',
                             field: 'doc._source.publisher.name'
                         }]
@@ -1035,6 +1027,137 @@ var all = {
                         title: 'Signature',
                         field: 'hasSignaturePart.text',
                         highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    }
+                }
+            }]
+        },
+        'dig-patents-latest':{
+            facets: {
+                aggFilters: [{
+                    title: 'Region',
+                    type: 'eui-aggregation',
+                    field: 'region_agg',
+                    nestedPath: 'assignee.address',
+                    terms: 'assignee.address.addressRegion',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Creator',
+                    type: 'eui-aggregation',
+                    field: 'creator_agg',
+                    nestedPath: 'creator',
+                    terms: 'creator.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Assignee',
+                    type: 'eui-aggregation',
+                    field: 'assignee_agg',
+                    nestedPath: 'assignee',
+                    terms: 'assignee.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Citation Ids',
+                    type: 'eui-aggregation',
+                    field: 'citation_agg',
+                    nestedPath: 'citation.identifier',
+                    terms: 'citation.identifier.name',
+                    termsType: 'string',
+                    count: 10
+                }]
+            },
+            highlight: {
+                fields: [
+                    '*'
+                ]
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            threadFields: [{
+                type: 'Patent',
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Identifier',
+                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                    classes: 'identifier'
+                },{
+                    title: 'Assignee',
+                    field: 'doc._source.assignee.name || doc._source.assignee[0].name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'patent-details',
+                        fields: [{
+                            title: 'Identifier',
+                            featureArray: 'doc._source.identifier',
+                            featureValue: 'name',
+                            field: 'doc._source.identifier.name'
+                        },{
+                            title: 'Agent',
+                            featureArray: 'doc._source.agent',
+                            featureValue: 'name',
+                            field: 'doc._source.agent.name'
+                        },{
+                            title: 'Date Published',
+                            field: 'doc._source.datePublished'
+                        }]
+                    }, 
+                    "2": {
+                        classes: 'more-patent-details',
+                        fields: [{
+                            title: 'Creator',
+                            featureArray: 'doc._source.creator',
+                            featureValue: 'name',
+                            field: 'doc._source.creator.name'
+                        },{
+                            title: 'Assignee',
+                            featureArray: 'doc._source.assignee',
+                            featureValue: 'name',
+                            field: 'doc._source.assignee.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.legalAction',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'name',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Identifier(s)',
+                        field: 'identifier',
+                        classes: 'identifier'
+                    }, {
+                        title: 'Start Time',
+                        field: 'startTime',
+                        classes: 'date'
+                    },{
+                        title: 'Location',
+                        field: 'location.name',
+                        classes: 'location'
+                    },{
+                        title: 'Region',
+                        field: 'location.address.addressRegion',
+                        classes: 'region'
+                    },{
+                        title: 'Country',
+                        field: 'location.address.addressCountry',
+                        classes: 'country'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'mainEntityOfPage.text',
+                        highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
                     }
                 }
             }]
