@@ -994,6 +994,7 @@ var all = {
                 },
                 postFields: {
                     field: 'doc._source.hasPost',
+                    name: 'Posts',
                     subject: [{
                         title: 'Title',
                         type: 'title',
@@ -1127,6 +1128,7 @@ var all = {
                 },
                 postFields: {
                     field: 'doc._source.legalAction',
+                    name: 'Legal Actions',
                     subject: [{
                         title: 'Title',
                         type: 'title',
