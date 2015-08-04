@@ -6,6 +6,7 @@ angular.module('digApp.directives')
         restrict: 'EA',
         scope: {
             doc: '=',
+            offerFields: '=',
             parentState: '@',
             getDisplayImageSrc: '=', //this should be in a service instead of on a controller scope
             viewDetails: '=',

@@ -1,4 +1,4 @@
-<span ng-if="euiConfigs.offerFields['full']">
+<span ng-if="offerFields['full']">
   <div class="row">
     <div class="col-md-5 col-lg-4 text-center">
       <span ng-if="doc._source.hasImagePart">
@@ -16,11 +16,11 @@
       <h4>URL</h4>
       <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
       <div class="row">
-        <div class="col-sm-6" ng-repeat="section in euiConfigs.offerFields['full']">
+        <div class="col-sm-6" ng-repeat="section in offerFields['full']">
           <display-desc-list doc="doc" section="section"></display-desc-list>
         </div>
         <div class="col-sm-12">
-          <display-desc-list doc="doc" section="euiConfigs.offerFields.body"></display-desc-list>
+          <display-desc-list doc="doc" section="offerFields.body"></display-desc-list>
         </div>
       </div>
       <button ng-if="euiConfigs.detailFields" type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">

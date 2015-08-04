@@ -1,16 +1,20 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('threadView', function(euiConfigs, textHighlightService) {
+.directive('postTemplate', function(euiConfigs, textHighlightService) {
     return {
-        restrict: 'EA',
+        restrict: 'E',
         scope: {
-            doc: '=',
-            threadFields: '='
+            post: '=',
+            postFields: '='
         },
-        templateUrl: 'components/thread-view/thread-view.partial.html',
+        templateUrl: 'components/thread-view/post-template.partial.html',
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
+
+            $scope.fieldIsArray = function(field) {
+                return angular.isArray(field);
+            };
 
             $scope.highlightCheck = function(field, highlightedText) {
                 return textHighlightService.highlightCheck(field, highlightedText);

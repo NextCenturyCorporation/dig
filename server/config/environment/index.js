@@ -135,7 +135,7 @@ var all = {
                 'title'
                 ]
             },
-            offerFields: {
+            offerFields: [{
                 type: 'ad',
                 title: [{
                     title: 'Title',
@@ -224,7 +224,7 @@ var all = {
                         }]
                     }
                 }
-            },
+            }],
             debugFields: {
                 fields: ['doc._id']
             },
@@ -391,7 +391,7 @@ var all = {
             lastUpdateQuery: {
                 field: 'dateCreated'
             },
-            offerFields: {
+            offerFields: [{
                 type: 'WebPage',
                 title: [{
                     title: 'Title',
@@ -489,7 +489,7 @@ var all = {
                         }]
                     }
                 }
-            },
+            }],
             debugFields: {
                 fields: ['doc._id']
             },
@@ -710,7 +710,7 @@ var all = {
                 }]
             },
 
-            offerFields: {
+            offerFields: [{
                 type: 'WebPage',
                 title: [{
                     title: 'Title',
@@ -758,8 +758,7 @@ var all = {
                         }]
                     }
                 }
-            },
-
+            }],
             detailFields: {
                 "1": {
                     classes: 'listing-details',
@@ -856,7 +855,7 @@ var all = {
 /*            dateHistogram: {
                 field: 'hasPost.dateCreated'
             },*/
-            offerFields: {
+            offerFields: [{
                 type: 'Offer', // this checks against the doc.a field or doc._type if doc.a does not exist
                 title: [{
                     title: 'Title',
@@ -931,9 +930,8 @@ var all = {
                         field: 'doc.highlight["description"][0] || doc._source.description'
                     }]
                 }
-
-            },
-            personFields: {
+            },{
+                type: 'Person',
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -967,8 +965,8 @@ var all = {
                         }]
                     }
                 }
-            },
-            threadFields: {
+            }],
+            threadFields: [{
                 type: 'Thread', // this checks against the doc.a field or doc._type if doc.a does not exist
                 title: [{
                     title: 'Title',
@@ -1039,7 +1037,7 @@ var all = {
                         highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
                     }
                 }
-            }
+            }]
         }
     }
 };

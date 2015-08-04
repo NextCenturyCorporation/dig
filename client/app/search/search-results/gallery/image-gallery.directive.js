@@ -24,7 +24,7 @@ angular.module('digApp.directives')
                 $('#gallery-expander').remove();
                 // right now, gallery view is only relevant for offer-view -- may need to change this logic
                 // if other views (i.e. thread-view) will apply as well
-                insertAfterEl.after($compile('<offer-view id="gallery-expander" class="gallery-item-expanded" ' +
+                insertAfterEl.after($compile('<offer-view id="gallery-expander" offer-fields="euiConfigs.offerFields[0]" class="gallery-item-expanded" ' +
                 'doc="indexVM.results.hits.hits[' + docNum + ']" get-display-image-src="getDisplayImageSrc" ' +
                 'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></offer-view>')($scope));
             };
