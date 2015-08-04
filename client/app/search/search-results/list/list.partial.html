@@ -18,13 +18,12 @@
             </span> 
           </div>
           <div class="col-xs-7 col-sm-8 col-lg-9">
-            <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
-            <div class="list-group-item-meta">
-              <span ng-repeat="field in euiConfigs.listFields['short']">
-                <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-                <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
-              </span>
-            </div>
+            <span ng-if="(doc._source.a || doc._type) === euiConfigs.offerFields.type">
+              <short-listing doc="doc" fields-to-render="euiConfigs.offerFields"></short-listing>     
+            </span>
+            <span ng-if="(doc._source.a || doc._type) === euiConfigs.threadFields.type">
+              <short-listing doc="doc" fields-to-render="euiConfigs.threadFields"></short-listing>
+            </span>
           </div>
           <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
               ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
@@ -33,7 +32,12 @@
         </div>
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
-        <expanded-listing-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></expanded-listing-view>
+        <span ng-if="(doc._source.a || doc._type) === euiConfigs.offerFields.type">
+          <div offer-view doc="doc" get-display-image-src="getDisplayImageSrc" view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></div>          
+        </span>
+        <span ng-if="(doc._source.a || doc._type) === euiConfigs.threadFields.type">
+          <div thread-view doc="doc"></div>  
+        </span>
       </div>
     </li>
   </ul>

@@ -22,9 +22,11 @@ angular.module('digApp.directives')
                 addAfterRule(leftPos);
 
                 $('#gallery-expander').remove();
-                insertAfterEl.after($compile('<expanded-listing-view id="gallery-expander" class="gallery-item-expanded" ' +
+                // right now, gallery view is only relevant for offer-view -- may need to change this logic
+                // if other views (i.e. thread-view) will apply as well
+                insertAfterEl.after($compile('<offer-view id="gallery-expander" class="gallery-item-expanded" ' +
                 'doc="indexVM.results.hits.hits[' + docNum + ']" get-display-image-src="getDisplayImageSrc" ' +
-                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></expanded-listing-view>')($scope));
+                'view-details="viewDetails" parent-state="gallery" facets="facets" image-search="imageSearch"></offer-view>')($scope));
             };
 
             $scope.renderExpander = function(clickEvent) {

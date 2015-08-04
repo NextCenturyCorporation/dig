@@ -1,0 +1,32 @@
+<dl class="{{section.classes}}">
+  <dt ng-repeat-start="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray) || $eval(field.featureAggregation)'>{{field.title}}</dt>
+  <dd ng-if="$eval(field.field)">
+    <span ng-if="!field.featureValues">
+      <span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span>
+    </span>
+    <span ng-if="field.featureValues" ng-repeat="value in field.featureValues">
+      <span ng-bind-html="stripOtherHtmlTags($eval(field.field + '.' + value))"></span>
+    </span>
+  </dd>
+  <dd ng-if="$eval(field.featureArray + '.length')"
+   ng-repeat="item in $eval(field.featureArray) track by $index">
+    <span ng-if="field.featureValue" 
+      ng-bind-html="highlightCheck($eval('item.' + field.featureValue), $eval(field.highlightArray))">
+    </span>
+    <span ng-if="!field.featureValue && !field.featureValues" 
+      ng-bind-html="highlightCheck(item, $eval(field.highlightArray))">
+    </span>
+    <span ng-if="field.featureValues" ng-repeat="value in field.featureValues">
+      {{$eval('item.' + value)}}
+    </span>
+  </dd>
+  <dd ng-if="$eval(field.featureAggregation)">
+    <span ng-if="doc._source.author_name_histogram">
+      <sparkline data="doc._source.author_name_histogram" graph-type="line"></sparkline>
+    </span>
+    <span ng-repeat="item in $eval(field.featureAggregation) track by $index">
+      <b>{{$eval('item.' + field.aggCount)}}</b> - {{$eval('item.' + field.aggName)}}<span ng-if="$index + 1 < $eval(field.featureAggregation + '.length')">, </span>
+    </span>
+  </dd>   
+  <span ng-repeat-end></span>
+</dl>
