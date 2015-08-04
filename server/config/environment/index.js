@@ -799,8 +799,7 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-                },
-                {
+                },{
                     title: 'Publisher',
                     type: 'eui-aggregation',
                     field: 'publisher_agg',
@@ -1017,7 +1016,6 @@ var all = {
                         field: 'author.identifier.name',
                         highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
                         classes: 'author'
-
                     }],
                     body: {
                         title: 'Body',
@@ -1069,9 +1067,7 @@ var all = {
                 }]
             },
             highlight: {
-                fields: [
-                    '*'
-                ]
+                fields: ['*']
             },
             debugFields: {
                 fields: ['doc._id']

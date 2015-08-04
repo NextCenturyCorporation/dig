@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('postTemplate', function(euiConfigs, textHighlightService) {
+.directive('postTemplate', function(textHighlightService) {
     return {
         restrict: 'E',
         scope: {
@@ -10,7 +10,6 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/thread-view/post-template.partial.html',
         link: function($scope) {
-            $scope.euiConfigs = euiConfigs;
 
             $scope.fieldIsArray = function(field) {
                 return angular.isArray(field);

@@ -20,6 +20,7 @@
         <ul class="post-list-group list-unstyled">
           <span ng-if="$eval(threadFields.postFields.field).length">
             <li class="post-list-item" ng-repeat="item in $eval(threadFields.postFields.field)">
+                  {{item}}
               <post-template post="item" post-fields="threadFields.postFields"></post-template>
             </li>
           </span>

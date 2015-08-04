@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp.directives')
-.directive('threadView', function(euiConfigs, textHighlightService) {
+.directive('threadView', function(textHighlightService) {
     return {
         restrict: 'EA',
         scope: {
@@ -10,8 +10,6 @@ angular.module('digApp.directives')
         },
         templateUrl: 'components/thread-view/thread-view.partial.html',
         link: function($scope) {
-            $scope.euiConfigs = euiConfigs;
-
             $scope.highlightCheck = function(field, highlightedText) {
                 return textHighlightService.highlightCheck(field, highlightedText);
             };
