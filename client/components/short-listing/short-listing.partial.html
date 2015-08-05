@@ -2,6 +2,6 @@
 <div class="list-group-item-meta">
   <span ng-repeat="field in fieldsToRender['short']">
     <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-    <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+    <span class="{{field.classes}}" ng-bind-html="$eval(field.field) || 'N/A'"></span>
   </span>
 </div>

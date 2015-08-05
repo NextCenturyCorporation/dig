@@ -5,6 +5,7 @@ angular.module('digApp.directives')
     return {
         restrict: 'E',
         scope: {
+            doc: '=',
             post: '=',
             postFields: '='
         },

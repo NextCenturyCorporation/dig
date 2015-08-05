@@ -20,12 +20,12 @@
         <ul class="post-list-group list-unstyled">
           <span ng-if="$eval(threadFields.postFields.field).length">
             <li class="post-list-item" ng-repeat="item in $eval(threadFields.postFields.field)">
-              <post-template post="item" post-fields="threadFields.postFields"></post-template>
+              <post-template doc="doc" post="item" post-fields="threadFields.postFields"></post-template>
             </li>
           </span>
           <span ng-if="!$eval(threadFields.postFields.field).length && $eval(threadFields.postFields.field)">
             <li class="post-list-item">
-              <post-template post="$eval(threadFields.postFields.field)" post-fields="threadFields.postFields"></post-template>
+              <post-template doc="doc" post="$eval(threadFields.postFields.field)" post-fields="threadFields.postFields"></post-template>
             </li>
           </span>
         </ul>  

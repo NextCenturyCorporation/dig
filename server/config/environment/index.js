@@ -844,9 +844,7 @@ var all = {
                 }]
             },
             highlight: {
-                fields: [
-                    '*'
-                ]
+                fields: ['*']
             },
             debugFields: {
                 fields: ['doc._id']
@@ -865,11 +863,12 @@ var all = {
                     classes: 'date'
                 },{
                     title: 'At or From',
-                    field: 'doc._source.availableAtOrFrom.address.name || doc._source.availableAtOrFrom[0].address.name',
+                    field: 'doc.highlight["availableAtOrFrom.address.name"][0] || doc._source.availableAtOrFrom.address.name || ' + 
+                        'doc._source.availableAtOrFrom[0].address.name',
                     classes: 'name'
                 },{
                     title: 'Publisher',
-                    field: 'doc._source.publisher.name || doc._source.publisher[0].name',
+                    field: 'doc.highlight["publisher.name"] || doc._source.publisher.name || doc._source.publisher[0].name',
                     classes: 'publisher'
                 }],
                 full: {
@@ -885,11 +884,11 @@ var all = {
                             hideIfMissing: true
                         },{
                             title: 'Price',
-                            field: 'doc._source.price',
+                            field: 'doc.highlight["price"][0] || doc._source.price',
                             hideIfMissing: true
                         },{
                             title: 'Currency Type',
-                            field: 'doc._source.priceCurrency',
+                            field: 'doc.highlight["priceCurrency"][0] || doc._source.priceCurrency',
                             hideIfMissing: true
                         },{
                             title: 'Price Specification',
@@ -902,7 +901,7 @@ var all = {
                             field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
                         },{
                             title: 'At or From',
-                            field: 'doc._source.availableAtOrFrom.address.name'
+                            field: 'doc.highlight["availableAtOrFrom.address.name"][0] || doc._source.availableAtOrFrom.address.name'
                         }]
                     },
                     "2": {
@@ -916,7 +915,7 @@ var all = {
                             highlightArray: 'doc.highlight["itemOffered.keywords"]'
                         },{
                             title: 'Publisher',
-                            field: 'doc._source.publisher.name'
+                            field: 'doc.highlight["publisher.name"] || doc._source.publisher.name'
                         }]
                     }
                 },
@@ -936,7 +935,7 @@ var all = {
                 }],
                 short: [{
                     title: 'Location',
-                    field: 'doc._source.location.address.name',
+                    field: 'doc.highlight["location.address.name"] || doc._source.location.address.name',
                     classes: 'location'
                 },{
                     title: 'Member Of',
@@ -948,7 +947,7 @@ var all = {
                         classes: 'person-details',
                         fields: [{
                             title: 'Location',
-                            field: 'doc._source.location.address.name'
+                            field: 'doc.highlight["location.address.name"] || doc._source.location.address.name'
                         },{
                             title: 'Member Of',
                             field: 'doc._source.memberOf.memberOf.name || doc._source.memberOf[0].memberOf.name'
@@ -957,7 +956,7 @@ var all = {
                             field: "(doc._source.memberOf.startDate || doc._source.memberOf[0].startDate) | date:'MM/yyyy UTC'"
                         },{
                             title: 'Identifier',
-                            field: 'doc._source.identifier.name'
+                            field: 'doc.highlight["identifier.name"] || doc._source.identifier.name'
                         }]
                     }
                 }
@@ -976,7 +975,7 @@ var all = {
                     classes: 'date'
                 },{
                     title: 'Publisher',
-                    field: 'doc._source.publisher.name',
+                    field: 'doc.highlight["publisher.name"][0] || doc._source.publisher.name',
                     classes: 'publisher'
                 }],
                 full: {
@@ -987,7 +986,7 @@ var all = {
                             field: 'doc._source.dateCreated_aggregated.value'
                         },{
                             title: 'Publisher',
-                            field: 'doc._source.publisher.name'
+                            field: 'doc.highlight["publisher.name"][0] || doc._source.publisher.name'
                         }]
                     }
                 },

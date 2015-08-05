@@ -1,5 +1,5 @@
 <dl class="{{section.classes}}">
-  <dt ng-repeat-start="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray) || $eval(field.featureAggregation)'>{{field.title}}</dt>
+  <dt ng-repeat-start="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>{{field.title}}</dt>
   <dd ng-if="$eval(field.field)">
     <span ng-if="!field.featureValues">
       <span ng-bind-html="stripOtherHtmlTags($eval(field.field))"></span>
@@ -17,7 +17,7 @@
       ng-bind-html="highlightCheck(item, $eval(field.highlightArray))">
     </span>
     <span ng-if="field.featureValues" ng-repeat="value in field.featureValues">
-      {{$eval('item.' + value)}}
+      <span ng-bind-html="highlightCheck($eval('item.' + value), $eval(field.highlightArray))"></span>
     </span>
   </dd>
   <span ng-repeat-end></span>
