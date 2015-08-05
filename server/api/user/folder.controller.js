@@ -27,7 +27,7 @@ var rootFolder =
     parentId: null
 };
 
-// Get list of folders for a specified duser.  If this user
+// Get list of folders for a specified user.  If this user
 // has no folders, create ROOT folder and return it
 exports.index = function(req, res) {
     var user = {};

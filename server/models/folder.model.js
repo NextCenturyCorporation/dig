@@ -5,8 +5,16 @@ module.exports = function(sequelize, DataTypes) {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: 'compositeIndex'
         },
+        UserUsername: {
+            type: DataTypes.STRING,
+            unique: 'compositeIndex'
+        },
+        parentId: {
+            type: DataTypes.INTEGER,
+            unique: 'compositeIndex'
+        }
     },
     {
         classMethods: {
