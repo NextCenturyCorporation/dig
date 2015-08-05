@@ -362,10 +362,10 @@ describe('folders endpoint', function() {
             request(app)
             .post('/api/users/test/folders/' + folders.a.id + '/folderitems')
             .send({items: [{elasticId: 'i1'}, {elasticId: 'i1'}, {elasticId: 'i3'}]})
-            .expect(403)
+            .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.should.have.property('name', 'SequelizeUniqueConstraintError');
+                res.body.affected.should.be.instanceof(Array).and.have.length(3);
                 done();
             });            
         });

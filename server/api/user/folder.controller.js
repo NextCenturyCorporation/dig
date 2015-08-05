@@ -165,14 +165,17 @@ exports.createFolderItems = function(req, res) {
     .then(function(folder) {
         assert.notEqual(folder, null);
         return Sequelize.Promise.each(req.body.items, function(item) {
-            return folder.createFolderItem(item);
+            folder.createFolderItem(item)
+            .catch(function(err) {
+                console.log('createFolderItems:', err);
+            });
         });
     })
     .then(function(affectedRows) {
         return res.status(201).json({affected: affectedRows});
     })
     .catch(function (err) {
-        // console.log(err);
+        console.log(err);
         return res.status(403).json(err);
     });
 }
@@ -188,13 +191,11 @@ exports.removeFolderItems = function(req, res) {
             elasticId: item.elasticId
         }})
         .then(function(folderitem) {
-            if (folderitem === null) {
-                throw new Error('item', item, 'not found');
-            }
-            return folderitem.destroy();
+            assert.notEqual(folderitem, null);
+            return folderitem.destroy()        
         })
         .catch(function(err) {
-            // console.log(err);
+            console.log(err);
         });
     })
     .then(function(affectedRows) {
