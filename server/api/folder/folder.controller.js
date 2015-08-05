@@ -1,16 +1,6 @@
 'use strict';
 
-var _ = require('lodash'),
-    models = require('../../models'),
-    User = models.User,
-    Folder = models.Folder;
-
-var setUserName = function (req) {
-    if (req.params.username === 'reqHeader') {
-        req.params.username = req.headers.user;
-    }
-    return req.params.username;
-};
+var _ = require('lodash');
 
 var folders = [
       {
@@ -22,26 +12,9 @@ var folders = [
     ];
 var nextIndex = 1;
 
-
-
-// Get list of folders based on user
-exports.index2 = function(req, res) {
-    var userName = setUserName(req);
-    User.findOne({where: {username: 'test'}})
-    .then(function(user) {
-        return user.getFolders({include: [FolderItem]})
-    })
-    .then(function(folders){
-        return res.json(folders);
-    })
-    .catch(function(err) {
-        res.status(404).json(err);
-    })  
-};
-
 // Get list of folders based on user
 exports.index = function(req, res) {
-  if(req.headers.user == "test") {
+  if(req.headers.user === "test") {
     return res.json(folders);
   } else {
     return res.status(404).end();
@@ -57,7 +30,7 @@ exports.show = function(req, res) {
   var id = parseInt(req.params.id);
   var index = findIndex(id);
 
-  if(index == -1) {
+  if(index === -1) {
     return res.status(404).end();
   }
 
@@ -71,15 +44,15 @@ exports.create = function(req, res) {
   //    - creating in another user's folders
   //    - adding itself as its parent
   //    - adding itself as its child
-  if(req.body.name == "ROOT" || req.headers.user !== "test" ||
-      req.body.parentId == nextIndex || req.body.childIds.indexOf(nextIndex) != -1) {
+  if(req.body.name === "ROOT" || req.headers.user !== "test" ||
+      req.body.parentId === nextIndex || req.body.childIds.indexOf(nextIndex) !== -1) {
     return res.status(404).end();
   }
 
   var parentIndex = findIndex(parseInt(req.body.parentId));
 
   // Prevent adding with unknown parent and adding folders within themselves
-  if(parentIndex == -1 || findIDInChildren(parentIndex, req.body.childIds)) {
+  if(parentIndex === -1 || findIDInChildren(parentIndex, req.body.childIds)) {
     return res.status(404).end();
   }
 
@@ -98,7 +71,7 @@ exports.create = function(req, res) {
   for(var i = 0; i < children.length; i++) {
     // Get child's index in folder area
     var childIndex = findIndex(children[i]);
-    if(childIndex != -1) {
+    if(childIndex !== -1) {
       // Remove this child's reference in its old parent
       var childOldParentIndex = findIndex(folders[childIndex].parentId);
       folders[childOldParentIndex].childIds.splice(folders[childOldParentIndex].childIds.indexOf(children[i]), 1);
@@ -115,7 +88,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   // Prevents changing name to ROOT (or changing ROOT folder in general) and
   // changing another user's folders
-  if(req.body.name == "ROOT" || req.headers.user !== "test") {
+  if(req.body.name === "ROOT" || req.headers.user !== "test") {
     return res.status(404).end();
   }
 
@@ -127,10 +100,10 @@ exports.update = function(req, res) {
   //    - changing ROOT folder
   //    - adding itself as its parent
   //    - moving itself to one of its subfolders
-  if(index == -1) {
+  if(index === -1) {
     return res.status(404).end();
-  } else if(folders[index].name == "ROOT" ||
-      req.body.parentId == id || findIDInChildren(req.body.parentId, folders[index].childIds)) {
+  } else if (folders[index].name === "ROOT" ||
+      req.body.parentId === id || findIDInChildren(req.body.parentId, folders[index].childIds)) {
     return res.status(404).end();
   }
 

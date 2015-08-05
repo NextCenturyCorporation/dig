@@ -6,7 +6,7 @@ var should = require('should'),
     User = models.User,
     Folder = models.Folder,
     FolderItem = models.FolderItem,
-    Promise = models.Sequelize.Promise;
+    Sequelize = models.Sequelize;
 
 var rootFolder = 
 {
@@ -22,7 +22,10 @@ function getRootFolder (user) {
         parentId: null,
         UserUserName: user
     }})
-};
+}
+
+/* jshint expr: true */
+/* global describe, it, beforeEach, before, afterEach */
 
 describe('Folder Model', function() {
     var testUserName = 'testuserfolder';
@@ -115,7 +118,7 @@ describe('Folder Model', function() {
     it('should return a list of the user folders and folder items', function(done) {
         getRootFolder(testUserName)
         .then(function(folder) {
-            return Promise.each([
+            return Sequelize.Promise.each([
                 {elasticId: 'id1'},
                 {elasticId: 'id2'}
             ], function(item) {
@@ -143,7 +146,6 @@ describe('Folder Model', function() {
         testUser.createFolder(rootFolder)
         .then(function(folder) {
             throw new Error('expected SequelizeUniqueConstraintError');
-            done();
         })
         .catch(function(err) {
             err.should.not.be.undefined();
@@ -155,7 +157,7 @@ describe('Folder Model', function() {
     it ('should create some children folders', function(done) {
         getRootFolder(testUserName)
         .then(function(folder) {
-            return Promise.each([
+            return Sequelize.Promise.each([
                 {fname: 'folder1', parentId: folder.id},
                 {fname: 'folder2', parentId: folder.id}
             ], function(newfolder) {
@@ -190,14 +192,10 @@ describe('Folder Model', function() {
         })
         .then(function() {
             throw new Error('expected SequelizeForeignKeyConstraintError');
-            done();
         })
         .catch(function(err) {
             err.should.have.property('name', 'SequelizeForeignKeyConstraintError');
             done();
         });       
     });
-
-    it('should not create a folder that has a parent cycle')
-
 });

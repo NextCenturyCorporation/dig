@@ -25,7 +25,8 @@ router.get('/:username/folders', folderController.index);
 router.get('/:username/folders/:folderid', folderController.show);
 router.post('/:username/folders', folderController.create);
 router.put('/:username/folders/:folderid', folderController.update);
-//router.put('/:username/folders/removeItems/:id', folderController.removeItems);
-router.delete('/:id', folderController.destroy);
+router.post('/:username/folders/:folderid/folderitems', folderController.createFolderItems);
+router.delete('/:username/folders/:folderid', folderController.removeFolder);
+router.delete('/:username/folders/:folderid/folderitems', folderController.removeFolderItems);
 
 module.exports = router;
