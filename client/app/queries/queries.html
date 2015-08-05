@@ -62,9 +62,11 @@
                       <dd>{{query.digState.searchTerms}}</dd>
                     </dl>
                     <label>Filters</label><br/>
-                    <span ng-if="query.digState.filters.withImagesOnly" class="search-facet">
-                      With Images Only
+                  <span ng-repeat="existFilter in facets.existsFilters">
+                    <span ng-if="query.digState.filters.existsFilters[existFilter.field]" class="search-facet">
+                      {{existFilter.title}} 
                     </span>
+                  </span>
                     <span ng-repeat="aggFilter in facets.aggFilters">
                       <span ng-if="query.digState.includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
                         {{aggFilter.title}}: Not Specified

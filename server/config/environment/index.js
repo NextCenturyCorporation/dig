@@ -349,6 +349,10 @@ var all = {
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
+                }],
+                existsFilters: [{
+                    title: 'With Images Only',
+                    field: 'hasImagePart.cacheUrl'
                 }]
             },
             highlight: {
@@ -676,8 +680,7 @@ var all = {
                         hideIfMissing: true
                     }]
                 }
-            },
-            imageField: 'hasImagePart.cacheUrl'
+            }
         },
         'dig-mrs-latest': {
             facets: {
@@ -1063,6 +1066,11 @@ var all = {
                     terms: 'citation.identifier.name',
                     termsType: 'string',
                     count: 10
+                }],
+                existsFilters: [{
+                    title: 'With Court Cases Only',
+                    nestedPath: 'legalAction',
+                    field: 'legalAction.uri'
                 }]
             },
             highlight: {

@@ -49,7 +49,8 @@ angular.module('digApp')
         $scope.filterStates = {
             aggFilters: {},
             textFilters: {},
-            dateFilters: {}
+            dateFilters: {},
+            existsFilters: {}
         };
         $scope.includeMissing = {
             aggregations: {},
@@ -84,8 +85,8 @@ angular.module('digApp')
                     $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
                 }
 
-                if($state.params.query.digState.filters.withImagesOnly) {
-                    $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
+                if($state.params.query.digState.filters.existsFilters) {
+                    $scope.filterStates.existsFilters = _.cloneDeep($state.params.query.digState.filters.existsFilters);
                 }
             }
             
@@ -128,6 +129,10 @@ angular.module('digApp')
 
     $scope.removeAggFilter = function(key1, key2) {
         $scope.filterStates.aggFilters[key1][key2] = false;
+    };
+
+    $scope.removeExistsFilter = function(key) {
+        $scope.filterStates.existsFilters[key] = false;
     };
 
     $scope.removeMissingFilter = function(key) {

@@ -29,7 +29,7 @@
           </a>
         </div>
       </div>
-    </div>
+    </div> 
 
     <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
       <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
@@ -38,11 +38,20 @@
       </checkbox-filter>
     </collapse-filter>
 
-    <div class="form-group images-only-filter" ng-if="euiConfigs.imageField">
+    <div class="form-group images-only-filter" ng-repeat="item in facets.existsFilters">
       <div class="filter-header filter-header-selected">
-        <h5><input type="checkbox" eui-filter="ejs.ExistsFilter(euiConfigs.imageField)"
-          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Images Only
-        </h5>
+        <span ng-if="!item.nestedPath">
+          <h5><input type="checkbox" eui-filter="ejs.ExistsFilter(item.field)"
+            ng-model="filterStates.existsFilters[item.field]" eui-enabled="filterStates.existsFilters[item.field]" 
+              class="images-only-checkbox">{{item.title}}
+          </h5>
+        </span>
+        <span ng-if="item.nestedPath">
+          <h5><input type="checkbox" eui-filter="ejs.NestedFilter(item.nestedPath).filter(ejs.ExistsFilter(item.field))"
+            ng-model="filterStates.existsFilters[item.field]" eui-enabled="filterStates.existsFilters[item.field]" 
+              class="images-only-checkbox">{{item.title}}
+          </h5>
+        </span>
       </div>
     </div>
 
