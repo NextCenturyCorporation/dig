@@ -933,6 +933,19 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.filterStates.aggFilters['test']['value2']).toBe(false);
     });
 
+    it('should remove correct existsFilter', function () {
+        scope.filterStates.existsFilters = {};
+        scope.filterStates.existsFilters['value1'] = true; 
+        scope.filterStates.existsFilters['value2'] = true; 
+
+        expect(scope.filterStates.existsFilters['value1']).toBe(true);
+        expect(scope.filterStates.existsFilters['value2']).toBe(true);
+
+        scope.removeExistsFilter('value2');
+        expect(scope.filterStates.existsFilters['value1']).toBe(true);
+        expect(scope.filterStates.existsFilters['value2']).toBe(false);
+    });
+
     it('should remove correct textFilter', function () {
         scope.filterStates.textFilters['textKey'] = {live: 'sometext', submitted: 'somethingelse'};
         expect(scope.filterStates.textFilters['textKey'].live).toBe('sometext');
