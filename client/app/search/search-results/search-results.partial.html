@@ -40,6 +40,9 @@
 
     <div class="form-group images-only-filter" ng-repeat="item in facets.existsFilters">
       <div class="filter-header filter-header-selected">
+        <!--TODO: Instead of using ng-if with the nestedPath attribute, maybe put the ejs filter itself directly in the config
+            (ex: config: filter: 'ejs.ExistsFilter(item.field)' & eui-filter="$eval(item.filter)"). Might not be necessary if
+            we end up changing all of our data to fit this new nested attribute model. -->
         <span ng-if="!item.nestedPath">
           <h5><input type="checkbox" eui-filter="ejs.ExistsFilter(item.field)"
             ng-model="filterStates.existsFilters[item.field]" eui-enabled="filterStates.existsFilters[item.field]" 

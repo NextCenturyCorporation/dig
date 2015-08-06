@@ -1,4 +1,5 @@
 <div eui-or-filter>
+  <!--'Not Specified' filters only work for non-nested fields - this is an open elasticsearch issue. -->
   <div ng-if="!nestedPath" eui-aggregation="ejs.MissingAggregation(aggregationName + '_missing_agg').field(aggregationKey)" eui-filter-self="false">
     <div class="checkbox include-missing-checkbox" ng-if="aggResult.doc_count > 0">
       <label eui-filter="ejs.MissingFilter(aggregationKey)" class="include-missing-filter"
