@@ -963,6 +963,55 @@ var all = {
                         }]
                     }
                 }
+            },{
+                type: 'Post',
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["isPostOf.hasTitlePart.text"][0] || doc._source.isPostOf.hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Author',
+                    field: 'doc.highlight["author.name"][0] || doc._source.author.name',
+                    classes: 'name'
+                },{
+                    title: 'Location',
+                    field: 'doc.highlight["author.location.address.name"] || doc._source.author.location.address.name',
+                    classes: 'location'
+                },{
+                    title: 'Member Of',
+                    field: 'doc._source.author.memberOf.memberOf.name || doc._source.author.memberOf[0].memberOf.name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'post-details',
+                        fields: [{
+                            title: 'Author',
+                            field: 'doc.highlight["author.name"][0] || doc._source.author.name',
+                        },{
+                            title: 'Location',
+                            field: 'doc.highlight["author.location.address.name"] || doc._source.author.location.address.name',
+                        },{
+                            title: 'Member Of',
+                            field: 'doc._source.author.memberOf.memberOf.name || doc._source.author.memberOf[0].memberOf.name',
+                        },{
+                            title: 'Identifier',
+                            field: 'doc.highlight["identifier.name"] || doc._source.identifier.name'
+                        }]
+                    }
+                }, 
+                body: {
+                    classes: 'body-details',
+                    fields: [{
+                        title: 'Body',
+                        field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
+                    },{
+                        title: 'Signature',
+                        field: 'doc.highlight["hasSignaturePart.text"][0] || doc._source.hasSignaturePart.text',
+                    }]
+                }
             }],
             threadFields: [{
                 type: 'Thread', // this checks against the doc.a field or doc._type if doc.a does not exist
