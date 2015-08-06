@@ -9,16 +9,7 @@ angular.module('digApp.directives').directive('sparkline', function () {
         },
         link: function ($scope, elem) {
             
-            /* 
-            $scope.getHeight = function() {
-                return elem.height();
-            };
-            $scope.$watch($scope.getHeight, function(newVal) {
-                if(newVal > 0) {
-                    elem.sparkline($scope.data, {type: 'line', width: 50, height: 50});   
-                }  
-            });
-            */
+            //TODO: sparkline labels?
 
             $scope.getArray = function(structure) {
                 if(structure) {
