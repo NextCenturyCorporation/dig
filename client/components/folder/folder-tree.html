@@ -1,8 +1,8 @@
-<div ui-tree-handle ng-class="{active: selectedFolder._id == folder._id}" class="folder-tree-item-row">
+<div ui-tree-handle ng-class="{active: selectedFolder.id == folder.id}" class="folder-tree-item-row">
   <a class="btn btn-xs folder-tree-toggle" data-nodrag ng-click="toggle(this)">
     <span class="fa" ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></span>
   </a>
-  <a href="#" class="folder-tree-item-link" ng-click="select(folder, $event)" ng-class="{active: selectedFolder._id == folder._id}">
+  <a href="#" class="folder-tree-item-link" ng-click="select(folder, $event)" ng-class="{active: selectedFolder.id == folder.id}">
     <i class="fa fa-folder-open fa-lg"></i> {{ folder.name }}
   </a>
 </div>

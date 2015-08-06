@@ -7,12 +7,12 @@ angular.module('digApp')
     $scope.currentUser = User.get();
 
     $scope.save = function () {
-      $http.put('api/folders/' + folder._id, {name: $scope.folderName, parentId: folder.parentId});
+      $http.put('api/users/reqHeader/folders/' + folder.id, {name: $scope.folderName, parentId: folder.parentId});
       $modalInstance.close();
     };
 
     $scope.delete = function() {
-      $http.delete('api/folders/' + folder._id);
+      $http.delete('api/users/reqHeader/folders/' + folder.id);
       $modalInstance.close();
     };
 

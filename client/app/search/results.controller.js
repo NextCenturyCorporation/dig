@@ -22,7 +22,7 @@ angular.module('digApp')
     $scope.viewDetails = function(doc, previousState) {
         $scope.doc = doc;
         $scope.previousState = previousState;
-        if($scope.activeTab == $scope.FILTER_TAB) {
+        if($scope.activeTab === $scope.FILTER_TAB) {
           $state.go('main.search.results.details');
         } else {
           $state.go('main.folder.results.details');
@@ -50,7 +50,7 @@ angular.module('digApp')
     $scope.viewList = function() {
         $scope.clearGalleryItem();
         $scope.displayMode.mode = 'list';
-        if($scope.activeTab == $scope.FILTER_TAB) {
+        if($scope.activeTab === $scope.FILTER_TAB) {
           $state.go('main.search.results.list');
         } else {
           $state.go('main.folder.results.list');
@@ -135,17 +135,17 @@ angular.module('digApp')
     // Selects or deselects a doc or folder based on the given doSelect boolean
     $scope.updateSelection = function(doSelect, item, isFolder) {
       // Select or deselect the item
-      if (doSelect && !$scope.isSelected(item._id, isFolder)) {
+      if (doSelect && !$scope.isSelected(item.id, isFolder)) {
         if(isFolder) {
-          $scope.selectedChildFolders[$scope.selectedItemsKey].push(item._id);
+          $scope.selectedChildFolders[$scope.selectedItemsKey].push(item.id);
         } else {
-          $scope.selectedItems[$scope.selectedItemsKey].push(item._id);
+          $scope.selectedItems[$scope.selectedItemsKey].push(item.id);
         }
       } else if(!doSelect) {
         if(isFolder) {
-          _.pull($scope.selectedChildFolders[$scope.selectedItemsKey], item._id);
+          _.pull($scope.selectedChildFolders[$scope.selectedItemsKey], item.id);
         } else {
-          _.pull($scope.selectedItems[$scope.selectedItemsKey], item._id);
+          _.pull($scope.selectedItems[$scope.selectedItemsKey], item._d);
         }
       }
     };
@@ -172,10 +172,10 @@ angular.module('digApp')
     // Returns whether the doc or folder with the id given is selected
     $scope.isSelected = function(id, isFolder) {
       if(isFolder) {
-        return (_.indexOf($scope.selectedChildFolders[$scope.selectedItemsKey], id) != -1);
+        return (_.indexOf($scope.selectedChildFolders[$scope.selectedItemsKey], id) !== -1);
       }
 
-      return (_.indexOf($scope.selectedItems[$scope.selectedItemsKey], id) != -1);
+      return (_.indexOf($scope.selectedItems[$scope.selectedItemsKey], id) !== -1);
     };
 
     // Returns whether all docs and folders on the current page are selected or not
@@ -189,9 +189,9 @@ angular.module('digApp')
           }
         });
 
-        if($scope.indexVM.page == 1) {
+        if($scope.indexVM.page === 1) {
           _.forEach($scope.childFolders, function(folder) {
-            if(!$scope.isSelected(folder._id, true)) {
+            if(!$scope.isSelected(folder.id, true)) {
               allSelected = false;
             }
           });
@@ -213,12 +213,12 @@ angular.module('digApp')
 
     // Moves selected docs to given folder
     $scope.moveItems = function(folder) {
-      $http.put('api/folders/' + folder._id,
+      $http.put('api/users/reqHeader/folders/' + folder.id,
         {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey],
           childIds: $scope.selectedChildFolders[$scope.selectedItemsKey]}).
         success(function(data) {
-          if($scope.selectedItemsKey != $scope.FILTER_TAB) {
-            $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
+          if($scope.selectedItemsKey !== $scope.FILTER_TAB) {
+            $http.put('api/users/folders/' + $scope.selectedFolder.id + '/folderitems' , {items: $scope.selectedItems[$scope.selectedItemsKey]}).
                 success(function(data) {
                   $scope.getFolders($scope.retrieveFolder);
                 });
@@ -229,7 +229,7 @@ angular.module('digApp')
     // Returns true if the delete button is disabled, false otherwise
     // The delete button is always disabled on the search view
     $scope.isDeleteDisabled = function() {
-      if($scope.selectedItemsKey == $scope.FILTER_TAB) {
+      if($scope.selectedItemsKey === $scope.FILTER_TAB) {
         return true;
       } else if($scope.selectedItems[$scope.selectedItemsKey] || $scope.selectedChildFolders[$scope.selectedItemsKey]) {
         return !(($scope.selectedItems[$scope.selectedItemsKey] && $scope.selectedItems[$scope.selectedItemsKey].length) || 

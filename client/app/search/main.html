@@ -61,12 +61,12 @@
 
       <div role="tabpanel" class="tab-pane" id="folders" ng-class="{active: activeTab == FOLDERS_TAB}">
         <div class="folder-header row text-right">
-          <button class="btn btn-default" ng-click="editFolder()" ng-class="{disabled: !selectedFolder._id}">
+          <button class="btn btn-default" ng-click="editFolder()" ng-class="{disabled: !selectedFolder.id}">
             <i class="fa fa-pencil"></i>
           </button>
           <div class="btn-group">
             <button class="btn btn-default dropdown-toggle" type="button" id="folderMenu"
-                    data-toggle="dropdown" aria-expanded="false" ng-class="{disabled: !selectedFolder._id}">
+                    data-toggle="dropdown" aria-expanded="false" ng-class="{disabled: !selectedFolder.id}">
               <i class="fa fa-folder"></i>
               <i class="caret"></i>
             </button>
@@ -80,7 +80,7 @@
               </li>
             </ul>
           </div>
-          <button class="btn btn-default" ng-click="deleteFolder()" ng-class="{disabled: !selectedFolder._id}">
+          <button class="btn btn-default" ng-click="deleteFolder()" ng-class="{disabled: !selectedFolder.id}">
             <i class="fa fa-trash"></i>
           </button>
           <button class="btn btn-default" ng-click="createEmptyFolder()">

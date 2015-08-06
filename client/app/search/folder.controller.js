@@ -14,15 +14,15 @@ angular.module('digApp')
 
       // Gets the items and sub-folders in the selected folder for viewing
       $scope.retrieveFolder = function() {
-        if($scope.selectedFolder._id) {
-          var fldr = _.find($scope.folders, {_id: $scope.selectedFolder._id});
+        if($scope.selectedFolder.id) {
+          var fldr = _.find($scope.folders, {id: $scope.selectedFolder.id});
 
-          $scope.items = fldr.items;
+          $scope.items = fldr.FolderItems;
           
           $scope.childFolders = [];
            _.forEach(fldr.childIds, function(id) {
-            var fldr = _.find($scope.folders, {_id: id});
-            $scope.childFolders.push({name: fldr.name, _id: fldr._id});
+            var fldr = _.find($scope.folders, {id: id});
+            $scope.childFolders.push({name: fldr.name, id: fldr.id});
           });
 
           $scope.selectedItems[$scope.selectedItemsKey] = [];
@@ -80,8 +80,8 @@ angular.module('digApp')
       };
 
       // Reloads the folder view when a folder is selected/deselected
-      $scope.$watch('selectedFolder._id',
-          function(newValue, oldValue) {
+      $scope.$watch('selectedFolder.id',
+          function(newValue) {
               if(newValue) {
                 $scope.getFolders($scope.retrieveFolder);
               } else {
@@ -108,7 +108,7 @@ angular.module('digApp')
           if($scope.indexVM.error) {
               $scope.loading = false;
               $scope.showresults = false;
-              if($scope.activeTab == $scope.FILTER_TAB) {
+              if($scope.activeTab === $scope.FILTER_TAB) {
                 $state.go('main.search.error');
               } else {
                 $state.go('main.folder.error');

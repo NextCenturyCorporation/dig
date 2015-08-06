@@ -5,14 +5,14 @@
 
 angular.module('digApp')
 .constant('MainConstants', {
-  "FILTER_TAB": '#filter',
-  "FOLDERS_TAB": '#folders'
+  'FILTER_TAB': '#filter',
+  'FOLDERS_TAB': '#folders'
 })
 .controller('MainCtrl', ['$scope', '$state', '$modal', '$location', 'imageSearchService', 'euiSearchIndex', 'euiConfigs', 'MainConstants', '$http',
     function($scope, $state, $modal, $location, imageSearchService, euiSearchIndex, euiConfigs, MainConstants, $http) {
 
     $scope.FILTER_TAB = MainConstants.FILTER_TAB;
-    $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB
+    $scope.FOLDERS_TAB = MainConstants.FOLDERS_TAB;
     $scope.searchConfig = {};
     $scope.searchConfig.filterByImage = false;
     $scope.searchConfig.euiSearchIndex = '';
@@ -26,26 +26,26 @@ angular.module('digApp')
     
 
     // All the folders created with child folders within their parents.
-    // Each folder only has the name, _id, parentId, and an array of children
+    // Each folder only has the name, id, parentId, and an array of children
     $scope.nestedFolders = [];
 
     // All the folders created in a flat list.
-    // Each folder only has the name, _id, and parentId
+    // Each folder only has the name, id, and parentId
     $scope.folders = [];
 
     $scope.selectedFolder = {};
 
-    // Each key is the _id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
-    // Each value contains an array of _ids of items that are selected in the folder (or search results)
+    // Each key is the id of a folder that was selected (or $scope.FILTER_TAB to represent the search results)
+    // Each value contains an array of ids of items that are selected in the folder (or search results)
     $scope.selectedItems = {};
 
-    // Each key is the _id of a folder that was selected
-    // Each value contains an array of _ids of sub-folders that are selected in the folder
+    // Each key is the id of a folder that was selected
+    // Each value contains an array of ids of sub-folders that are selected in the folder
     $scope.selectedChildFolders = {};
 
     $scope.selectedItemsKey = $scope.FILTER_TAB;
 
-    // Valid folders that items can be moved to (contains objects of names and _ids)
+    // Valid folders that items can be moved to (contains objects of names and ids)
     $scope.validMoveFolders = [];
 
     $scope.activeTab = '';
@@ -201,23 +201,23 @@ angular.module('digApp')
     $scope.isActive = function() {
         var path = $location.path();
 
-        if(path == '/search') {
+        if(path === '/search') {
             $scope.activeTab = $scope.FILTER_TAB;
             return true;
-        } else if(path == '/folder') {
+        } else if(path === '/folder') {
             $scope.activeTab = $scope.FOLDERS_TAB;
             return true;
         }
 
         return false;
-    }
+    };
 
     $scope.changeTab = function(link) {
         $scope.selectedFolder = {};
         $scope.validMoveFolders = [];
         $scope.tabChange = true;
 
-        if(link == $scope.FILTER_TAB) {
+        if(link === $scope.FILTER_TAB) {
             $scope.selectedItemsKey = $scope.FILTER_TAB;
             $scope.selectedFolderSort = {};
             $scope.viewList();
@@ -229,14 +229,14 @@ angular.module('digApp')
     // Returns array of valid folders the selected folder (if any) can move to.
     // A folder can move to to anything but itself and any children (recursively)
     $scope.retrieveValidMoveFolders = function() {
-        if($scope.selectedFolder._id) {
+        if($scope.selectedFolder.id) {
             var validFolders = [];
 
             // Push ROOT on first since a folder can always move to it
-            validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+            validFolders.push({name: $scope.rootFolder.name, id: $scope.rootFolder.id});
 
             // Take out itself and all children from the list of valid folders
-            validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders)
+            validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder.id, validFolders);
 
             return validFolders;
         }
@@ -246,8 +246,8 @@ angular.module('digApp')
 
     // Moves selected folder to given folder
     $scope.moveFolder = function(parentFolder) {
-        $http.put('api/folders/' + $scope.selectedFolder._id,
-        {name: $scope.selectedFolder.name, parentId: parentFolder._id}).success(function() {
+        $http.put('api/users/reqHeader/folders/' + $scope.selectedFolder.id,
+        {name: $scope.selectedFolder.name, parentId: parentFolder.id}).success(function() {
             $scope.getFolders();
         });
     };
@@ -260,15 +260,15 @@ angular.module('digApp')
         $scope.selectedFolderSort = _.cloneDeep($scope.euiConfigs.sort.folderOption);
 
         // Select/Deselect folder and update folders able to move to
-        if(!$scope.selectedFolder._id) {
+        if(!$scope.selectedFolder.id) {
             $scope.selectedFolder = angular.copy(folder);
-            $scope.selectedItemsKey = $scope.selectedFolder._id;
+            $scope.selectedItemsKey = $scope.selectedFolder.id;
             $scope.selectedItems[$scope.selectedItemsKey] = [];
             $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
             $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
-        } else if($scope.selectedFolder._id != folder._id) {
+        } else if($scope.selectedFolder.id !== folder.id) {
             $scope.selectedFolder = angular.copy(folder);
-            $scope.selectedItemsKey = $scope.selectedFolder._id;
+            $scope.selectedItemsKey = $scope.selectedFolder.id;
             $scope.selectedItems[$scope.selectedItemsKey] = [];
             $scope.selectedChildFolders[$scope.selectedItemsKey] = [];
             $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
@@ -292,21 +292,21 @@ angular.module('digApp')
 
       // Updates folders
       $scope.getFolders = function(cb) {
-        $http.get('api/folders/').
+        $http.get('api/users/reqHeader/folders/').
           success(function(data) {
-            // Folders (not including ROOT) with name, _id, and parentId for use in results "Move To" dropdown
+            // Folders (not including ROOT) with name, id, and parentId for use in results "Move To" dropdown
             $scope.folders = _.map(data, function(folder) {
-                if(folder.name != "ROOT") {
-                  return folder;
-                }
-              });
+              if(folder.name !== 'ROOT') {
+                return folder;
+              }
+            });
             // Take out 'undefined' that was placed for ROOT
             $scope.folders = _.filter($scope.folders, function(folder){ return folder;});
 
             $scope.nestedFolders = [];
             $scope.rootFolder = _.find(data, {name: 'ROOT'});
 
-            var rootId = $scope.rootFolder._id;
+            var rootId = $scope.rootFolder.id;
 
             var rootFolders = _.filter(data, {parentId: rootId});
 
@@ -314,15 +314,15 @@ angular.module('digApp')
             angular.forEach(rootFolders, function(folder) {
               $scope.nestedFolders.push({
                 name: folder.name,
-                _id: folder._id,
+                id: folder.id,
                 parentId: folder.parentId,
-                children: _getSubfolders(folder._id, data)
+                children: _getSubfolders(folder.id, data)
               });
             });
 
             // Update the selectedFolder details (if any)
-            if($scope.selectedFolder._id) {
-              $scope.selectedFolder = $scope.getUpdatedSelected($scope.selectedFolder._id, $scope.nestedFolders, {});
+            if($scope.selectedFolder.id) {
+              $scope.selectedFolder = $scope.getUpdatedSelected($scope.selectedFolder.id, $scope.nestedFolders, {});
               $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
               if(!$scope.selectedFolder) {
                 $scope.selectedFolder = {};
@@ -367,7 +367,7 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
-            delete $scope.selectedItems[$scope.selectedFolder._id];
+            delete $scope.selectedItems[$scope.selectedFolder.id];
             $scope.getFolders();
           });
       };
@@ -379,13 +379,14 @@ angular.module('digApp')
               controller: 'CreateModalCtrl',
               resolve: {
                   folders: function() {
-                    if(moveSelectedItems && $scope.selectedItemsKey != $scope.FILTER_TAB) {
+                    var validFolders = [];
+                    if(moveSelectedItems && $scope.selectedItemsKey !== $scope.FILTER_TAB) {
                       if($scope.selectedChildFolders[$scope.selectedItemsKey].length) {
                         // Get valid folders to move folder to
-                        var validFolders = [];
-                        validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
-                        validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders);
-                        validFolders.push({_id: $scope.selectedFolder._id, name: $scope.selectedFolder.name, parentId: $scope.selectedFolder.parentId});
+                        
+                        validFolders.push({name: $scope.rootFolder.name, id: $scope.rootFolder.id});
+                        validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder.id, validFolders);
+                        validFolders.push({id: $scope.selectedFolder.id, name: $scope.selectedFolder.name, parentId: $scope.selectedFolder.parentId});
                         return validFolders;
                       } else {
                         return $scope.folders;
@@ -393,9 +394,8 @@ angular.module('digApp')
                     }
 
                     // Get valid folders to move folder to
-                    var validFolders = [];
-                    validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
-                    validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder._id, validFolders);
+                    validFolders.push({name: $scope.rootFolder.name, id: $scope.rootFolder.id});
+                    validFolders = _filterOutChildren($scope.nestedFolders, $scope.selectedFolder.id, validFolders);
                     return validFolders;
                   },
                   currentFolder: function() {
@@ -421,9 +421,9 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
-            if ($scope.selectedFolder._id && moveSelectedItems) {
-              $http.put('api/folders/removeItems/' + $scope.selectedFolder._id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
-                  success(function(data) {
+            if ($scope.selectedFolder.id && moveSelectedItems) {
+              $http.put('api/users/reqHeader/folders/removeItems/' + $scope.selectedFolder.id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
+                  success(function() {
                     $scope.getFolders(cb);
                   });
             } else {
@@ -441,7 +441,7 @@ angular.module('digApp')
                   folders: function() {
                     // Get valid folders to move folder to
                     var validFolders = [];
-                    validFolders.push({name: $scope.rootFolder.name, _id: $scope.rootFolder._id});
+                    validFolders.push({name: $scope.rootFolder.name, id: $scope.rootFolder.id});
                     validFolders = _filterOutChildren($scope.nestedFolders, null, validFolders);
                     return validFolders;
                   },
@@ -476,7 +476,7 @@ angular.module('digApp')
                     return $scope.selectedChildFolders[$scope.selectedItemsKey];
                 },
                 id: function() {
-                  return $scope.selectedFolder._id
+                  return $scope.selectedFolder.id;
                 }
             },
             size: 'sm'
@@ -485,12 +485,12 @@ angular.module('digApp')
         modalInstance.result.then(function () {
           $scope.getFolders(cb);
         });
-      }
+      };
 
       // Find selectedFolder in given folders array
       $scope.getUpdatedSelected = function(id, folders, selected) {
         angular.forEach(folders, function(folder) {
-          if(folder._id == id) {
+          if(folder.id === id) {
             selected = folder;
           }
 
@@ -508,28 +508,28 @@ angular.module('digApp')
         angular.forEach(childFolders, function(folder) {
           children.push({
             name: folder.name,
-            _id: folder._id,
+            id: folder.id,
             parentId: folder.parentId,
-            children: _getSubfolders(folder._id, folders)
+            children: _getSubfolders(folder.id, folders)
           });
         });
 
         return children;
-      };
+      }
 
       // Add folders without id (and children of id) to names array
       function _filterOutChildren(folders, id, names) {
-        _.forEach(folders, function(child, index) {
+        _.forEach(folders, function(child) {
           // Return if found id because we don't want it or any of its children
-          if(child._id == id) {
+          if(child.id === id) {
             return;
           }
-          names.push({name: child.name, _id: child._id, parentId: child.parentId});
+          names.push({name: child.name, id: child.id, parentId: child.parentId});
           names = _filterOutChildren(child.children, id, names);
         });
 
         return names;
-      };
+      }
 
     $scope.$watch(function() {
             return imageSearchService.getActiveImageSearch();
@@ -588,7 +588,7 @@ angular.module('digApp')
         if($scope.indexVM.error) {
             $scope.loading = false;
             $scope.showresults = false;
-            if($scope.activeTab == $scope.FILTER_TAB) {
+            if($scope.activeTab === $scope.FILTER_TAB) {
                 $state.go('main.search.error');
             } else {
                 $state.go('main.folder.error');

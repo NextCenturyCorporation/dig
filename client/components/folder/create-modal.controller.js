@@ -6,7 +6,7 @@ angular.module('digApp')
     $scope.currentUser = User.get();
     $scope.currentFolder = currentFolder;
     $scope.folders = folders;
-    $scope.folderName = "";
+    $scope.folderName = '';
     $scope.items = items;
     $scope.childIds = childIds;
 
@@ -14,17 +14,17 @@ angular.module('digApp')
      return ($scope.folderName.length === 0 || !$scope.parentFolder);
     };
 
-    $scope.create = function () {
+
+    $scope.createFolder = function () {
       var children = [];
-      if($scope.currentFolder._id) {
-        children.push($scope.currentFolder._id);
+      if($scope.currentFolder.id) {
+        children.push($scope.currentFolder.id);
       } else if($scope.childIds.length){
         children = $scope.childIds;
       }
 
-      $http.post('api/folders',
-        {name: $scope.folderName, username: $scope.currentUser.username,
-          parentId: $scope.parentFolder._id, childIds: children, items: $scope.items});
+      $http.post('api/users/reqHeader/folders',
+        {name: $scope.folderName, parentId: $scope.parentFolder.id});
       
       $modalInstance.close();
     };
