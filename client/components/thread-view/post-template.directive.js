@@ -12,10 +12,6 @@ angular.module('digApp.directives')
         templateUrl: 'components/thread-view/post-template.partial.html',
         link: function($scope) {
 
-            $scope.fieldIsArray = function(field) {
-                return angular.isArray(field);
-            };
-
             $scope.highlightCheck = function(field, highlightedText) {
                 return textHighlightService.highlightCheck(field, highlightedText);
             };

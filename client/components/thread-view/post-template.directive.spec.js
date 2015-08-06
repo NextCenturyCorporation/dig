@@ -14,6 +14,12 @@ describe('Directive: postTemplate', function () {
         textHighlightService = _textHighlightService_;
         $httpBackend = _$httpBackend_;
 
+        scope.doc = {
+            _source: {
+                name: 'John',
+                city: 'Los Angeles'
+            }
+        };
         scope.post = {
             hasTitlePart: {
                 text: 'title'
@@ -42,18 +48,19 @@ describe('Directive: postTemplate', function () {
 
     it('should initialize all fields to the appropriate values', function () {
         inject(function ($compile) {
-            element = angular.element('<post-template post="post" post-fields="postFields"></post-template>');
+            element = angular.element('<post-template doc="doc" post="post" post-fields="postFields"></post-template>');
 
             $compile(element)(scope);
             element.scope().$digest();
         });
+        expect(element.isolateScope().doc).toBe(scope.doc);
         expect(element.isolateScope().post).toBe(scope.post);
         expect(element.isolateScope().postFields).toBe(scope.postFields);
     });
 
     it('should call textHighlightService method', function () {
         inject(function ($compile) {
-            element = angular.element('<post-template post="post" post-fields="postFields"></post-template>');
+            element = angular.element('<post-template doc="doc" post="post" post-fields="postFields"></post-template>');
 
             $compile(element)(scope);
             element.scope().$digest();
