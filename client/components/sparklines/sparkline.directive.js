@@ -11,6 +11,7 @@ angular.module('digApp.directives').directive('sparkline', function () {
             
             //TODO: sparkline labels?
 
+            // data has to be in an array for sparklines to work -- parse out aggregation counts
             $scope.getArray = function(structure) {
                 if(structure) {
                     return structure.map(function(o) { return o.count; });
