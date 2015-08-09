@@ -6,7 +6,7 @@ angular.module('digApp')
     $scope.currentUser = User.get();
 
     $scope.delete = function() {
-      $http.put('api/users/reqHeader/folders/' + id, {items: items, childIds: childIds});
+      $http.delete('api/users/reqHeader/folders/' + id, {items: items, childIds: childIds});
       $modalInstance.close();
     };
 

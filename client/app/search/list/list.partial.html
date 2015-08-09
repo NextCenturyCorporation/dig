@@ -21,9 +21,9 @@
     <li class="list-group-item" ng-repeat="folder in childFolders track by $index" ng-if="indexVM.page == 1">
       <div class="row list-group-item-heading ">
         <div class="col-xs-1 list-group-item-checkbox">
-          <input type="checkbox" ng-click="updateSelectionList($event, folder, true)" ng-checked="isSelected(folder._id, true)">
+          <input type="checkbox" ng-click="updateSelectionList($event, folder, true)" ng-checked="isSelected(folder.id, true)">
         </div>
-        <a href="" ng-click="openFolder(folder._id)" class="col-xs-11" target="_self">
+        <a href="" ng-click="openFolder(folder.id)" class="col-xs-11" target="_self">
           <div class="row">
             <div class="col-xs-3 col-sm-2 col-lg-1">
               <i class="fa fa-folder-open fa-4x"></i>

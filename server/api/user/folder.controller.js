@@ -122,7 +122,7 @@ exports.update = function(req, res) {
 
 
 // Remove a folder and all of its descendants
-exports.removeFolder = function (req, res) {
+exports.destroy = function (req, res) {
     var username = setUserName(req);
 
     Folder.find({where: {id: req.params.folderid, UserUsername: username}})
@@ -155,12 +155,18 @@ exports.removeFolder = function (req, res) {
     });
 };
 
+exports.getFolderItems = function(req, res) {
+    res.json([]);
+};
+
+exports.showFolderItem = function (req, res) {
+    res.json({});
+};
 
 // Create one or more FolderItem objects
 exports.createFolderItems = function(req, res) {
     var username = setUserName (req);
 
-    console.log(req.params.folderid);
     Folder.find({where: {id: req.params.folderid, UserUsername: username}})
     .then(function(folder) {
         assert.notEqual(folder, null);

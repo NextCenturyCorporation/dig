@@ -19,10 +19,12 @@ angular.module('digApp')
 
           $scope.items = fldr.FolderItems;
           
+          // find children for just this selected folder
           $scope.childFolders = [];
-           _.forEach(fldr.childIds, function(id) {
-            var fldr = _.find($scope.folders, {id: id});
-            $scope.childFolders.push({name: fldr.name, id: fldr.id});
+          _.forEach($scope.folders, function(folder) {
+            if (folder.parentId === fldr.id) {
+              $scope.childFolders.push(folder);
+            }
           });
 
           $scope.selectedItems[$scope.selectedItemsKey] = [];

@@ -11,7 +11,7 @@ angular.module('digApp')
       $modalInstance.close();
     };
 
-    $scope.delete = function() {
+    $scope.deleteFolder = function() {
       $http.delete('api/users/reqHeader/folders/' + folder.id);
       $modalInstance.close();
     };

@@ -18,6 +18,12 @@ module.exports = function(app, logger) {
         }
     });
 
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+    
     // Insert routes below
     app.use('/api/folders', require('./api/folder'));
     app.use('/api', require('./api/query'));

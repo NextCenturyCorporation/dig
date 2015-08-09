@@ -367,6 +367,7 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
+            console.log('deleted folder id', $scope.selectedFolder.id);
             delete $scope.selectedItems[$scope.selectedFolder.id];
             $scope.getFolders();
           });

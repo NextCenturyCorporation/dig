@@ -340,7 +340,6 @@ describe('folders endpoint', function() {
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
-                console.log(JSON.stringify(res.body));
                 res.body.affected.should.be.instanceof(Array).and.have.length(3);
                 done();
             });

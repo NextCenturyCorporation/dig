@@ -132,7 +132,6 @@ describe('Folder Model', function() {
             assert.notEqual(folders, null);
             folders.length.should.be.above(0);
             folders[0].FolderItems.length.should.be.exactly(2);
-            console.log(JSON.stringify(folders));
         })
         .then(function(results) {
             done();
@@ -189,7 +188,6 @@ describe('Folder Model', function() {
             folders.length.should.be.above(0);
             folders[0].FolderItems.length.should.be.exactly(2);
             folders[0].children.length.should.be.exactly(3);
-            console.log(JSON.stringify(folders));
             done();
         })
         .catch(function(err) {

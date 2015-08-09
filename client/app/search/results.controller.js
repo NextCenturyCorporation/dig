@@ -145,7 +145,7 @@ angular.module('digApp')
         if(isFolder) {
           _.pull($scope.selectedChildFolders[$scope.selectedItemsKey], item.id);
         } else {
-          _.pull($scope.selectedItems[$scope.selectedItemsKey], item._d);
+          _.pull($scope.selectedItems[$scope.selectedItemsKey], item.id);
         }
       }
     };
@@ -156,7 +156,7 @@ angular.module('digApp')
         $scope.updateSelection($event.target.checked, doc, false);
       });
 
-      if($scope.indexVM.page == 1) {
+      if($scope.indexVM.page === 1) {
         _.forEach($scope.childFolders, function(folder) {
           $scope.updateSelection($event.target.checked, folder, true);
         });
