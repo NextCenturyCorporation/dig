@@ -1380,6 +1380,53 @@ var all = {
             debugFields: {
                 fields: ['doc._id']
             },
+            detailFields: {
+                "1": {
+                    classes: 'patent-details',
+                    fields: [{
+                        title: 'Identifier',
+                        featureArray: 'doc._source.identifier',
+                        featureValue: 'name',
+                        field: 'doc._source.identifier.name'
+                    },{
+                        title: 'Agent',
+                        featureArray: 'doc._source.agent',
+                        featureValue: 'name',
+                        field: 'doc._source.agent.name'
+                    },{
+                        title: 'Date Published',
+                        field: 'doc._source.datePublished'
+                    }]
+                }, 
+                "2": {
+                    classes: 'more-patent-details',
+                    fields: [{
+                        title: 'Creator',
+                        featureArray: 'doc._source.creator',
+                        featureValue: 'name',
+                        field: 'doc._source.creator.name'
+                    },{
+                        title: 'Applicant',
+                        featureArray: 'doc._source.applicant',
+                        featureValue: 'name',
+                        field: 'doc._source.applicant.name'
+                    },{
+                        title: 'Assignee',
+                        featureArray: 'doc._source.assignee',
+                        featureValue: 'assignee.name',
+                        field: 'doc._source.assignee.assignee.name'
+                    }]
+                },
+                "3":{
+                    classes: 'citation-list',
+                    fields: [{
+                        title: 'Cited Patents',
+                        featureArray: 'doc._source.citation',
+                        featureValue: 'identifier.name',
+                        field: 'doc._source.citation.identifier.name'
+                    }]
+                }
+            },
             offerFields: {
                 title: [{
                     title: 'Title',

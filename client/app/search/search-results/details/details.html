@@ -15,37 +15,6 @@
     </div>
 
     <div class="row">
-
-      <!-- ngIf: doc._source.hasImagePart -->
-      <div ng-if="doc._source.hasImagePart" class="col-md-5 ng-scope">
-        <div class="row">
-          <div class="col-md-12 displayed-image-container text-center">
-            <div class="image-with-caption">
-              <img blurred-image ng-src="{{doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl}}" class="center-block displayed-image">
-              <div ng-if="facets.simFilter" class="caption image-search-caption"
-                ng-click="imageSearch((doc._source.hasImagePart[selectedImage].cacheUrl || doc._source.hasImagePart.cacheUrl))">
-                <div class="caption-background"></div>
-                <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div ng-if="doc._source.hasImagePart.length" class="row">
-          <div class="col-md-12">
-            <div class="thumbnail-gallery">
-              <ul class="inline list-inline text-center">
-                <li ng-repeat="image in doc._source.hasImagePart track by $index" class="whitespace-nowrap center-block">
-                  <a ng-href="" ng-mouseenter="selectImage($index)">
-                    <img blurred-image ng-src="{{image.cacheUrl}}" class="thumbnail image-thumb" 
-                      ng-class="{'image-search-match-thumb': imageMatchStates[$index]}">
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div><!-- end ngIf: doc._source.hasImagePart -->
-
       <div class="col-md-7">
 
         <h4 ng-if="$eval(euiConfigs.offerFields['title'][0].field)" class="ng-binding ng-scope" 
@@ -61,8 +30,13 @@
            <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
              <dt ng-if="field.title">{{field.title}}</dt>
              <dd ng-if="$eval(field.field)" ng-bind-html="stripHtml($eval(field.field))"></dd>
-             <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length')"
+             <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length') && field.title !== 'Cited Patents'"
                ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
+             <dd ng-if="field.title === 'Cited Patents' && $eval(field.featureArray + '.length')">
+              <span ng-repeat="item in $eval(field.featureArray) track by $index">
+                {{$eval('item.' + field.featureValue)}}<span ng-if="$index + 1 < $eval(field.featureArray + '.length')">, </span>
+              </span> 
+             </dd> 
            </div>
         </dl>
         <hr ng-repeat-end>
