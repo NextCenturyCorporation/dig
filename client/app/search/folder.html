@@ -3,7 +3,7 @@
   <div ng-show="searchConfig.euiSearchIndex.length && indexVM.loaded" class="folder-view-selected">
     <h1 class="folder-view-name text-center">{{ selectedFolder.name }}</h1>
 
-    <div eui-filter="ejs.TermsFilter('id', items)" eui-enabled="filterFolder.enabled" ng-model="filterFolder.enabled">
+    <div eui-filter="ejs.TermsFilter('_id', items)" eui-enabled="filterFolder.enabled" ng-model="filterFolder.enabled">
     </div>
 
     <ui-view></ui-view>

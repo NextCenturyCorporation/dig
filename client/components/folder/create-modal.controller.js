@@ -25,9 +25,8 @@ angular.module('digApp')
 
             $http.post('api/users/reqHeader/folders',
                 {name: $scope.folderName, parentId: $scope.parentFolder.id}
-                )
-            .then(function(folder){
-                console.log(JSON.stringify(folder));
+            )
+            .then(function(){
                 $modalInstance.close();
             })
             .catch(function(err) {
@@ -39,4 +38,5 @@ angular.module('digApp')
             $modalInstance.dismiss();
         };
 
-    }]);
+    }
+]);

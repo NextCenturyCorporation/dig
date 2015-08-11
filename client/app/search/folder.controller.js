@@ -17,7 +17,10 @@ angular.module('digApp')
         if($scope.selectedFolder.id) {
           var fldr = _.find($scope.folders, {id: $scope.selectedFolder.id});
 
-          $scope.items = fldr.FolderItems;
+          $scope.items = [];
+          fldr.FolderItems.forEach(function(item) {
+            $scope.items.push(item.elasticId);
+          });
           
           // find children for just this selected folder
           $scope.childFolders = [];
@@ -120,4 +123,5 @@ angular.module('digApp')
 
       $scope.init();
 
-    }]);
+    }
+]);

@@ -292,7 +292,7 @@ angular.module('digApp')
 
       // Updates folders
       $scope.getFolders = function(cb) {
-        $http.get('api/users/reqHeader/folders/').
+        $http.get('api/users/reqHeader/folders').
           success(function(data) {
             // Folders (not including ROOT) with name, id, and parentId for use in results "Move To" dropdown
             $scope.folders = _.map(data, function(folder) {

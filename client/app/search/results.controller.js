@@ -1,5 +1,6 @@
 'use strict';
 
+/* jshint camelcase:false */
 angular.module('digApp')
 .controller('ResultsCtrl', ['$scope', '$state', '$sce', '$http', 'imageSearchService', 
     function($scope, $state, $sce, $http, imageSearchService) {
@@ -92,13 +93,14 @@ angular.module('digApp')
         }
     };
 
+    
     $scope.setImageSearchMatchIndices = function() {
         var doc = $scope.doc;
         var currentSearch, imgFeature;
         $scope.selectedImage = -1;
         $scope.imageMatchStates = [];
 
-        /* jshint camelcase:false */
+        
         // If we have an active image search and multiple image parts, check for a matching image.
         if (imageSearchService.getActiveImageSearch() && imageSearchService.getActiveImageSearch().enabled &&
             doc._source.hasFeatureCollection.similar_images_feature &&
@@ -129,11 +131,15 @@ angular.module('digApp')
 
     // Selects or deselects a doc or folder from the list view when a checkbox is clicked
     $scope.updateSelectionList = function($event, item, isFolder) {
+      console.log(JSON.stringify('item', item));
       $scope.updateSelection($event.target.checked, item, isFolder);
     };
 
     // Selects or deselects a doc or folder based on the given doSelect boolean
     $scope.updateSelection = function(doSelect, item, isFolder) {
+      // Note:  The check below is necessary because items can be either docs
+      // or folders; docs have _id, but folders have id (no underscore).
+      if (!isFolder) { item.id = item._id;}
       // Select or deselect the item
       if (doSelect && !$scope.isSelected(item.id, isFolder)) {
         if(isFolder) {
@@ -211,20 +217,34 @@ angular.module('digApp')
       return total;
     };
 
-    // Moves selected docs to given folder
+    function formatItems (items) {
+      var newitems = [];
+      items.forEach(function(item) {
+        newitems.push({elasticId: item});
+      });
+      return newitems;
+    }
+    // Moves selected folders/folderitems to specified folder
+    // 1) if there are folders being moved, update each folder parentId
+    // 2) for each item selected: 
+    //    i) create the item with destination parentId
+    //    ii) remove the item in the case that the items already existed in a folder
     $scope.moveItems = function(folder) {
-      $http.put('api/users/reqHeader/folders/' + folder.id,
-        {name: folder.name, parentId: folder.parentId, items: $scope.selectedItems[$scope.selectedItemsKey],
-          childIds: $scope.selectedChildFolders[$scope.selectedItemsKey]}).
-        success(function(data) {
-          if($scope.selectedItemsKey !== $scope.FILTER_TAB) {
-            $http.put('api/users/folders/' + $scope.selectedFolder.id + '/folderitems' , {items: $scope.selectedItems[$scope.selectedItemsKey]}).
-                success(function(data) {
-                  $scope.getFolders($scope.retrieveFolder);
-                });
-          }
-        });
+      var items = formatItems($scope.selectedItems[$scope.selectedItemsKey]);
+      // create items in a batch request
+      $http.post('api/users/reqHeader/folders/' + folder.id + '/folderitems',
+        {
+          items: items
+        }
+      )
+      .then(function(items) {
+        console.log('affected', JSON.stringify(items));
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
     };
+
 
     // Returns true if the delete button is disabled, false otherwise
     // The delete button is always disabled on the search view
