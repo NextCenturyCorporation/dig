@@ -15,8 +15,8 @@
       <span ng-bind-html="stripOtherHtmlTags($eval(field.field + '.' + value))"></span>
     </span>
   </dd>
-  <dd ng-if="$eval(field.featureArray + '.length')"
-   ng-repeat="item in $eval(field.featureArray) track by $index">
+  <dd ng-if="$eval(field.featureArray + '.length') && field.title !== 'Cited Patents'"
+   ng-repeat="item in $eval(field.featureArray)">
     <span ng-if="field.featureValue" 
       ng-bind-html="highlightCheck($eval('item.' + field.featureValue), $eval(field.highlightArray))">
     </span>
@@ -27,10 +27,12 @@
       {{$eval('item.' + value)}}
     </span>
   </dd>
-  <dd ng-if="$eval(field.featureAggregation)">
-    <span ng-repeat="item in $eval(field.featureAggregation) track by $index">
-      <b>{{$eval('item.' + field.aggCount)}}</b> - {{$eval('item.' + field.aggName)}}<span ng-if="$index + 1 < $eval(field.featureAggregation + '.length')">, </span>
-    </span>
-  </dd>   
+
+  <dd ng-if="field.title === 'Cited Patents' && $eval(field.featureArray + '.length')">
+    <span ng-repeat="item in $eval(field.featureArray) track by $index">
+      <span ng-bind-html="highlightCheck($eval('item.' + field.featureValue), 
+        $eval(field.highlightArray))"></span><span ng-if="$index + 1 < $eval(field.featureArray + '.length')">, </span>
+    </span> 
+  </dd>  
   <span ng-repeat-end></span>
 </dl>

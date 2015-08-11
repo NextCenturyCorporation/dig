@@ -15,10 +15,6 @@ angular.module('digApp.directives')
         templateUrl: 'components/offer-view/offer-view.partial.html',
         link: function($scope) {
             $scope.euiConfigs = euiConfigs;
-
-            $scope.getFirstAtfImageUrl = function(doc) {
-                return doc._source.itemOffered.image[0].url || doc._source.itemOffered.image.url;
-            };
         }
     };
 });

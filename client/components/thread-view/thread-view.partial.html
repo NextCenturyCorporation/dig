@@ -1,4 +1,4 @@
-<span ng-if="euiConfigs.threadFields">
+<span ng-if="euiConfigs.threadFields && doc._type === 'patents'">
   <div class="row">
     <div class="col-md-12">
       <h4>
@@ -11,31 +11,9 @@
         <div class="col-sm-8">
           <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['2']"></display-desc-list>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <label class="post-label">Legal Action</label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12"> 
-      <div class="posts">
-        <ul class="post-list-group list-unstyled">
-          <span ng-if="$eval(euiConfigs.threadFields.postFields.field)">
-            <span ng-if="$eval(euiConfigs.threadFields.postFields.field).length">
-              <li class="post-list-item" ng-repeat="item in $eval(euiConfigs.threadFields.postFields.field)">
-                <post-template post="item"></post-template>
-              </li>
-            </span>
-            <span ng-if="!$eval(euiConfigs.threadFields.postFields.field).length">
-              <li class="post-list-item">
-                <post-template post="$eval(euiConfigs.threadFields.postFields.field)"></post-template>
-              </li>  
-            </span>            
-          </span>
-        </ul>  
+        <div class="col-sm-12">
+          <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['3']"></display-desc-list>
+        </div>
       </div>
     </div>
   </div>

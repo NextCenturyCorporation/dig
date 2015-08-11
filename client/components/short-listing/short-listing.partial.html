@@ -1,5 +1,5 @@
-<span ng-if="euiConfigs.threadFields">
-<span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
+<span ng-if="euiConfigs.threadFields && doc._type === 'patents'">
+  <span ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field) || 'N/A'"></span>
 <!--   
 Uncomment if we only want to display first name in name array
 <span ng-if="$eval(euiConfigs.threadFields['title'][0].field).length">
@@ -10,6 +10,16 @@ Uncomment if we only want to display first name in name array
 </span> -->
   <div class="list-group-item-meta">
     <span ng-repeat="field in euiConfigs.threadFields['short']">
+      <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+      <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+    </span>
+  </div>
+</span>
+
+<span ng-if="euiConfigs.offerFields && doc._type === 'organization'">
+  <span ng-bind-html="$eval(euiConfigs.offerFields['title'][0].field) || 'N/A'"></span>
+  <div class="list-group-item-meta">
+    <span ng-repeat="field in euiConfigs.offerFields['short']">
       <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
       <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
     </span>

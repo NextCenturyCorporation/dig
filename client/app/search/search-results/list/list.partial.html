@@ -33,7 +33,14 @@
         <div class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
           <span ng-if="$eval(field)">{{field}}: {{$eval(field)}}</span>
         </div>
-        <div thread-view doc="doc"></div>
+
+        <span ng-if="doc._type === 'organization'">
+           <div offer-view doc="doc" get-display-image-src="getDisplayImageSrc" 
+            view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></div> 
+        </span>
+        <span ng-if="doc._type === 'patents'">
+          <div thread-view doc="doc" view-details="viewDetails"></div>         
+        </span>
       </div>
     </li>
   </ul>

@@ -1,5 +1,9 @@
 <div class="checkbox" ng-repeat="bucket in displayBuckets" ng-hide="bucket.hidden">
-  <label eui-filter="ejs.NestedFilter(nestedPath).filter(ejs.TermsFilter(aggregationKey, bucket.key))" eui-enabled="filterStates[aggregationName][bucket.key]">
+  <label ng-if="!nestedPath" eui-filter="ejs.TermsFilter(aggregationKey, bucket.key)" eui-enabled="filterStates[aggregationName][bucket.key]">
+    <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">{{bucket.key}}
+  </label>
+  <label ng-if="nestedPath" eui-filter="ejs.NestedFilter(nestedPath).filter(ejs.TermsFilter(aggregationKey, bucket.key))" 
+    eui-enabled="filterStates[aggregationName][bucket.key]">
     <input type="checkbox" ng-model="filterStates[aggregationName][bucket.key]">
       {{bucket.key}}
   </label>

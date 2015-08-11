@@ -1332,6 +1332,13 @@ var all = {
         'dig-patents-latest':{
             facets: {
                 aggFilters: [{
+                    title: 'Type',
+                    type: 'eui-aggregation',
+                    field: 'type_agg',
+                    terms: 'a',
+                    termsType: 'string',
+                    count: 5
+/*                },{                    
                     title: 'Region',
                     type: 'eui-aggregation',
                     field: 'region_agg',
@@ -1354,7 +1361,7 @@ var all = {
                     nestedPath: 'assignee',
                     terms: 'assignee.name',
                     termsType: 'string',
-                    count: 10
+                    count: 10*/
                 },{
                     title: 'Citation Ids',
                     type: 'eui-aggregation',
@@ -1373,6 +1380,65 @@ var all = {
             debugFields: {
                 fields: ['doc._id']
             },
+            offerFields: {
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.legalName || doc._source.legalName[0]',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Alternate Name',
+                    field: 'doc._source.alternateName || doc._source.alternateName[0]',
+                    classes: 'name'
+                },{
+                    title: 'Permit Status',
+                    field: 'doc._source.operatingPermit["schema:status"]',
+                    classes: 'status'
+                }],
+                full: {
+                    "1": {
+                        classes: 'operating-details',
+                        fields: [{
+                            title: 'Permit Issued By',
+                            field: 'doc._source.operatingPermit["schema:issuedBy"]["schema:valueName"]',
+                        },{
+                            title: 'Permit Status',
+                            field: 'doc._source.operatingPermit["schema:status"]',
+                        },{
+                            title: 'Permit Valid From',
+                            field: "doc._source.operatingPermit['schema:validFrom'] | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'Permit Identifier',
+                            field: 'doc._source.operatingPermit["schema:validIn"].identifier.name',
+                        },{
+                            title: 'Permit Valid In',
+                            field: 'doc._source.operatingPermit["schema:validIn"].name',
+                        }]
+                    },
+                    "2": {
+                        classes: 'org-details',
+                        fields: [{
+                            title: 'Alternate Name(s)',
+                            field: 'doc._source.alternateName || doc._source.alternateName[0]'
+                        },{
+                            title: 'Provider',
+                            field: 'doc._source["schema:providesService"].provider',
+                            featureArray: 'doc._source["schema:providesService"]',
+                            featureValue: 'provider'
+                        },{
+                            title: 'Provides Service',
+                            field: 'doc._source["schema:providesService"]["schema:serviceType"]',
+                            featureArray: 'doc._source["schema:providesService"]',
+                            featureValue: '["schema:serviceType"]'
+                        },{
+                            title: 'Subtype',
+                            field: 'doc._source["schema:subtype"]'
+                        }]
+                    }
+                }
+
+            },
             threadFields: {
                 title: [{
                     title: 'Title',
@@ -1386,7 +1452,7 @@ var all = {
                     classes: 'identifier'
                 },{
                     title: 'Assignee',
-                    field: 'doc._source.assignee.name || doc._source.assignee[0].name',
+                    field: 'doc._source.assignee.assignee.name || doc._source.assignee[0].assignee.name',
                     classes: 'name'
                 }],
                 full: {
@@ -1415,47 +1481,62 @@ var all = {
                             featureValue: 'name',
                             field: 'doc._source.creator.name'
                         },{
+                            title: 'Applicant',
+                            featureArray: 'doc._source.applicant',
+                            featureValue: 'name',
+                            field: 'doc._source.applicant.name'
+                        },{
                             title: 'Assignee',
                             featureArray: 'doc._source.assignee',
-                            featureValue: 'name',
-                            field: 'doc._source.assignee.name'
+                            featureValue: 'assignee.name',
+                            field: 'doc._source.assignee.assignee.name'
+                        }]
+                    },
+                    "3":{
+                        classes: 'citation-list',
+                        fields: [{
+                            title: 'Cited Patents',
+                            featureArray: 'doc._source.citation',
+                            featureValue: 'identifier.name',
+                            field: 'doc._source.citation.identifier.name'
                         }]
                     }
-                },
-                postFields: {
-                    field: 'doc._source.legalAction',
-                    subject: [{
-                        title: 'Title',
-                        type: 'title',
-                        field: 'name',
-                        section: 'title'
-                    }],
-                    short: [{
-                        title: 'Identifier(s)',
-                        field: 'identifier',
-                        classes: 'identifier'
-                    }, {
-                        title: 'Start Time',
-                        field: 'startTime',
-                        classes: 'date'
-                    },{
-                        title: 'Location',
-                        field: 'location.name',
-                        classes: 'location'
-                    },{
-                        title: 'Region',
-                        field: 'location.address.addressRegion',
-                        classes: 'region'
-                    },{
-                        title: 'Country',
-                        field: 'location.address.addressCountry',
-                        classes: 'country'
-                    }],
-                    body: {
-                        title: 'Body',
-                        field: 'mainEntityOfPage.text',
-                        highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
-                    }
+/*                    ,
+                    postFields: {
+                        field: 'doc._source.citation',
+                        subject: [{
+                            title: 'Title',
+                            type: 'title',
+                            field: 'identifier.name',
+                            section: 'title'
+                        }],
+                        short: [{
+                            title: 'Identifier(s)',
+                            field: 'identifier',
+                            classes: 'identifier'
+                        }, {
+                            title: 'Start Time',
+                            field: 'startTime',
+                            classes: 'date'
+                        },{
+                            title: 'Location',
+                            field: 'location.name',
+                            classes: 'location'
+                        },{
+                            title: 'Region',
+                            field: 'location.address.addressRegion',
+                            classes: 'region'
+                        },{
+                            title: 'Country',
+                            field: 'location.address.addressCountry',
+                            classes: 'country'
+                        }],
+                        body: {
+                            title: 'Body',
+                            field: 'mainEntityOfPage.text',
+                            highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
+                        }
+                    }*/
                 }
             }
         }
