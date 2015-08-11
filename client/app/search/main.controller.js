@@ -422,14 +422,7 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
-            if ($scope.selectedFolder.id && moveSelectedItems) {
-              $http.put('api/users/reqHeader/folders/removeItems/' + $scope.selectedFolder.id, {items: $scope.selectedItems[$scope.selectedItemsKey]}).
-                  success(function() {
-                    $scope.getFolders(cb);
-                  });
-            } else {
               $scope.getFolders();
-            }
           });
       };
 

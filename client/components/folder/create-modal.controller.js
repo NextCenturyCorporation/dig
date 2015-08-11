@@ -26,17 +26,24 @@ angular.module('digApp')
             $http.post('api/users/reqHeader/folders',
                 {name: $scope.folderName, parentId: $scope.parentFolder.id}
             )
+            .then(function(response) {
+                var folderitems = [];
+                items.forEach(function(item) {
+                    folderitems.push({elasticId: item});
+                });
+                return $http.post('api/users/reqHeader/folders/' + response.data.id + '/folderitems', {items: folderitems});
+            })
             .then(function(){
                 $modalInstance.close();
             })
             .catch(function(err) {
-                console.log(err);
+                console.log(JSON.stringify(err));
+                $modalInstance.close();
             });
         };
 
         $scope.cancel = function () {
             $modalInstance.dismiss();
         };
-
     }
 ]);
