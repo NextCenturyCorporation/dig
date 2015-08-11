@@ -292,47 +292,48 @@ angular.module('digApp')
 
       // Updates folders
       $scope.getFolders = function(cb) {
-        $http.get('api/users/reqHeader/folders').
-          success(function(data) {
-            // Folders (not including ROOT) with name, id, and parentId for use in results "Move To" dropdown
-            $scope.folders = _.map(data, function(folder) {
-              if(folder.name !== 'ROOT') {
-                return folder;
-              }
-            });
-            // Take out 'undefined' that was placed for ROOT
-            $scope.folders = _.filter($scope.folders, function(folder){ return folder;});
+        $http.get('api/users/reqHeader/folders')
+        .then(function(response) {
 
-            $scope.nestedFolders = [];
-            $scope.rootFolder = _.find(data, {name: 'ROOT'});
-
-            var rootId = $scope.rootFolder.id;
-
-            var rootFolders = _.filter(data, {parentId: rootId});
-
-            // Put children into root folders (recursively) instead of having a flat list with all folders
-            angular.forEach(rootFolders, function(folder) {
-              $scope.nestedFolders.push({
-                name: folder.name,
-                id: folder.id,
-                parentId: folder.parentId,
-                children: _getSubfolders(folder.id, data)
-              });
-            });
-
-            // Update the selectedFolder details (if any)
-            if($scope.selectedFolder.id) {
-              $scope.selectedFolder = $scope.getUpdatedSelected($scope.selectedFolder.id, $scope.nestedFolders, {});
-              $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
-              if(!$scope.selectedFolder) {
-                $scope.selectedFolder = {};
-              }
-            }
-
-            if(cb) {
-              cb();
+          // Folders (not including ROOT) with name, id, and parentId for use in results "Move To" dropdown
+          $scope.folders = _.map(response.data, function(folder) {
+            if(folder.name !== 'ROOT') {
+              return folder;
             }
           });
+          // Take out 'undefined' that was placed for ROOT
+          $scope.folders = _.filter($scope.folders, function(folder){ return folder;});
+
+          $scope.nestedFolders = [];
+          $scope.rootFolder = _.find(response.data, {name: 'ROOT'});
+
+          var rootId = $scope.rootFolder.id;
+
+          var rootFolders = _.filter(response.data, {parentId: rootId});
+
+          // Put children into root folders (recursively) instead of having a flat list with all folders
+          angular.forEach(rootFolders, function(folder) {
+            $scope.nestedFolders.push({
+              name: folder.name,
+              id: folder.id,
+              parentId: folder.parentId,
+              children: _getSubfolders(folder.id, response.data)
+            });
+          });
+
+          // Update the selectedFolder details (if any)
+          if($scope.selectedFolder.id) {
+            $scope.selectedFolder = $scope.getUpdatedSelected($scope.selectedFolder.id, $scope.nestedFolders, {});
+            $scope.validMoveFolders = $scope.retrieveValidMoveFolders();
+            if(!$scope.selectedFolder) {
+              $scope.selectedFolder = {};
+            }
+          }
+
+          if(cb) {
+            cb();
+          }
+        });
       };
 
       // Opens edit modal
@@ -367,7 +368,6 @@ angular.module('digApp')
           });
 
           modalInstance.result.then(function () {
-            console.log('deleted folder id', $scope.selectedFolder.id);
             delete $scope.selectedItems[$scope.selectedFolder.id];
             $scope.getFolders();
           });

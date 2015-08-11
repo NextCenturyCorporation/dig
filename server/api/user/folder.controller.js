@@ -51,6 +51,7 @@ exports.index = function(req, res) {
         }
     })
     .catch(function(err) {
+        console.log(JSON.stringify(err));
         res.status(404).json(err);
     })  
 };
@@ -188,6 +189,7 @@ exports.createFolderItems = function(req, res) {
 
 // Remove one or more FolderItem objects
 exports.removeFolderItems = function(req, res) {
+    console.log('REQUEST', JSON.stringify(req.body));
     var username = setUserName (req);
 
     var errors = [];

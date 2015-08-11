@@ -4,7 +4,12 @@ module.exports = function(sequelize, DataTypes) {
     var FolderItem = sequelize.define('FolderItem', {
         elasticId: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: 'compositeIndex'
+        },
+        FolderId: {
+            type: DataTypes.INTEGER,
+            unique: 'compositeIndex'
         }
     }, 
     {

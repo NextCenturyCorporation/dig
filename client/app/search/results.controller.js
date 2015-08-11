@@ -2,8 +2,8 @@
 
 /* jshint camelcase:false */
 angular.module('digApp')
-.controller('ResultsCtrl', ['$scope', '$state', '$sce', '$http', 'imageSearchService', 
-    function($scope, $state, $sce, $http, imageSearchService) {
+.controller('ResultsCtrl', ['$scope', '$state', '$sce', '$http', '$q', 'imageSearchService', 
+    function($scope, $state, $sce, $http, $q, imageSearchService) {
     $scope.opened = [];
     $scope.displayMode = {
         mode: 'list'
@@ -131,7 +131,6 @@ angular.module('digApp')
 
     // Selects or deselects a doc or folder from the list view when a checkbox is clicked
     $scope.updateSelectionList = function($event, item, isFolder) {
-      console.log(JSON.stringify('item', item));
       $scope.updateSelection($event.target.checked, item, isFolder);
     };
 
@@ -224,24 +223,76 @@ angular.module('digApp')
       });
       return newitems;
     }
+
     // Moves selected folders/folderitems to specified folder
     // 1) if there are folders being moved, update each folder parentId
     // 2) for each item selected: 
     //    i) create the item with destination parentId
     //    ii) remove the item in the case that the items already existed in a folder
     $scope.moveItems = function(folder) {
-      var items = formatItems($scope.selectedItems[$scope.selectedItemsKey]);
-      // create items in a batch request
-      $http.post('api/users/reqHeader/folders/' + folder.id + '/folderitems',
-        {
-          items: items
+      var subfolderIds = $scope.selectedChildFolders[$scope.selectedItemsKey];
+      var folderitems = formatItems($scope.selectedItems[$scope.selectedItemsKey]);
+      // console.log('subfoldersIds', JSON.stringify(subfolderIds));
+      // console.log('folderitems', JSON.stringify(folderitems));
+      // console.log('src', JSON.stringify($scope.selectedFolder));
+      // console.log('dest', JSON.stringify(folder));
+
+      // get all of the subfolder objects, if any
+      var promises = [];
+      subfolderIds.forEach(function(folderid) {
+        promises.push($http.get('api/users/reqHeader/folders/' + folderid));
+      }); 
+
+      var subfolders = [];
+      $q.all(promises)
+      .then(function(response) {
+        // get subfolder objects to be moved
+        response.forEach(function(getRequest) {
+          subfolders.push(getRequest.data);
+        });
+
+        // if there are no subfolders to move, then return a promise immediately
+        if (subfolders.length === 0) {
+          return $q(function(resolve) {
+            resolve();
+          });
         }
-      )
-      .then(function(items) {
-        console.log('affected', JSON.stringify(items));
+
+        // move the subfolders to their new parent
+        var promises = [];
+        subfolders.forEach(function(subfolder) {
+          promises.push($http.put('/api/users/reqHeader/folders/' + subfolder.id, 
+            {name: subfolder.name, parentId: folder.id}));
+        });
+
+        return $q.all(promises);
+      })
+      .then(function() {
+        // create items in destination folder
+        return $http.post('api/users/reqHeader/folders/' + folder.id + '/folderitems', 
+          {items: folderitems});
+      })
+      .then(function() {
+        // if there is a source folder, remove the items from it
+        if($scope.selectedItemsKey === $scope.FILTER_TAB) {
+          return $q(function(resolve) {
+            resolve();
+          });          
+        }
+
+        var request = {
+            method: 'DELETE',
+            url: 'api/users/reqHeader/folders/' + $scope.selectedFolder.id + '/folderitems',
+            data: {items: folderitems},
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+        };
+        return $http(request);
+      })      
+      .then(function() {
+        $scope.getFolders($scope.retrieveFolder);
       })
       .catch(function(err) {
-        console.log(err);
+        console.log(JSON.stringify(err));
       });
     };
 
