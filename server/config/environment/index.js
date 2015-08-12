@@ -1338,15 +1338,15 @@ var all = {
                     terms: 'a',
                     termsType: 'string',
                     count: 5
-/*                },{                    
+                },{                    
                     title: 'Region',
                     type: 'eui-aggregation',
                     field: 'region_agg',
-                    nestedPath: 'assignee.address',
-                    terms: 'assignee.address.addressRegion',
+                    nestedPath: 'assignee',
+                    terms: 'assignee.assignee.address.addressRegion',
                     termsType: 'string',
                     count: 10
-                },{
+                },{/*
                     title: 'Creator',
                     type: 'eui-aggregation',
                     field: 'creator_agg',
@@ -1359,10 +1359,10 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'assignee_agg',
                     nestedPath: 'assignee',
-                    terms: 'assignee.name',
+                    terms: 'assignee.assignee.name',
                     termsType: 'string',
-                    count: 10*/
-                },{
+                    count: 10
+                },{*/
                     title: 'Citation Ids',
                     type: 'eui-aggregation',
                     field: 'citation_agg',

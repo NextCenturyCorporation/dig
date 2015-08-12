@@ -39,13 +39,13 @@
       </checkbox-filter>
     </collapse-filter>
 
-<!--     <div class="form-group images-only-filter" ng-if="euiConfigs.threadFields.postFields.field">
-  <div class="filter-header filter-header-selected">
-    <h5><input type="checkbox" eui-filter="ejs.NestedFilter('legalAction').filter(ejs.ExistsFilter('legalAction.uri'))"
-      ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Court Cases Only
-    </h5>
-  </div>
-</div> -->
+    <div class="form-group images-only-filter" ng-if="euiConfigs.threadFields">
+      <div class="filter-header filter-header-selected">
+        <h5><input type="checkbox" eui-filter="ejs.NestedFilter('legalAction').filter(ejs.ExistsFilter('legalAction.a'))"
+          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Court Cases Only
+        </h5>
+      </div>
+    </div>
 
     <div eui-highlight="ejs.Highlight(euiConfigs.highlight.fields).preTags('<mark>').postTags('</mark>').numberOfFragments(0)"
       eui-enabled="true">
