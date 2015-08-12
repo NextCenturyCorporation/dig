@@ -1,25 +1,34 @@
 <span class="post-title" 
-  ng-bind-html="highlightCheck($eval('post.' + euiConfigs.threadFields.postFields['subject'][0].field), 
-    $eval(euiConfigs.threadFields.postFields['subject'][0].highlightArray))"></span>
+  ng-bind-html="highlightCheck($eval('post.' + postFields['subject'][0].field), 
+    $eval(postFields['subject'][0].highlightArray))"></span>
 <div class="list-group-item-meta">
-  <span ng-repeat="field in euiConfigs.threadFields.postFields['short']">
+  <span ng-repeat="field in postFields['short']">
     <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-    <span ng-if="field.field === 'identifier'">
-      <span ng-if="post.identifier.length" ng-repeat="identifier in post.identifier track by $index">
-        {{identifier.name}}<span ng-if="$index + 1 < post.identifier.length">, </span>
+    <span ng-if="field.field === 'plaintiff.name'">
+      <span ng-if="post.plaintiff.length" ng-repeat="plaintiff in post.plaintiff track by $index">
+        {{plaintiff.name}}<span ng-if="$index + 1 < post.plaintiff.length">, </span>
       </span>
-      <span ng-if="!post.identifier.length">
+      <span ng-if="!post.plaintiff.length">
         <span class="{{field.classes}}" 
         ng-bind-html="highlightCheck($eval('post.' + field.field), $eval(field.highlightArray)) || 'N/A'"></span>
       </span>
     </span>
-    <span ng-if="field.field !== 'identifier'">
+    <span ng-if="field.field === 'defendant.name'">
+      <span ng-if="post.defendant.length" ng-repeat="defendant in post.defendant track by $index">
+        {{defendant.name}}<span ng-if="$index + 1 < post.defendant.length">, </span>
+      </span>
+      <span ng-if="!post.defendant.length">
+        <span class="{{field.classes}}" 
+        ng-bind-html="highlightCheck($eval('post.' + field.field), $eval(field.highlightArray)) || 'N/A'"></span>
+      </span>
+    </span>
+    <span ng-if="field.field !== 'plaintiff.name' && field.field !== 'defendant.name'">
       <span class="{{field.classes}}" 
       ng-bind-html="highlightCheck($eval('post.' + field.field), $eval(field.highlightArray)) || 'N/A'"></span>
     </span>
   </span>                
 </div>
-<span ng-if="euiConfigs.threadFields.postFields.body">
-  <span ng-bind-html="highlightCheck($eval('post.' + euiConfigs.threadFields.postFields.body.field), 
-  $eval(euiConfigs.threadFields.postFields.body.highlightArray))"></span>
+<span ng-if="postFields.body">
+  <span ng-bind-html="highlightCheck($eval('post.' + postFields.body.field), 
+  $eval(postFields.body.highlightArray))"></span>
 </span>

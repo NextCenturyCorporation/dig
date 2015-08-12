@@ -5,7 +5,9 @@ angular.module('digApp.directives')
     return {
         restrict: 'E',
         scope: {
-            post: '='
+            post: '=',
+            doc: '=',
+            postFields: '='
         },
         templateUrl: 'components/thread-view/post-template.partial.html',
         link: function($scope) {

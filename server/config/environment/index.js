@@ -1346,23 +1346,7 @@ var all = {
                     terms: 'assignee.assignee.address.addressRegion',
                     termsType: 'string',
                     count: 10
-                },{/*
-                    title: 'Creator',
-                    type: 'eui-aggregation',
-                    field: 'creator_agg',
-                    nestedPath: 'creator',
-                    terms: 'creator.name',
-                    termsType: 'string',
-                    count: 10
                 },{
-                    title: 'Assignee',
-                    type: 'eui-aggregation',
-                    field: 'assignee_agg',
-                    nestedPath: 'assignee',
-                    terms: 'assignee.assignee.name',
-                    termsType: 'string',
-                    count: 10
-                },{*/
                     title: 'Citation Ids',
                     type: 'eui-aggregation',
                     field: 'citation_agg',
@@ -1401,20 +1385,10 @@ var all = {
                 "2": {
                     classes: 'more-patent-details',
                     fields: [{
-                        title: 'Creator',
-                        featureArray: 'doc._source.creator',
-                        featureValue: 'name',
-                        field: 'doc._source.creator.name'
-                    },{
                         title: 'Applicant',
                         featureArray: 'doc._source.applicant',
                         featureValue: 'name',
                         field: 'doc._source.applicant.name'
-                    },{
-                        title: 'Assignee',
-                        featureArray: 'doc._source.assignee',
-                        featureValue: 'assignee.name',
-                        field: 'doc._source.assignee.assignee.name'
                     }]
                 },
                 "3":{
@@ -1498,9 +1472,9 @@ var all = {
                     field: 'doc._source.identifier.name || doc._source.identifier[0].name',
                     classes: 'identifier'
                 },{
-                    title: 'Assignee',
-                    field: 'doc._source.assignee.assignee.name || doc._source.assignee[0].assignee.name',
-                    classes: 'name'
+                    title: 'Date Published',
+                    field: 'doc._source.datePublished',
+                    classes: 'date'
                 }],
                 full: {
                     "1": {
@@ -1523,20 +1497,10 @@ var all = {
                     "2": {
                         classes: 'more-patent-details',
                         fields: [{
-                            title: 'Creator',
-                            featureArray: 'doc._source.creator',
-                            featureValue: 'name',
-                            field: 'doc._source.creator.name'
-                        },{
                             title: 'Applicant',
                             featureArray: 'doc._source.applicant',
                             featureValue: 'name',
                             field: 'doc._source.applicant.name'
-                        },{
-                            title: 'Assignee',
-                            featureArray: 'doc._source.assignee',
-                            featureValue: 'assignee.name',
-                            field: 'doc._source.assignee.assignee.name'
                         }]
                     },
                     "3":{
@@ -1548,43 +1512,62 @@ var all = {
                             field: 'doc._source.citation.identifier.name'
                         }]
                     }
-/*                    ,
-                    postFields: {
-                        field: 'doc._source.citation',
-                        subject: [{
-                            title: 'Title',
-                            type: 'title',
-                            field: 'identifier.name',
-                            section: 'title'
-                        }],
-                        short: [{
-                            title: 'Identifier(s)',
-                            field: 'identifier',
-                            classes: 'identifier'
-                        }, {
-                            title: 'Start Time',
-                            field: 'startTime',
-                            classes: 'date'
-                        },{
-                            title: 'Location',
-                            field: 'location.name',
-                            classes: 'location'
-                        },{
-                            title: 'Region',
-                            field: 'location.address.addressRegion',
-                            classes: 'region'
-                        },{
-                            title: 'Country',
-                            field: 'location.address.addressCountry',
-                            classes: 'country'
-                        }],
-                        body: {
-                            title: 'Body',
-                            field: 'mainEntityOfPage.text',
-                            highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
-                        }
-                    }*/
-                }
+                },
+                postFields: [{
+                    title: 'Legal Action',
+                    field: 'doc._source.legalAction',
+                    orderBy: '-startTime',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'identifier.name',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Plaintiff',
+                        field: 'plaintiff.name',
+                        classes: 'plaintiff'
+                    },{
+                        title: 'Defendant',
+                        field: 'defendant.name',
+                        classes: 'defendant'
+                    },{
+                        title: 'Cause',
+                        field: 'cause.name',
+                        classes: 'cause'
+                    },{
+                        title: 'Start Time',
+                        field: 'startTime',
+                        classes: 'date'
+                    },{
+                        title: 'Location',
+                        field: 'location.name',
+                        classes: 'location'
+                    }]
+                },{
+                    title: 'Recent Transfers',
+                    field: 'doc._source.assignee',
+                    orderBy: '-startDate',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'assignee.name',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Start Date',
+                        field: 'startDate',
+                        classes: 'date'
+                    },{
+                        title: 'Address Locality',
+                        field: 'assignee.address.addressLocality',
+                        classes: 'locality'
+                    },{
+                        title: 'Address Country',
+                        field: 'assignee.address.addressCountry',
+                        classes: 'country'
+                    }]
+                }]
             }
         }
     }
