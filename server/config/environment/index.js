@@ -1545,7 +1545,7 @@ var all = {
                         classes: 'location'
                     }]
                 },{
-                    title: 'Recent Transfers',
+                    title: 'Assignments',
                     field: 'doc._source.assignee',
                     orderBy: '-startDate',
                     subject: [{
