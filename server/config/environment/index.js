@@ -1342,7 +1342,7 @@ var all = {
                     title: 'Region',
                     type: 'eui-aggregation',
                     field: 'region_agg',
-                    nestedPath: 'assignee',
+                    nestedPath: 'assignee.assignee.address',
                     terms: 'assignee.assignee.address.addressRegion',
                     termsType: 'string',
                     count: 10
@@ -1399,6 +1399,13 @@ var all = {
                         featureValue: 'identifier.name',
                         field: 'doc._source.citation.identifier.name'
                     }]
+                },
+                "4":{
+                    classes: 'body',
+                    fields: [{
+                        title: 'Text',
+                        field: 'doc._source.hasClaimPart.text'
+                    }]
                 }
             },
             offerFields: {
@@ -1414,7 +1421,7 @@ var all = {
                     classes: 'name'
                 },{
                     title: 'Permit Status',
-                    field: 'doc._source.operatingPermit["schema:status"]',
+                    field: 'doc._source.operatingPermit.status',
                     classes: 'status'
                 }],
                 full: {
@@ -1422,19 +1429,19 @@ var all = {
                         classes: 'operating-details',
                         fields: [{
                             title: 'Permit Issued By',
-                            field: 'doc._source.operatingPermit["schema:issuedBy"]["schema:valueName"]',
+                            field: 'doc._source.operatingPermit.issuedBy.valueName',
                         },{
                             title: 'Permit Status',
-                            field: 'doc._source.operatingPermit["schema:status"]',
+                            field: 'doc._source.operatingPermit.status',
                         },{
                             title: 'Permit Valid From',
-                            field: "doc._source.operatingPermit['schema:validFrom'] | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                            field: "doc._source.operatingPermit.validFrom | date:'MM/dd/yyyy HH:mm:ss UTC'"
                         },{
                             title: 'Permit Identifier',
-                            field: 'doc._source.operatingPermit["schema:validIn"].identifier.name',
+                            field: 'doc._source.operatingPermit.validIn.identifier.name',
                         },{
                             title: 'Permit Valid In',
-                            field: 'doc._source.operatingPermit["schema:validIn"].name',
+                            field: 'doc._source.operatingPermit.validIn.name',
                         }]
                     },
                     "2": {
@@ -1444,17 +1451,17 @@ var all = {
                             field: 'doc._source.alternateName || doc._source.alternateName[0]'
                         },{
                             title: 'Provider',
-                            field: 'doc._source["schema:providesService"].provider',
-                            featureArray: 'doc._source["schema:providesService"]',
+                            field: 'doc._source.providesService.provider',
+                            featureArray: 'doc._source.providesService',
                             featureValue: 'provider'
                         },{
                             title: 'Provides Service',
-                            field: 'doc._source["schema:providesService"]["schema:serviceType"]',
-                            featureArray: 'doc._source["schema:providesService"]',
-                            featureValue: '["schema:serviceType"]'
+                            field: 'doc._source.providesService.serviceType',
+                            featureArray: 'doc._source.providesService',
+                            featureValue: 'serviceType'
                         },{
                             title: 'Subtype',
-                            field: 'doc._source["schema:subtype"]'
+                            field: 'doc._source.subtype'
                         }]
                     }
                 }
@@ -1562,6 +1569,10 @@ var all = {
                         title: 'Address Locality',
                         field: 'assignee.address.addressLocality',
                         classes: 'locality'
+                    },{
+                        title: 'Address Region',
+                        field: 'assignee.address.addressRegion',
+                        classes: 'region'
                     },{
                         title: 'Address Country',
                         field: 'assignee.address.addressCountry',
