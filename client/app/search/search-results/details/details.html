@@ -15,31 +15,25 @@
     </div>
 
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-12">
 
-        <h4 ng-if="$eval(euiConfigs.offerFields['title'][0].field)" class="ng-binding ng-scope" 
-        ng-bind-html="$eval(euiConfigs.offerFields['title'][0].field)"></h4>
-        <div ng-if="doc._source.url">
-          <span class="to-uppercase text-muted">URL</span>
-          <span><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></span>
+        <h4 ng-if="$eval(euiConfigs.threadFields['title'][0].field)" class="ng-binding ng-scope" 
+        ng-bind-html="$eval(euiConfigs.threadFields['title'][0].field)"></h4>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            <display-desc-list doc="doc" section="euiConfigs.detailFields['1']"></display-desc-list>
+          </div>
+          <div class="col-md-6">
+            <display-desc-list doc="doc" section="euiConfigs.detailFields['2']"></display-desc-list>
+          </div>
         </div>
         <hr>
-
-        <dl ng-repeat-start="section in euiConfigs.detailFields"
-          class="{{section.classes}}">
-           <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
-             <dt ng-if="field.title">{{field.title}}</dt>
-             <dd ng-if="$eval(field.field)" ng-bind-html="stripHtml($eval(field.field))"></dd>
-             <dd ng-if="$eval(field.featureArray + ' && ' + field.featureArray + '.length') && field.title !== 'Cited Patents'"
-               ng-repeat="item in $eval(field.featureArray)">{{$eval('item.' + field.featureValue)}}</dd>
-             <dd ng-if="field.title === 'Cited Patents' && $eval(field.featureArray + '.length')">
-              <span ng-repeat="item in $eval(field.featureArray) track by $index">
-                {{$eval('item.' + field.featureValue)}}<span ng-if="$index + 1 < $eval(field.featureArray + '.length')">, </span>
-              </span> 
-             </dd> 
-           </div>
-        </dl>
-        <hr ng-repeat-end>
+        <display-desc-list doc="doc" section="euiConfigs.detailFields['3']"></display-desc-list>
+        <hr>
+        <display-desc-list doc="doc" section="euiConfigs.detailFields['4']"></display-desc-list>
+        <hr>
+        
         <span ng-repeat="postFields in euiConfigs.threadFields.postFields">
           <div class="row">
             <div class="col-xs-12">
@@ -48,24 +42,20 @@
           </div>
           <div class="row">
             <div class="col-xs-12"> 
-              <div class="posts">
-                <ul class="post-list-group list-unstyled">
-                
-                  <span ng-if="$eval(postFields.field)">
-                    <span ng-if="$eval(postFields.field).length">
-                      <li class="post-list-item" ng-repeat="item in $eval(postFields.field) | orderBy: postFields.orderBy">
-                        <post-template post="item" doc="doc" post-fields="postFields"></post-template>
-                      </li>
-                    </span>
-                    <span ng-if="!$eval(postFields.field).length">
-                      <li class="post-list-item">
-                        <post-template post="$eval(postFields.field)" doc="doc" post-fields="postFields"></post-template>
-                      </li>  
-                    </span>            
-                  </span> 
-
-                </ul>  
-              </div>
+              <ul class="post-list-group list-unstyled">
+                <span ng-if="$eval(postFields.field)">
+                  <span ng-if="$eval(postFields.field).length">
+                    <li class="post-list-item" ng-repeat="item in $eval(postFields.field) | orderBy: postFields.orderBy">
+                      <post-template post="item" doc="doc" post-fields="postFields"></post-template>
+                    </li>
+                  </span>
+                  <span ng-if="!$eval(postFields.field).length">
+                    <li class="post-list-item">
+                      <post-template post="$eval(postFields.field)" doc="doc" post-fields="postFields"></post-template>
+                    </li>  
+                  </span>            
+                </span> 
+              </ul>  
             </div>
           </div>         
         </span>          

@@ -1521,13 +1521,13 @@ var all = {
                     }
                 },
                 postFields: [{
-                    title: 'Legal Action',
+                    title: 'Legal Actions',
                     field: 'doc._source.legalAction',
                     orderBy: '-startTime',
                     subject: [{
                         title: 'Title',
                         type: 'title',
-                        field: 'identifier.name',
+                        field: 'name',
                         section: 'title'
                     }],
                     short: [{
@@ -1542,6 +1542,10 @@ var all = {
                         title: 'Cause',
                         field: 'cause.name',
                         classes: 'cause'
+                    },{
+                        title: 'Identifier',
+                        field: 'identifier.name',
+                        classes: 'identifier'
                     },{
                         title: 'Start Time',
                         field: 'startTime',
