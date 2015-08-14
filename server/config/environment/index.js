@@ -1530,31 +1530,30 @@ var all = {
                         field: 'name',
                         section: 'title'
                     }],
-                    short: [{
-                        title: 'Plaintiff',
-                        field: 'plaintiff.name',
-                        classes: 'plaintiff'
-                    },{
-                        title: 'Defendant',
-                        field: 'defendant.name',
-                        classes: 'defendant'
-                    },{
-                        title: 'Cause',
-                        field: 'cause.name',
-                        classes: 'cause'
-                    },{
-                        title: 'Identifier',
-                        field: 'identifier.name',
-                        classes: 'identifier'
-                    },{
-                        title: 'Start Time',
-                        field: 'startTime',
-                        classes: 'date'
-                    },{
-                        title: 'Location',
-                        field: 'location.name',
-                        classes: 'location'
-                    }]
+                    short: {
+                        "1": [{
+                            title: 'Filing Date',
+                            field: 'startTime',
+                            classes: 'date'
+                        },{
+                            title: 'Docker #',
+                            field: 'identifier.name',
+                            classes: 'identifier'
+                        },{
+                            title: 'Cause',
+                            field: 'cause.name',
+                            classes: 'cause'
+                        }], 
+                        "2": [{
+                            title: 'Plaintiff',
+                            field: 'plaintiff.name',
+                            classes: 'plaintiff'
+                        },{
+                            title: 'Defendant',
+                            field: 'defendant.name',
+                            classes: 'defendant'
+                        }]
+                    }
                 },{
                     title: 'Assignments',
                     field: 'doc._source.assignee',
@@ -1565,23 +1564,26 @@ var all = {
                         field: 'assignee.name',
                         section: 'title'
                     }],
-                    short: [{
-                        title: 'Start Date',
-                        field: 'startDate',
-                        classes: 'date'
-                    },{
-                        title: 'Address Locality',
-                        field: 'assignee.address.addressLocality',
-                        classes: 'locality'
-                    },{
-                        title: 'Address Region',
-                        field: 'assignee.address.addressRegion',
-                        classes: 'region'
-                    },{
-                        title: 'Address Country',
-                        field: 'assignee.address.addressCountry',
-                        classes: 'country'
-                    }]
+                    short: {
+                        "1": [{
+                            title: 'Start Date',
+                            field: 'startDate',
+                            classes: 'date'
+                        },{
+                            title: 'Address Locality',
+                            field: 'assignee.address.addressLocality',
+                            classes: 'locality'
+                        },{
+                            title: 'Address Region',
+                            field: 'assignee.address.addressRegion',
+                            classes: 'region'
+                        },{
+                            title: 'Address Country',
+                            field: 'assignee.address.addressCountry',
+                            classes: 'country'
+                        }]
+                    }
+
                 }]
             }
         }

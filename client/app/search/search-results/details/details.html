@@ -42,7 +42,8 @@
           </div>
           <div class="row">
             <div class="col-xs-12"> 
-              <ul class="post-list-group list-unstyled">
+              <div class="posts">
+                <ul class="post-list-group list-unstyled">
                 <span ng-if="$eval(postFields.field)">
                   <span ng-if="$eval(postFields.field).length">
                     <li class="post-list-item" ng-repeat="item in $eval(postFields.field) | orderBy: postFields.orderBy">
@@ -56,6 +57,7 @@
                   </span>            
                 </span> 
               </ul>  
+              </div>
             </div>
           </div>         
         </span>          
