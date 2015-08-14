@@ -60,7 +60,94 @@
               </div>
             </div>
           </div>         
-        </span>          
+        </span>     
+
+        <div class="row">
+          <div class="col-xs-12">
+            <label class="post-label">Assignments</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12"> 
+            <div class="posts">
+              <ul class="post-list-group list-unstyled">
+                <span ng-if="doc._source.assignee">
+                  <span ng-if="doc._source.assignee.length">
+                    <span ng-repeat="item in doc._source.assignee | orderBy: '-startDate'">
+                      <span ng-if="item.assignee.length">
+                        <li class="post-list-item" ng-repeat="subitem in item.assignee">
+                          <span class="post-title">{{subitem.name}}</span>
+                          <div class="list-group-item-meta">
+                            <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                            <span>{{item.startDate || 'N/A'}}</span>
+                            &nbsp;&nbsp;&nbsp;     
+                            <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
+                            <span>
+                              {{subitem.address.addressLocality || 'N/A'}}, 
+                              {{subitem.address.addressRegion || 'N/A'}}, 
+                              {{subitem.address.addressCountry || 'N/A'}}
+                            </span>  
+                          </div>                    
+                        </li>
+                      </span>
+                      <span ng-if="!item.assignee.length">
+                        <li class="post-list-item"> 
+                          <span class="post-title">{{item.assignee.name}}</span>
+                          <div class="list-group-item-meta">
+                            <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                            <span>{{item.startDate || 'N/A'}}</span>
+                            &nbsp;&nbsp;&nbsp;     
+                            <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
+                            <span>
+                              {{item.assignee.address.addressLocality || 'N/A'}}, 
+                              {{item.assignee.address.addressRegion || 'N/A'}}, 
+                              {{item.assignee.address.addressCountry || 'N/A'}}
+                            </span>  
+                          </div>
+                        </li>  
+                      </span>
+
+                    </span>
+                  </span> 
+                  <span ng-if="!doc._source.assignee.length">
+                    <span ng-if="doc._source.assignee.assignee.length">
+                      <li class="post-list-item" ng-repeat="subitem in doc._source.assignee.assignee">
+                        <span class="post-title">{{subitem.name}}</span>
+                        <div class="list-group-item-meta">
+                          <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                          <span>{{subitem.startDate || 'N/A'}}</span>
+                          &nbsp;&nbsp;&nbsp;     
+                          <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
+                          <span>
+                            {{subitem.address.addressLocality || 'N/A'}}, 
+                            {{subitem.address.addressRegion || 'N/A'}}, 
+                            {{subitem.address.addressCountry || 'N/A'}}
+                          </span>  
+                        </div>                    
+                      </li>
+                    </span>
+                    <span ng-if="!doc._source.assignee.assignee.length">
+                      <li class="post-list-item"> 
+                        <span class="post-title">{{doc._source.assignee.assignee.name}}</span>
+                        <div class="list-group-item-meta">
+                          <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                          <span>{{doc._source.assignee.startDate || 'N/A'}}</span>
+                          &nbsp;&nbsp;&nbsp;     
+                          <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
+                          <span>
+                            {{doc._source.assignee.assignee.address.addressLocality || 'N/A'}}, 
+                            {{doc._source.assignee.assignee.address.addressRegion || 'N/A'}}, 
+                            {{doc._source.assignee.assignee.address.addressCountry || 'N/A'}}
+                          </span>  
+                        </div>
+                      </li>  
+                    </span>
+                  </span>
+                </span>          
+              </ul>  
+            </div>
+          </div>
+        </div>       
       </div>
 
       <div class="row">
@@ -73,5 +160,4 @@
       </div>
     </div>
   </div>
-
 </div>

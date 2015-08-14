@@ -1536,7 +1536,7 @@ var all = {
                             field: 'startTime',
                             classes: 'date'
                         },{
-                            title: 'Docker #',
+                            title: 'Docket #',
                             field: 'identifier.name',
                             classes: 'identifier'
                         },{
@@ -1554,36 +1554,6 @@ var all = {
                             classes: 'defendant'
                         }]
                     }
-                },{
-                    title: 'Assignments',
-                    field: 'doc._source.assignee',
-                    orderBy: '-startDate',
-                    subject: [{
-                        title: 'Title',
-                        type: 'title',
-                        field: 'assignee.name',
-                        section: 'title'
-                    }],
-                    short: {
-                        "1": [{
-                            title: 'Start Date',
-                            field: 'startDate',
-                            classes: 'date'
-                        },{
-                            title: 'Address Locality',
-                            field: 'assignee.address.addressLocality',
-                            classes: 'locality'
-                        },{
-                            title: 'Address Region',
-                            field: 'assignee.address.addressRegion',
-                            classes: 'region'
-                        },{
-                            title: 'Address Country',
-                            field: 'assignee.address.addressCountry',
-                            classes: 'country'
-                        }]
-                    }
-
                 }]
             }
         }
