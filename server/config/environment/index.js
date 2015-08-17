@@ -1552,6 +1552,11 @@ var all = {
                             title: 'Defendant',
                             field: 'defendant.name',
                             classes: 'defendant'
+                        }],
+                        "3": [{
+                            title: 'Location',
+                            field: 'location.name',
+                            classes: 'location'
                         }]
                     }
                 }]
