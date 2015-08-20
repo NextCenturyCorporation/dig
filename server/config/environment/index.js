@@ -1335,7 +1335,7 @@ var all = {
                     title: 'Type',
                     type: 'eui-aggregation',
                     field: 'type_agg',
-                    terms: 'a',
+                    terms: '_type',
                     termsType: 'string',
                     count: 5
                 },{                    
@@ -1346,6 +1346,13 @@ var all = {
                     terms: 'assignee.assignee.address.addressRegion',
                     termsType: 'string',
                     count: 10
+                },{
+                    title: 'Current Assignee',
+                    type: 'eui-aggregation',
+                    field: 'assignee_agg',
+                    terms: 'currentAssignee.assignee.name',
+                    termsType: 'string',
+                    count: 20
                 },{
                     title: 'Citation Ids',
                     type: 'eui-aggregation',
@@ -1361,9 +1368,7 @@ var all = {
                     '*'
                 ]
             },
-            debugFields: {
-                fields: ['doc._id']
-            },
+            // also see postFields
             detailFields: {
                 "1": {
                     classes: 'patent-details',
@@ -1408,6 +1413,7 @@ var all = {
                     }]
                 }
             },
+            // this is for orgs
             offerFields: {
                 title: [{
                     title: 'Title',
@@ -1467,6 +1473,7 @@ var all = {
                 }
 
             },
+            // this is for patents
             threadFields: {
                 title: [{
                     title: 'Title',
@@ -1474,14 +1481,32 @@ var all = {
                     field: 'doc._source.name',
                     section: 'title'
                 }],
-                short: [{
-                    title: 'Identifier',
-                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                short: [
+                {
+                    title: 'type',
+                    field: 'doc._source.a',
+                    classes: 'identifier'
+                },
+                {
+                    title: 'owner',
+                    field: 'doc._source.currentAssignee.assignee.name',
                     classes: 'identifier'
                 },{
-                    title: 'Date Published',
+                    title: 'date acquired',
+                    field: 'doc._source.currentAssignee.startDate',
+                    classes: 'identifier'
+                },{
+                    title: 'date published',
                     field: 'doc._source.datePublished',
                     classes: 'date'
+                },{
+                    title: 'legal actions',
+                    field: 'doc._source.legalActionCount',
+                    classes: 'date'
+                },{
+                    title: 'id',
+                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                    classes: 'identifier'
                 }],
                 full: {
                     "1": {

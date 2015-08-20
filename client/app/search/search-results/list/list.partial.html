@@ -13,12 +13,7 @@
       <div ng-click="toggleListItemOpened(doc._id)" class="query-result list-group-item-heading collapsed" tabindex="-1">
      <!--  <a href=""  class="list-group-item-heading collapsed" target="_self"> -->
         <div class="row">
-          <div class="col-xs-3 col-sm-2 col-lg-1">
-            <span ng-if="doc._source.hasImagePart">
-              <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
-            </span> 
-          </div>
-          <div class="col-xs-7 col-sm-8 col-lg-9">
+          <div class="col-xs-11 col-sm-11 col-lg-11">
             <short-listing doc="doc"></short-listing>
           </div>
           <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
