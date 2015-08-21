@@ -13,7 +13,7 @@
     "angular-bootstrap": "~0.13.0",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
-    "angular-ui-router": "~0.2.10",
+    "angular-ui-router": "~0.2.15",
     "elasticsearch": "~2.4.3",
     "elastic.js": "~1.2.0",
     "d3": "3.5.3",

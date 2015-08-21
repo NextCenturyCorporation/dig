@@ -14,11 +14,6 @@ angular.module('digApp')
           callSubmit: null
         }
       })
-    .state('main.folder', {
-        abstract: true,
-        templateUrl: 'app/search/folder.html',
-        controller: 'FolderCtrl'
-      })
     .state('main.folder.results', {
         abstract: true,
         templateUrl: 'app/search/results.partial.html',
@@ -62,6 +57,11 @@ angular.module('digApp')
     .state('main.search.results.details', {
         url: '^/details',
         templateUrl: 'app/search/details/details.html'
+    })
+    .state('main.folder', {
+        abstract: true,
+        templateUrl: 'app/search/folder.html',
+        controller: 'FolderCtrl'
     })
     .state('main.search.error', {
         url: '^/error',
