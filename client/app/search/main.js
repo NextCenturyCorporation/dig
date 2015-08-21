@@ -25,7 +25,7 @@ angular.module('digApp')
         preserveScrollPos: true
       })
     .state('main.folder.results.details', {
-        url: '^/details',
+        url: '^/folder/details',
         templateUrl: 'app/search/details/details.html'
     })
     .state('main.folder.error', {
@@ -55,7 +55,7 @@ angular.module('digApp')
         preserveScrollPos: true
     })
     .state('main.search.results.details', {
-        url: '^/details',
+        url: '^/search/details',
         templateUrl: 'app/search/details/details.html'
     })
     .state('main.folder', {
