@@ -6,6 +6,7 @@
 
 var errors = require('./components/errors');
 var config = require('./config/environment');
+var path = require('path');
 
 module.exports = function(app, logger) {
     app.route('*')
@@ -53,6 +54,6 @@ module.exports = function(app, logger) {
     // All other routes should redirect to the index.html
     app.route('/*')
     .get(function(req, res) {
-        res.sendFile('index.html', {root: __dirname + '/../' + app.get('appPath')});
+        res.sendFile(app.get('homePage'));
     });
 };

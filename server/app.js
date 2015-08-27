@@ -44,6 +44,7 @@ require('./routes')(app, log);
 
 app.models = models;
 app.log = log;
+app.config = config;
 
 
 models.sequelize.sync()
