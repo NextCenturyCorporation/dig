@@ -52,7 +52,7 @@
                 <img blurred-image ng-src="{{getDisplayImageSrc(doc)}}" class="image-thumb center-block">
               </span> 
             </div>
-            <div class="col-xs-9 col-sm-10 col-lg-11">
+            <div class="col-xs-7 col-sm-8 col-lg-9">
               <span ng-bind-html="$eval(euiConfigs.listFields['title'][0].field)"></span>
               <div class="list-group-item-meta">
                 <span ng-repeat="field in euiConfigs.listFields['short']">
@@ -61,6 +61,10 @@
                 </span>
               </div>
             </div>
+            <h3 class="new-results col-xs-2 col-sm-2 col-lg-2 text-right"
+                ng-show="notificationHasRun === false && notificationLastRun && doc.sort[0] > notificationLastRun.getTime()">
+              <span class="label label-default">NEW <i class="fa fa-inbox"></i></span>
+            </h3>
           </div>
         </a>
       </div>
