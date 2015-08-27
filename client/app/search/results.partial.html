@@ -35,11 +35,11 @@
         ng-hide="selectedItemsKey == FILTER_TAB">
       <i class="fa fa-trash"></i>
     </button>
-    <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order"
-      ng-if="selectedItemsKey == FILTER_TAB">
+    <sort indexvm="indexVM" ejs="ejs" eui-configs="euiConfigs" title="selectedSort.title" order="selectedSort.order" field="selectedSort.field" notification-has-run="notificationHasRun"
+      ng-if="selectedItemsKey === FILTER_TAB">
     </sort>
     <sort indexvm="indexVM" ejs="ejs" eui-configs="selectedFolderSortOptions" title="selectedFolderSort.title" order="selectedFolderSort.order"
-      ng-if="selectedItemsKey != FILTER_TAB">
+      ng-if="selectedItemsKey !== FILTER_TAB">
     </sort>
   </div>
 

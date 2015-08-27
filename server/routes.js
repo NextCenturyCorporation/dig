@@ -26,7 +26,6 @@ module.exports = function(app, logger) {
     });
     
     // Insert routes below
-    app.use('/api/folders', require('./api/folder'));
     app.use('/api', require('./api/query'));
     app.use('/api/users', require('./api/user'));
 

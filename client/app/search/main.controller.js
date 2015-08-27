@@ -130,10 +130,6 @@ angular.module('digApp')
                 $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
             }
 
-            if($state.params.query.digState.selectedSort) {
-                $scope.selectedSort = _.cloneDeep($state.params.query.digState.selectedSort);
-            }
-
             $scope.$on('$locationChangeSuccess', function() {
                 if($state.current.name === 'main.search.results.list' && $scope.showresults === false) {
                     $scope.submit();
