@@ -348,6 +348,11 @@ var all = {
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
+                }],
+                rangeFilters: [{
+                    title: 'Age',
+                    aggName: 'age_range_agg',
+                    field: 'hasFeatureCollection.person_age_feature.person_age'
                 }]
             },
             highlight: {

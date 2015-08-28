@@ -49,7 +49,8 @@ angular.module('digApp')
         $scope.filterStates = {
             aggFilters: {},
             textFilters: {},
-            dateFilters: {}
+            dateFilters: {},
+            rangeFilters: {}
         };
         $scope.includeMissing = {
             aggregations: {},
@@ -143,6 +144,10 @@ angular.module('digApp')
 
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
+    };
+
+    $scope.removeRangeFilter = function(key1, key2) {
+        $scope.filterStates.rangeFilters[key1][key2] = null;
     };
     
     $scope.removeTextFilter = function(textKey) {
