@@ -146,8 +146,9 @@ angular.module('digApp')
         $scope.filterStates.dateFilters[key1][key2] = null;
     };
 
-    $scope.removeRangeFilter = function(key1, key2) {
-        $scope.filterStates.rangeFilters[key1][key2] = null;
+    $scope.removeRangeFilter = function(key) {
+        $scope.filterStates.rangeFilters[key].begin = null;
+        $scope.filterStates.rangeFilters[key].end = null;
     };
     
     $scope.removeTextFilter = function(textKey) {

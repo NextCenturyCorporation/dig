@@ -24,7 +24,6 @@ angular.module('digApp')
                     },
                     stop: function(event, ui) {
                         $scope.$apply(function() {
-
                             $scope.begin = ui.values[0];
                             $scope.end = ui.values[1];
                             angular.element(element[0].querySelector('.slider-range')).slider('option', 'values', [$scope.begin, $scope.end]);
@@ -47,17 +46,11 @@ angular.module('digApp')
 
             $scope.$watch('min',
                 function(newValue) {
-                    if(newValue) {
+                    if(newValue && ($scope.begin === null || $scope.begin >= $scope.min)) {
                         angular.element(element[0].querySelector('.slider-range')).slider('option', 'min', $scope.min);
 
-                        if($scope.begin !== null && $scope.begin < $scope.min) {
-                            angular.element(element[0].querySelector('.slider-range')).slider('values', 0, $scope.min);
-                        }
-
                         $scope.updateRange(angular.element(element[0].querySelector('.slider-range')).slider('values', 0), 
-                                angular.element(element[0].querySelector('.slider-range')).slider('values', 1));
-                        
-                        
+                                angular.element(element[0].querySelector('.slider-range')).slider('values', 1)); 
                     }
                 }
             );
@@ -65,16 +58,16 @@ angular.module('digApp')
 
             $scope.$watch('max',
                 function(newValue) {
-                    if(newValue) {
-                        angular.element(element[0].querySelector('.slider-range')).slider('option', 'max', $scope.max);
-                        
-                        if($scope.end !== null && $scope.end > $scope.max) {
-                            angular.element(element[0].querySelector('.slider-range')).slider('values', 1, $scope.max);
+                    if(newValue && ($scope.end === null || $scope.end <= $scope.max)) {
+                        if($scope.min === $scope.max) {
+                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'max', $scope.max + 1);
+                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'values', [$scope.min, $scope.max + 1]);
+                        } else {
+                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'max', $scope.max);
                         }
-
                         $scope.updateRange(angular.element(element[0].querySelector('.slider-range')).slider('values', 0), 
                                 angular.element(element[0].querySelector('.slider-range')).slider('values', 1));
-                    }
+                    }    
                 }
             );
         }
