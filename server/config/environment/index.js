@@ -224,7 +224,11 @@ var all = {
                     classes: 'identifier'
                 },{
                     title: 'since',
-                    field: 'doc._source.currentAssignee.startDate',
+                    field: 'doc._source.currentAssignee.startDate || doc._source.datePublished',
+                    classes: 'identifier'
+                },{
+                    title: 'assignments',
+                    field: 'doc._source.assignmentDates.length - 1',
                     classes: 'identifier'
                 },{
                     title: 'legal actions',
