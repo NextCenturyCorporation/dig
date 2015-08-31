@@ -12,7 +12,7 @@
               <form ng-submit="submit()">
                 <div class="input-group input-group-lg">
                   <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                  <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields('_all')"
+                  <input type="text" class="form-control" placeholder="Search ..." eui-query="ejs.QueryStringQuery(queryString.submitted).fields(euiConfigs.search.fields)"
                   ng-model="queryString.live" eui-enabled="queryString.submitted.length" ng-disabled="loading"/>
                   <span class="input-group-btn">
                     <button class="btn btn-cancel-input clear-search-btn" type="button" title="Clear search" ng-click="clearSearch()">

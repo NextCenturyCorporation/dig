@@ -115,6 +115,11 @@ var all = {
                     '*'
                 ]
             },
+            search: {
+                fields: [
+                    '_all'
+                ]
+            },
             // also see postFields
             detailFields: {
                 "1": {
