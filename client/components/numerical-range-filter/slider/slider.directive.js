@@ -12,7 +12,7 @@ angular.module('digApp')
         link: function($scope, element) {
 
             var getSliderElem = function() {
-                return angular.element(element[0].querySelector('.slider-range'));
+                return angular.element(element[0].querySelector('.range-slider'));
             };
 
             var updateRangeLabel = function(from, to) {
