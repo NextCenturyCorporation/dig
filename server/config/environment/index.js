@@ -244,7 +244,7 @@ var all = {
                     classes: 'identifier'
                 },{
                     title: 'assignments',
-                    field: 'doc._source.assignmentDates.length - 1',
+                    field: 'doc._source.assignmentDates.length',
                     classes: 'identifier'
                 },{
                     title: 'legal actions',
