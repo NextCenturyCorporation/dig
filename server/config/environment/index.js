@@ -69,28 +69,44 @@ var all = {
                     termsType: 'string',
                     count: 5
                 },{                    
-                    title: 'Region',
+                    title: 'Owner',
                     type: 'eui-aggregation',
-                    field: 'region_agg',
-                    nestedPath: 'assignee.assignee.address',
-                    terms: 'assignee.assignee.address.addressRegion',
+                    field: 'owner_agg',
+                    nestedPath: 'currentAssignee.assignee',
+                    terms: 'currentAssignee.assignee.name.raw',
                     termsType: 'string',
                     count: 10
-                },{
-                    title: 'Assignee',
+                },{ /*
+                    // TODO: should probably be date filter
+                    title: 'Last Assignment',
                     type: 'eui-aggregation',
-                    field: 'assignee_agg',
-                    nestedPath: 'assignee.assignee',
-                    terms: 'assignee.assignee.name.raw',
+                    field: 'last_assign_agg',
+                    nestedPath: 'currentAssignee',
+                    terms: 'currentAssignee.startDate',
                     termsType: 'string',
-                    count: 20
-                },{
-                    title: 'Citation Ids',
+                    count: 10
+                },{ */            
+                    title: 'Court',
                     type: 'eui-aggregation',
-                    field: 'citation_agg',
-                    nestedPath: 'citation.identifier',
-                    terms: 'citation.identifier.name',
+                    field: 'court_agg',
+                    nestedPath: 'legalAction',
+                    terms: 'legalAction.name.raw',
                     termsType: 'string',
+                    count: 10
+                },{                    
+                    title: '# Legal Actions',
+                    type: 'eui-aggregation',
+                    field: 'num_legal_act_agg',
+                    terms: 'legalActionCount',
+                    termsType: 'number',
+                    count: 10
+                },{                    
+                    title: '# Defendants',
+                    type: 'eui-aggregation',
+                    field: 'num_defendant_agg',
+                    nestedPath: 'legalAction',
+                    terms: 'legalAction.defendantCount',
+                    termsType: 'number',
                     count: 10
                 }]
             },

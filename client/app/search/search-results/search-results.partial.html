@@ -34,15 +34,15 @@
 
     <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
       <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
-        aggregation-terms-type="{{filter.termsType}}" nested-path="{{filter.nestedPath}}" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.aggFilters"
-        include-missing="includeMissing.aggregations">
+        aggregation-terms-type="{{filter.termsType}}" nested-path="{{filter.nestedPath}}" indexvm="indexVM" ejs="ejs" filters="filters" 
+        filter-states="filterStates.aggFilters" include-missing="includeMissing.aggregations">
       </checkbox-filter>
     </collapse-filter>
 
     <div class="form-group images-only-filter" ng-if="euiConfigs.threadFields">
       <div class="filter-header filter-header-selected">
         <h5><input type="checkbox" eui-filter="ejs.NestedFilter('legalAction').filter(ejs.ExistsFilter('legalAction.a'))"
-          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Court Cases Only
+          ng-model="filterStates.withImagesOnly" eui-enabled="filterStates.withImagesOnly" class="images-only-checkbox">With Legal Actions
         </h5>
       </div>
     </div>
