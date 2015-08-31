@@ -6,7 +6,7 @@
       <span ng-if="aggResult">   
         <div class="range-filter">
           <label>{{title}}</label>   
-          <slider range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
+          <slider ng-if="aggResult.count > 0" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
         </div>
       </span>
     </div>
