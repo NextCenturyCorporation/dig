@@ -5,8 +5,7 @@ angular.module('digApp')
     return {
         restrict: 'E',
         scope: {
-            rangeFilter: '=',
-            aggregationStats: '='
+            rangeFilter: '='
         },
         templateUrl: 'components/numerical-range-filter/slider/slider.partial.html',
         link: function($scope, element) {
@@ -29,9 +28,9 @@ angular.module('digApp')
 
                 getSliderElem().slider({
                     range: true,
-                    min: $scope.aggregationStats.min,
-                    max: $scope.aggregationStats.max,
-                    values: [$scope.aggregationStats.min, $scope.aggregationStats.max],
+                    min: $scope.rangeFilter.min,
+                    max: $scope.rangeFilter.max,
+                    values: [$scope.rangeFilter.min, $scope.rangeFilter.max],
                     slide: function(event, ui) {
                         updateRangeLabel(ui.values[0], ui.values[1]);
                     },
@@ -54,20 +53,8 @@ angular.module('digApp')
             $scope.initSlider();
 
             $scope.$watch('rangeFilter', function() {
-                if(!$scope.rangeFilter.enabled) {
-                    var minVal = $scope.aggregationStats.min;
-                    var maxVal = $scope.aggregationStats.max === $scope.aggregationStats.min ? $scope.aggregationStats.max + 1 : $scope.aggregationStats.max;
-
-                    resetMinAndMax(minVal, maxVal);
-
-                    updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));
-                } 
-            }, true);
-
-            // TODO: find way to combine aggregationStats with rangeFilter
-            $scope.$watch('aggregationStats', function() {
-                var minVal = $scope.aggregationStats.min;
-                var maxVal = $scope.aggregationStats.max === $scope.aggregationStats.min ? $scope.aggregationStats.max + 1 : $scope.aggregationStats.max;
+                var minVal = $scope.rangeFilter.min;
+                var maxVal = $scope.rangeFilter.max === $scope.rangeFilter.min ? $scope.rangeFilter.max + 1 : $scope.rangeFilter.max;
 
                 if($scope.rangeFilter.enabled) {
                     if($scope.rangeFilter.begin >= minVal) {

@@ -3,10 +3,10 @@
   <div eui-filter="ejs.RangeFilter(field).lte(filterStates[field].end)" eui-enabled="filterStates[field].enabled"></div>
   <div class="row">
     <div class="col-xs-12">
-      <span ng-if="aggResult">   
+      <span ng-if="getRangeAggregation()">   
         <div class="range-filter">
-          <label>{{title}}</label>   
-          <slider ng-if="aggResult.count > 0" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
+          <label>{{title}}</label>
+          <slider ng-if="indexVM.results.hits.total > 0" range-filter="filterStates[field]"></slider>
         </div>
       </span>
     </div>
