@@ -19,9 +19,11 @@ angular.module('digApp')
             if(!$scope.filterStates[$scope.field]) {
                $scope.filterStates[$scope.field] = {
                     begin: null,
-                    end: null
+                    end: null,
+                    enabled: false
                };
             }
+            
         }
     };
 });

@@ -71,7 +71,7 @@
             </span>
             <span ng-repeat="rangeFilter in facets.rangeFilters">
               <span ng-if="filterStates.rangeFilters[rangeFilter.field]">
-                <span ng-if="filterStates.rangeFilters[rangeFilter.field].begin && filterStates.rangeFilters[rangeFilter.field].end" class="search-facet">
+                <span ng-if="filterStates.rangeFilters[rangeFilter.field].enabled" class="search-facet">
                   {{rangeFilter.title}}: {{filterStates.rangeFilters[rangeFilter.field].begin}} - {{filterStates.rangeFilters[rangeFilter.field].end}} <i class="fa fa-times-circle" ng-click="removeRangeFilter(rangeFilter.field)"></i>
                 </span>
               </span>

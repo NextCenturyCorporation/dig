@@ -147,6 +147,7 @@ angular.module('digApp')
     };
 
     $scope.removeRangeFilter = function(key) {
+        $scope.filterStates.rangeFilters[key].enabled = false;
         $scope.filterStates.rangeFilters[key].begin = null;
         $scope.filterStates.rangeFilters[key].end = null;
     };

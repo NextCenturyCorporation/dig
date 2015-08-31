@@ -1,75 +1,87 @@
 'use strict';
 
 angular.module('digApp')
-.directive('numericalRange', function() {
+.directive('slider', function() {
     return {
         restrict: 'E',
         scope: {
-            begin: '=',
-            end: '=',
-            min: '=',
-            max: '='
+            rangeFilter: '=',
+            aggregationStats: '='
         },
         templateUrl: 'components/numerical-range-filter/slider/slider.partial.html',
         link: function($scope, element) {
+
+            var getSliderElem = function() {
+                return angular.element(element[0].querySelector('.slider-range'));
+            };
+
+            var updateRangeLabel = function(from, to) {
+                angular.element(element[0].querySelector('input.range')).val(from + ' - ' + to);
+            };            
+
+            var resetMinAndMax = function(minVal, maxVal) {
+                getSliderElem().slider('option', 'min', minVal);
+                getSliderElem().slider('option', 'max', maxVal);
+                getSliderElem().slider('option', 'values', [minVal, maxVal]);
+            };
+
             $scope.initSlider = function() {
- 
-                angular.element(element[0].querySelector('.slider-range')).slider({
+
+                getSliderElem().slider({
                     range: true,
-                    min: $scope.min,
-                    max: $scope.max,
-                    values: [$scope.min, $scope.max],
+                    min: $scope.aggregationStats.min,
+                    max: $scope.aggregationStats.max,
+                    values: [$scope.aggregationStats.min, $scope.aggregationStats.max],
                     slide: function(event, ui) {
-                        $scope.updateRange(ui.values[0], ui.values[1]);
+                        updateRangeLabel(ui.values[0], ui.values[1]);
                     },
                     stop: function(event, ui) {
-                        $scope.$apply(function() {
-                            $scope.begin = ui.values[0];
-                            $scope.end = ui.values[1];
-                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'values', [$scope.begin, $scope.end]);
-                            $scope.updateRange(ui.values[0], ui.values[1]);
-                        });
+                        $scope.rangeFilter = {
+                            begin: ui.values[0],
+                            end: ui.values[1],
+                            enabled: true
+                        };
+                        getSliderElem().slider('option', 'values', [$scope.rangeFilter.begin, $scope.rangeFilter.end]);
+                        updateRangeLabel(ui.values[0], ui.values[1]);
+                        $scope.$apply();
                     }
 
                 });
 
-                $scope.updateRange(angular.element(element[0].querySelector('.slider-range')).slider('values', 0), 
-                    angular.element(element[0].querySelector('.slider-range')).slider('values', 1));
-
-            };
-
-            $scope.updateRange = function(from, to) {
-                angular.element(element[0].querySelector('input.range')).val(from + ' - ' + to);
+                updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));
             };
 
             $scope.initSlider();
 
-            $scope.$watch('min',
-                function(newValue) {
-                    if(newValue && ($scope.begin === null || $scope.begin >= $scope.min)) {
-                        angular.element(element[0].querySelector('.slider-range')).slider('option', 'min', $scope.min);
+            $scope.$watch('rangeFilter', function() {
+                if(!$scope.rangeFilter.enabled) {
+                    var minVal = $scope.aggregationStats.min;
+                    var maxVal = $scope.aggregationStats.max === $scope.aggregationStats.min ? $scope.aggregationStats.max + 1 : $scope.aggregationStats.max;
 
-                        $scope.updateRange(angular.element(element[0].querySelector('.slider-range')).slider('values', 0), 
-                                angular.element(element[0].querySelector('.slider-range')).slider('values', 1)); 
+                    resetMinAndMax(minVal, maxVal);
+
+                    updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));
+                } 
+            }, true);
+
+            // TODO: find way to combine aggregationStats with rangeFilter
+            $scope.$watch('aggregationStats', function() {
+                var minVal = $scope.aggregationStats.min;
+                var maxVal = $scope.aggregationStats.max === $scope.aggregationStats.min ? $scope.aggregationStats.max + 1 : $scope.aggregationStats.max;
+
+                if($scope.rangeFilter.enabled) {
+                    if($scope.rangeFilter.begin >= minVal) {
+                        getSliderElem().slider('option', 'min', minVal); 
                     }
-                }
-            );
 
-
-            $scope.$watch('max',
-                function(newValue) {
-                    if(newValue && ($scope.end === null || $scope.end <= $scope.max)) {
-                        if($scope.min === $scope.max) {
-                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'max', $scope.max + 1);
-                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'values', [$scope.min, $scope.max + 1]);
-                        } else {
-                            angular.element(element[0].querySelector('.slider-range')).slider('option', 'max', $scope.max);
-                        }
-                        $scope.updateRange(angular.element(element[0].querySelector('.slider-range')).slider('values', 0), 
-                                angular.element(element[0].querySelector('.slider-range')).slider('values', 1));
-                    }    
-                }
-            );
+                    if($scope.rangeFilter.end <= maxVal) {
+                        getSliderElem().slider('option', 'max', maxVal);
+                    } 
+                } else {
+                    resetMinAndMax(minVal, maxVal);
+                } 
+                updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));  
+            }, true);
         }
     };
 });

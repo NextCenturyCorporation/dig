@@ -5,9 +5,6 @@
       <strong>{{indexVM.results.hits.total | number:0}}</strong> results
     </h4>
   </div>
-  {{indexVM.filters}}
-  {{indexVM.results.aggregations.age_range_agg}}
-  {{indexVM.results.aggregations.filtered_age_range_agg}}
   <ul id="results" class="list-group">
     <li class="list-group-item" ng-repeat="doc in indexVM.results.hits.hits track by $index">
       <span class="row hidden debug" ng-repeat="field in euiConfigs.debugFields.fields">
