@@ -315,6 +315,10 @@ var all = {
                             title: 'Cause',
                             field: 'cause.name',
                             classes: 'cause'
+                        },{
+                            title: 'Location',
+                            field: 'location.name',
+                            classes: 'location'
                         }], 
                         "2": [{
                             title: 'Plaintiff',
@@ -324,11 +328,6 @@ var all = {
                             title: 'Defendant',
                             field: 'defendant.name',
                             classes: 'defendant'
-                        }],
-                        "3": [{
-                            title: 'Location',
-                            field: 'location.name',
-                            classes: 'location'
                         }]
                     }
                 }]

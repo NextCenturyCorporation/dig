@@ -78,7 +78,7 @@
                         <li class="post-list-item" ng-repeat="subitem in item.assignee">
                           <span class="post-title">{{subitem.name}}</span>
                           <div class="list-group-item-meta">
-                            <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                            <strong><span class="to-lowercase" ng-bind="'Date: '"></span></strong>
                             <span>{{item.startDate || 'N/A'}}</span>
                             &nbsp;&nbsp;&nbsp;     
                             <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
@@ -94,7 +94,7 @@
                         <li class="post-list-item"> 
                           <span class="post-title">{{item.assignee.name}}</span>
                           <div class="list-group-item-meta">
-                            <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                            <strong><span class="to-lowercase" ng-bind="'Date: '"></span></strong>
                             <span>{{item.startDate || 'N/A'}}</span>
                             &nbsp;&nbsp;&nbsp;     
                             <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
@@ -114,7 +114,7 @@
                       <li class="post-list-item" ng-repeat="subitem in doc._source.assignee.assignee">
                         <span class="post-title">{{subitem.name}}</span>
                         <div class="list-group-item-meta">
-                          <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                          <strong><span class="to-lowercase" ng-bind="'Date: '"></span></strong>
                           <span>{{subitem.startDate || 'N/A'}}</span>
                           &nbsp;&nbsp;&nbsp;     
                           <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
@@ -130,7 +130,7 @@
                       <li class="post-list-item"> 
                         <span class="post-title">{{doc._source.assignee.assignee.name}}</span>
                         <div class="list-group-item-meta">
-                          <strong><span class="to-lowercase" ng-bind="'Start Date: '"></span></strong>
+                          <strong><span class="to-lowercase" ng-bind="'Date: '"></span></strong>
                           <span>{{doc._source.assignee.startDate || 'N/A'}}</span>
                           &nbsp;&nbsp;&nbsp;     
                           <strong><span class="to-lowercase" ng-bind="'Address: '"></span></strong>
