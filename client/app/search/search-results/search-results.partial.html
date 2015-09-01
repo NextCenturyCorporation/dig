@@ -6,7 +6,8 @@
       <h4>Filter</h4>
     </div>
 
-    <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
+    <date-filter ng-repeat="filter in facets.dateFilters" field="{{filter.field}}" aggregation-name="filter.aggName" 
+      nested-path="filter.nestedPath" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.dateFilters">
     </date-filter>
 
     <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"

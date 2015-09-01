@@ -108,6 +108,12 @@ var all = {
                     terms: 'legalAction.defendantCount',
                     termsType: 'number',
                     count: 10
+                }],
+                dateFilters: [{
+                    title: 'Last Assignment',
+                    aggName: 'last_assign_date_agg',
+                    nestedPath: 'currentAssignee',
+                    field: 'currentAssignee.startDate'
                 }]
             },
             highlight: {
