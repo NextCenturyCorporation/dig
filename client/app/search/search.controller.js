@@ -85,6 +85,10 @@ angular.module('digApp')
                     $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
                 }
 
+                if($state.params.query.digState.filters.rangeFilters) {
+                    $scope.filterStates.rangeFilters = _.cloneDeep($state.params.query.digState.filters.rangeFilters);
+                }
+
                 if($state.params.query.digState.filters.withImagesOnly) {
                     $scope.filterStates.withImagesOnly = $state.params.query.digState.filters.withImagesOnly;
                 }

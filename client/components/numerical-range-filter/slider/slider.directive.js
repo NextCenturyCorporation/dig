@@ -64,7 +64,6 @@ angular.module('digApp')
                 } 
             }, true);
 
-            // TODO: find way to combine aggregationStats with rangeFilter
             $scope.$watch('aggregationStats', function() {
                 var minVal = $scope.aggregationStats.min;
                 var maxVal = $scope.aggregationStats.max === $scope.aggregationStats.min ? $scope.aggregationStats.max + 1 : $scope.aggregationStats.max;
