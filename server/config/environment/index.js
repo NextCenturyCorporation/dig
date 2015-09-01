@@ -76,21 +76,12 @@ var all = {
                     terms: 'currentAssignee.assignee.name.raw',
                     termsType: 'string',
                     count: 10
-                },{ /*
-                    // TODO: should probably be date filter
-                    title: 'Last Assignment',
-                    type: 'eui-aggregation',
-                    field: 'last_assign_agg',
-                    nestedPath: 'currentAssignee',
-                    terms: 'currentAssignee.startDate',
-                    termsType: 'string',
-                    count: 10
-                },{ */            
+                },{             
                     title: 'Court',
                     type: 'eui-aggregation',
                     field: 'court_agg',
-                    nestedPath: 'legalAction',
-                    terms: 'legalAction.name.raw',
+                    nestedPath: 'legalAction.location',
+                    terms: 'legalAction.location.name.raw',
                     termsType: 'string',
                     count: 10
                 },{                    
