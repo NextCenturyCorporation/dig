@@ -170,14 +170,11 @@ var all = {
                     field: 'doc._source.name || doc._source.name[0]',
                     section: 'title'
                 }],
-                short: [{
+                short: [
+                {
                     title: 'type',
-                    field: 'doc._source.type || doc._source.type[0]',
-                    classes: 'name'
-                },{
-                    title: 'Permit Status',
-                    field: 'doc._source.operatingPermit.status',
-                    classes: 'status'
+                    field: 'doc._source.a',
+                    classes: 'identifier'
                 }],
                 full: {
                     "1": {
@@ -256,6 +253,10 @@ var all = {
                     title: 'id',
                     field: 'doc._source.identifier.name || doc._source.identifier[0].name',
                     classes: 'identifier'
+                },{
+                    title: 'defendants',
+                    field: 'doc._source.defendantCount',
+                    classes: 'number'
                 }],
                 full: {
                     "1": {
