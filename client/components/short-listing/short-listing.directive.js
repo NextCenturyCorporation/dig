@@ -12,7 +12,12 @@ angular.module('digApp.directives')
             $scope.getFieldsToRender = function() {
                 // Use the ES document type to determine which view to render.
                 var index = $scope.doc._source.a.indexOf('Thread') > -1 ? $scope.doc._source.a.indexOf('Thread') : $scope.doc._source.a.indexOf('Offer');
-                var docType = $scope.doc._source.a[index].toLowerCase();
+                var docType;
+                if(index > -1) {
+                    docType = $scope.doc._source.a[index].toLowerCase();
+                } else {
+                    docType = $scope.doc._source.a.toLowerCase();
+                }
 
                 // Temporary workaround until all data sets have doc._source.a field set to appropriate schema
                 if(docType === 'webpage') {
