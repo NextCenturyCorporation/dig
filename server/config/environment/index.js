@@ -166,12 +166,12 @@ var all = {
                 title: [{
                     title: 'Title',
                     type: 'title',
-                    field: 'doc._source.legalName || doc._source.legalName[0]',
+                    field: 'doc._source.name || doc._source.name[0]',
                     section: 'title'
                 }],
                 short: [{
-                    title: 'Alternate Name',
-                    field: 'doc._source.alternateName || doc._source.alternateName[0]',
+                    title: 'type',
+                    field: 'doc._source.type || doc._source.type[0]',
                     classes: 'name'
                 },{
                     title: 'Permit Status',
