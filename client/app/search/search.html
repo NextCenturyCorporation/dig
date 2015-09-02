@@ -62,13 +62,14 @@
                 <i class="fa fa-times-circle" ng-click="removeTextFilter(textFilter.field)"></i>
               </span>
             </span>
-            <span ng-repeat="(dateFilter, values) in filterStates.dateFilters">
-               <span ng-repeat="(filterKey, date) in values">
-                <span ng-if="date" class="search-facet">
-                  {{filterKey}}: {{ date | date : 'MM/dd/yyyy'}} <i class="fa fa-times-circle" ng-click="removeDateFilter(dateFilter, filterKey)"></i>
-                </span>
+            <span ng-repeat="dateFilter in facets.dateFilters">
+              <span ng-repeat="(filterKey, date) in filterStates.dateFilters[dateFilter.field]">
+                 <span ng-if="date" class="search-facet">
+                  {{filterKey === 'beginDate' ? dateFilter.startTitle : dateFilter.endTitle}}: {{ date | date : 'MM/dd/yyyy'}}
+                  <i class="fa fa-times-circle" ng-click="removeDateFilter(dateFilter.field, filterKey)"></i>
+                </span> 
               </span>
-            </span>
+            </span> 
           </div>
         </div>
       </div>

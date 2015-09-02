@@ -8,15 +8,13 @@ angular.module('digApp')
             beginDate: '=',
             endDate: '=',
             dateFormat: '=',
-            min: '=',
-            max: '='
+            startTitle: '=',
+            endTitle: '='
         },
         templateUrl: 'components/date-filter/date-range/date-range.partial.html',
         link: function($scope) {
             $scope.beginOpened = false;
             $scope.endOpened = false;
-            $scope.minDate = null;
-            $scope.maxDate = null;
             $scope.today = new Date();
 
             $scope.beginOpen = function($event) {
@@ -41,21 +39,6 @@ angular.module('digApp')
                 }
             };
 
-            $scope.$watch('min',
-                function(newValue) {
-                    if(newValue) {
-                        $scope.minDate = new Date($scope.min);
-                    }
-                }
-            );
-
-            $scope.$watch('max',
-                function(newValue) {
-                    if(newValue) {
-                        $scope.maxDate = new Date($scope.max);
-                    }
-                }
-            );
         }
     };
 });
