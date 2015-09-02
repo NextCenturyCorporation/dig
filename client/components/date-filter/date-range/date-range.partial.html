@@ -1,6 +1,6 @@
-<label>From</label>
+<label>{{startTitle}}</label>
 <p class="input-group">
-  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}" min-date="minDate" max-date="endDate || today"
+  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}"
   ng-model="beginDate" is-open="beginOpened" show-button-bar="false"/>
   <span class="input-group-btn">
     <button type="button" class="btn btn-default" ng-click="beginOpen($event)">
@@ -8,9 +8,9 @@
     </button>
   </span> 
 </p>
-<label>To</label>
+<label>{{endTitle}}</label>
 <p class="input-group">
-  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}" min-date="beginDate || minDate" max-date="today"
+  <input type="button" class="form-control text-left" datepicker-popup="{{dateFormat}}" min-date="beginDate"
   ng-model="endDate" is-open="endOpened" show-button-bar="false"/>
   <span class="input-group-btn">
     <button type="button" class="btn btn-default" ng-click="endOpen($event)">

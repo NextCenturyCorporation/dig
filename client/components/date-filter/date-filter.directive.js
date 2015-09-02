@@ -6,6 +6,8 @@ angular.module('digApp')
         restrict: 'E',
         scope: {
             aggregationName: '=',
+            startTitle: '@',
+            endTitle: '@',
             nestedPath: '=',
             field: '@',
             indexVM: '=indexvm',

@@ -100,10 +100,11 @@ var all = {
                     count: 10
                 }],
                 dateFilters: [{
-                    title: 'Last Assignment',
-                    aggName: 'last_assign_date_agg',
-                    nestedPath: 'currentAssignee',
-                    field: 'currentAssignee.startDate'
+                    startTitle: 'Legal Action After',
+                    endTitle: 'Legal Action Before',
+                    aggName: 'legal_act_date_agg',
+                    nestedPath: 'legalAction',
+                    field: 'legalAction.startTime'
                 }]
             },
             highlight: {
