@@ -1,7 +1,7 @@
 digapp:
   image: digmemex/digapp:1.0.6
   ports:
-    - "8080:8080"
+    - "8080"
   links:
     - mysql
   volumes:

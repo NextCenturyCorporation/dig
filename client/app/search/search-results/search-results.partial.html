@@ -12,6 +12,10 @@
       filters="filters" filter-states="filterStates.dateFilters">
     </date-filter>
 
+    <numerical-range-filter ng-repeat="filter in facets.rangeFilters" field="{{filter.field}}" title="{{filter.title}}" 
+      aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.rangeFilters">
+    </numerical-range-filter>
+
     <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
       filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
     </text-filter>

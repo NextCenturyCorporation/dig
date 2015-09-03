@@ -49,7 +49,8 @@ angular.module('digApp')
         $scope.filterStates = {
             aggFilters: {},
             textFilters: {},
-            dateFilters: {}
+            dateFilters: {},
+            rangeFilters: {}
         };
         $scope.includeMissing = {
             aggregations: {},
@@ -82,6 +83,10 @@ angular.module('digApp')
 
                 if($state.params.query.digState.filters.dateFilters) {
                     $scope.filterStates.dateFilters = _.cloneDeep($state.params.query.digState.filters.dateFilters);
+                }
+
+                if($state.params.query.digState.filters.rangeFilters) {
+                    $scope.filterStates.rangeFilters = _.cloneDeep($state.params.query.digState.filters.rangeFilters);
                 }
 
                 if($state.params.query.digState.filters.withImagesOnly) {
@@ -143,6 +148,12 @@ angular.module('digApp')
 
     $scope.removeDateFilter = function(key1, key2) {
         $scope.filterStates.dateFilters[key1][key2] = null;
+    };
+
+    $scope.removeRangeFilter = function(key) {
+        $scope.filterStates.rangeFilters[key].enabled = false;
+        $scope.filterStates.rangeFilters[key].begin = null;
+        $scope.filterStates.rangeFilters[key].end = null;
     };
     
     $scope.removeTextFilter = function(textKey) {

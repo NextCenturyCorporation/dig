@@ -33,7 +33,8 @@ describe('Controller: SearchCtrl', function () {
                       beginDate: null,
                       endDate: null
                     }
-                }
+                },
+                rangeFilters: {}
 
             },
             selectedSort: {
@@ -642,7 +643,7 @@ describe('Controller: SearchCtrl', function () {
     
         expect(scope.queryString.live).toBe('');
         expect(scope.submit).not.toHaveBeenCalled();
-        expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}});
+        expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}, rangeFilters: {}});
         expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
         expect(scope.selectedSort).toEqual({});
 
