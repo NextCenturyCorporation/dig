@@ -5,8 +5,8 @@
     <div class="col-xs-12">
       <span ng-if="aggResult">   
         <div class="range-filter">
-          <label>{{title}}</label>   
-          <slider ng-if="indexVM.results.hits.total > 0 || filterStates[field].enabled" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
+          <label>{{title}}</label>
+          <slider ng-if="aggResult.count > 0 || filterStates[field].enabled" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
         </div>
       </span>
     </div>
