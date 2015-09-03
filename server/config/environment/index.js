@@ -84,20 +84,6 @@ var all = {
                     terms: 'legalAction.location.name.raw',
                     termsType: 'string',
                     count: 10
-                },{                    
-                    title: '# Legal Actions',
-                    type: 'eui-aggregation',
-                    field: 'num_legal_act_agg',
-                    terms: 'legalActionCount',
-                    termsType: 'number',
-                    count: 10
-                },{                    
-                    title: '# Defendants',
-                    type: 'eui-aggregation',
-                    field: 'num_defendant_agg',
-                    terms: 'defendantCount',
-                    termsType: 'number',
-                    count: 10
                 }],
                 dateFilters: [{
                     startTitle: 'Legal Action After',
@@ -107,7 +93,11 @@ var all = {
                     field: 'legalAction.startTime'
                 }],
                 rangeFilters: [{
-                    title: 'Defendant Count',
+                    title: '# Legal Actions',
+                    aggName: 'num_legal_act_agg',
+                    field: 'legalActionCount'
+                },{
+                    title: '# Defendants',
                     aggName: 'def_count_agg',
                     field: 'defendantCount'
                 }]

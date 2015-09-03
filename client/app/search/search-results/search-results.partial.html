@@ -12,10 +12,6 @@
       filters="filters" filter-states="filterStates.dateFilters">
     </date-filter>
 
-    <numerical-range-filter ng-repeat="filter in facets.rangeFilters" field="{{filter.field}}" title="{{filter.title}}" 
-      aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.rangeFilters">
-    </numerical-range-filter>
-
     <text-filter ng-repeat="filter in facets.euiFilters" filter-title="{{filter.title}}"
       filter-field="{{filter.field}}" indexvm="indexVM" ejs="ejs" filters="filters" loading="loading" filter-states="filterStates.textFilters">
     </text-filter>
@@ -38,13 +34,16 @@
       </div>
     </div>
 
-
     <collapse-filter ng-repeat="filter in facets.aggFilters" title="{{filter.title}}" closed="false">
       <checkbox-filter aggregation-name="{{filter.field}}" aggregation-key="{{filter.terms}}" aggregation-count="filter.count"
         aggregation-terms-type="{{filter.termsType}}" nested-path="{{filter.nestedPath}}" indexvm="indexVM" ejs="ejs" filters="filters" 
         filter-states="filterStates.aggFilters" include-missing="includeMissing.aggregations">
       </checkbox-filter>
     </collapse-filter>
+
+    <numerical-range-filter ng-repeat="filter in facets.rangeFilters" field="{{filter.field}}" title="{{filter.title}}" 
+      aggregation-name="filter.aggName" indexvm="indexVM" ejs="ejs" filters="filters" filter-states="filterStates.rangeFilters">
+    </numerical-range-filter>
 
     <div class="form-group images-only-filter" ng-if="euiConfigs.threadFields">
       <div class="filter-header filter-header-selected">

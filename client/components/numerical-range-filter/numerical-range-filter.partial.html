@@ -1,5 +1,4 @@
-<div eui-aggregation="ejs.GlobalAggregation('global_' + aggregationName).aggregation(ejs.StatsAggregation(aggregationName).field(field))" 
-  eui-filter-self="false">
+<div eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)"  eui-filter-self="false">
   <div eui-filter="ejs.RangeFilter(field).gte(filterStates[field].begin)" eui-enabled="filterStates[field].enabled"></div>
   <div eui-filter="ejs.RangeFilter(field).lte(filterStates[field].end)" eui-enabled="filterStates[field].enabled"></div>
   <div class="row">
@@ -7,7 +6,7 @@
       <span ng-if="aggResult">   
         <div class="range-filter">
           <label>{{title}}</label>   
-          <slider ng-if="indexVM.results.hits.total > 0 || filterStates[field].enabled" range-filter="filterStates[field]" aggregation-stats="aggResult[aggregationName]"></slider>
+          <slider ng-if="indexVM.results.hits.total > 0 || filterStates[field].enabled" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
         </div>
       </span>
     </div>
