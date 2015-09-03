@@ -71,6 +71,13 @@ var all = {
                     termsType: 'string',
                     count: 5
                 },{
+                    title: 'Publisher',
+                    type: 'eui-aggregation',
+                    field: 'publisher_agg',
+                    terms: 'publisher.name',
+                    termsType: 'string',
+                    count: 10
+                },{
                     title: 'Non-English',
                     type: 'eui-aggregation',
                     field: 'non_eng_agg',
@@ -103,13 +110,6 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'firearms_agg',
                     terms: 'hasFirearmsPhrase.hasPhrase.name',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Publisher',
-                    type: 'eui-aggregation',
-                    field: 'publisher_agg',
-                    terms: 'publisher.name',
                     termsType: 'string',
                     count: 10
                 },{
