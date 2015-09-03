@@ -175,6 +175,22 @@ var all = {
                     title: 'type',
                     field: 'doc._source.a',
                     classes: 'identifier'
+                },{
+                    title: 'patents',
+                    field: 'doc._source.patentsAcquiredCount',
+                    classes: 'number'
+                },{
+                    title: 'plaintiff',
+                    field: 'doc._source.legalActionsAsPlaintiffCount',
+                    classes: 'number'
+                },{
+                    title: 'defendant',
+                    field: 'doc._source.legalActonsAsDefendantCount',
+                    classes: 'number'
+                },{
+                    title: 'troll score',
+                    field: 'doc._source.trolls.trollScore',
+                    classes: 'number'
                 }],
                 full: {
                     "1": {
