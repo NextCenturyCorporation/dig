@@ -105,6 +105,11 @@ var all = {
                     aggName: 'legal_act_date_agg',
                     nestedPath: 'legalAction',
                     field: 'legalAction.startTime'
+                }],
+                rangeFilters: [{
+                    title: 'Defendant Count',
+                    aggName: 'def_count_agg',
+                    field: 'defendantCount'
                 }]
             },
             highlight: {
