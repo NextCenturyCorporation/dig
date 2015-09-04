@@ -78,31 +78,10 @@ var all = {
                     termsType: 'string',
                     count: 10
                 },{
-                    title: 'Non-English',
+                    title: 'Red Flags',
                     type: 'eui-aggregation',
-                    field: 'non_eng_agg',
-                    terms: 'hasNonEnglishPhrase.hasPhrase.name',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Gang Terms',
-                    type: 'eui-aggregation',
-                    field: 'gang_terms_agg',
-                    terms: 'hasGangPhrase.hasPhrase.name',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'Technology',
-                    type: 'eui-aggregation',
-                    field: 'tech_agg',
-                    terms: 'hasTechnologyPhrase.hasPhrase.name',
-                    termsType: 'string',
-                    count: 10
-                },{
-                    title: 'NFA',
-                    type: 'eui-aggregation',
-                    field: 'nfa_agg',
-                    terms: 'hasNFAPhrase.hasPhrase.name',
+                    field: 'red_flag_agg',
+                    terms: 'hasFirearmsRedFlagPhrase.hasPhrase.name',
                     termsType: 'string',
                     count: 10
                 },{
@@ -110,6 +89,34 @@ var all = {
                     type: 'eui-aggregation',
                     field: 'firearms_agg',
                     terms: 'hasFirearmsPhrase.hasPhrase.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Violent',
+                    type: 'eui-aggregation',
+                    field: 'nfa_agg',
+                    terms: 'hasNFAPhrase.hasPhrase.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+/*                    title: 'Gang Terms',
+                    type: 'eui-aggregation',
+                    field: 'gang_terms_agg',
+                    terms: 'hasGangPhrase.hasPhrase.name',
+                    termsType: 'string',
+                    count: 10
+                },{*/
+                    title: 'Technology',
+                    type: 'eui-aggregation',
+                    field: 'tech_agg',
+                    terms: 'hasTechnologyPhrase.hasPhrase.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Non-English',
+                    type: 'eui-aggregation',
+                    field: 'non_eng_agg',
+                    terms: 'hasNonEnglishPhrase.hasPhrase.name',
                     termsType: 'string',
                     count: 10
                 },{
