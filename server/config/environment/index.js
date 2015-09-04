@@ -174,7 +174,7 @@ var all = {
                     classes: 'number'
                 },{
                     title: 'defendant',
-                    field: 'doc._source.legalActonsAsDefendantCount',
+                    field: 'doc._source.legalActionsAsDefendantCount',
                     classes: 'number'
                 },{
                     title: 'troll score',
@@ -261,6 +261,10 @@ var all = {
                 },{
                     title: 'defendants',
                     field: 'doc._source.defendantCount',
+                    classes: 'number'
+                },{
+                    title: 'aggressiveness',
+                    field: 'doc._source.trollScore',
                     classes: 'number'
                 }],
                 full: {
