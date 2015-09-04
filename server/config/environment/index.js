@@ -247,6 +247,10 @@ var all = {
                     field: 'doc._source.currentAssignee.startDate || doc._source.datePublished',
                     classes: 'identifier'
                 },{
+                    title: 'id',
+                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                    classes: 'identifier'
+                },{
                     title: 'assignments',
                     field: 'doc._source.assignmentDates.length',
                     classes: 'identifier'
@@ -255,17 +259,13 @@ var all = {
                     field: 'doc._source.legalActionCount',
                     classes: 'date'
                 },{
-                    title: 'id',
-                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
-                    classes: 'identifier'
-                },{
                     title: 'defendants',
                     field: 'doc._source.defendantCount',
                     classes: 'number'
                 },{
                     title: 'aggressiveness',
                     field: 'doc._source.trollScore',
-                    classes: 'number'
+                    classes: '{"troll-score" : (doc._source.trollScore > 0)}'
                 }],
                 full: {
                     "1": {
