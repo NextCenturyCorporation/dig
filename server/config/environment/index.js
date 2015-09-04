@@ -264,7 +264,7 @@ var all = {
                     classes: 'number'
                 },{
                     title: 'aggressiveness',
-                    field: 'doc._source.trollScore',
+                    field: 'doc._source.trollScore > 0 ? "yes" : "no"',
                     classes: '{"troll-score" : (doc._source.trollScore > 0)}'
                 }],
                 full: {
