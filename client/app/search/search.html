@@ -41,7 +41,12 @@
             </span>
             <span ng-if="filterStates.withImagesOnly">
               <span class="search-facet">
-                With Court Cases Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
+                With Legal Actions <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
+              </span>
+            </span>
+            <span ng-if="filterStates.trollScore">
+              <span class="search-facet">
+                With Aggressive Legal Actions <i class="fa fa-times-circle" ng-click="filterStates.trollScore = !filterStates.trollScore"></i>
               </span>
             </span>
             <span ng-repeat="aggFilter in facets.aggFilters">
