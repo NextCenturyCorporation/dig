@@ -2,7 +2,7 @@
   ng-bind-html="highlightCheck($eval('post.' + postFields['subject'][0].field), 
     $eval(postFields['subject'][0].highlightArray))"></span>
 <div class="list-group-item-meta">
-  <span ng-repeat="row in postFields['short']">
+  <div ng-repeat="row in postFields['short']">
     <span ng-repeat="field in row">
       <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
       <span ng-if="field.field === 'plaintiff.name'">
@@ -27,10 +27,8 @@
         <span class="{{field.classes}}" 
         ng-bind-html="highlightCheck($eval('post.' + field.field), $eval(field.highlightArray)) || 'N/A'"></span>
       </span>&nbsp;&nbsp;&nbsp;
-<!--       <br/>  -->
     </span>
-  </span>
-  <br/>              
+  </div>     
 </div>
 <span ng-if="postFields.body">
   <span ng-bind-html="highlightCheck($eval('post.' + postFields.body.field), 

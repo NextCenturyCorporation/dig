@@ -336,7 +336,8 @@ var all = {
                             title: 'Plaintiff',
                             field: 'plaintiff.name',
                             classes: 'plaintiff'
-                        },{
+                        }],
+                        "3":[{
                             title: 'Defendant',
                             field: 'defendant.name',
                             classes: 'defendant'
