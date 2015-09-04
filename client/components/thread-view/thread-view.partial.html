@@ -11,41 +11,9 @@
         <div class="col-sm-8">
           <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['2']"></display-desc-list>
         </div>
-        <div class="col-sm-12">
-          <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['3']"></display-desc-list>
-        </div>
       </div>
     </div>
   </div>
-  
-  <span ng-repeat="postFields in euiConfigs.threadFields.postFields">
-    <div class="row">
-      <div class="col-xs-12">
-        <label class="post-label">{{postFields.title}}</label>
-      </div>
-    </div>
-    <div ng-if="$eval(postFields.field)" class="row">
-      <div class="col-xs-12"> 
-        <div class="posts">
-          <ul class="post-list-group list-unstyled">
-            <span ng-if="$eval(postFields.field)">
-              <span ng-if="$eval(postFields.field).length">
-                <li class="post-list-item" ng-repeat="item in $eval(postFields.field) | orderBy: postFields.orderBy">
-                  <post-template post="item" doc="doc" post-fields="postFields"></post-template>
-                </li>
-              </span>
-              <span ng-if="!$eval(postFields.field).length">
-                <li class="post-list-item">
-                  <post-template post="$eval(postFields.field)" doc="doc" post-fields="postFields"></post-template>
-                </li>  
-              </span>            
-            </span> 
-          </ul>  
-        </div>
-      </div>
-    </div>         
-  </span>
-  <br/> 
 
   <div class="row">
     <div class="col-xs-12">
@@ -130,5 +98,48 @@
         </ul>  
       </div>
     </div>
-  </div>   
+  </div>  
+  <br/>
+
+  <span ng-repeat="postFields in euiConfigs.threadFields.postFields">
+    <div class="row">
+      <div class="col-xs-12">
+        <label class="post-label">{{postFields.title}}</label>
+      </div>
+    </div>
+    <div ng-if="$eval(postFields.field)" class="row">
+      <div class="col-xs-12"> 
+        <div class="posts">
+          <ul class="post-list-group list-unstyled">
+            <span ng-if="$eval(postFields.field)">
+              <span ng-if="$eval(postFields.field).length">
+                <li class="post-list-item" ng-repeat="item in $eval(postFields.field) | orderBy: postFields.orderBy">
+                  <post-template post="item" doc="doc" post-fields="postFields"></post-template>
+                </li>
+              </span>
+              <span ng-if="!$eval(postFields.field).length">
+                <li class="post-list-item">
+                  <post-template post="$eval(postFields.field)" doc="doc" post-fields="postFields"></post-template>
+                </li>  
+              </span>            
+            </span> 
+          </ul>  
+        </div>
+      </div>
+    </div>         
+  </span>
+  <br/>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['3']"></display-desc-list>
+    </div>
+    <div class="col-sm-8">
+      <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['4']"></display-desc-list>
+    </div>
+    <div class="col-sm-12">
+      <display-desc-list doc="doc" section="euiConfigs.threadFields['full']['5']"></display-desc-list>
+    </div>
+  </div>
+
 </span>

@@ -276,25 +276,38 @@ var all = {
                             featureValue: 'name',
                             field: 'doc._source.identifier.name'
                         },{
-                            title: 'Agent',
-                            featureArray: 'doc._source.agent',
-                            featureValue: 'name',
-                            field: 'doc._source.agent.name'
-                        },{
-                            title: 'Date Published',
+                            title: 'Date',
                             field: 'doc._source.datePublished'
                         }]
                     }, 
                     "2": {
                         classes: 'more-patent-details',
                         fields: [{
+                            title: 'Owner',
+                            featureArray: 'doc._source.currentAssignee.assignee',
+                            featureValue: 'name',
+                            field: 'doc._source.currentAssignee.assignee.name'
+                        }]
+                    },
+                    "3": {
+                        classes: 'patent-details',
+                        fields: [{
                             title: 'Applicant',
                             featureArray: 'doc._source.applicant',
                             featureValue: 'name',
                             field: 'doc._source.applicant.name'
                         }]
+                    }, 
+                    "4": {
+                        classes: 'more-patent-details',
+                        fields: [{
+                            title: 'Agent',
+                            featureArray: 'doc._source.agent',
+                            featureValue: 'name',
+                            field: 'doc._source.agent.name'
+                        }]
                     },
-                    "3":{
+                    "5":{
                         classes: 'citation-list',
                         fields: [{
                             title: 'Cited Patents',
