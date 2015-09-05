@@ -179,7 +179,7 @@ var all = {
                 },{
                     title: 'aggressiveness',
                     field: 'doc._source.corporationTrollScore > 0 ? "yes" : "no"',
-                    classes: 'text'
+                    classes: '{"troll-score" : (doc._source.corporationTrollScore > 0)}'
                 }],
                 full: {
                     "1": {
