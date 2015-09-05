@@ -183,42 +183,26 @@ var all = {
                 }],
                 full: {
                     "1": {
-                        classes: 'operating-details',
+                        classes: 'who-cares',
                         fields: [{
-                            title: 'Permit Issued By',
-                            field: 'doc._source.operatingPermit.issuedBy.valueName',
+                            title: 'type',
+                            field: 'doc._source.a',
                         },{
-                            title: 'Permit Status',
-                            field: 'doc._source.operatingPermit.status',
+                            title: 'patents',
+                            field: 'doc._source.patentsAcquiredCount',
                         },{
-                            title: 'Permit Valid From',
-                            field: "doc._source.operatingPermit.validFrom | date:'MM/dd/yyyy HH:mm:ss UTC'"
-                        },{
-                            title: 'Permit Identifier',
-                            field: 'doc._source.operatingPermit.validIn.identifier.name',
-                        },{
-                            title: 'Permit Valid In',
-                            field: 'doc._source.operatingPermit.validIn.name',
+                            title: 'plaintiff',
+                            field: "doc._source.legalActionsAsPlaintiffCount || 'n/a'"
                         }]
                     },
                     "2": {
-                        classes: 'org-details',
+                        classes: 'nobody',
                         fields: [{
-                            title: 'Alternate Name(s)',
-                            field: 'doc._source.alternateName || doc._source.alternateName[0]'
+                            title: 'defendant',
+                            field: "doc._source.legalActionsAsDefendantCount || 'n/a'"
                         },{
-                            title: 'Provider',
-                            field: 'doc._source.providesService.provider',
-                            featureArray: 'doc._source.providesService',
-                            featureValue: 'provider'
-                        },{
-                            title: 'Provides Service',
-                            field: 'doc._source.providesService.serviceType',
-                            featureArray: 'doc._source.providesService',
-                            featureValue: 'serviceType'
-                        },{
-                            title: 'Subtype',
-                            field: 'doc._source.subtype'
+                            title: 'aggressiveness',
+                            field: 'doc._source.corporationTrollScore > 0 ? "yes" : "no"'
                         }]
                     }
                 }

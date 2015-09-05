@@ -1,17 +1,5 @@
 <span ng-if="euiConfigs.offerFields['full'] && doc._type === 'organization'">
   <div class="row">
-  <!--<div class="col-md-5 col-lg-4 text-center">
-    <span ng-if="doc._source.hasImagePart">
-    doc._source.itemOffered.image & getFirstAtfImageUrl
-      <div class="image-with-caption">
-        <img blurred-image class="image-expanded center-block" ng-src="{{getDisplayImageSrc(doc)}}">
-        <div ng-if="facets.simFilter" class="caption image-search-caption" ng-click="imageSearch(getDisplayImageSrc(doc))">
-          <div class="caption-background"></div>
-          <div class="caption-text"><i class="fa fa-search"></i> Find similar</div>
-        </div>
-      </div>
-    </span>
-  </div> -->
     <div class="col-md-12 col-lg-12">
       <h4><span ng-bind-html="$eval(euiConfigs.offerFields['title'][0].field) || 'N/A'"></span></h4>
       <!-- <h4>URL</h4>
@@ -24,9 +12,55 @@
           <display-desc-list doc="doc" section="euiConfigs.offerFields.body"></display-desc-list>
         </div>
       </div>
-<!--       <button ng-if="euiConfigs.detailFields" type="button" class="btn btn-primary" ng-click="viewDetails(doc, parentState)" target="_self">
-  View Details
-</button> -->
+      <div class="row">
+        <div class="col-xs-12">
+          <label class="post-label">aggressive legal actions</label>
+        </div>
+      </div>
+
+      <div ng-if="doc._source.trollVictims" class="row">
+        <div class="col-xs-12"> 
+          <div class="posts">
+            <ul class="post-list-group list-unstyled">
+              <span ng-if="doc._source.trollVictims.length">
+                <span>
+                  <li class="post-list-item" ng-repeat="item in doc._source.trollVictims">
+                    <span class="post-title">{{item.name || 'unknown'}} ({{item.trolledCount || 'N/A'}})</span>              
+                  </li>
+                </span>
+              </span> 
+            </ul>  
+          </div>
+        </div>
+      </div>
+
+      <br/>
+      <div class="row">
+        <div class="col-xs-12">
+          <label class="post-label">aggressively sued by</label>
+        </div>
+      </div>
+
+      <div ng-if="doc._source.trolledBy" class="row">
+        <div class="col-xs-12"> 
+          <div class="posts">
+            <ul class="post-list-group list-unstyled">
+              <span ng-if="doc._source.trolledBy.length">
+                <span>
+                  <li class="post-list-item" ng-repeat="item in doc._source.trolledBy">
+                    <span class="post-title">{{item.name || 'unknown'}} ({{item.corporationTrollScore || 'N/A'}})</span>
+<!--                     <div class="list-group-item-meta">
+                      <strong><span class="to-lowercase" ng-bind="'Company: '"></span></strong>
+                      <span>{{item.name || 'unknown'}} ({{item.corporationTrollScore || 'N/A'}})</span>
+                    </div>  -->                   
+                  </li>
+                </span>
+              </span> 
+            </ul>  
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </span>
