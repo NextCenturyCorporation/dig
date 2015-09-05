@@ -178,8 +178,8 @@ var all = {
                     classes: 'number'
                 },{
                     title: 'aggressiveness',
-                    field: 'doc._source.trolls.trollScore',
-                    classes: 'number'
+                    field: 'doc._source.corporationTrollScore > 0 ? "yes" : "no"',
+                    classes: 'text'
                 }],
                 full: {
                     "1": {
