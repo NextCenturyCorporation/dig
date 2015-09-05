@@ -21,7 +21,7 @@ Uncomment if we only want to display first name in name array
   <div class="list-group-item-meta">
     <span ng-repeat="field in euiConfigs.offerFields['short']">
       <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
-      <span class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
+      <span ng-class="{{field.classes}}">{{$eval(field.field) || "N/A"}}</span>
     </span>
   </div>
 </span>
