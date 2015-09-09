@@ -183,7 +183,7 @@ var all = {
                 }],
                 full: {
                     "1": {
-                        classes: 'who-cares',
+                        classes: 'col1',
                         fields: [{
                             title: 'type',
                             field: 'doc._source.a',
@@ -196,7 +196,7 @@ var all = {
                         }]
                     },
                     "2": {
-                        classes: 'nobody',
+                        classes: 'col2',
                         fields: [{
                             title: 'defendant',
                             field: "doc._source.legalActionsAsDefendantCount || 'n/a'"
