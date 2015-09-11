@@ -962,7 +962,31 @@ var all = {
                             field: 'doc.highlight["identifier.name"] || doc._source.identifier.name'
                         }]
                     }
-                }
+                },
+                sparklines: [{
+                    label: 'Posts over time',
+                    variablePath: 'query.bool.must[1].term["author.uri"]',
+                    query: {  
+                        query: {
+                            bool: {
+                                must: [
+                                { term: { a: 'Post'}},
+                                { term: { 'author.uri': 'PLACEHOLDER' }}
+                                ]
+                            }
+                        }, aggs : {
+                            postsOverTime : {
+                                date_histogram : {
+                                    field : 'dateCreated',
+                                    interval : 'day'
+                                }
+                            }
+                        } 
+                    },
+                    aggName: 'postsOverTime',
+                    countField: 'doc_count',
+                    graphType: 'line'
+                }]
             },{
                 type: 'Post',
                 title: [{

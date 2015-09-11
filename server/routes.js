@@ -31,6 +31,7 @@ module.exports = function(app, logger) {
         var configResponse = {
             euiHost: config.euiServerUrl,
             euiPort: config.euiServerPort,
+            euiServer: config.euiServer,
             euiSearchIndex: config.euiSearchIndex,
             euiConfigs: config.euiConfigs[config.euiSearchIndex],
             simHost: config.imageSimUrl,
