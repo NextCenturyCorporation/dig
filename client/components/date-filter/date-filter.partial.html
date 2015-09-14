@@ -1,4 +1,21 @@
-<div eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)" eui-filter-self="false">
+<div ng-if="nestedPath" 
+  eui-aggregation="ejs.NestedAggregation('nested_' + aggregationName).path(nestedPath).
+  agg(ejs.StatsAggregation(aggregationName).field(field))" eui-filter-self="false">
+  <div eui-filter="ejs.NestedFilter(nestedPath).filter(ejs.RangeFilter(field).gte(dateToEjsString(filterStates[field].beginDate)))" 
+    eui-enabled="filterStates[field].beginDate">
+  </div>
+  <div eui-filter="ejs.NestedFilter(nestedPath).filter(ejs.RangeFilter(field).lte(dateToEjsString(filterStates[field].endDate)))" 
+    eui-enabled="filterStates[field].endDate">
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <date-range begin-date="filterStates[field].beginDate" end-date="filterStates[field].endDate"
+        date-format="dateFormat" min="aggResult.min" max="aggResult.max">
+      </date-range>
+    </div>
+  </div>
+</div>
+<div ng-if="!nestedPath" eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)" eui-filter-self="false">
   <div eui-filter="ejs.RangeFilter(field).gte(dateToEjsString(filterStates[field].beginDate))" eui-enabled="filterStates[field].beginDate"></div>
   <div eui-filter="ejs.RangeFilter(field).lte(dateToEjsString(filterStates[field].endDate))" eui-enabled="filterStates[field].endDate"></div>
   <div class="row">
