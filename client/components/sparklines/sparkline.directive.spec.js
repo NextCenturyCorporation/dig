@@ -10,44 +10,52 @@ describe('Directive: sparkline', function () {
     // Initialize the mock scope
     beforeEach(inject(function ($compile, $rootScope) {
         scope = $rootScope.$new();
-        scope.data = [{city: 'Vienna', count: 1},{city: 'Los Angeles', count:4},{city: 'Chicago', count: 2}];
+        scope.label = 'Cities';
+        scope.idPath = 'id';
+        scope.aggName = 'testAgg';
+        scope.doc = {id: 1, name: 'test'};
+        scope.countField = 'count';
+        scope.subquery = {'query': {'match_all': {}}};
+
     }));
 
     it('should initialize all fields in element tag to the appropriate values', function () {
         inject(function ($compile) {
-            element = angular.element('<sparkline data="data" graph-type="line"></sparkline>');
+            element = angular.element('<sparkline doc="doc" label="label" ' + 
+                'variable-path="idPath" query="subquery" aggregation-name="aggName" ' + 
+                'count-field="countField" graph-type="line"></sparkline>');
 
             $compile(element)(scope);
             element.scope().$digest();
         });
-        expect(element.isolateScope().data).toEqual(scope.data);
+
+        expect(element.isolateScope().doc).toEqual(scope.doc);
+        expect(element.isolateScope().label).toEqual(scope.label);
+        expect(element.isolateScope().variablePath).toEqual(scope.idPath);
+        expect(element.isolateScope().query).toBe(scope.subquery);
+        expect(element.isolateScope().countField).toBe(scope.countField);
+        expect(element.isolateScope().aggregationName).toBe(scope.aggName);
         expect(element.isolateScope().graphType).toBe('line');
+
     });
 
-    it('should initialize all fields in div with attribute to the appropriate values', function () {
+    it('should call renderSparkline() if doc changes', function () {
         inject(function ($compile) {
-            element = angular.element('<div sparkline data="data" graph-type="bar"></div>');
-
-            $compile(element)(scope);
-            element.scope().$digest();
-        });
-        expect(element.isolateScope().data).toEqual(scope.data);
-        expect(element.isolateScope().graphType).toBe('bar');
-    }); 
-
-    it('should change data displayed if data changes', function () {
-        inject(function ($compile) {
-            element = angular.element('<sparkline data="data" graph-type="line"></sparkline>');
+            element = angular.element('<sparkline doc="doc" label="label" ' + 
+                'variable-path="idPath" query="subquery" aggregation-name="aggName" ' + 
+                'count-field="countField" graph-type="line"></sparkline>');
 
             $compile(element)(scope);
             element.scope().$digest();
         });
 
-        expect(element.isolateScope().data).toEqual(scope.data);
+        spyOn(element.isolateScope(), 'renderSparkline');
+        expect(element.isolateScope().doc).toEqual(scope.doc);
 
-        scope.data = [{city: 'San Diego', count: 3},{city: 'Portland', count:1},{city: 'Seattle', count: 6}];
+        scope.doc = {id: 2, name: 'test2'};
         element.scope().$digest();
-        expect(element.isolateScope().data).toEqual(scope.data);
+        expect(element.isolateScope().doc).toEqual(scope.doc);
+        expect(element.isolateScope().renderSparkline).toHaveBeenCalled();
     }); 
 
 });
