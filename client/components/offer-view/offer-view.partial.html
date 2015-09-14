@@ -17,7 +17,7 @@
       <a href="{{doc._source.url}}" target="_blank">{{doc._source.url || "N/A"}}</a>
       <div class="row">
          <div class="col-sm-12" ng-repeat="sparkline in offerFields.sparklines">
-            <sparkline doc="doc" label="sparkline.label" variable-path="sparkline.variablePath" query="sparkline.query"
+            <sparkline doc="doc" label="sparkline.label" doc-id-path="sparkline.docIdPath" query="sparkline.query"
               aggregation-name="sparkline.aggName" count-field="sparkline.countField" 
               graph-type="{{sparkline.graphType}}"></sparkline>
           </div>

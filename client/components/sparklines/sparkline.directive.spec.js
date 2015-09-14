@@ -22,7 +22,7 @@ describe('Directive: sparkline', function () {
     it('should initialize all fields in element tag to the appropriate values', function () {
         inject(function ($compile) {
             element = angular.element('<sparkline doc="doc" label="label" ' + 
-                'variable-path="idPath" query="subquery" aggregation-name="aggName" ' + 
+                'doc-id-path="idPath" query="subquery" aggregation-name="aggName" ' + 
                 'count-field="countField" graph-type="line"></sparkline>');
 
             $compile(element)(scope);
@@ -31,7 +31,7 @@ describe('Directive: sparkline', function () {
 
         expect(element.isolateScope().doc).toEqual(scope.doc);
         expect(element.isolateScope().label).toEqual(scope.label);
-        expect(element.isolateScope().variablePath).toEqual(scope.idPath);
+        expect(element.isolateScope().docIdPath).toEqual(scope.idPath);
         expect(element.isolateScope().query).toBe(scope.subquery);
         expect(element.isolateScope().countField).toBe(scope.countField);
         expect(element.isolateScope().aggregationName).toBe(scope.aggName);
@@ -42,7 +42,7 @@ describe('Directive: sparkline', function () {
     it('should call renderSparkline() if doc changes', function () {
         inject(function ($compile) {
             element = angular.element('<sparkline doc="doc" label="label" ' + 
-                'variable-path="idPath" query="subquery" aggregation-name="aggName" ' + 
+                'doc-id-path="idPath" query="subquery" aggregation-name="aggName" ' + 
                 'count-field="countField" graph-type="line"></sparkline>');
 
             $compile(element)(scope);

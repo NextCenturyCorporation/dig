@@ -965,7 +965,7 @@ var all = {
                 },
                 sparklines: [{
                     label: 'Posts over time',
-                    variablePath: 'query.bool.must[1].term["author.uri"]',
+                    docIdPath: 'query.bool.must[1].term["author.uri"]',
                     query: {  
                         query: {
                             bool: {

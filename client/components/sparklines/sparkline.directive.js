@@ -6,7 +6,7 @@ angular.module('digApp.directives').directive('sparkline', function(euiConfigs, 
         scope: {
             doc: '=',
             label: '=',
-            variablePath: '=',
+            docIdPath: '=',
             aggregationName: '=',
             query: '=',
             countField: '=',
@@ -32,7 +32,7 @@ angular.module('digApp.directives').directive('sparkline', function(euiConfigs, 
 
             $scope.renderSparkline = function() {
 
-                _.set($scope.query, $scope.variablePath, $scope.doc._id);
+                _.set($scope.query, $scope.docIdPath, $scope.doc._id);
 
                 var queryObj = {
                     index: euiSearchIndex,
