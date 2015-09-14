@@ -46,7 +46,7 @@ angular.module('digApp.directives').directive('sparkline', function(euiConfigs, 
                     }
                 }).then(function() {
                     if($scope.data.length > 0) {
-                        elem.before($compile('<div class="query-details"><label>' + $scope.label + '</label></div>')($scope));
+                        elem.before($compile('<div><label class="attribute-label">' + $scope.label + '</label></div>')($scope));
                         elem.sparkline($scope.data, {type: $scope.graphType, width: 50, height: 50});
                     }
                 });

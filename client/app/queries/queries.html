@@ -61,7 +61,7 @@
                       <dt>Search Terms</dt>
                       <dd>{{query.digState.searchTerms}}</dd>
                     </dl>
-                    <label>Filters</label><br/>
+                    <label class="attribute-label">Filters</label><br/>
                   <span ng-repeat="existFilter in facets.existsFilters">
                     <span ng-if="query.digState.filters.existsFilters[existFilter.field]" class="search-facet">
                       {{existFilter.title}} 
@@ -109,7 +109,7 @@
                     </dl>
                   </div>
                   <div class="col-sm-3 query-details">
-                    <label>Frequency of Execution</label><br/>
+                    <label class="attribute-label">Frequency of Execution</label><br/>
                     <select ng-options="option for option in frequencyOptions" ng-model="query.frequency"
                         ng-change="toggleFrequency(query.id, query.frequency)">
                     </select>
