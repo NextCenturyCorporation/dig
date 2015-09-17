@@ -13,8 +13,8 @@ angular.module('digApp')
         templateUrl: 'components/numerical-range-filter/slider/slider.partial.html',
         link: function($scope, element) {
             var chart;
-            var toLine;
-            var fromLine;
+            var toLine = {};
+            var fromLine = {};
 
             var getSliderElem = function() {
                 return angular.element(element[0].querySelector('.range-slider'));
@@ -56,8 +56,6 @@ angular.module('digApp')
                     },
                     axis: {
                         x: {
-                            //min: $scope.aggregationMin,
-                            //max: $scope.aggregationMax,
                             tick: {
                                 count: 4,
                                 format: function(x) {
@@ -86,6 +84,18 @@ angular.module('digApp')
                 getSliderElem().slider('option', 'min', minVal);
                 getSliderElem().slider('option', 'max', maxVal);
                 getSliderElem().slider('option', 'values', [minVal, maxVal]);
+                chart.axis.min({x: minVal});
+                chart.axis.max({x: maxVal});
+            };
+
+            var redrawBounds = function() {
+                if(!_.isEmpty(toLine)) {
+                    chart.xgrids.add(toLine);
+                }
+
+                if(!_.isEmpty(fromLine)) {
+                    chart.xgrids.add(fromLine);
+                }
             };
 
             $scope.initialize = function() {
@@ -97,7 +107,7 @@ angular.module('digApp')
                 getSliderElem().slider({
                     range: true,
                     min: $scope.aggregationMin,
-                    max: $scope.aggregationMax,
+                    max: $scope.aggregationMax === $scope.aggregationMin ? $scope.aggregationMax + 1 : $scope.aggregationMax,
                     values: [$scope.aggregationMin, $scope.aggregationMax],
                     slide: function(event, ui) {
                         updateRangeLabel(ui.values[0], ui.values[1]);
@@ -122,6 +132,7 @@ angular.module('digApp')
             };
 
             $scope.initialize();
+            redrawBounds();
 
             $scope.$watch('rangeFilter', function() {
                 if(!$scope.rangeFilter.enabled) {
@@ -130,6 +141,8 @@ angular.module('digApp')
 
                     resetMinAndMax(minVal, maxVal);
                     createChart();
+                    fromLine = {};
+                    toLine = {};
 
                     updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));
                 } 
@@ -137,22 +150,28 @@ angular.module('digApp')
 
             $scope.$watch('aggregation', function() {
                 $scope.formattedData = formatData($scope.aggregation);
+                $scope.aggregationMin = $scope.formattedData.x[1];
+                $scope.aggregationMax = $scope.formattedData.x[$scope.formattedData.x.length - 1];
 
                 var minVal = $scope.aggregationMin;
                 var maxVal = $scope.aggregationMax === $scope.aggregationMin ? $scope.aggregationMax + 1 : $scope.aggregationMax;
 
                 if($scope.rangeFilter.enabled) {
                     if($scope.rangeFilter.begin >= minVal) {
-                        getSliderElem().slider('option', 'min', $scope.aggregationMin); 
+                        getSliderElem().slider('option', 'min', minVal); 
+                        chart.axis.min({x: minVal});
                     }
 
                     if($scope.rangeFilter.end <= maxVal) {
-                        getSliderElem().slider('option', 'max', $scope.aggregationMax);
+                        getSliderElem().slider('option', 'max', maxVal);
+                        chart.axis.max({x: maxVal});
                     } 
                 } else {
                     resetMinAndMax(minVal, maxVal);
-                    createChart();
                 } 
+                createChart();
+                redrawBounds();
+
                 updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));  
             }, true);
 
