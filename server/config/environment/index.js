@@ -330,13 +330,6 @@ var all = {
                     termsType: 'string',
                     count: 10
                 },{
-                    title: 'Age',
-                    type: 'eui-aggregation',
-                    field: 'age_agg',
-                    terms: 'person_age',
-                    termsType: 'number',
-                    count: 10
-                },{
                     title: 'Provider',
                     type: 'eui-aggregation',
                     field: 'provider_agg',
@@ -351,7 +344,7 @@ var all = {
                 }],
                 rangeFilters: [{
                     title: 'Age',
-                    aggName: 'age_range_agg',
+                    aggName: 'age_agg',
                     field: 'hasFeatureCollection.person_age_feature.person_age'
                 }]
             },

@@ -1,12 +1,13 @@
-<div eui-aggregation="ejs.StatsAggregation(aggregationName).field(field)" eui-filter-self="false">
-  <div eui-filter="ejs.RangeFilter(field).gte(filterStates[field].begin)" eui-enabled="filterStates[field].enabled"></div>
-  <div eui-filter="ejs.RangeFilter(field).lte(filterStates[field].end)" eui-enabled="filterStates[field].enabled"></div>
+<div eui-aggregation="ejs.TermsAggregation(aggregationName).field(field).size(0).minDocCount(1)" 
+  eui-filter-self="false">
+  <div eui-filter="ejs.RangeFilter(field).gte(filterStates[field].begin).lte(filterStates[field].end)" eui-enabled="filterStates[field].enabled"></div>
   <div class="row">
     <div class="col-xs-12">
       <span ng-if="aggResult">   
         <div class="range-filter">
           <label>{{title}}</label>   
-          <slider ng-if="indexVM.results.hits.total > 0" range-filter="filterStates[field]" aggregation-stats="aggResult"></slider>
+          <slider ng-show="indexVM.results.hits.total > 0" range-filter="filterStates[field]" 
+            aggregation="aggResult" indexvm="indexVM" ejs="ejs"></slider>
         </div>
       </span>
     </div>
