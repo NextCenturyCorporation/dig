@@ -56,28 +56,17 @@ angular.module('digApp')
                     },
                     axis: {
                         x: {
-                            tick: {
-                                count: 4,
-                                format: function(x) {
-                                    var intX = x.toFixed(0);
-                                    return (intX !== '0' ? intX : '');
-                                }
-                            }
+                            show: false
                         },
                         y: {
-                            tick: {
-                                count: 5,
-                                format: function(y) {
-                                    var intY = y.toFixed(0);
-                                    return (intY !== '0' ? intY : '');
-                                }
-                            }
+                            show: false
                         }
                     },
                     padding: {
                         right: 10
                     }
                 });
+                
             };
 
             var resetMinAndMax = function(minVal, maxVal) {
@@ -111,7 +100,7 @@ angular.module('digApp')
                     values: [$scope.aggregationMin, $scope.aggregationMax],
                     slide: function(event, ui) {
                         updateRangeLabel(ui.values[0], ui.values[1]);
-                        chart.xgrids([{value: ui.values[0], text:'From'}, {value: ui.values[1], text: 'To'}]);
+                        chart.xgrids([{value: ui.values[0], text: ui.values[0]}, {value: ui.values[1], text: ui.values[1]}]);
                     },
                     stop: function(event, ui) {
                         $scope.rangeFilter = {
@@ -121,8 +110,8 @@ angular.module('digApp')
                         };
                         getSliderElem().slider('option', 'values', [$scope.rangeFilter.begin, $scope.rangeFilter.end]);
                         updateRangeLabel(ui.values[0], ui.values[1]);
-                        fromLine = {value: ui.values[0], text: 'From'};
-                        toLine = {value: ui.values[1], text: 'To'};
+                        fromLine = {value: ui.values[0], text: ui.values[0]};
+                        toLine = {value: ui.values[1], text: ui.values[1]};
                         $scope.$apply();
                     }
                 });
@@ -155,21 +144,26 @@ angular.module('digApp')
 
                 var minVal = $scope.aggregationMin;
                 var maxVal = $scope.aggregationMax === $scope.aggregationMin ? $scope.aggregationMax + 1 : $scope.aggregationMax;
+                createChart();
 
                 if($scope.rangeFilter.enabled) {
                     if($scope.rangeFilter.begin >= minVal) {
                         getSliderElem().slider('option', 'min', minVal); 
                         chart.axis.min({x: minVal});
+                    } else {
+                        chart.axis.min({x: $scope.rangeFilter.begin});
                     }
 
                     if($scope.rangeFilter.end <= maxVal) {
                         getSliderElem().slider('option', 'max', maxVal);
                         chart.axis.max({x: maxVal});
-                    } 
+                    } else {
+                        chart.axis.max({x: $scope.rangeFilter.end});
+                    }
                 } else {
                     resetMinAndMax(minVal, maxVal);
                 } 
-                createChart();
+                
                 redrawBounds();
 
                 updateRangeLabel(getSliderElem().slider('values', 0), getSliderElem().slider('values', 1));  
