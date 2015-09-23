@@ -30,10 +30,11 @@ describe('User Model', function() {
     before(findAndRemoveTestUser);
     afterEach(findAndRemoveTestUser);
 
-    it('should assign default role --user--', function (done) {
+    it('should assign default role --user-- and set sendEmailNotification to false', function (done) {
         models.User.create({
             username: testUser
         }).then(function (user) {
+            user.should.have.property('sendEmailNotification', false);
             user.should.have.property('role', 'user');
             done();
         });
@@ -59,4 +60,42 @@ describe('User Model', function() {
             });
         });        
     });        
+
+    it('should set emailAddress if valid', function (done) {
+        models.User.create({
+            username: testUser, emailAddress: 'valid@email.com'
+        }).then(function (user) {
+            user.should.have.property('emailAddress', 'valid@email.com');
+            done();
+        });
+    });
+
+    it('should fail to set emailAddress if invalid', function (done) {
+        models.User.create({
+            username: testUser, emailAddress: 'notvalid'
+        }).catch(function (err) {
+            err.should.have.property('name', 'SequelizeValidationError');
+            done();
+        }); 
+    });
+
+    it('should set sendEmailNotification to true if emailAddress present and valid', function (done) {
+        models.User.create({
+            username: testUser, sendEmailNotification: true,  emailAddress: 'valid@email.com'
+        }).then(function (user) {
+            user.should.have.property('sendEmailNotification', true);
+            user.should.have.property('emailAddress', 'valid@email.com');
+            done();
+        });
+    });
+
+    it('should fail to set sendEmailNotification to true if no emailAddress present', function (done) {
+        models.User.create({
+            username: testUser, sendEmailNotification: true
+        }).catch(function (err) {
+            err.should.have.property('name', 'SequelizeValidationError');
+            done();
+        }); 
+    });
+
 });

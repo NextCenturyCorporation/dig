@@ -65,6 +65,60 @@ describe('/api/users', function() {
         });
     });
 
+    describe('PUT /api/users/:username', function() {
+        it('should find and update the user email', function(done) {
+            request(app)
+            .put('/api/users/' + testUser)
+            .send({emailAddress: "email@email.com"})
+            .expect(204)
+            .end(function (err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+    });
+
+    describe('PUT /api/users/:username', function() {
+        it('should fail user update if email is invalid', function(done) {
+            request(app)
+            .put('/api/users/' + testUser)
+            .send({emailAddress: "notvalid"})
+            .expect(403)
+            .end(function (err, res) {
+                if (err) return done(err);
+                res.body.should.have.property('name', 'SequelizeValidationError');
+                done();
+            });
+        });
+    });
+
+    describe('PUT /api/users/:username', function() {
+        it('should find user and update sendEmailNotification if email present', function(done) {
+            request(app)
+            .put('/api/users/' + testUser)
+            .send({sendEmailNotification: true, emailAddress: "email@email.com"})
+            .expect(204)
+            .end(function (err, res) {
+                if (err) return done(err);
+                done();
+            });
+        });
+    });
+
+    describe('PUT /api/users/:username', function() {
+        it('should fail user update if sendEmailNotification is true but there is no valid email present', function(done) {
+            request(app)
+            .put('/api/users/' + testUser)
+            .send({sendEmailNotification: true})
+            .expect(403)
+            .end(function (err, res) {
+                if (err) return done(err);
+                res.body.should.have.property('name', 'SequelizeValidationError');
+                done();
+            });
+        });
+    });
+
     describe('DELETE /api/users/:username', function() {
         it('should find and delete the user', function (done) {
             request(app)
