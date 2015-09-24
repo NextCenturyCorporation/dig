@@ -37,6 +37,14 @@ angular.module('digApp')
         });
     };
 
+    $scope.userSettings = function() {
+        $modal.open({
+            templateUrl: 'app/user/user-prefs.html',
+            controller: 'UserPrefsCtrl',
+            size: 'sm'
+        });
+    };
+
     $scope.changeTab = function (link) {
       if(link == '/list') {
         $state.go('search.results.list');
