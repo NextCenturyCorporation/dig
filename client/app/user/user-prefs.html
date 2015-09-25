@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h3 class="modal-title">User Preferences</h3>
+</div>
+<div class="modal-body row">
+  <div ng-show="updatedUser" class="col-sm-12">
+    <form name="userForm" novalidate>
+      <div class="form-group" ng-class="{'has-error': userForm.emailAddress.$error.email && userForm.emailAddress.$touched}">
+        <label for="emailAddress">Email:</label>
+        <input type="email" class="form-control" name="emailAddress" ng-model="updatedUser.emailAddress" ng-bind="updatedUser.emailAddress">
+        <div class="error-message">
+          <span ng-show="userForm.emailAddress.$error.email && userForm.emailAddress.$touched">
+            Not a valid email address. 
+          </span>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': !isNotificationStateValid()}">
+        <label for="emailNotify">Receive Notifications:</label>
+        <input type="checkbox" name="emailNotify" ng-model="updatedUser.sendEmailNotification">
+        <div class="error-message">
+          <span ng-show="!isNotificationStateValid()">
+            If you want to receive notifications, please enter a valid email.
+          </span>
+        </div>
+      </div>
+<!--       <div class="form-group">
+  <label for="blurImages">Blur Images:</label>
+  <input type="checkbox" name="blurImages" ng-model="updatedUser.blurImagesEnabled">
+</div> -->
+      <div ng-if="databaseError.message" class="col-sm-12 error-message">
+        <hr>
+        Error saving to database: 
+        <br/>
+        <span ng-bind="databaseError.message"></span>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="updateUser()" value="Save" ng-disabled="!userForm.$valid || !isNotificationStateValid()">Update</button>
+  <button class="btn btn-primary" ng-click="cancel()" value="Cancel">Cancel</button>
+</div>
