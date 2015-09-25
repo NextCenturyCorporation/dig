@@ -31,16 +31,12 @@ angular.module('digApp')
             }
 
             // TODO: figure out blurImages logic
-            $http.put('api/users/reqHeader', $scope.updatedUser).success(function() {
+            User.update($scope.updatedUser).$promise.then(function() {
                 $modalInstance.close();
-            }).error(function(error) {
+            }, function(error) {
                 $scope.databaseError = error;
             });
         }
-    };
-
-    $scope.save = function () {
-        $scope.updateUser();
     };
 
     $scope.cancel = function () {
