@@ -1,6 +1,14 @@
 'use strict';
 var elasticsearch = require('elasticsearch'),
-    models = require('./models');
+    models = require('./models'),
+    NotificationEmail = require('./emailnotification');
+
+// initialize notification email object
+var email = new NotificationEmail(
+    process.env.EMAIL_FROM,
+    process.env.DIG_URL,
+    process.env.SMTP_USER,
+    process.env.SMTP_PASS);
 
 // get a logger
 var bunyan = require('bunyan');
@@ -16,7 +24,7 @@ var applog = bunyan.createLogger({
 });
 
 // class for elasticsearch client
-function LogToBunyan(config) {
+function LogToBunyan() {
     this.error = applog.error.bind(applog);
     this.warning = applog.warn.bind(applog);
     this.info = applog.info.bind(applog);
@@ -30,7 +38,7 @@ function LogToBunyan(config) {
             responseStatus: responseStatus
         });
     };
-    this.close = function () { /* bunyan's loggers do not need to be closed */ }
+    this.close = function () { /* bunyan's loggers do not need to be closed */ };
 }
    
 // configure elasticsearch client and make a new connection
@@ -51,7 +59,7 @@ var esClient = new elasticsearch.Client({
 
 esClient.ping({
     requestTimeout: 30000,
-    hello: "elasticsearch!"    
+    hello: 'elasticsearch!'    
 }).then(function() {
     applog.info('elasticsearch connection established');
 }, function(error) {
@@ -72,4 +80,4 @@ config.euiSearchType = process.env.EUI_SEARCH_TYPE || 'ad';
 
 var offlineQueryRunner = require('./index');
 
-var runners = offlineQueryRunner(applog, config, esClient, models.Query);
+offlineQueryRunner(applog, config, esClient, models.Query, email);

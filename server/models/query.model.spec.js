@@ -10,7 +10,7 @@ describe('Query Model', function() {
         query.digState = JSON.stringify(query.digState);
         query.elasticUIState = JSON.stringify(query.elasticUIState);
         return query;
-    }
+    };
 
     var testquery = serialize({
         name: 'test query',
@@ -25,40 +25,45 @@ describe('Query Model', function() {
         },
         frequency: 'daily',
         lastRunDate: new Date()        
-    })
+    });
 
 
     before(function (done) {
         return models.User.sync()
         .then(function() {
-            return models.Query.sync()
+            return models.Query.sync();
         })
         .then(function () {
             return models.User.destroy( {
                 where: {username: testUser}
-            })
+            });
         })
         .then(function () {
             return models.User.create({
                 username: testUser
-            })
+            });
         })
-        .then(function (user) {
+        .then(function () {
             done();
         })
         .catch (function(err) {
             done(err);
-        })
+        });
     });
 
 
     it('should create a query', function (done) {
         return models.Query.create(testquery)
         .then(function (query) {
-            query.notificationHasRun.should.be.true;
+            query.notificationHasRun.should.be.true();
             return query.setUser(testUser);
         })
-        .then(function() {
+        .then(function (query) {
+            return query.getUser();
+        })
+        .then(function (user) {
+            user.username.should.be.equal('testuserpedro');
+            (user.sendEmailNotification === false).should.be.true();
             done();
         })
         .catch(function(err) {
@@ -75,7 +80,7 @@ describe('Query Model', function() {
         })
         .then(function(queries) {
             queries.length.should.be.within(0,4);
-            done()
+            done();
         })
         .catch(function(err) {
             done(err);
