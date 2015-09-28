@@ -22,15 +22,15 @@
           </span>
         </div>
       </div>
-<!--       <div class="form-group">
-  <label for="blurImages">Blur Images:</label>
-  <input type="checkbox" name="blurImages" ng-model="updatedUser.blurImagesEnabled">
-</div> -->
-      <div ng-if="databaseError.message" class="col-sm-12 error-message">
+      <div class="form-group">
+        <label for="blurImages">Blur Images:</label>
+        <input type="checkbox" name="blurImages" ng-model="updatedUser.blurImagesEnabled">
+      </div>
+      <div ng-if="databaseError.data.message" class="col-sm-12 error-message">
         <hr>
         Error saving to database: 
         <br/>
-        <span ng-bind="databaseError.message"></span>
+        <span ng-bind="databaseError.data.message"></span>
       </div>
     </form>
   </div>

@@ -6,26 +6,29 @@ describe('Controller: UserPrefsCtrl', function () {
     beforeEach(module('digApp'));
 
     // instantiate service
-    var UserPrefsCtrl, scope, modalInstance, http, window, $httpBackend, user;
+    var UserPrefsCtrl, scope, modalInstance, http, window, $httpBackend, user, blurEnable, $q;
 
     // Initialize the controller and a mock scope
     beforeEach(function() {
 
-        inject(function ($controller, $rootScope, _$httpBackend_, $http, $window, _User_) {
+        inject(function ($controller, $rootScope, _$httpBackend_, $http, $window, _User_, _userPrefsService_, _$q_) {
             scope = $rootScope.$new();
             modalInstance = { 
                 close: jasmine.createSpy('modalInstance.close')
             };
             http = $http;
             $httpBackend = _$httpBackend_;
-            window = $window;
+            window = $window;            
+            $q = _$q_;
 
             user = {
                 username: 'test',
                 emailAddress: null,
-                sendEmailNotification: false
+                sendEmailNotification: false,
+                blurImagesEnabled: true
             };
 
+            $httpBackend.expectGET('/api/users/reqHeader').respond(200, user);
             $httpBackend.expectGET('/api/users/reqHeader').respond(200, user);
 
             $httpBackend.when('GET', new RegExp('app/search/search.html'))
@@ -40,10 +43,16 @@ describe('Controller: UserPrefsCtrl', function () {
                 $modalInstance: modalInstance,
                 $http: http,
                 $window: window,
-                User: _User_
+                User: _User_,
+                userPrefsService: _userPrefsService_
             });
 
-            $rootScope.$apply();
+            blurEnable = $q.defer();
+            spyOn(_userPrefsService_, 'getBlurImagesEnabled').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve(user.blurImagesEnabled);
+                return deferred.promise;
+            });
 
             $httpBackend.flush();
         });
@@ -52,6 +61,7 @@ describe('Controller: UserPrefsCtrl', function () {
     it('should instantiate updatedUser', function() {
         expect(scope.updatedUser.emailAddress).toBe(user.emailAddress);
         expect(scope.updatedUser.sendEmailNotification).toBe(user.sendEmailNotification);
+        expect(scope.updatedUser.blurImagesEnabled).toBe(user.blurImagesEnabled);
     });
 
     it('should instantiate databaseError', function() {
@@ -99,20 +109,6 @@ describe('Controller: UserPrefsCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-    it('should change empty email to null', function() {
-        scope.userForm = {
-            $valid: true,
-            emailAddress: {$valid: true}
-        };
-        scope.updatedUser.sendEmailNotification = false;
-        scope.updatedUser.emailAddress = '';
-        
-        $httpBackend.expectPUT('/api/users/reqHeader').respond(200, user);
-        scope.updateUser();
-        $httpBackend.flush();
-        expect(scope.updatedUser.emailAddress).toBe(null);
-        expect(modalInstance.close).toHaveBeenCalled();
-    });
 
     it('should return error when attempt made to update user', function() {
         scope.userForm = {
