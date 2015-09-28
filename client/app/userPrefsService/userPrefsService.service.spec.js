@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: userPrefsService -- if user has blur settings', function () {
+describe('Service: userPrefsService -- if user has blur settings and environment blur is set to true', function () {
     var blurImagesEnabled = true;
     var blurImagesPercentage = 2.5;
 
@@ -84,6 +84,26 @@ describe('Service: userPrefsService -- if user has blur settings', function () {
         $httpBackend.flush();
     });
 
+    it('should set enabled to false and percentages to 0', function() {
+        var updatePrefs;
+        user.blurImagesEnabled = false;        
+        $httpBackend.expectPUT('/api/users/reqHeader').respond(200, user);
+
+        defer = $q.defer();
+        defer.resolve();
+       
+        blurConfig.updateUserPreferences(user).then(function(result) {
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('blur-state-change', false);
+            updatePrefs = result;
+
+            expect(updatePrefs.blurImagesEnabled).toEqual(false);
+            expect(updatePrefs.blurImagesPercentage).toBe(0);
+        });
+        
+        rootScope.$apply();
+        $httpBackend.flush();
+    });
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
@@ -91,9 +111,9 @@ describe('Service: userPrefsService -- if user has blur settings', function () {
 
 });
 
-describe('Service: userPrefsService -- if user has no blur settings', function () {
-    var blurImagesEnabled = true;
-    var blurImagesPercentage = 2.5;
+describe('Service: userPrefsService -- if user has no blur settings and environment settings are false', function () {
+    var blurImagesEnabled = false;
+    var blurImagesPercentage = 0;
 
     // load the service's module
     beforeEach(module('digApp'));
@@ -152,6 +172,26 @@ describe('Service: userPrefsService -- if user has no blur settings', function (
         rootScope.$apply();
     });
 
+    it('should set enabled to true and percentage to 2.5', function() {
+        var updatePrefs;
+        user.blurImagesEnabled = true;        
+        $httpBackend.expectPUT('/api/users/reqHeader').respond(200, user);
+
+        defer = $q.defer();
+        defer.resolve();
+       
+        blurConfig.updateUserPreferences(user).then(function(result) {
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('blur-state-change', true);
+            updatePrefs = result;
+
+            expect(updatePrefs.blurImagesEnabled).toEqual(true);
+            expect(updatePrefs.blurImagesPercentage).toEqual(2.5);
+        });
+        
+        rootScope.$apply();
+        $httpBackend.flush();
+    });
+
     it('should set enabled to false and percentages to 0', function() {
         var updatePrefs;
         user.blurImagesEnabled = false;        
@@ -172,10 +212,9 @@ describe('Service: userPrefsService -- if user has no blur settings', function (
         $httpBackend.flush();
     });
 
-
     it('should not broadcast event on failure to update', function() {
         var updatePrefs;
-        user.blurImagesEnabled = false;        
+        user.blurImagesEnabled = true;        
         $httpBackend.expectPUT('/api/users/reqHeader').respond(400, {error: 'update error'});
 
         defer = $q.defer();
@@ -199,8 +238,8 @@ describe('Service: userPrefsService -- if user has no blur settings', function (
 });
 
 describe('Service: userPrefsService -- if original user get request failed', function () {
-    var blurImagesEnabled = true;
-    var blurImagesPercentage = 2.5;
+    var blurImagesEnabled = false;
+    var blurImagesPercentage = 0;
 
     // load the service's module
     beforeEach(module('digApp'));

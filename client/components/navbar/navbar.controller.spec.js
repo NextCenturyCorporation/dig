@@ -26,7 +26,7 @@ describe('Controller: NavbarCtrl', function () {
         });
     });
 
-    it('should make call to open modal', function () {
+    it('should make call to open about modal', function () {
         var modalParameters = {
           templateUrl: 'app/about/about.html',
           controller: 'AboutCtrl',
@@ -36,5 +36,17 @@ describe('Controller: NavbarCtrl', function () {
         scope.openAbout();
         expect(modal.open).toHaveBeenCalledWith(modalParameters);
     });
+
+    it('should make call to open user preferences modal', function () {
+        var modalParameters = {
+          templateUrl: 'app/user/user-prefs.html',
+          controller: 'UserPrefsCtrl',
+          size: 'sm'
+        };
+
+        scope.userPreferences();
+        expect(modal.open).toHaveBeenCalledWith(modalParameters);
+    });
+
 
 });
