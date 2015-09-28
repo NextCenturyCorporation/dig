@@ -7,7 +7,7 @@ angular.module('digApp')
     User.get().$promise.then(function(result) {
         $scope.updatedUser = {
             emailAddress: result.emailAddress,
-            sendEmailNotification: result.sendEmailNotification,
+            sendEmailNotification: result.sendEmailNotification
         };
         return userPrefsService.getBlurImagesEnabled();
     }).then(function(blurEnabled) {
