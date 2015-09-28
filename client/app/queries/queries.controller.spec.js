@@ -154,4 +154,9 @@ describe('Controller: QueriesCtrl', function () {
 
         expect(state.go).toHaveBeenCalledWith('search.results.list', {query: queryResults[0]}, {location: true});
     });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });

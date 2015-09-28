@@ -291,4 +291,9 @@ describe('Controller: SaveQueryCtrl', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
 });

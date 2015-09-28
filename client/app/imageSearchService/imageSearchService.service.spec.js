@@ -153,4 +153,8 @@ describe('Service: imageSearchService', function () {
         expect(imageSearchService.isImageSearchEnabled(imgUrl)).toBe(true);
     });
 
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });
