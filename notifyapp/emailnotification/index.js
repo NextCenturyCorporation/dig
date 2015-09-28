@@ -4,9 +4,10 @@
 
 var SendGrid   = require('sendgrid');
 
-module.exports = function NotificationEmail (fromAddr, digUrl, smtpUser, smtpPass) {
+module.exports = function NotificationEmail (fromAddr, digUrl, smtpHost, smtpUser, smtpPass) {
     this.fromAddr = fromAddr;
     this.digUrl = digUrl;
+    this.smtpHost = smtpHost;
     this.smtpUser = smtpUser;
     this.smtpPass = smtpPass;
 
