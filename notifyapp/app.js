@@ -7,7 +7,6 @@ var elasticsearch = require('elasticsearch'),
 var email = new NotificationEmail(
     process.env.EMAIL_FROM,
     process.env.DIG_URL,
-    process.env.SMTP_HOST,
     process.env.SMTP_USER,
     process.env.SMTP_PASS);
 
