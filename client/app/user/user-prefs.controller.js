@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('digApp')
-.controller('UserPrefsCtrl', ['$scope', '$rootScope', '$modalInstance', '$http', '$window', 'User', 'userPrefsService',
-    function($scope, $rootScope, $modalInstance, $http, $window, User, userPrefsService) {
+.controller('UserPrefsCtrl', ['$scope', '$modalInstance', '$http', '$window', 'User', 'userPrefsService',
+    function($scope, $modalInstance, $http, $window, User, userPrefsService) {
 
     User.get().$promise.then(function(result) {
         $scope.updatedUser = {
