@@ -51,6 +51,7 @@ Various application parameters can be configured via environment variables - the
 | :------------ | :--------------- | :----- |
 | NODE_ENV | 'development' | Determines whether DIG runs in production or development mode.  ['development, 'test', 'production'] |
 | PORT | 9000 | The port on which the application listens for browser requests |
+| EUI_SERVER | 'localhost' | The host at which [Elasticsearch] can be found |
 | EUI_SERVER_URL | 'http://localhost' | The base URL at which [Elasticsearch] can be found |
 | EUI_SERVER_PORT | 9200 | The port on which to connect to [Elasticsearch] |
 | EUI_SEARCH_INDEX | 'dig-latest' | The name of the [Elasticsearch] index |
@@ -128,6 +129,9 @@ euiConfigs: {
                 field: '<document date field>'
             }]
         },
+        lastUpdateQuery: {
+            field: '<document field>'
+        },
         highlight: {
             fields: [
                 '<document field>',
@@ -137,8 +141,11 @@ euiConfigs: {
         sort: {
             // see the Sorting section
         },
-        listfields: {
-            // See the Listing View Fields section
+        offerFields: {
+            // See the Offer View Fields section
+        },
+        threadFields: {
+            // See the Thread View Fields section
         },
         detailFields: {
             // See the Details View Fields section
@@ -147,8 +154,8 @@ euiConfigs: {
 }
 ```
 
-> For brevity, **listFields** and **detailFields** are described in the
-> [Listing View Fields](#listing-view-fields) and [Details View Fields](#details-view-fields) sections below.
+> For brevity, **offerFields**, **threadFields**, and **detailFields** are described in the
+> [Offer View Fields](#offer-view-fields), [Thread View Fields](#thread-view-fields) and [Details View Fields](#details-view-fields) sections below.
 
 Note that in most cases, document attributes often passed through an [AngularJS]
 $eval for display.   Thus, basic attribute references can be replaced by
@@ -187,6 +194,10 @@ Descriptions for the configuration object attributes in the **facets** block abo
 
 The **highlight** section provides a list of fields in which search terms should be highlighted when rendered to the screen.  A highlight may be as simple as a yellow background behind <span style="background: #ffff00;">matching document text</span>.
 
+#### Last Update Query
+
+The **last update query** defines the field on which the application should query on in order to determine how recently records have been updated. 
+
 #### Sorting
 
 ``` javascript
@@ -212,10 +223,11 @@ sort: {
 
 **sort** defines the parameters of the sort control on the [DIG] UI.  It defineds the document field, default sorting option and available sorting options.  These are mapped to [Elasticsearch] sort orders.  To change the sorting field, use the example above and simply change the *field* value to the desired document field (e.g., dateCreated, name).
 
-#### Listing View Fields
+#### Offer View Fields
 
 ``` javascript
-listFields: {
+offerFields: {
+    type: '<document type>'
     title: [{
         title: '<field label>',
         field: '<document field>',
@@ -253,8 +265,8 @@ listFields: {
 ```
 
 When using [DIG] to search an [Elasticsearch] index, the results are provided in
-a simple, paged list view by default.  Items in this view have a *short* description
-useful for displaying the first few key fields of a result.  Additionally,
+a simple, paged view by default.  In most cases, the records will fit this offer model.  Items in this 
+view have a *short* description useful for displaying the first few key fields of a result.  Additionally,
 results can be clicked on to provide a *full* listing view.  The full description is a
 more informative slide out display that may or may not include images and may include all values of a
 particular result field.  The full view may include multiple sections, each
@@ -265,16 +277,17 @@ of fields for a result document.  That duty is left to the [Details View](). The
 listing in either the short or full descriptive views.  A title field may be rendered
 as **bold text** or with a **TITLE** CSS style.
 
-Descriptions for the configuration object attributes in the **listFields** block above are provided below:
+Descriptions for the configuration object attributes in the **offerFields** block above are provided below:
 
 | Key  | Description  | Examples |
 | :------------ | :--------------- | :----- |
+| type | Type specified either in doc._type or doc._source.a field | doc._type 
 | classes | A list of CSS class names to use on this element | title info section-1 |
 | field  | A document field value to display.  Use this for primitive values  | doc.name |
 | fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
 | fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value (resolves to doc.aliases.value here) |
 | title | A descriptive label to identify a field | Source, URL, Name |
-
+| highlightArray | If you want to highlight text and the field you are highlighting returns an array of results, this can be used to parse through that array for the correct one | doc.highlight['name']
 
 > Both field and fieldArray can be defined.  This is useful for result attributes that
 > may be returned as either a single value OR an array of values, potentially named
@@ -288,28 +301,35 @@ Descriptions for the configuration object attributes in the **listFields** block
 
 ``` javascript
 detailFields: {
-    "1": {
-        classes: '<CSS class list>',
-        fields: [{
-            title: '<field label>',
-            field: '<document field>',
-            featureArray: '<document field>; used when fields can be an array',
-            featureValue: 'the key of the attribute to display if featureArray contains Objects'
-            hideIfMissing: false
-        }]
+    title: {
+        title: '<field label>',
+        field: '<document field>',
     },
-    "2": {
-        classes: '<CSS class list>',
-        fields: [{
-            title: '<field label>',
-            field: '<document field>'
-        },{
-            title: '<field label>',
-            field: '<document field>',
-            featureArray: '<document field>; used when fields can be an array',
-            featureValue: 'the key of the attribute to display if featureArray contains Objects'
-            hideIfMissing: true
-        }]
+    sections: {
+        "1": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: '<document field>',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+                hideIfMissing: false
+            }]
+        },
+        "2": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: '<document field>'
+            },{
+                title: '<field label>',
+                field: '<document field>',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+                highlightArray: '<document field>'
+                hideIfMissing: true
+            }]
+        }
     }
 }
 ```
@@ -338,6 +358,98 @@ Descriptions for the configuration object attributes in the **detailFields** blo
 > Section keys (i.e., "1" and "2" above) are not displayed on the page.
 > Using meaningful names instead of numbers may provide a convenience for the developer.
 > However, note that their order in the rendered listing is determined by the alphabetical ordering of their key values.
+
+#### Thread View Fields
+
+``` javascript
+threadFields: {
+    type: '<document type>'
+    title: [{
+        title: '<field label>',
+        field: '<document field>',
+    }],
+    short: [{
+        title: 'Field 1 Label',
+        field: '<document field>',
+        classes: '<CSS class list>'
+    },{
+        title: 'Field 2 Label',
+        field: '<document field>',
+        classes: '<CSS class list>'
+    }],
+    full: {
+        "1": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: '<document field>',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            }]
+        },
+        "2": {
+            classes: '<CSS class list>',
+            fields: [{
+                title: '<field label>',
+                field: '<document field>',
+                featureArray: '<document field>; used when fields can be an array',
+                featureValue: 'the key of the attribute to display if featureArray contains Objects'
+            }]
+        }
+    },
+    postFields: {
+        field: '<document field>',
+        name: '<field label>',
+        subject: [{
+            title: '<field label>',
+            field: '<document field>',
+            highlightArray: '<document field>'
+        }],
+        short: [{
+            title: '<field label>',
+            field: '<document field>',
+            highlightArray: '<document field>',
+            classes: '<CSS class list>'
+        }],
+        body: {
+            title: '<field label>',
+            field: '<document field>',
+            highlightArray: '<document field>'
+        },
+        signature: {
+            title: '<field label>',
+            field: '<document field>',
+            highlightArray: '<document field>',
+        }
+    }
+}
+```
+
+Alternatively, the data you are trying to render may fit the thread template rather than an offer. The *short* listing looks the same, but 
+the *full* listing is a bit different. A thread will have key fields listed, as well as a list of associated posts under that particular 
+thread. Within a post, there are a short listing of fields (i.e. author, date), a subject, a body of text, and possibly a signature 
+or footer for that post. 
+
+Descriptions for the configuration object attributes in the **threadFields** block above are provided below:
+
+| Key  | Description  | Examples |
+| :------------ | :--------------- | :----- |
+| type | Type specified either in doc._type or doc._source.a field | doc._type 
+| classes | A list of CSS class names to use on this element | title info section-1 |
+| field  | A document field value to display.  Use this for primitive values  | doc.name |
+| fieldArray | A document array value to display.  Use this for multi-valued fields.  | doc.aliases |
+| fieldValue | An object attribute. This is necessary if fieldArray contains objects instead of primitives | value (resolves to doc.aliases.value here) |
+| title | A descriptive label to identify a field | Source, URL, Name |
+| highlightArray | If you want to highlight text and the field you are highlighting returns an array of results, this can be used to parse through that array for the correct one | doc.highlight['name']
+
+> Both field and fieldArray can be defined.  This is useful for result attributes that
+> may be returned as either a single value OR an array of values, potentially named
+> differently.  Example:  doc.address.value vice doc.addresses
+
+> Section keys (i.e., "1" and "2" above) are not displayed on the page.
+> Using meaningful names instead of numbers may provide a convenience for the developer.
+> However, note that their order in the rendered listing is determined by the alphabetical ordering of their key values.
+
 
 #### Image Field
 
