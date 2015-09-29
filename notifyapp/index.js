@@ -18,7 +18,7 @@ var savedScheduledQueryRunner = function (applog, config, esClient, QueryModel, 
 
         // midnight on Sunday
         weeklyJob: schedule.scheduleJob('0 0 * * 0', querydb.runWeeklySSQ)
-    }
+    };
 };
 
 module.exports = savedScheduledQueryRunner;
