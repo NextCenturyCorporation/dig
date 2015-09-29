@@ -65,6 +65,7 @@ describe('/api/users', function() {
         });
     });
 
+
     describe('DELETE /api/users/:username', function() {
         it('should find and delete the user', function (done) {
             request(app)

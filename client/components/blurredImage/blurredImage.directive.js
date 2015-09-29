@@ -2,18 +2,24 @@
 
 
 angular.module('digApp.directives')
-.directive('blurredImage', function(blurImageService, $timeout) {
+.directive('blurredImage', function(userPrefsService, $timeout) {
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
             var fallback = false;
-            var blurImagesEnabled = blurImageService.getBlurImagesEnabled();
-            var blurImagesPercentage = blurImageService.getBlurImagesPercentage();
+            var blurImagesEnabled;
+            var blurImagesPercentage;
 
-            if(blurImagesEnabled) {
-                element.addClass('image-blur-default');
-            }
-
+            userPrefsService.getBlurImagesEnabled().then(function(enabled) {
+                blurImagesEnabled = enabled;
+                if(blurImagesEnabled) {
+                    element.addClass('image-blur-default');
+                }
+                return userPrefsService.getBlurImagesPercentage();
+            }).then(function(percentage) {
+                blurImagesPercentage = percentage;
+            });
+            
             $scope.getMaxSize = function() {
                 return Math.max(element.height(), element.width());
             };
@@ -63,10 +69,14 @@ angular.module('digApp.directives')
             };
 
             $scope.processImageBlur = function() {
-                blurImagesEnabled = blurImageService.getBlurImagesEnabled();
-                blurImagesPercentage = blurImageService.getBlurImagesPercentage();
 
-                blurImage();
+                userPrefsService.getBlurImagesEnabled().then(function(enabled) {
+                    blurImagesEnabled = enabled;
+                    return userPrefsService.getBlurImagesPercentage();
+                }).then(function(percentage) {
+                    blurImagesPercentage = percentage;
+                    blurImage();
+                });
             };
 
             attrs.$observe('src', function() {

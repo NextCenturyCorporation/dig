@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('digApp')
-  .controller('NavbarCtrl', function ($scope, $location, $modal, $state, User, blurImageService) {
+  .controller('NavbarCtrl', function ($scope, $location, $modal, $state, User) {
     $scope.menu = [
     {
       'title': 'Home',
@@ -21,19 +21,19 @@ angular.module('digApp')
       return route === $location.path();
     };
 
-    // settings methods
-    $scope.isBlurred = blurImageService.getBlurImagesEnabled();
-
-    $scope.changeBlur = function() {
-        $scope.isBlurred = !$scope.isBlurred;
-        blurImageService.changeBlurImagesEnabled($scope.isBlurred);
-    };
-
     $scope.openAbout = function () {
         $modal.open({
           templateUrl: 'app/about/about.html',
           controller: 'AboutCtrl',
           size: 'sm'
+        });
+    };
+
+    $scope.userPreferences = function() {
+        $modal.open({
+            templateUrl: 'app/user/user-prefs.html',
+            controller: 'UserPrefsCtrl',
+            size: 'sm'
         });
     };
 

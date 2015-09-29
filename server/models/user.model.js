@@ -12,6 +12,23 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.ENUM('user', 'admin', 'disabled', 'guest'),
             defaultValue: 'user'
         },
+        emailAddress: {
+            type: DataTypes.STRING,
+            validate: {
+                isEmail: true
+            }
+        },
+        sendEmailNotification: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            validate: {
+                ifNotificationsThenEmail: function() {
+                    if(this.sendEmailNotification && (this.emailAddress === undefined || this.emailAddress === null)) {
+                        throw new Error('Require emailAddress if sendEmailNotification is true.');
+                    }
+                }
+            }
+        },
         blurImagesEnabled: {
             type: DataTypes.BOOLEAN
         },

@@ -46,7 +46,7 @@ exports.update = function (req, res) {
     ).then(function(user) {
         res.status(204).end();
     }).catch(function(error) {
-        res.status(404).json(error);
+        res.status(403).json(error);
     });
 }
 
