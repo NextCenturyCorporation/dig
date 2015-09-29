@@ -18,8 +18,6 @@
             </span> 
           </div>
           <div class="col-xs-7 col-sm-8 col-lg-9">
-          <!--TODO: Perhaps when we discover patterns with modeling different data sets, we can revisit a directive to render 
-          known types or rename/redesign the config fields. -->
             <span ng-repeat="offerFields in euiConfigs.offerFields" ng-if="(doc._source.a || doc._type) === offerFields.type">
               <short-listing doc="doc" fields-to-render="offerFields"></short-listing>     
             </span>
@@ -34,8 +32,6 @@
         </div>
       </a>
       <div collapse="!isListItemOpened(doc._id)" class="list-group-item-text collapse">
-        <!--TODO: Perhaps when we discover patterns with modeling different data sets, we can revisit a directive to render 
-          known types or rename/redesign the config fields. -->
         <span ng-repeat="offerFields in euiConfigs.offerFields" ng-if="(doc._source.a || doc._type) === offerFields.type">
           <div offer-view doc="doc" offer-fields="offerFields" get-display-image-src="getDisplayImageSrc" 
             view-details="viewDetails" parent-state="list" facets="facets" image-search="imageSearch"></div>          
