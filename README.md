@@ -51,7 +51,6 @@ Various application parameters can be configured via environment variables - the
 | :------------ | :--------------- | :----- |
 | NODE_ENV | 'development' | Determines whether DIG runs in production or development mode.  ['development, 'test', 'production'] |
 | PORT | 9000 | The port on which the application listens for browser requests |
-| EUI_SERVER | 'localhost' | The host at which [Elasticsearch] can be found |
 | EUI_SERVER_URL | 'http://localhost' | The base URL at which [Elasticsearch] can be found |
 | EUI_SERVER_PORT | 9200 | The port on which to connect to [Elasticsearch] |
 | EUI_SEARCH_INDEX | 'dig-latest' | The name of the [Elasticsearch] index |
@@ -64,7 +63,7 @@ Various application parameters can be configured via environment variables - the
 | DB_PORT | 3306 | port for mysql db service |
 | ES_USER |  | user name for elasticsearch |
 | ES_PASS |  | user password for elasticsearch |
-| EUI_SERVER | 'localhost' |  |
+| EUI_SERVER | 'localhost' | The host at which [Elasticsearch] can be found |
 | MYSQL_ROOT_PASSWORD |  |  |
 
 
