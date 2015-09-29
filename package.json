@@ -1,6 +1,6 @@
 {
   "name": "dig",
-  "version": "folders-1.0.8",
+  "version": "1.0.8",
   "main": "server/app.js",
   "dependencies": {
     "async": "^1.2.1",
