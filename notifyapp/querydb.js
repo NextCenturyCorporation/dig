@@ -81,6 +81,7 @@ exports = module.exports = function(logger, config, esClient, Query, notificatio
                                 if (user.sendEmailNotification === true) {
                                     // send an email notification to this user for this query
                                     notificationEmail.send(user, query, function(err, msg) {
+                                        logger.info('EMAIL NOTIFICATION RESULTS for :' + user.emailAddress);
                                         if (err) {
                                             logger.error(err);
                                         }
