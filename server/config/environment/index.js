@@ -135,7 +135,8 @@ var all = {
                 'title'
                 ]
             },
-            listFields: {
+            offerFields: [{
+                type: 'ad',
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -223,7 +224,7 @@ var all = {
                         }]
                     }
                 }
-            },
+            }],
             debugFields: {
                 fields: ['doc._id']
             },
@@ -348,6 +349,10 @@ var all = {
                     title: 'Date',
                     aggName: 'date_agg',
                     field: 'dateCreated'
+                }],
+                existsFilters: [{
+                    title: 'With Images Only',
+                    field: 'hasImagePart.cacheUrl'
                 }]
             },
             highlight: {
@@ -390,7 +395,8 @@ var all = {
             lastUpdateQuery: {
                 field: 'dateCreated'
             },
-            listFields: {
+            offerFields: [{
+                type: 'WebPage',
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -487,7 +493,7 @@ var all = {
                         }]
                     }
                 }
-            },
+            }],
             debugFields: {
                 fields: ['doc._id']
             },
@@ -674,8 +680,7 @@ var all = {
                         hideIfMissing: true
                     }]
                 }
-            },
-            imageField: 'hasImagePart.cacheUrl'
+            }
         },
         'dig-mrs-latest': {
             facets: {
@@ -708,7 +713,8 @@ var all = {
                 }]
             },
 
-            listFields: {
+            offerFields: [{
+                type: 'WebPage',
                 title: [{
                     title: 'Title',
                     type: 'title',
@@ -755,8 +761,7 @@ var all = {
                         }]
                     }
                 }
-            },
-
+            }],
             detailFields: {
                 "1": {
                     classes: 'listing-details',
@@ -785,6 +790,455 @@ var all = {
                     }]
                 }
             }
+        },
+        'dig-atf-weapons-latest':{
+            facets: {
+                euiFilters: [],
+                //simFilter: {},
+                aggFilters: [{
+                    title: 'Type',
+                    type: 'eui-aggregation',
+                    field: 'type_agg',
+                    terms: 'a',
+                    termsType: 'string',
+                    count: 5
+                },{
+                    title: 'Publisher',
+                    type: 'eui-aggregation',
+                    field: 'publisher_agg',
+                    terms: 'publisher.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Keywords',
+                    type: 'eui-aggregation',
+                    field: 'weapons_agg',
+                    terms: 'itemOffered.keywords',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Author Names',
+                    type: 'eui-aggregation',
+                    field: 'authors_agg',
+                    terms: 'hasPost.author.name',//'author_name_histogram.value',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Seller',
+                    type: 'eui-aggregation',
+                    field: 'seller_agg',
+                    terms: 'seller.description.raw',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Buyer',
+                    type: 'eui-aggregation',
+                    field: 'buyer_agg',
+                    terms: 'buyer.description.raw',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Location',
+                    type: 'eui-aggregation',
+                    field: 'locations_agg',
+                    terms: 'availableAtOrFrom.address.name',
+                    termsType: 'string',
+                    count: 10
+                }]
+            },
+            highlight: {
+                fields: ['*']
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            offerFields: [{
+                type: 'Offer', // this checks against the doc.a field or doc._type if doc.a does not exist
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["title"][0] || doc._source.title || doc.highlight["name"][0] || doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Date',
+                    field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'At or From',
+                    field: 'doc.highlight["availableAtOrFrom.address.name"][0] || doc._source.availableAtOrFrom.address.name || ' + 
+                        'doc._source.availableAtOrFrom[0].address.name',
+                    classes: 'name'
+                },{
+                    title: 'Publisher',
+                    field: 'doc.highlight["publisher.name"] || doc._source.publisher.name || doc._source.publisher[0].name',
+                    classes: 'publisher'
+                }],
+                full: {
+                    "1": {
+                        classes: 'offer-details',
+                        fields: [{
+                            title: 'Buyer',
+                            field: 'doc.highlight["buyer.description"][0] || doc._source.buyer.description',
+                            hideIfMissing: true
+                        },{
+                            title: 'Seller',
+                            field: 'doc.highlight["seller.description"][0] || doc._source.seller.description',
+                            hideIfMissing: true
+                        },{
+                            title: 'Price',
+                            field: 'doc.highlight["price"][0] || doc._source.price',
+                            hideIfMissing: true
+                        },{
+                            title: 'Currency Type',
+                            field: 'doc.highlight["priceCurrency"][0] || doc._source.priceCurrency',
+                            hideIfMissing: true
+                        },{
+                            title: 'Price Specification',
+                            field: 'doc._source.priceSpecification',
+                            featureArray: 'doc._source.priceSpecification',
+                            featureValues: ['price', 'priceCurrency'],
+                            hideIfMissing: true
+                        },{
+                            title: 'Date',
+                            field: "doc._source.availabilityStarts | date:'MM/dd/yyyy HH:mm:ss UTC'"
+                        },{
+                            title: 'At or From',
+                            field: 'doc.highlight["availableAtOrFrom.address.name"][0] || doc._source.availableAtOrFrom.address.name'
+                        }]
+                    },
+                    "2": {
+                        classes: 'more-details',
+                        fields: [{
+                            title: 'Category',
+                            field: 'doc._source.itemOffered.category'
+                        },{
+                            title: 'Keywords',
+                            featureArray: 'doc._source.itemOffered.keywords',
+                            highlightArray: 'doc.highlight["itemOffered.keywords"]'
+                        },{
+                            title: 'Publisher',
+                            field: 'doc.highlight["publisher.name"] || doc._source.publisher.name'
+                        }]
+                    }
+                },
+                body: {
+                    fields: [{
+                        title: 'Description',
+                        field: 'doc.highlight["description"][0] || doc._source.description'
+                    }]
+                }
+            },{
+                type: 'Person',
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["name"][0] || doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Location',
+                    field: 'doc.highlight["location.address.name"] || doc._source.location.address.name',
+                    classes: 'location'
+                },{
+                    title: 'Member Of',
+                    field: 'doc._source.memberOf.memberOf.name || doc._source.memberOf[0].memberOf.name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'person-details',
+                        fields: [{
+                            title: 'Location',
+                            field: 'doc.highlight["location.address.name"] || doc._source.location.address.name'
+                        },{
+                            title: 'Member Of',
+                            field: 'doc._source.memberOf.memberOf.name || doc._source.memberOf[0].memberOf.name'
+                        },{
+                            title: 'Start Date',
+                            field: "(doc._source.memberOf.startDate || doc._source.memberOf[0].startDate) | date:'MM/yyyy UTC'"
+                        },{
+                            title: 'Identifier',
+                            field: 'doc.highlight["identifier.name"] || doc._source.identifier.name'
+                        }]
+                    }
+                },
+                sparklines: [{
+                    label: 'Posts over time',
+                    docIdPath: 'query.bool.must[1].term["author.uri"]',
+                    query: {  
+                        query: {
+                            bool: {
+                                must: [
+                                { term: { a: 'Post'}},
+                                { term: { 'author.uri': 'PLACEHOLDER' }}
+                                ]
+                            }
+                        }, aggs : {
+                            postsOverTime : {
+                                date_histogram : {
+                                    field : 'dateCreated',
+                                    interval : 'day'
+                                }
+                            }
+                        } 
+                    },
+                    aggName: 'postsOverTime',
+                    countField: 'doc_count',
+                    graphType: 'line'
+                }]
+            },{
+                type: 'Post',
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["isPostOf.hasTitlePart.text"][0] || doc._source.isPostOf.hasTitlePart.text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Author',
+                    field: 'doc.highlight["author.name"][0] || doc._source.author.name',
+                    classes: 'name'
+                },{
+                    title: 'Location',
+                    field: 'doc.highlight["author.location.address.name"] || doc._source.author.location.address.name',
+                    classes: 'location'
+                },{
+                    title: 'Member Of',
+                    field: 'doc._source.author.memberOf.memberOf.name || doc._source.author.memberOf[0].memberOf.name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'post-details',
+                        fields: [{
+                            title: 'Author',
+                            field: 'doc.highlight["author.name"][0] || doc._source.author.name',
+                        },{
+                            title: 'Location',
+                            field: 'doc.highlight["author.location.address.name"] || doc._source.author.location.address.name',
+                        },{
+                            title: 'Member Of',
+                            field: 'doc._source.author.memberOf.memberOf.name || doc._source.author.memberOf[0].memberOf.name',
+                        },{
+                            title: 'Identifier',
+                            field: 'doc.highlight["identifier.name"] || doc._source.identifier.name'
+                        }]
+                    }
+                }, 
+                body: {
+                    classes: 'body-details',
+                    fields: [{
+                        title: 'Body',
+                        field: 'doc.highlight["hasBodyPart.text"][0] || doc._source.hasBodyPart.text',
+                    },{
+                        title: 'Signature',
+                        field: 'doc.highlight["hasSignaturePart.text"][0] || doc._source.hasSignaturePart.text',
+                    }]
+                }
+            }],
+            threadFields: [{
+                type: 'Thread', // this checks against the doc.a field or doc._type if doc.a does not exist
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc.highlight["hasTitlePart.text"][0] || doc._source.hasTitlePart.text || doc._source.hasTitlePart[0].text',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Dates Created',
+                    field: "doc._source.dateCreated_aggregated.value | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                    classes: 'date'
+                },{
+                    title: 'Publisher',
+                    field: 'doc.highlight["publisher.name"][0] || doc._source.publisher.name',
+                    classes: 'publisher'
+                }],
+                full: {
+                    "1": {
+                        classes: 'thread-details',
+                        fields: [{
+                            title: 'Dates Created',
+                            field: 'doc._source.dateCreated_aggregated.value'
+                        },{
+                            title: 'Publisher',
+                            field: 'doc.highlight["publisher.name"][0] || doc._source.publisher.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.hasPost',
+                    name: 'Posts',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'hasTitlePart.text || hasTitlePart[0].text',
+                        highlightArray: 'doc.highlight["hasPost.hasTitlePart.text"]',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Date',
+                        field: "dateCreated | date:'MM/dd/yyyy HH:mm:ss UTC'",
+                        highlightArray: 'doc.highlight["hasPost.dateCreated"]',
+                        classes: 'date'
+                    },{
+                        title: 'Author Name',
+                        field: 'author.name',
+                        highlightArray: 'doc.highlight["hasPost.author.name"]',
+                        classes: 'author'
+                    },{
+                        title: 'Author Identifier',
+                        field: 'author.identifier.name',
+                        highlightArray: 'doc.highlight["hasPost.author.identifier.name"]',
+                        classes: 'author'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'hasBodyPart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasBodyPart.text"]'
+                    },
+                    signature: {
+                        title: 'Signature',
+                        field: 'hasSignaturePart.text',
+                        highlightArray: 'doc.highlight["hasPost.hasSignaturePart.text"]',
+                    }
+                }
+            }]
+        },
+        'dig-patents-latest':{
+            facets: {
+                aggFilters: [{
+                    title: 'Region',
+                    type: 'eui-aggregation',
+                    field: 'region_agg',
+                    nestedPath: 'assignee.address',
+                    terms: 'assignee.address.addressRegion',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Creator',
+                    type: 'eui-aggregation',
+                    field: 'creator_agg',
+                    nestedPath: 'creator',
+                    terms: 'creator.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Assignee',
+                    type: 'eui-aggregation',
+                    field: 'assignee_agg',
+                    nestedPath: 'assignee',
+                    terms: 'assignee.name',
+                    termsType: 'string',
+                    count: 10
+                },{
+                    title: 'Citation Ids',
+                    type: 'eui-aggregation',
+                    field: 'citation_agg',
+                    nestedPath: 'citation.identifier',
+                    terms: 'citation.identifier.name',
+                    termsType: 'string',
+                    count: 10
+                }],
+                existsFilters: [{
+                    title: 'With Court Cases Only',
+                    nestedPath: 'legalAction',
+                    field: 'legalAction.uri'
+                }]
+            },
+            highlight: {
+                fields: ['*']
+            },
+            debugFields: {
+                fields: ['doc._id']
+            },
+            threadFields: [{
+                type: 'Patent',
+                title: [{
+                    title: 'Title',
+                    type: 'title',
+                    field: 'doc._source.name',
+                    section: 'title'
+                }],
+                short: [{
+                    title: 'Identifier',
+                    field: 'doc._source.identifier.name || doc._source.identifier[0].name',
+                    classes: 'identifier'
+                },{
+                    title: 'Assignee',
+                    field: 'doc._source.assignee.name || doc._source.assignee[0].name',
+                    classes: 'name'
+                }],
+                full: {
+                    "1": {
+                        classes: 'patent-details',
+                        fields: [{
+                            title: 'Identifier',
+                            featureArray: 'doc._source.identifier',
+                            featureValue: 'name',
+                            field: 'doc._source.identifier.name'
+                        },{
+                            title: 'Agent',
+                            featureArray: 'doc._source.agent',
+                            featureValue: 'name',
+                            field: 'doc._source.agent.name'
+                        },{
+                            title: 'Date Published',
+                            field: 'doc._source.datePublished'
+                        }]
+                    }, 
+                    "2": {
+                        classes: 'more-patent-details',
+                        fields: [{
+                            title: 'Creator',
+                            featureArray: 'doc._source.creator',
+                            featureValue: 'name',
+                            field: 'doc._source.creator.name'
+                        },{
+                            title: 'Assignee',
+                            featureArray: 'doc._source.assignee',
+                            featureValue: 'name',
+                            field: 'doc._source.assignee.name'
+                        }]
+                    }
+                },
+                postFields: {
+                    field: 'doc._source.legalAction',
+                    name: 'Legal Actions',
+                    subject: [{
+                        title: 'Title',
+                        type: 'title',
+                        field: 'name',
+                        section: 'title'
+                    }],
+                    short: [{
+                        title: 'Identifier(s)',
+                        field: 'identifier',
+                        classes: 'identifier'
+                    }, {
+                        title: 'Start Time',
+                        field: 'startTime',
+                        classes: 'date'
+                    },{
+                        title: 'Location',
+                        field: 'location.name',
+                        classes: 'location'
+                    },{
+                        title: 'Region',
+                        field: 'location.address.addressRegion',
+                        classes: 'region'
+                    },{
+                        title: 'Country',
+                        field: 'location.address.addressCountry',
+                        classes: 'country'
+                    }],
+                    body: {
+                        title: 'Body',
+                        field: 'mainEntityOfPage.text',
+                        highlightArray: 'doc.highlight["legalAction.mainEntityOfPage.text"]'
+                    }
+                }
+            }]
         }
     }
 };

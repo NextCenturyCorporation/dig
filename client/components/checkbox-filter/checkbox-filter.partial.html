@@ -1,5 +1,6 @@
 <div eui-or-filter>
-  <div eui-aggregation="ejs.MissingAggregation(aggregationName + '_missing_agg').field(aggregationKey)" eui-filter-self="false">
+  <!--'Not Specified' filters only work for non-nested fields - this is an open elasticsearch issue. -->
+  <div ng-if="!nestedPath" eui-aggregation="ejs.MissingAggregation(aggregationName + '_missing_agg').field(aggregationKey)" eui-filter-self="false">
     <div class="checkbox include-missing-checkbox" ng-if="aggResult.doc_count > 0">
       <label eui-filter="ejs.MissingFilter(aggregationKey)" class="include-missing-filter"
         eui-enabled="includeMissing[aggregationName].active">
@@ -9,10 +10,18 @@
       <span class="badge pull-right">{{aggResult.doc_count}}</span>
     </div>
   </div>
-  <div eui-aggregation="ejs.TermsAggregation(aggregationName).field(aggregationKey).size(aggregationCount).minDocCount(1)" eui-filter-self="false">
-      <checkbox-filter-list search-count="aggregationCount" buckets="aggResult.buckets" indexvm="indexVM" ejs="ejs"
-        filters="filters" filter-states="filterStates" aggregation-name="{{aggregationName}}" aggregation-key="{{aggregationKey}}"
-        aggregation-terms-type="{{aggregationTermsType}}">
-      </checkbox-filter-list>
+  <div ng-if="!nestedPath" eui-aggregation="ejs.TermsAggregation(aggregationName).field(aggregationKey).size(aggregationCount).minDocCount(1)" 
+    eui-filter-self="false">
+    <checkbox-filter-list search-count="aggregationCount" buckets="aggResult.buckets" indexvm="indexVM" ejs="ejs"
+      filters="filters" filter-states="filterStates" aggregation-name="{{aggregationName}}" aggregation-key="{{aggregationKey}}"
+      aggregation-terms-type="{{aggregationTermsType}}">
+    </checkbox-filter-list>
   </div>
+  <div ng-if="nestedPath" eui-aggregation="ejs.NestedAggregation('nested_' + aggregationName).path(nestedPath).
+    agg(ejs.TermsAggregation(aggregationName).field(aggregationKey).size(aggregationCount).minDocCount(1))" eui-filter-self="false">
+    <checkbox-filter-list search-count="aggregationCount" buckets="aggResult[aggregationName].buckets" indexvm="indexVM" ejs="ejs"
+    filters="filters" filter-states="filterStates" nested-path="{{nestedPath}}" aggregation-name="{{aggregationName}}" aggregation-key="{{aggregationKey}}"
+    aggregation-terms-type="{{aggregationTermsType}}">
+    </checkbox-filter-list> 
+  </div> 
 </div>

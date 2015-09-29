@@ -1,0 +1,35 @@
+<span ng-if="threadFields">
+  <div class="row">
+    <div class="col-md-12">
+      <h4><span ng-bind-html="$eval(threadFields.title[0].field) || 'N/A'"></span></h4>
+      <div class="row">
+        <div class="col-sm-6" ng-repeat="section in threadFields['full']">
+          <display-desc-list doc="doc" section="section"></display-desc-list>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <label class="post-label">{{threadFields.postFields.name}}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12"> 
+      <div class="posts">
+        <ul class="post-list-group list-unstyled">
+          <span ng-if="$eval(threadFields.postFields.field).length">
+            <li class="post-list-item" ng-repeat="item in $eval(threadFields.postFields.field)">
+              <post-template doc="doc" post="item" post-fields="threadFields.postFields"></post-template>
+            </li>
+          </span>
+          <span ng-if="!$eval(threadFields.postFields.field).length && $eval(threadFields.postFields.field)">
+            <li class="post-list-item">
+              <post-template doc="doc" post="$eval(threadFields.postFields.field)" post-fields="threadFields.postFields"></post-template>
+            </li>
+          </span>
+        </ul>  
+      </div>
+    </div>
+  </div>
+</span>

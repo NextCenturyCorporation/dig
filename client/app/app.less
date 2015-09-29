@@ -63,6 +63,10 @@ a:hover,
 	color: #8C8885;
 }
 
+mark {
+	background: #ff0;
+}
+
 h1,
 h2,
 h3,
@@ -402,7 +406,20 @@ label{
 	box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 }
 
+// for sparklines tooltip
+.jqstooltip {          
+	-webkit-box-sizing: content-box;                
+	-moz-box-sizing: content-box;           
+	box-sizing: content-box;                
+}
 
+.attribute-label {
+    font-size: 10px;
+    font-weight: normal;
+    text-transform: uppercase;
+    margin-top: 10px;
+    color: #7B7775;
+}
 
 // injector
 @import 'queries/queries.less';
@@ -417,7 +434,8 @@ label{
 @import 'collapse-filter/collapse-filter.less';
 @import 'date-filter/date-range/date-range.less';
 @import 'date-histogram-aggregation/date-histogram-aggregation.less';
-@import 'expanded-listing-view/expanded-listing-view.less';
 @import 'modal/modal.less';
 @import 'navbar/notifications/notifications.less';
+@import 'offer-view/offer-view.less';
+@import 'thread-view/thread-view.less';
 // endinjector

@@ -1,0 +1,7 @@
+<span ng-bind-html="$eval(fieldsToRender['title'][0].field) || 'N/A'"></span>
+<div class="list-group-item-meta">
+  <span ng-repeat="field in fieldsToRender['short']">
+    <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+    <span class="{{field.classes}}" ng-bind-html="$eval(field.field) || 'N/A'"></span>
+  </span>
+</div>

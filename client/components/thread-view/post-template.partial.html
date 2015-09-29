@@ -1,0 +1,21 @@
+<span class="post-title" ng-bind-html="highlightCheck($eval('post.' + postFields['subject'][0].field), 
+  $eval(postFields['subject'][0].highlightArray))">
+</span>
+<div class="list-group-item-meta">
+  <span ng-repeat="field in postFields['short']">
+    <strong><span class="to-lowercase" ng-bind="field.title + ':'"></span></strong>
+    <span class="{{field.classes}}" 
+      ng-bind-html="highlightCheck($eval('post.' + field.field), $eval(field.highlightArray)) || 'N/A'">
+    </span>
+  </span>                
+</div>
+<span ng-if="postFields.body">
+  <span ng-bind-html="highlightCheck($eval('post.' + postFields.body.field), 
+  $eval(postFields.body.highlightArray))"></span>
+</span>
+<span ng-if="postFields.signature && $eval('post.' + postFields.signature.field)">
+  <hr>
+  <span ng-bind-html="highlightCheck($eval('post.' + postFields.signature.field), 
+    $eval(postFields.signature.highlightArray))">
+  </span>
+</span>

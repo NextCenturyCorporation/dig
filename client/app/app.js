@@ -7,6 +7,7 @@ var digApp = angular.module('digApp', [
     'ui.router',
     'ui.bootstrap',
     'elasticui',
+    'elasticsearch',
     'digApp.directives',
     'digApp.services'
 ])
@@ -27,6 +28,12 @@ angular.element(document).ready(function() {
     .success(function(config) {
         var euiHost = (config.euiHost || 'localhost') + ':' + (config.euiPort || 9200);
         digApp.constant('euiHost', euiHost);
+
+        var euiServer = (config.euiServer || 'localhost');
+        digApp.constant('euiServer', euiServer);
+
+        var euiPort = (config.euiPort || 9200);
+        digApp.constant('euiPort', euiPort);
 
         var euiSearchIndex = (config.euiSearchIndex || 'dig');
         digApp.constant('euiSearchIndex', euiSearchIndex);
@@ -54,6 +61,8 @@ angular.element(document).ready(function() {
     })
     .error(function() {
         digApp.constant('euiHost', 'http://localhost:9200');
+        digApp.constant('euiServer', 'localhost');
+        digApp.constant('euiPort', '9200');
         digApp.constant('euiSearchIndex', 'dig');
         digApp.constant('euiConfigs', {
             facets: [],

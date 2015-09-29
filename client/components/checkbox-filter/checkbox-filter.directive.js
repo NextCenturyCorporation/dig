@@ -9,6 +9,7 @@ angular.module('digApp.directives')
             aggregationKey: '@',
             aggregationCount: '&',
             aggregationTermsType: '@',
+            nestedPath: '@',
             indexVM: '=indexvm',
             ejs: '=',
             filters: '=',

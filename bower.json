@@ -12,7 +12,7 @@
     "angular-sanitize": ">=1.2.*",
     "angular-bootstrap": "~0.11.0",
     "font-awesome": ">=4.1.0",
-    "lodash": "~2.4.1",
+    "lodash": "~3.10.1",
     "angular-ui-router": "~0.2.10",
     "elasticsearch": "~2.4.3",
     "elastic.js": "~1.2.0",

@@ -39,11 +39,13 @@
                 <i style="float:right;"class="fa fa-times-circle" ng-click="toggleImageSearchEnabled(getActiveImageSearch().url)"></i>
               </span>
             </span>
-            <span ng-if="filterStates.withImagesOnly">
-              <span class="search-facet">
-                With Images Only <i class="fa fa-times-circle" ng-click="filterStates.withImagesOnly = !filterStates.withImagesOnly"></i>
+
+            <span ng-repeat="existFilter in facets.existsFilters">
+              <span ng-if="filterStates.existsFilters[existFilter.field]" class="search-facet">
+                {{existFilter.title}} <i class="fa fa-times-circle" ng-click="removeExistsFilter(existFilter.field)"></i>
               </span>
             </span>
+
             <span ng-repeat="aggFilter in facets.aggFilters">
               <span ng-if="includeMissing.aggregations[aggFilter.field].active" class="search-facet include-missing">
                 {{aggFilter.title}}: Not Specified

@@ -76,7 +76,7 @@ var queries =
 		name: 'Query #3',
 		digState: {
 			searchTerms: 'another saved query',
-			filters: {"aggFilters":{"state_agg":{},"etn_agg":{},"hc_agg":{},"age_agg":{}},"textFilters":{},"dateFilters":{"date":{"beginDate":null,"endDate":null}}},
+			filters: {"aggFilters":{"state_agg":{},"etn_agg":{},"hc_agg":{},"age_agg":{}},"textFilters":{},"dateFilters":{"date":{"beginDate":null,"endDate":null}},"withImagesOnly":true},
 			selectedSort: {"title":"Best Match","order":"desc","field":"_score"},
 			includeMissing: {"aggregations":{},"allIncludeMissing":false}
 		},
