@@ -389,7 +389,7 @@ module.exports = function (grunt) {
             expand: true, 
             cwd: '<%= yeoman.notifyapp %>', 
             dest: '<%= yeoman.distnotify %>',
-            src: ['*.js', 'models/**/*', 'package.json', 'README.md', 'Dockerfile']
+            src: ['*.js', 'emailnotification/**/*', 'models/**/*', 'package.json', 'README.md', 'Dockerfile']
           }
         ]
       },
