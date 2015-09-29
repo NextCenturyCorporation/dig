@@ -5,23 +5,24 @@
  * to determine whether to set a notification.
  */
 
-exports = module.exports = function(logger, config, esClient, Query) {
+exports = module.exports = function(logger, config, esClient, Query, notificationEmail) {
     // get a collection of all SSQs given the frequency
     // Only SSQs that do not already have a notification are returned
     function findSSQ (period) {
-        logger.info('finding saved scheduled queries for %s', period)
+        logger.info('finding saved scheduled queries for %s', period);
         return Query.findAll({
             where: {
                 notificationHasRun: true,
                 frequency: period
             }
-        })
+        });
     }
 
     // given an SSQ, extract the ElasticSearch query state which is stored as
     // text.  Parse the text and reture the query object that is used as the 
     // body of the query.
     function getEsQuery (ssq) {
+        /* jshint camelcase: false */
         var esQuery = {};
 
         var elasticUIState = JSON.parse(ssq.elasticUIState);
@@ -32,7 +33,7 @@ exports = module.exports = function(logger, config, esClient, Query) {
             esQuery.query.query_string = elasticUIState.queryState.query_string;        
         }
 
-        esQuery.fields = ["_timestamp"];
+        esQuery.fields = ['_timestamp'];
         esQuery.sort = {'_timestamp': {'order': 'desc'}};
         esQuery.size = 1;
 
@@ -51,22 +52,18 @@ exports = module.exports = function(logger, config, esClient, Query) {
     // 4. if new results are available, add a notification
     function runSSQ (periodicSSQfn) {
         return function() {
-            return periodicSSQfn()
+            periodicSSQfn()
             .then (function (queries) {
                 logger.info(queries);
                 queries.forEach(function(query) {
-                    var results = {};
-
                     // query elasticsearch for new records since the last run date
                     esClient.search({
                         index: config.euiSearchIndex,
                         type: config.euiSearchType,
                         body: getEsQuery(query)
                     })
-                    .then(function (resp) {
-                        
-                        logger.info(resp);
-                        results = resp;
+                    .then(function (results) {
+                        logger.info(results);
                         var latestResultDate = new Date(results.hits.hits[0].fields._timestamp);
                         var diff = latestResultDate - query.lastRunDate;
                         
@@ -78,7 +75,19 @@ exports = module.exports = function(logger, config, esClient, Query) {
                             query.save({fields: ['notificationDateTime', 'notificationHasRun']})
                             .then(function() {
                                 logger.info('updated %s', query.name);
+                                return query.getUser();
                             })
+                            .then(function (user) {
+                                if (user.sendEmailNotification === true) {
+                                    // send an email notification to this user for this query
+                                    notificationEmail.send(user, query, function(err, msg) {
+                                        if (err) {
+                                            logger.error(err);
+                                        }
+                                        else {logger.info(msg);}
+                                    });
+                                }
+                            });
                         }
                     }, function (err) {
                         logger.error(err.message);
@@ -88,12 +97,12 @@ exports = module.exports = function(logger, config, esClient, Query) {
             .catch(function (err) {
                 logger.error (err);
             });         
-        }
+        };
     }
 
-    var hourlySSQ = function () { return findSSQ('hourly'); }
-    var dailySSQ = function() { return findSSQ('daily'); }
-    var weeklySSQ = function() { return findSSQ('weekly'); }
+    var hourlySSQ = function () { return findSSQ('hourly'); };
+    var dailySSQ = function() { return findSSQ('daily'); };
+    var weeklySSQ = function() { return findSSQ('weekly'); };
 
     return {
         findSSQ: findSSQ,
@@ -102,5 +111,5 @@ exports = module.exports = function(logger, config, esClient, Query) {
         runHourlySSQ: runSSQ (hourlySSQ),
         runDailySSQ: runSSQ (dailySSQ),
         runWeeklySSQ: runSSQ (weeklySSQ),
-    }
-}
+    };
+};
