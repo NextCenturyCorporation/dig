@@ -14,8 +14,9 @@
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error': !isNotificationStateValid()}">
-        <label for="emailNotify">Receive Notifications:</label>
         <input type="checkbox" name="emailNotify" ng-model="updatedUser.sendEmailNotification">
+        <label for="emailNotify"> Receive Email Notifications</label>
+        
         <div class="error-message">
           <span ng-show="!isNotificationStateValid()">
             If you want to receive notifications, please enter a valid email.
@@ -23,8 +24,9 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="blurImages">Blur Images:</label>
         <input type="checkbox" name="blurImages" ng-model="updatedUser.blurImagesEnabled">
+        <label for="blurImages"> Blur Images</label>
+        
       </div>
       <div ng-if="databaseError.data.message" class="col-sm-12 error-message">
         <hr>
