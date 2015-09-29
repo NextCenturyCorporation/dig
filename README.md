@@ -119,6 +119,7 @@ euiConfigs: {
                 title: '<field label>',
                 field: '<document field>',
                 terms: '<document array field>',
+                nestedPath: 'partial path to <document field>',
                 termsType: '<string|number>'
                 count: '30'
             },
@@ -185,6 +186,7 @@ Descriptions for the configuration object attributes in the **facets** block abo
 | aggName | A custom name to use for the Elasticsearch results aggregation on date fields | date_agg |
 | count | The number of unique values to display by default.  This pertains only to aggFilters. | 30 |
 | field | A document field value to display. Use this for primitive values | name |
+| nestedPath | If a field is nested, a nested aggregation will have to be used and the path to the field will have to be given | 'address.line1' for the field 'address.line1.street' |
 | terms | A document field array to display.  Use this for multi-valued fields.  | phonenumbers |
 | termsType | A type field for the terms field. This is used for fields that may be ambiguous when they are parsed from text (e.g., string fields that contain only digits).  Accepted values are 'string' or 'number' | 'string' |
 | title | A descriptive label to identify a field | Date, Color, Size |
