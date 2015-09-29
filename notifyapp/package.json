@@ -26,7 +26,9 @@
     "forever": "^0.14.1",
     "mysql": "^2.7.0",
     "node-schedule": "^0.2.8",
-    "sequelize": "^3.2.0"
+    "sendgrid": "^1.9.2",
+    "sequelize": "^3.2.0",
+    "sequelize-hierarchy": "^0.5.0"
   },
   "devDependencies": {
     "should": "^6.0.3"
