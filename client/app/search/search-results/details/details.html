@@ -47,16 +47,15 @@
       </div><!-- end ngIf: doc._source.hasImagePart -->
 
       <div class="col-md-7">
-      
-        <h4 ng-if="$eval(euiConfigs.offerFields['title'][0].field)" class="ng-binding ng-scope" 
-        ng-bind-html="$eval(euiConfigs.offerFields['title'][0].field)"></h4>
+        <h4 ng-if="$eval(euiConfigs.detailFields['title'].field)" class="ng-binding ng-scope" 
+        ng-bind-html="$eval(euiConfigs.detailFields['title'].field)"></h4>
         <div ng-if="doc._source.url">
           <span class="to-uppercase text-muted">URL</span>
           <span><a href="{{doc._source.url}}" target="_blank">{{doc._source.url}}</a></span>
         </div>
         <hr>
 
-        <dl ng-repeat-start="section in euiConfigs.detailFields"
+        <dl ng-repeat-start="section in euiConfigs.detailFields.sections"
           class="{{section.classes}}">
            <div  ng-repeat="field in section.fields" ng-if='!field.hideIfMissing || $eval(field.field) || $eval(field.featureArray)'>
              <dt ng-if="field.title">{{field.title}}</dt>
