@@ -89,6 +89,13 @@
                         </span>
                       </span>
                     </span>
+                    <span ng-repeat="rangeFilter in facets.rangeFilters">
+                      <span ng-if="query.digState.filters.rangeFilters[rangeFilter.field]">
+                        <span ng-if="query.digState.filters.rangeFilters[rangeFilter.field].enabled" class="search-facet">
+                          {{rangeFilter.title}}: {{query.digState.filters.rangeFilters[rangeFilter.field].begin}} - {{query.digState.filters.rangeFilters[rangeFilter.field].end}} 
+                        </span>
+                      </span> 
+                    </span>
                     <dl>
                       <dt>Sort By</dt>
                       <dd>{{query.digState.selectedSort.title}}</dd>

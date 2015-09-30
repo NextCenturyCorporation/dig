@@ -34,7 +34,8 @@ describe('Controller: SearchCtrl', function () {
                       endDate: null
                     }
                 },
-                existsFilters: {}
+                existsFilters: {},
+                rangeFilters: {}
 
             },
             selectedSort: {
@@ -642,7 +643,7 @@ describe('Controller: SearchCtrl', function () {
     
         expect(scope.queryString.live).toBe('');
         expect(scope.submit).not.toHaveBeenCalled();
-        expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}, existsFilters: {}});
+        expect(scope.filterStates).toEqual({aggFilters: {}, textFilters: {}, dateFilters: {}, existsFilters: {}, rangeFilters: {}});
         expect(scope.includeMissing).toEqual({aggregations: {}, allIncludeMissing: false});
         expect(scope.selectedSort).toEqual({});
 
@@ -931,19 +932,6 @@ describe('Controller: SearchCtrl', function () {
         scope.removeAggFilter('test', 'value2');
         expect(scope.filterStates.aggFilters['test']['value1']).toBe(true);
         expect(scope.filterStates.aggFilters['test']['value2']).toBe(false);
-    });
-
-    it('should remove correct existsFilter', function () {
-        scope.filterStates.existsFilters = {};
-        scope.filterStates.existsFilters['value1'] = true; 
-        scope.filterStates.existsFilters['value2'] = true; 
-
-        expect(scope.filterStates.existsFilters['value1']).toBe(true);
-        expect(scope.filterStates.existsFilters['value2']).toBe(true);
-
-        scope.removeExistsFilter('value2');
-        expect(scope.filterStates.existsFilters['value1']).toBe(true);
-        expect(scope.filterStates.existsFilters['value2']).toBe(false);
     });
 
     it('should remove correct textFilter', function () {

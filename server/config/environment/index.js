@@ -339,13 +339,6 @@ var all = {
                     termsType: 'string',
                     count: 10
                 },{
-                    title: 'Age',
-                    type: 'eui-aggregation',
-                    field: 'age_agg',
-                    terms: 'person_age',
-                    termsType: 'number',
-                    count: 10
-                },{
                     title: 'Provider',
                     type: 'eui-aggregation',
                     field: 'provider_agg',
@@ -361,6 +354,11 @@ var all = {
                 existsFilters: [{
                     title: 'With Images Only',
                     field: 'hasImagePart.cacheUrl'
+                }],
+                rangeFilters: [{
+                    title: 'Age',
+                    aggName: 'age_agg',
+                    field: 'hasFeatureCollection.person_age_feature.person_age'
                 }]
             },
             highlight: {
@@ -696,7 +694,8 @@ var all = {
                         }]
                     }
                 }
-            }
+            },
+            imageField: 'hasImagePart.cacheUrl'
         },
         'dig-mrs-latest': {
             facets: {
