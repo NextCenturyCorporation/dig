@@ -100,7 +100,7 @@ angular.module('digApp')
                     values: [$scope.aggregationMin, $scope.aggregationMax],
                     slide: function(event, ui) {
                         updateRangeLabel(ui.values[0], ui.values[1]);
-                        chart.xgrids([{value: ui.values[0], text: ui.values[0]}, {value: ui.values[1], text: ui.values[1]}]);
+                        chart.xgrids([{value: ui.values[0], text: ui.values[0], position: 'middle'}, {value: ui.values[1], text: ui.values[1]}]);
                     },
                     stop: function(event, ui) {
                         $scope.rangeFilter = {
@@ -110,7 +110,7 @@ angular.module('digApp')
                         };
                         getSliderElem().slider('option', 'values', [$scope.rangeFilter.begin, $scope.rangeFilter.end]);
                         updateRangeLabel(ui.values[0], ui.values[1]);
-                        fromLine = {value: ui.values[0], text: ui.values[0]};
+                        fromLine = {value: ui.values[0], text: ui.values[0], position: 'middle'};
                         toLine = {value: ui.values[1], text: ui.values[1]};
                         $scope.$apply();
                     }
