@@ -1,6 +1,6 @@
-# DIG v2+
+# DIG 2+
 
-If you're looking for the latest version of DIG, please visit https://github.com/NextCenturyCorporation/digapp-ht
+If want to view the latest version of DIG, please go to https://github.com/NextCenturyCorporation/digapp-ht
 
 # DIG 1
 
