@@ -1,4 +1,8 @@
-# DIG
+# DIG v2+
+
+If you're looking for the latest version of DIG, please visit https://github.com/NextCenturyCorporation/digapp-ht
+
+# DIG 1
 
 DIG is a visual analysis tool based on a faceted search engine that enables rapid, interactive exploration of large data sets. Users refine their queries by entering search terms or selecting values from lists of aggregated attributes. DIG can be quickly configured for a new domain through simple configuration. 
 
